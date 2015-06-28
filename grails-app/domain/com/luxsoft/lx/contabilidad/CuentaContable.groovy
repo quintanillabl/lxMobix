@@ -1,0 +1,61 @@
+package com.luxsoft.lx.contabilidad
+
+import com.luxsoft.lx.sat.*
+import groovy.transform.EqualsAndHashCode
+import com.luxsoft.lx.core.Empresa
+
+@EqualsAndHashCode(includes='id,clave,descripcion')
+class CuentaContable {
+
+	Empresa empresa
+
+	String clave
+	String descripcion
+	String tipo
+	String subTipo
+	CuentaContable padre
+	Integer nivel=1
+	boolean detalle=false
+	boolean deResultado=false
+	String naturaleza
+	
+	CuentaSat cuentaSat
+
+	Date dateCreated
+	Date lastUpdated
+    	
+	static hasMany = [subCuentas:CuentaContable]
+
+    static constraints = {
+		clave blank:false,maxSize:100 ,unique:['empresa']
+		descripcion(blank:false,maxSize:300)
+		detalle(nullable:false)
+		tipo(nullable:false,inList:['ACTIVO','PASIVO','CAPITAL','ORDEN'])
+		subTipo(nullable:true)
+		naturaleza(inList:['DEUDORA','ACREEDORA','MIXTA'])
+		cuentaSat nullable:true
+		nivel inList:[1,2,3,4]
+		//padre nullable:true
+		// padre nullable:true,validator:{val,obj ->
+		// 	if(obj.detalle) return 'subCuentasNoPermitidas'
+		// 	return true
+		// }
+		
+    }
+    	
+	static mapping ={
+		subCuentas cascade: "all-delete-orphan"
+	}
+    	
+	String toString(){
+		return clave+" "+descripcion
+	}
+    	
+	static CuentaContable buscarPorClave(String clave){
+		return CuentaContable.findByClave(clave)
+	}
+
+	
+
+}
+
