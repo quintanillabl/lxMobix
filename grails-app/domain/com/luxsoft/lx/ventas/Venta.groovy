@@ -17,7 +17,7 @@ import com.luxsoft.cfdi.Cfdi
 //@Resource
 class Venta {
 
-	
+	Empresa empresa
 
 	Cliente cliente
 	
@@ -67,8 +67,6 @@ class Venta {
 	String modificadoPor
 
 	Boolean cancelada=false
-
-	Empresa empresa
 
 	
 	static hasMany = [partidas: VentaDet]

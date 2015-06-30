@@ -24,7 +24,7 @@ environments {
             //dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
             //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
             pooled = true
-            dbCreate="update"
+            dbCreate="none"
             url = "jdbc:mysql://localhost/lxMobix?autoReconnect=true"
             //url="jdbc:mysql://10.10.1.225/lxMobix?autoReconnect=true"
             driverClassName = "com.mysql.jdbc.Driver"
@@ -58,7 +58,7 @@ environments {
           //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
           pooled = true
            //dbCreate = "update"
-          dbCreate="update"
+          dbCreate="none"
           url="jdbc:mysql://10.10.1.228/lxMobix?autoReconnect=true"
           driverClassName = "com.mysql.jdbc.Driver"
           dialect = org.hibernate.dialect.MySQL5InnoDBDialect

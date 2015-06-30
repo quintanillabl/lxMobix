@@ -57,11 +57,10 @@
 				    			<g:hiddenField name="gasto.id" value="${gastoInstance.id}"/>
 				    			<div class="col-sm-8">
 				    				<div class="col-sm-6">
-				    					<f:field property="fecha" cols="col-sm-8" colsLabel="col-sm-4"/>
-				    					<f:field property="serie" widget-class="form-control "  cols="col-sm-8" colsLabel="col-sm-4"/>
-				    					
-				    					<f:field property="moneda" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
-				    					<f:field property="uuid" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4" widget-readonly="readonly"/>
+				    					<f:display property="fecha" cols="col-sm-8" colsLabel="col-sm-4"/>
+				    					<f:display property="serie"  cols="col-sm-8" colsLabel="col-sm-4"/>
+				    					<f:display property='moneda' cols="col-sm-8" colsLabel="col-sm-4"/>
+				    					<f:display property='uuid' label="UUID" cols="col-sm-8" colsLabel="col-sm-4"/>
 
 				    				</div>
 				    				<div class="col-sm-6">
@@ -71,19 +70,20 @@
 				    					<f:field property="tipoDeCambio" widget-class="form-control" cols="col-sm-9" colsLabel="col-sm-3"/>
 				    				</div>
 				    				<div class="col-sm-12">
-				    					<f:field property="cuentaContable" widget-class="form-control" 
-				    						label="Cta" />
+				    					%{-- <f:field property="cuentaContable" widget-class="form-control" 
+				    						label="Cta" /> --}%
+				    					<f:display property='cuentaContable' label="Cta contable"/>
 				    					<f:field property="comentario" widget-class="form-control"  />
 				    				</div>
 				    			</div>
 				    			
 
-				    			<div class="col-sm-4" id="totalesPanel">
-				    				<f:field property="importe"  cols="col-sm-6" colsLabel="col-sm-4"/>
-				    				<f:field property="descuento" cols="col-sm-6" colsLabel="col-sm-4"/>
-				    				<f:field property="subTotal" cols="col-sm-6" colsLabel="col-sm-4"/>
-				    				<f:field property="impuesto"  cols="col-sm-6" colsLabel="col-sm-4"/>
-				    				<f:field property="total"  cols="col-sm-6" colsLabel="col-sm-4"/>
+				    			<div class="col-sm-4" >
+				    				<f:display property="importe"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="descuento" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="subTotal" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="impuesto"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="total"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    			</div>
 				    			
 				    			
@@ -158,19 +158,7 @@
 		
 
 	</div>
-<script type="text/javascript">
-	$(function(){
-		//$(".money").autoNumeric({wEmpty:'zero',aSep:""});
-		
-		$("#totalesPanel :input").each(function(){
-		 	var input = $(this); // This is the jquery object of the input, do what you will
-		 	input.removeAttr("type").prop('type','text')
-		 	.addClass('form-control')
-		 	.addClass('text-right');
-		});
-		
-	});
-</script>
+
 	
 </body>
 </html>

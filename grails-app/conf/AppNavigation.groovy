@@ -25,8 +25,8 @@ navigation={
 			compras(controller:'compra',action:'index')
 			gastos(controller:'gasto',action:'index')
 			requisiciones(controller:'requisicion',action:'index')
-			cuentasPorPagar()
-			cuentasPorCobrar()
+			//cuentasPorPagar()
+			cuentasPorCobrar(titleText:'CxC')
 			cfdis(controller:'cfdi',action:'index')
 		}
 		contabilidad(){

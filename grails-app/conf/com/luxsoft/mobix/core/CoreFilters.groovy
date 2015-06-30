@@ -1,5 +1,8 @@
 package com.luxsoft.mobix.core
 
+import com.luxsoft.utils.Periodo
+import com.luxsoft.lx.contabilidad.PeriodoContable
+
 class CoreFilters {
 
     def filters = {
@@ -51,7 +54,33 @@ class CoreFilters {
 
             
             }
-            
+        }
+
+        all(controller:'*', action:'*') {
+
+            before = {
+                
+                if(!session.ejercicion){
+                    session.ejercicio=Periodo.obtenerYear(new Date())
+                }
+                
+                if(!session.mes){
+                    session.mes=Periodo.obtenerMes(new Date())
+                }
+                if(!session.periodoContable){
+                    def today=new Date()
+                    session.periodoContable=new PeriodoContable(
+                            ejercicio:Periodo.obtenerYear(today),
+                            mes:Periodo.obtenerMes(today)+1
+                        )
+                }
+            }
+            after = { Map model ->
+                
+            }
+            afterView = { Exception e ->
+
+            }
         }
         
         

@@ -24,6 +24,11 @@ testDataConfig {
             comentario={"Requisicion Demo"}
             total=1000.00
         }
+        'com.luxsofg.lx.contabilidad.Poliza'{
+            def i=1
+            folio={i++}
+            comentario='Poliza de prueba'
+        }
     }
 }
 
