@@ -1,0 +1,1 @@
+java -Xmx1024M -XX:MaxPermSize=1024m -jar mobix.jar context=mobix port=9060 host=10.10.1.76 workDir=./work

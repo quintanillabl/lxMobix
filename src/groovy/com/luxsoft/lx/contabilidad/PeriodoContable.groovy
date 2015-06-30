@@ -1,4 +1,4 @@
-package com.luxsoft.lx.core
+package com.luxsoft.lx.contabilidad
 
 import grails.validation.Validateable
 import groovy.transform.ToString

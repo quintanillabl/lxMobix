@@ -309,7 +309,7 @@ class CfdiService {
 
 }
 
-class CfdiException extends RuntimeException{
-	String message
-	Cfdi cfdi
-}
+// class CfdiException extends RuntimeException{
+// 	String message
+// 	Cfdi cfdi
+// }

@@ -30,7 +30,7 @@
 				    	<i class="fa fa-floppy-o"></i> Salvar
 				    </buttn>
 				    <g:link action="delete" class="btn btn-danger " id="${polizaInstance.id}"
-				    	onclick="return confirm('Eliminar el gasto: '+${polizaInstance.id});">
+				    	onclick="return confirm('Eliminar el poliza: '+${polizaInstance.id});">
 				        <i class="fa fa-trash"></i> Eliminar
 				    </g:link>
 					
@@ -107,7 +107,7 @@
 				  				<g:each in="${polizaInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
 				  						<td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
+				  							<g:link  controller="polizaDet" action="show" id="${row.id}">
 				  								${fieldValue(bean:row,field:"cuenta")}
 				  							</g:link>
 				  						</td>

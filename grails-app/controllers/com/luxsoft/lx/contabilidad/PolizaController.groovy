@@ -118,6 +118,7 @@ class PolizaCommand{
     String concepto
     String comentario
 
+
     // PolizaCommand(){}
 
     // PolizaCommand(PeriodoContable p){
@@ -133,6 +134,7 @@ class PolizaCommand{
     Poliza toPoliza(){
         def poliza=new Poliza()
         poliza.properties=properties
+        poliza.manual=true
         return poliza
     }
     

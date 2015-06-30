@@ -33,6 +33,8 @@ class Poliza {
 
 	String comentario
 
+	Boolean manual=false
+
 	List partidas=[]
 
 	Date cierre
@@ -48,7 +50,7 @@ class Poliza {
     static constraints = {
 		ejercicio inList:(2015..2018)
 		mes inList:(1..12)
-		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA','CIERRE_ANUAL'])
+		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','CIERRE_ANUAL'])
 		folio unique:['empresa','ejercicio','mes','tipo']
 		debe(nullable:false,scale:6)
 		haber(nullable:false,scale:6)
