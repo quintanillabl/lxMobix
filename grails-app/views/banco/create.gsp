@@ -50,7 +50,7 @@
 					  <div class="panel-footer">
 					  	
 					  	<div class="form-group">
-					  		<div class="buttons col-md-offset-2 col-md-4">
+					  		<div class="buttons col-md-offset-2 col-md-6">
 					  			<g:submitButton name="Salvar" class="btn btn-primary " />
 					  			<g:link action="index" class="btn btn-default"> Cancelar</g:link>
 					  		</div>
