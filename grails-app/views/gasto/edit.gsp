@@ -115,12 +115,12 @@
 				  				<g:each in="${gastoInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
 				  						<td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
+				  							<g:link  controller="gastoDet" action="edit" id="${row.id}">
 				  								${fieldValue(bean:row,field:"concepto")}
 				  							</g:link>
 				  						</td>
 				  						<td>
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
+				  							<g:link  controller="gastoDet" action="edit" id="${row.id}">
 				  								${fieldValue(bean:row,field:"descripcion")}
 				  							</g:link>
 				  						</td>

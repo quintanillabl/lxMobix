@@ -26,7 +26,7 @@
  
 	<div class="panel-footer">
 		<div class="btn-group">
-			<g:link class="btn btn-default btn-sm" controller="gasto" action="edit" id="${gastoInstance.id}" >
+			<g:link class="btn btn-default btn-sm" controller="gasto" action="show" id="${gastoInstance.id}" >
 				<span class="glyphicon glyphicon-hand-left"></span> Regresar
 			</g:link>
 		</div>

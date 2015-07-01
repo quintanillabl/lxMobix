@@ -16,7 +16,7 @@ class CuentaSatController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 20, 100)
+        params.max = Math.min(max ?: 1000, 1000)
         respond CuentaSat.list(params), model:[cuentaSatInstanceCount: CuentaSat.count()]
     }
 
@@ -131,9 +131,14 @@ class CuentaSatController {
     def getCuentasJSON() {
         
         def term=params.term+'%'
-        def list=CuentaSat.findAllByNombreIlike(term,[max:20,sort:"nombre",order:"desc"])
+        //def parts=params.term.split(',')
+        //def codigo=parts[0]?:''
+        //codigo+='%'
 
-        
+        //def desc=parts[1]?:''
+        //desc+='%'
+        def list=CuentaSat.findAllByCodigoIlikeOrNombreIlike(term,term,[max:20,sort:"codigo",order:"asc"])
+        //def list=CuentaSat.findAllByCodigoIlike(codigo,[max:20,sort:"codigo",order:"asc"])
         list=list.collect{ c->
             def nombre="$c.codigo $c.nombre"
             

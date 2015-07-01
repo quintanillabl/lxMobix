@@ -23,12 +23,12 @@ class CuentaContableService {
     	subCuenta.nivel=cuenta.nivel+1
 
     	subCuenta.validate()
-    	println "Errores de validacion: "+subCuenta.errors
+    	//println "Errores de validacion: "+subCuenta.errors
     	if(subCuenta.hasErrors()){
     		throw new CuentaContableException(cuenta:subCuenta,message:"Errores de validacion el agregar sub cuenta")
     	}
     	cuenta.addToSubCuentas(subCuenta)
-    	println 'Sub cuentas: '+cuenta.subCuentas.size()
+    	//println 'Sub cuentas: '+cuenta.subCuentas.size()
     	cuenta.save flush:true
     	return cuenta
     }
