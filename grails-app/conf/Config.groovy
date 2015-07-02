@@ -10,6 +10,7 @@
 // if (System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
+grails.config.locations=["file:${userHome}/.grails/${appName}-config.groovy"] 
 
 grails.project.groupId = 'com.luxsoft.mobix.core' // change this to alter the default package name and Maven publishing destination
 
@@ -206,6 +207,7 @@ environments{
           ventas='FACTURA'
         }
     }
+    grails.assets.bundle=true
   }
     
   production{
@@ -237,4 +239,6 @@ beans {
 grails.plugins.twitterbootstrap.fixtaglib = true
 grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
+
+
 
