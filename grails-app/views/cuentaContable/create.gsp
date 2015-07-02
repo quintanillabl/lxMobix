@@ -77,7 +77,7 @@
 
 <script type="text/javascript">
 	$(function(){
-		$('.cuenta').mask('00000');
+		$('.cuenta2').mask('00000');
 	});
 </script>
 	

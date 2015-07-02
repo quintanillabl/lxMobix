@@ -1,6 +1,6 @@
 databaseChangeLog = {
 
-	changeSet(author: "rcancino (generated)", id: "changelog") {
+	changeSet(author: "RUBEN (generated)", id: "changelog") {
 		// TODO add changes and preconditions here
 	}
 
