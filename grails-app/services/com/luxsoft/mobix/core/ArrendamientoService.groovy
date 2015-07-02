@@ -61,12 +61,15 @@ class ArrendamientoService {
             empresa:renta.arrendamiento.empresa,
             comentario:"Renta de ${renta.arrendamiento.inmueble.descripcion} (${renta.periodo})"
         )
+        def arrendamiento=renta.arrendamiento
+        def direccion=arrendamiento.inmueble.direccion.toLabel()
+        def desc="Renta ${arrendamiento.tipo.toString().lowercase()} del inmueble ubicado en: ${direccion}"
         VentaDet det=new VentaDet(
             producto:arr.producto,
             cantidad:1,
             precio:arr.precio,
             importeBruto:arr.precio,
-            comentario:'Renta de inmueble'
+            comentario:desc
         )
 
         venta.addToPartidas(det)

@@ -28,6 +28,10 @@ class Direccion implements Serializable{
 		estado(nullable:true)
 		pais(nullable:true,size:1..100)
     }
+
+    String toLable(){
+    	return "Calle:$calle #:$numeroExterior Int:$numeroInterior Col:$colonia CP:$codigoPostal Del/Mun:$municipio $estado $pais"
+    }
 	
 	
 }

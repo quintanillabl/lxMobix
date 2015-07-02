@@ -98,24 +98,46 @@ class CfdiService {
 			traslado.setImporte(venta.impuesto)
 			traslado.setTasa(venta.impuestoTasa)
 		}
+
+
+		// 	c.setValorUnitario(det.precio);
+		// 	c.setImporte(det.importe);
+		// 	if(cliente.rfc=='XAXX010101000'){
+		// 		c.setValorUnitario(det.calcularPercioConImpuesto())
+		// 		c.setImporte(det.calcularImporteConImpuesto())
+		// 	}
+		// 	if(det.producto.cuentaPredial){
+		// 		CuentaPredial cp=c.addNewCuentaPredial()
+		// 		cp.setNumero(det.producto.cuentaPredial)
+		// 	}
+			
+			
+		// }
 		
 		Conceptos conceptos=comprobante.addNewConceptos()
 		
 		venta.partidas.each {det->
-			
+
 			Concepto c=conceptos.addNewConcepto()
 			c.setCantidad(det.cantidad)
 			c.setUnidad(det.producto.unidad)
 			c.setNoIdentificacion(det.producto.clave)
-			String desc = det.producto.descripcion
+			String desc = det.producto.descripcion+"  "+det.comentario
 			desc = StringUtils.abbreviate(desc, 250)
 			c.setDescripcion(desc)
+			
 			if(rfc=="XEXX010101000" || rfc=="XAXX010101000"){
 				c.setValorUnitario(det.precio)
 				c.setImporte(det.importeNeto+det.impuesto)
 			} else{
 				c.setValorUnitario(det.precio)
 				c.setImporte(det.importeNeto)
+			}
+
+			def renta=Renta.findByVentaDet(det)
+			if(renta){
+				 CuentaPredial cp=c.addNewCuentaPredial()
+				 cp.setNumero(renta.arrendamiento.inmueble.cuentaPredial)
 			}
 			
 		}
