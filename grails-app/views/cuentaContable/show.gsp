@@ -29,7 +29,7 @@
 				    
 				    
 				    <%-- Acciones de administrador --%>
-				    <sec:ifAllGranted roles="ADMIN">
+				    <sec:ifAllGranted roles="CONTABILIDAD">
 				    	<g:link action="delete" class="btn btn-danger " id="${cuentaContableInstance.id}" 
 				    		onclick="return confirm('Eliminar el cuenta: ${cuentaContableInstance.clave}?');">
 				    	    <i class="fa fa-trash"></i> Eliminar
