@@ -32,8 +32,11 @@ class ArrendamientoService {
     }
 
     def generarRentas(Arrendamiento arrendamiento){
+
         if(!arrendamiento.rentas){
+
             def rentas=arrendamiento.generarRentas()
+            log.info 'Rentas a generar: '+rentas.size()
             rentas.each{ renta ->
                 def found=arrendamiento.rentas.find{it.folio==renta.folio}
                 if(!found){
@@ -59,11 +62,13 @@ class ArrendamientoService {
             fecha:renta.fechaDeCobro,
             tipo:'ARRENDAMIENTO',
             empresa:renta.arrendamiento.empresa,
-            comentario:"Renta de ${renta.arrendamiento.inmueble.descripcion} (${renta.periodo})"
+            comentario:"Correspondiente al periodo: (${renta.periodo})",
+            formaDePago:'TRANSFERENCIA'
+
         )
         def arrendamiento=renta.arrendamiento
         def direccion=arrendamiento.inmueble.direccion.toLabel()
-        def desc="Renta ${arrendamiento.tipo.toString().lowercase()} del inmueble ubicado en: ${direccion}"
+        def desc="Renta ${arrendamiento.tipo.toString().toLowerCase()} del inmueble ubicado en: ${direccion}"
         VentaDet det=new VentaDet(
             producto:arr.producto,
             cantidad:1,

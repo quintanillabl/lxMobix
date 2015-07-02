@@ -31,6 +31,7 @@ import com.luxsoft.lx.ventas.*
 import com.luxsoft.lx.core.Folio
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.utils.*
+import com.luxsoft.mobix.core.Renta
 
 @Transactional
 class CfdiService {
@@ -62,7 +63,7 @@ class CfdiService {
 		comprobante.setVersion("3.2")
 		comprobante.setFecha(CfdiUtils.toXmlDate(fecha).getCalendarValue())
 		comprobante.setFormaDePago("PAGO EN UNA SOLA EXHIBICION")
-		comprobante.setMetodoDePago('NO APLICA')
+		comprobante.setMetodoDePago(venta.formaDePago)
 		comprobante.setMoneda(venta.moneda.getCurrencyCode())
 		comprobante.setTipoCambio("1.0")
 		
@@ -122,8 +123,8 @@ class CfdiService {
 			c.setCantidad(det.cantidad)
 			c.setUnidad(det.producto.unidad)
 			c.setNoIdentificacion(det.producto.clave)
-			String desc = det.producto.descripcion+"  "+det.comentario
-			desc = StringUtils.abbreviate(desc, 250)
+			String desc =det.comentario+' '+ venta.comentario
+			//desc = StringUtils.abbreviate(desc, 250)
 			c.setDescripcion(desc)
 			
 			if(rfc=="XEXX010101000" || rfc=="XAXX010101000"){

@@ -8,7 +8,7 @@ import grails.converters.JSON
 import org.springframework.security.access.annotation.Secured
 
 
-@Secured(["hasAnyRole('ADMINISTRACION','CONTABILIDAD','ADMIN')"])
+@Secured(["hasAnyRole('ADMINISTRACION','CONTABILIDAD','ADMIN','VENTAS')"])
 @Transactional(readOnly = true)
 class ProductoController {
 

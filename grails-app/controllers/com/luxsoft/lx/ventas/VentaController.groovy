@@ -21,7 +21,8 @@ class VentaController {
         params.max = Math.min(max ?: 20, 100)
         params.sort=params.sort?:'dateCreated'
         params.order='desc'
-        respond Venta.list(params), model:[ventaInstanceCount: Venta.count()]
+        
+        respond Venta.findAllByEmpresa(session.empresa,params), model:[ventaInstanceCount: Venta.countByEmpresa(session.empresa)]
     }
 
     def show(Venta ventaInstance) {

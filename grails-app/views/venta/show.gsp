@@ -179,10 +179,9 @@
 											${fieldValue(bean:row,field:"producto.descripcion")}
 										</g:link>
 									</td>
-									<td>${fieldValue(bean:row,field:"producto.unidad")}</td>
 									<td>${fieldValue(bean:row,field:"comentario")}</td>
-									
 									<td>${formatNumber(number:row.cantidad,format:'##.##')}</td>
+									<td>${fieldValue(bean:row,field:"producto.unidad")}</td>
 									<td>${g.formatNumber(number:row.precio,type:'currency')}</td>
 									<td>${g.formatNumber(number:row.impuesto,type:'currency')}</td>
 									<td>${g.formatNumber(number:row.total,type:'currency')}</td>

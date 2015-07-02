@@ -8,7 +8,7 @@ import org.springframework.security.access.annotation.Secured
 import grails.validation.Validateable
 import com.luxsoft.lx.core.*
 
-@Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
+@Secured(["hasAnyRole('CONTABILIDAD','ADMIN','VENTAS')"])
 @Transactional(readOnly = true)
 class InmuebleController {
 
