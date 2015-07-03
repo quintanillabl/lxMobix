@@ -18,7 +18,9 @@ class ArrendamientoController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Arrendamiento.list(params), model:[arrendamientoInstanceCount: Arrendamiento.count()]
+        params.sort=params.sort?:'lastUpdated'
+        params.order='desc'
+        respond Arrendamiento.findAllByEmpresa(session.empresa,params), model:[arrendamientoInstanceCount: Arrendamiento.countByEmpresa(session.empresa)]
     }
 
     def show(Arrendamiento arrendamientoInstance) {
@@ -69,14 +71,8 @@ class ArrendamientoController {
         }
 
         arrendamientoInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'Arrendamiento.label', default: 'Arrendamiento'), arrendamientoInstance.id])
-                redirect arrendamientoInstance
-            }
-            '*'{ respond arrendamientoInstance, [status: OK] }
-        }
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'Arrendamiento.label', default: 'Arrendamiento'), arrendamientoInstance.id])
+        redirect action:'show',id:arrendamientoInstance.id
     }
 
     @Transactional
@@ -86,10 +82,21 @@ class ArrendamientoController {
             notFound()
             return
         }
-
-        arrendamientoInstance.delete flush:true
-        flash.message = message(code: 'default.deleted.message', args: [message(code: 'Arrendamiento.label', default: 'Arrendamiento'), arrendamientoInstance.id])
-        redirect action:"index"
+        //arrendamientoInstance.delete flush:true
+        try {
+            arrendamientoService.delete(arrendamientoInstance)
+            flash.message = message(code: 'default.deleted.message', args: [message(code: 'Arrendamiento.label', default: 'Arrendamiento'), arrendamientoInstance.id])
+            redirect action:"index"
+            return
+        }
+        catch(ArrendamientoException e) {
+            flash.message=e.message
+            //render view:'index'//,model:[arrendamientoInstance:Arrendamiento.get(arrendamientoInstance.id)]
+            redirect action:'show',id:arrendamientoInstance.id
+            return
+            //redirect action:'index'
+        }
+        
     }
 
     protected void notFound() {

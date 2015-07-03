@@ -106,7 +106,7 @@ class EmpresaController {
         }
     }
 
-
+    @Secured(["hasAnyRole('USUARIO')"])
     def cambiarEmpresa(Empresa empresa){
         //def empresa=Empresa.get(params.id)
         //println 'Cambiando a empres: '+empresa

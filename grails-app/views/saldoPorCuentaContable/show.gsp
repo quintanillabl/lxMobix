@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Cuenta ${cuentaContableInstance.id}</title>
+</head>
+<body>
+
+	<div class="container">
+		
+		
+
+		<div class="row page-header">
+			<div class="col-md-8 ">
+				<div class="btn-group">
+					<g:if test="${cuentaContableInstance.padre}">
+						<g:link action="show" class="btn btn-default " id="${cuentaContableInstance.padre.id}">
+						    <i class="fa fa-step-backward"></i> ${cuentaContableInstance.padre}
+						</g:link>
+					</g:if>
+					<g:else>
+						<g:link action="index" class="btn btn-default ">
+						    <i class="fa fa-step-backward"></i> Saldos
+						</g:link>
+						<g:link action="index" class="btn btn-default ">
+						    <i class="fa fa-plus"></i> Nueva
+						</g:link>
+					</g:else>
+				    <g:link action="actualizar" class="btn btn-default">
+						<i class="fa fa-cog"></i> Actualizar 
+					</g:link>
+				</div>
+				
+				
+			</div>
+		</div> 
+
+		<div class="row ">
+		    
+		    <div class="col-md-6  ">
+		    	<fieldset disabled>
+				<g:form class="form-horizontal"  >	
+					<div class="panel panel-primary">
+						<div class="panel-heading">Saldo de Cuenta ${cuentaContableInstance} 
+							<g:if test="${cuentaContableInstance.padre}">
+								<small>(${cuentaContableInstance.padre})</small>
+							</g:if>
+							<g:if test="${flash.message}">
+								<small><span class="label label-warning ">${flash.message}</span></small>
+							</g:if> 
+						</div>
+					  <div class="panel-body">
+						<f:with bean="${saldo}">
+							<f:display property="saldoInicial" widget-class="form-control"
+								cols="col-sm-4" colsLabel="col-sm-4" 
+								widget="money"/>
+							<f:display property="debe" widget-class="form-control"
+								cols="col-sm-4" colsLabel="col-sm-4" 
+								widget="money"/>
+							<f:display property="haber" widget-class="form-control"
+								cols="col-sm-4" colsLabel="col-sm-4" 
+								widget="money"/>
+							<f:display property="saldoFinal" widget-class="form-control"
+								cols="col-sm-4" colsLabel="col-sm-4" 
+								widget="money"/>
+						</f:with>
+					</div>
+
+				</g:form>
+				</fieldset>
+		    </div>
+		    
+		    <div class="col-md-6">
+		    	<g:if test="${!cuentaContableInstance.detalle}">
+		    		<div class="panel panel-primary">
+		    			<div class="panel-heading">Sub Cuentas</div>
+		    			<table id="grid" class="table table-striped table-bordered table-condensed">
+		    				<thead>
+		    					<tr>
+		    						<th>Clave</th>
+		    						<th>S.Inicial</th>
+		    						<th>Debe</th>
+		    						<th>Haber</th>
+		    						<th>S.Final</th>
+		    					</tr>
+		    				</thead>
+		    				<tbody>
+		    					<g:each in="${saldos?.sort{it.clave} }" var="row">
+		    						<tr id="${row.id}">
+		    							<td >
+		    								<g:link  action="show" id="${row.id}">
+		    									${fieldValue(bean:row,field:"cuenta")}
+		    								</g:link>
+		    							</td>
+		    							<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
+		    							<td>${formatNumber(number:row.debe,type:'currency')}</td>
+		    							<td>${formatNumber(number:row.haber,type:'currency')}</td>
+		    							<td>${formatNumber(number:row.saldoFinal,type:'currency')}</td>
+		    							
+		    						</tr>
+		    					</g:each>
+		    				</tbody>
+		    			</table>
+		    		</div>
+		    	</g:if>
+		    	<g:else>
+		    		<g:render template="movimientosDeCuenta"/>
+		    	</g:else>
+		    </div>
+
+		</div><!-- end .row 2 -->
+
+		
+
+	</div>
+
+	
+</body>
+</html>

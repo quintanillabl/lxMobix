@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Arrendamiento</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
 	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>

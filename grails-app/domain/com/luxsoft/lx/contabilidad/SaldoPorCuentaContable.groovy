@@ -12,12 +12,12 @@ class SaldoPorCuentaContable {
 	CuentaContable cuenta
 	Integer ejercicio
 	Integer mes
-	Date fecha
+	Date fecha=new Date()
 	
-	BigDecimal debe
-	BigDecimal haber
-	BigDecimal saldoInicial
-	BigDecimal saldoFinal
+	BigDecimal debe=0
+	BigDecimal haber=0
+	BigDecimal saldoInicial=0
+	BigDecimal saldoFinal=0
 	Date cierre
 	
 	Date dateCreated

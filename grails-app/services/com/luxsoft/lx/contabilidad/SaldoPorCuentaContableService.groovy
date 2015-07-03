@@ -2,9 +2,36 @@ package com.luxsoft.lx.contabilidad
 
 import grails.transaction.Transactional
 import java.text.SimpleDateFormat
+import com.luxsoft.lx.core.Empresa
+
 
 @Transactional
 class SaldoPorCuentaContableService {
+
+
+	def buscarSaldosDeSubCuentas(SaldoPorCuentaContable saldo){
+		def saldos=[]
+		def empresa=saldo.empresa
+		def ejercicio=saldo.ejercicio
+		def mes=saldo.mes
+		saldo.cuenta.subCuentas.each{ cuenta->
+			def found=SaldoPorCuentaContable.findByEmpresaAndCuentaAndEjercicioAndMes(empresa,cuenta,ejercicio,mes)
+			if(found)
+				saldos.add(found)
+		}
+		return saldos
+	}
+
+	def generar(Empresa empresa,Integer ejercicio,Integer mes){
+		def cuentas=CuentaContable.findAllByEmpresa(empresa)
+		cuentas.each{ cuenta->
+			def found=SaldoPorCuentaContable.findByEmpresaAndCuentaAndEjercicioAndMes(empresa,cuenta,ejercicio,mes)
+			if(!found){
+				found=new SaldoPorCuentaContable(empresa:empresa,cuenta:cuenta,ejercicio:ejercicio,mes:mes)
+				found.save failOnError:true
+			}
+		}
+	}
 
     def actualizarSaldos(int year,int mes){
 		

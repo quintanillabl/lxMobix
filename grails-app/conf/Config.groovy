@@ -180,10 +180,12 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 ]
 
 grails.plugin.springsecurity.roleHierarchy = '''
-   OPERADOR > USUARIO > GASTOS 
+   OPERADOR > USUARIO 
    ADMINISTRACION > CONTABILIDAD > OPERADOR > USUARIO
    ADMIN > ADMINISTRACION
    ADMIN > TESORERIA
+   GASTOS > OPERADOR
+   VENTAS > OPERADOR
 '''
 
 environments{

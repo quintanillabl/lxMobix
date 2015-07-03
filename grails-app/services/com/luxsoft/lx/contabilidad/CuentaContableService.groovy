@@ -12,7 +12,7 @@ class CuentaContableService {
     }
 
     def agregarSubCuenta(CuentaContable cuenta,CuentaContable subCuenta){
-    	println 'Agregando subcuenta.....'
+    	
     	assert !cuenta.detalle,'Cuenta de detalle no puede recibir sub cuentas'
     	subCuenta.clave=cuenta.clave+'-'+subCuenta.clave
     	subCuenta.tipo=cuenta.tipo

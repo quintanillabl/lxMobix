@@ -84,6 +84,14 @@ class ArrendamientoService {
         return venta
 
     }
+
+    def delete(Arrendamiento arrendamiento){
+        def found=arrendamiento.rentas.find{it.ventaDet!=null}
+        if(found){
+            throw new ArrendamientoException(message:"Arrendamiento ${arrendamiento.id} con rentas facturadas no se puede eliminar",arrendamiento:arrendamiento)
+        }
+        arrendamiento.delete flush:true
+    }
 }
 
 class ArrendamientoException extends RuntimeException{

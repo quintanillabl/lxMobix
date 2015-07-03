@@ -31,7 +31,7 @@ navigation={
 		}
 		contabilidad(){
 			cuentasContables(controller:'cuentaContable',action:'index',titleText:'Cuentas')
-			saldos(controller:'saldoDeCuenta',action:'index')
+			saldos(controller:'saldoPorCuentaContable',action:'index')
 			polizas(controller:'poliza',action:'index')
 			balanza(controller:'balanza',action:'index')
 			reportes(controller:'contabilidad',action:'index')

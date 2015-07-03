@@ -74,7 +74,7 @@
 							<th>Tipo</th>
 							<th>Comentario</th>
 							<th>Total</th>
-							<th>Factura</th>
+							<th>Estatus</th>
 							<th>Modificado</th>
 
 						</tr>
@@ -89,12 +89,19 @@
 								</td>
 								<td>
 									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"cliente.nombre")}
+										<abbr title="${row.cliente.nombre}">
+										${org.apache.commons.lang.StringUtils.substring(row.cliente.nombre,0,40)}
+										</abbr>
 									</g:link>
 								</td>
 								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
-								<td>${fieldValue(bean:row,field:"tipo")}</td>
-								<td>${fieldValue(bean:row,field:"comentario")}</td>
+								<td>${row.tipo.toString()[0..4]}</td>
+								<td>
+									<abbr title="${row.comentario}">
+										${org.apache.commons.lang.StringUtils.substring(row.comentario,0,40)}
+									</abbr>
+									
+								</td>
 								<td>${g.formatNumber(number:row.total,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"status")}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
