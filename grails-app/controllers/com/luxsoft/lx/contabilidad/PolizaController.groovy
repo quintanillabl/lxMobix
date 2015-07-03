@@ -19,7 +19,12 @@ class PolizaController {
         params.max = Math.min(max ?: 10, 100)
         params.sort=params.sort?:'lastUpdated'
         params.order='desc'
-        respond Poliza.findAllByEmpresa(session.empresa,params), model:[polizaInstanceCount: Poliza.countByEmpresa(session.empresa)]
+        def empresa=session.empresa
+        def ejercicio=session.periodoContable.ejercicio
+        def mes=session.periodoContable.mes
+        def polizas=Poliza.findAllByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes,params)
+        def polizasCount=Poliza.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
+        respond polizas,model:[polizaInstanceCount: polizasCount]
     }
 
     def show(Poliza polizaInstance) {
@@ -89,9 +94,10 @@ class PolizaController {
         }
     }
 
-    def cambioPeriodoContable(PeriodoContable periodoContable){
+    def actualizarPeriodo(PeriodoContable periodoContable){
         def origin=request.getHeader('referer')
-        session.periodo=periodoContable
+        session.periodoContable=periodoContable
+        log.info 'Periodo actualizado: '+periodoContable+' Origen: '+origin+ '  Target:'+request.getHeader('referer') 
         redirect(uri: request.getHeader('referer') )
     }
 

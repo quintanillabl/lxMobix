@@ -49,7 +49,7 @@ class Poliza {
 
     static constraints = {
 		ejercicio inList:(2015..2018)
-		mes inList:(1..12)
+		mes inList:(1..13)
 		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','CIERRE_ANUAL'])
 		folio unique:['empresa','ejercicio','mes','tipo']
 		debe(nullable:false,scale:6)

@@ -84,12 +84,15 @@
 							<th>Concepto</th>
 							<th>Debe</th>
 							<th>Haber</th>
+							<th>Cuadre</th>
 							<th>Modificado</th>
+							<th>M</th>
+							<th>Cierre</th>
 						</tr>
 					</thead>
 					<tbody>
 						<g:each in="${polizaInstanceList}" var="row">
-							<tr id="${row.id}">
+							<tr id="${row.id}" class="${row.cuadre?'danger':''}">
 								<td >
 									<g:link  action="show" id="${row.id}">
 										${formatNumber(number:row.ejercicio,format:'####')}
@@ -106,7 +109,10 @@
 								<td>${fieldValue(bean:row,field:"concepto")}</td>
 								<td>${formatNumber(number:row.debe,type:'currency')}</td>
 								<td>${formatNumber(number:row.haber,type:'currency')}</td>
+								<td>${formatNumber(number:row.cuadre,type:'currency')}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+								<td><g:checkBox name="myCheckbox" value="${row.manual}" disabled="disabled"/></td>
+								<td><g:formatDate date="${row.cierre}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>
 						</g:each>
 					</tbody>

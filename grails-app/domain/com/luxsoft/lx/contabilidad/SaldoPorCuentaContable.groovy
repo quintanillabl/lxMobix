@@ -6,13 +6,13 @@ import groovy.transform.ToString
 
 @EqualsAndHashCode(includes='empresa,cuenta,ejercicio,mes')
 @ToString(excludes='dateCreated',includeNames=true,includePackage=false)
-class SaldoPorCuentaContable {
+class SaldoPorCuentaContable implements Comparable{
 	
 	Empresa empresa
 	CuentaContable cuenta
 	Integer ejercicio
 	Integer mes
-	Date fecha=new Date()
+	
 	
 	BigDecimal debe=0
 	BigDecimal haber=0
@@ -24,7 +24,7 @@ class SaldoPorCuentaContable {
 	Date lastUpdated
 
 	static mapping = {
-		fecha type:'date'
+		
 	}
 
     static constraints = {
@@ -38,4 +38,8 @@ class SaldoPorCuentaContable {
 		cierre nullable:true
     }
 	
+	int compareTo(other){
+		this.cuenta <=>other.cuenta
+	}
+
 }

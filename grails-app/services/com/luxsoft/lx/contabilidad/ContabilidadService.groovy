@@ -22,4 +22,9 @@ class ContabilidadService {
     def ventaFacturada(Venta venta){
     	log.info("Venta ${venta.folio} facturada UUID:${venta.cfdi.uuid}")
     }
+
+    @Listener(topic="modificacionDePoliza")
+    def modificacionDePoliza(Poliza poliza){
+        log.info("Poliza actualizada "+poliza)
+    }
 }

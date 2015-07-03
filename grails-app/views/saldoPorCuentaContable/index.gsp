@@ -43,8 +43,8 @@
 		        <g:link action="print" class="btn btn-default " >
 		            <i class="fa fa-print"></i> Imprimir
 		        </g:link> 
-		        <a href="#cambioDePeriodoDialog" data-toogle="modal" class="btn btn-default " >
-		        	<i class="fa fa-calendar"></i>  Periodo:${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
+		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
+		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
 		        </a>
 		    </div>
 		    
@@ -79,9 +79,9 @@
 									</g:link>
 								</td>
 								<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
-								<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
-								<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
-								<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
+								<td>${formatNumber(number:row.debe,type:'currency')}</td>
+								<td>${formatNumber(number:row.haber,type:'currency')}</td>
+								<td>${formatNumber(number:row.saldoFinal,type:'currency')}</td>
 								
 								
 							</tr>
@@ -93,7 +93,7 @@
 				</div>
 			</div>
 		</div> <!-- end .row 2 -->
-
+		<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
 	</div>
 
 

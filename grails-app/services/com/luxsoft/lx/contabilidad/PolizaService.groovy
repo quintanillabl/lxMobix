@@ -22,6 +22,7 @@ class PolizaService {
 
     def update(Poliza poliza){
         poliza.modificadoPor=currentUser()
+        event('modificacionDePoliza',poliza)
         poliza.save flush:true
         return poliza
     }
@@ -42,6 +43,13 @@ class PolizaService {
         poliza=poliza.save failOnError:true
         return poliza
     }
+
+    def delete(Poliza poliza){
+        log.debug 'Eliminando poliza: '+poliza.id
+        poliza.delete flush:true
+        event('bajaDePoliza',poliza)
+    }
+
 
 
     private Long nextFolio(Poliza poliza){

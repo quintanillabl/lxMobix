@@ -27,7 +27,7 @@
 						    <i class="fa fa-plus"></i> Nueva
 						</g:link>
 					</g:else>
-				    <g:link action="actualizar" class="btn btn-default">
+				    <g:link action="actualizarSaldo" class="btn btn-default" id="${saldo.id}">
 						<i class="fa fa-cog"></i> Actualizar 
 					</g:link>
 				</div>
@@ -46,9 +46,6 @@
 							<g:if test="${cuentaContableInstance.padre}">
 								<small>(${cuentaContableInstance.padre})</small>
 							</g:if>
-							<g:if test="${flash.message}">
-								<small><span class="label label-warning ">${flash.message}</span></small>
-							</g:if> 
 						</div>
 					  <div class="panel-body">
 						<f:with bean="${saldo}">
@@ -86,7 +83,7 @@
 		    					</tr>
 		    				</thead>
 		    				<tbody>
-		    					<g:each in="${saldos?.sort{it.clave} }" var="row">
+		    					<g:each in="${saldos?.sort() }" var="row">
 		    						<tr id="${row.id}">
 		    							<td >
 		    								<g:link  action="show" id="${row.id}">
@@ -105,13 +102,43 @@
 		    		</div>
 		    	</g:if>
 		    	<g:else>
-		    		<g:render template="movimientosDeCuenta"/>
+		    		<div class="panel panel-primary">
+		    			<div class="panel-heading">Movimientos</div>
+		    			<table id="grid" class="table table-striped table-bordered table-condensed">
+		    				<thead>
+		    					<tr>
+		    						<th>Fecha</th>
+		    						<th>Concepto</th>
+		    						<th>Debe</th>
+		    						<th>Haber</th>
+		    					</tr>
+		    				</thead>
+		    				<tbody>
+		    					<g:each in="${movimientos?.sort() }" var="row">
+		    						<tr id="${row.id}">
+		    							<td >${formatDate(date:row.poliza.fecha,format:'dd/MM/yyyy')}</td>
+		    							<td>${fieldValue(bean:row,field:"concepto")}</td>
+		    							<td>${formatNumber(number:row.debe,type:'currency')}</td>
+		    							<td>${formatNumber(number:row.haber,type:'currency')}</td>
+		    						</tr>
+		    					</g:each>
+		    				</tbody>
+		    			</table>
+		    		</div>
 		    	</g:else>
 		    </div>
 
 		</div><!-- end .row 2 -->
 
-		
+		<g:if test="${flash.message}">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="aler alert-warning">
+						${flash.message}
+					</div>
+				</div>
+			</div>
+		</g:if> 
 
 	</div>
 

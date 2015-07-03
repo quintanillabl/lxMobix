@@ -5,7 +5,7 @@ import groovy.transform.EqualsAndHashCode
 import com.luxsoft.lx.core.Empresa
 
 @EqualsAndHashCode(includes='id,clave,descripcion')
-class CuentaContable {
+class CuentaContable implements Comparable{
 
 	Empresa empresa
 
@@ -31,7 +31,7 @@ class CuentaContable {
 		descripcion(blank:false,maxSize:300)
 		detalle(nullable:false)
 		tipo(nullable:false,inList:['ACTIVO','PASIVO','CAPITAL','ORDEN'])
-		subTipo(nullable:true)
+		subTipo(nullable:true,inList:['CIRCULANTE','FIJO','DIFERIDO','CORTO PLAZO','CAPITAL','ORDEN'])
 		naturaleza(inList:['DEUDORA','ACREEDORA','MIXTA'])
 		cuentaSat nullable:true
 		nivel inList:[1,2,3,4]
@@ -55,7 +55,9 @@ class CuentaContable {
 		return CuentaContable.findByClave(clave)
 	}
 
-	
+	int compareTo(other){
+		this.clave <=>other.clave
+	}
 
 }
 

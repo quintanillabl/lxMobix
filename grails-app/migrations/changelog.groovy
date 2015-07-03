@@ -5,4 +5,8 @@ databaseChangeLog = {
 	}
 
 	//include file: 'changelog_1.groovy'
+
+	
+
+	include file: 'changelog_2.groovy'
 }

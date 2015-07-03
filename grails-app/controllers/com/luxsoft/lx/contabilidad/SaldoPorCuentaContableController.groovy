@@ -19,12 +19,26 @@ class SaldoPorCuentaContableController {
         params.max = Math.min(max ?: 1000, 1200)
         params.sort=params.sort?:'cuenta.clave'
         params.order='asc'
-        respond SaldoPorCuentaContable.findAllByEmpresa(session.empresa,params), model:[saldoPorCuentaContableInstanceCount: SaldoPorCuentaContable.countByEmpresa(session.empresa)]
+
+        def empresa=session.empresa
+        def ejercicio=session.periodoContable.ejercicio
+        def mes=session.periodoContable.mes
+        def saldos=SaldoPorCuentaContable.findAllByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes,params)
+        def saldosCount=SaldoPorCuentaContable.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
+        respond saldos, model:[saldoPorCuentaContableInstanceCount: saldosCount]
     }
 
     def show(SaldoPorCuentaContable saldoPorCuentaContableInstance) {
         def saldos=saldoPorCuentaContableService.buscarSaldosDeSubCuentas(saldoPorCuentaContableInstance)
-        [saldo:saldoPorCuentaContableInstance,cuentaContableInstance:saldoPorCuentaContableInstance.cuenta,saldos:saldos]
+        def movimientos=[]
+        if(saldoPorCuentaContableInstance.cuenta.detalle){
+            movimientos=saldoPorCuentaContableService.buscarMovimientos(saldoPorCuentaContableInstance)
+        }
+        [saldo:saldoPorCuentaContableInstance,
+        cuentaContableInstance:saldoPorCuentaContableInstance.cuenta,
+        saldos:saldos,
+        movimientos:movimientos
+        ]
     }
 
     def create() {
@@ -117,5 +131,20 @@ class SaldoPorCuentaContableController {
         flash.message="Cuentas actualizadas"
         redirect action:'index'
 
+    }
+
+    @Transactional
+    def actualizarSaldo(SaldoPorCuentaContable saldo){
+        saldoPorCuentaContableService.actualizarSaldo(saldo)
+        flash.message="Saldo  ${saldo} actualizado "
+        redirect action:'show',id:saldo.id
+    }
+
+    def actualizarPeriodo(PeriodoContable periodoContable){
+        log.info 'Actualizando periodo contable al: '+periodoContable
+        //def origin=request.getHeader('referer')
+        session.periodoContable=periodoContable
+        //redirect(uri: request.getHeader('referer') )
+        redirect action:'index'
     }
 }
