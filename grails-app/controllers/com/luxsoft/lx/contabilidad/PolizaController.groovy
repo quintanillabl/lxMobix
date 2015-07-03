@@ -141,6 +141,7 @@ class PolizaCommand{
         def poliza=new Poliza()
         poliza.properties=properties
         poliza.manual=true
+        poliza.concepto=this.concepto.toUpperCase()
         return poliza
     }
     

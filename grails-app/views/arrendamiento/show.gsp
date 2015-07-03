@@ -20,12 +20,10 @@
 				        <i class="fa fa-plus"></i> Nuevo
 				    </g:link>
 				    <%-- Acciones de administrador --%>
-				    <sec:ifAllGranted roles="ADMIN">
+				    <sec:ifAllGranted roles="VENTAS">
 				    	<g:link action="delete" class="btn btn-danger " id="${arrendamientoInstance.id}" onclick="return confirm('Eliminar el arrendamiento?');">
 				    	    <i class="fa fa-trash"></i> Eliminar
 				    	</g:link>
-				    </sec:ifAllGranted>
-				    <sec:ifAllGranted roles="CONTABILIDAD">
 				    	<g:link action="edit" class="btn btn-default " id="${arrendamientoInstance.id}">
 				    	    <i class="fa fa-pencil"></i> Editar
 				    	</g:link>

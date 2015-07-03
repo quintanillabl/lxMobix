@@ -22,7 +22,7 @@
 				        <i class="fa fa-plus"></i> Nuevo
 				    </g:link>
 				    <%-- Acciones de administrador --%>
-				    <sec:ifAllGranted roles="ADMINISTRACION">
+				    <sec:ifAllGranted roles="VENTAS">
 				    	<g:link action="delete" class="btn btn-danger " id="${lineaInstance.id}"
 				    		onclick="return confirm('Eliminar el línea: '+${lineaInstance.id});">
 				    	    <i class="fa fa-trash"></i> Eliminar

@@ -42,19 +42,12 @@
 		        <g:link action="index" class="btn btn-default ">
 		            <span class="glyphicon glyphicon-repeat"></span> Refrescar
 		        </g:link>
+		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
+		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
+		        </a>
+		        <g:link action="create" class="btn btn-default "><i class="fa fa-plus"></i> Nuevo</g:link>
 		    </div>
-		    <div class="btn-group">
-		        <button type="button" name="operaciones"
-		                class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-		                role="menu">
-		                Operaciones <span class="caret"></span>
-		        </button>
-		        <ul class="dropdown-menu">
-		            <li>
-		                <g:link action="create" ><i class="fa fa-plus"></i> Nuevo</g:link>
-		            </li>
-		        </ul>
-		    </div>
+		   
 		    <div class="btn-group">
 		        <button type="button" name="reportes"
 		                class="btn btn-default dropdown-toggle" data-toggle="dropdown"
@@ -122,7 +115,7 @@
 				</div>
 			</div>
 		</div> <!-- end .row 2 -->
-		
+		<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
 
 	</div>
 

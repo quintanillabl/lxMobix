@@ -16,14 +16,14 @@ class PolizaService {
                 folio=nextFolio(poliza)
 
         }
-    	poliza.save failOnError:true
+    	poliza.save flush:true,failOnError:true
     	return poliza
     }
 
     def update(Poliza poliza){
         poliza.modificadoPor=currentUser()
+        poliza.save flush:true,failOnError:true
         event('modificacionDePoliza',poliza)
-        poliza.save flush:true
         return poliza
     }
 
@@ -31,8 +31,8 @@ class PolizaService {
         poliza.addToPartidas(det)
         poliza.modificadoPor=currentUser()
         poliza.actualizar()
-        //actualizarImportes poliza
-        poliza.save failOnError:true
+        poliza.save flush:true,failOnError:true
+        event('modificacionDePoliza',poliza)
     }
 
     def eleiminarPartida(PolizaDet det){
@@ -40,7 +40,8 @@ class PolizaService {
         poliza.modificadoPor=currentUser()
         poliza.removeFromPartidas(det)
         poliza.actualizar()
-        poliza=poliza.save failOnError:true
+        poliza.save flush:true,failOnError:true
+        event('modificacionDePoliza',poliza)
         return poliza
     }
 

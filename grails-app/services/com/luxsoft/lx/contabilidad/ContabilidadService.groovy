@@ -8,6 +8,8 @@ import com.luxsoft.lx.ventas.Venta
 @Transactional
 class ContabilidadService {
 
+    def saldoPorCuentaContableService
+
 	@Listener(topic="altaDeVenta")
     def altaDeVenta(Venta venta) {
     	log.info('Venta registrada: '+venta.id)
@@ -25,6 +27,19 @@ class ContabilidadService {
 
     @Listener(topic="modificacionDePoliza")
     def modificacionDePoliza(Poliza poliza){
-        log.info("Poliza actualizada "+poliza)
+        if(poliza.cuadre==0.0){
+            log.info("Poliza actualizada ${poliza.id} OK Actualizando saldos de ${poliza.partidas.size()}")
+            Poliza.withNewSession{
+                def pol=Poliza.get(poliza.id)
+                pol.partidas.each{det ->
+                    log.info("Actualizando cuenta: "+det.cuenta)
+                }
+            }
+            
+        }else{
+            log.info("Poliza con cuadre ${poliza.id} cuadre: ${poliza.cuadre} NO SE PUEDE ACTUALIZAR SALDOS")
+
+        }
+        
     }
 }

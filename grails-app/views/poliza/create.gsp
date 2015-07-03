@@ -49,7 +49,7 @@
 								<f:field property="mes" widget-class="form-control"/>
 								<f:field property="fecha"/>
 								<f:field property="tipo" widget-class="form-control"/>
-								<f:field property="concepto" widget-class="form-control"/>
+								<f:field property="concepto" widget-class="form-control uppercase-field"/>
 								<f:field property="comentario" widget-class="form-control"/>
 							</f:with>
 					  	</div>
