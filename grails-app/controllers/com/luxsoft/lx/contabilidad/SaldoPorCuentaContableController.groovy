@@ -16,16 +16,22 @@ class SaldoPorCuentaContableController {
     def saldoPorCuentaContableService
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 1000, 1200)
+        
         params.sort=params.sort?:'cuenta.clave'
         params.order='asc'
 
         def empresa=session.empresa
         def ejercicio=session.periodoContable.ejercicio
         def mes=session.periodoContable.mes
-        def saldos=SaldoPorCuentaContable.findAllByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes,params)
-        def saldosCount=SaldoPorCuentaContable.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
-        respond saldos, model:[saldoPorCuentaContableInstanceCount: saldosCount]
+
+        def saldos=SaldoPorCuentaContable
+            .findAll("from SaldoPorCuentaContable s where s.empresa=? and s.ejercicio=? and s.mes=? and s.cuenta.padre=null ",
+                [empresa,ejercicio,mes])
+        //def saldos=SaldoPorCuentaContable.findAllByEmpresaAndEjercicioAndMesAndPadere(empresa,ejercicio,mes,params)
+        //def saldosCount=SaldoPorCuentaContable.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
+        
+        //respond saldos, model:[saldoPorCuentaContableInstanceCount: saldosCount]
+        [saldoPorCuentaContableInstanceList:saldos]
     }
 
     def show(SaldoPorCuentaContable saldoPorCuentaContableInstance) {

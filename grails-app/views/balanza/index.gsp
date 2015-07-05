@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Saldos de cuentas</title>
+	<title>Balanza de comprobacion</title>
 	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
 	<asset:javascript src="datatables/jquery.dataTables.js"/> 
 </head>
@@ -16,8 +16,7 @@
 			<div class="col-md-12">
 				<div class="alert alert-info">
 					<h4>
-						<p class="text-center"> Saldo por cuenta  (<small>${session.empresa.nombre}</small>)</p>
-						
+						<p class="text-center"> Balanza de comprobación  (<small>${session.empresa.nombre}</small>)</p>
 							
 					</h4>
 					<g:if test="${flash.message}">
@@ -66,7 +65,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<g:each in="${saldoPorCuentaContableInstanceList}" var="row">
+						<g:each in="${partidas.sort()}" var="row">
 							<tr id="${row.id}">
 								<td >
 									<g:link  action="show" id="${row.id}">
