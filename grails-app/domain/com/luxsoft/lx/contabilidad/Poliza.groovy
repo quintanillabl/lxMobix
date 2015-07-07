@@ -7,6 +7,7 @@ import groovy.transform.ToString
 
 import com.luxsoft.lx.utils.Mes
 import com.luxsoft.lx.core.Empresa
+import com.luxsoft.lx.utils.MonedaUtils
 
 @EqualsAndHashCode(includes='empresa,ejercicio,mes,tipo,folio')
 @ToString(includes='empresa,ejercicio,mes,tipo,folio,debe,haber',includeNames=true,includePackage=false)
@@ -68,7 +69,9 @@ class Poliza {
 	
 	static transients = {'cuadre'}
 	
-	def getCuadre(){return debe-haber}
+	def getCuadre(){
+		return MonedaUtils.round(debe-haber)
+	}
 	
 	
 	

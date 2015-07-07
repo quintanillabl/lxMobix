@@ -41,17 +41,33 @@ class SaldoPorCuentaContableService {
 		}
 	}
 
+	def actualizarSaldos(Poliza poliza){
+		def periodo=new PeriodoContable(ejercicio:poliza.ejercicio,mes:poliza.mes)
+		poliza.partidas.each{
+			actualizarSaldo(it.cuenta,periodo)
+		}
+	}
+
+
+	def actualizarSaldo(CuentaContable cuenta,Integer ejercicio,Integer mes){
+		def periodo=new PeriodoContable(ejercicio:ejercicio,mes:mes)
+		actualizarSaldo(cuenta,periodo)
+	}
+
 	def actualizarSaldo(SaldoPorCuentaContable saldo){
 		def periodo=new PeriodoContable(ejercicio:saldo.ejercicio,mes:saldo.mes)
 		actualizarSaldo(saldo.cuenta,periodo)
 	}
 
 	def actualizarSaldo(CuentaContable cuenta,PeriodoContable periodo){
+		log.debug "Actualizando saldo de cuenta: ${cuenta} periodo ${periodo.mes} / ${periodo.ejercicio}"		
 		def cuentaDeMayor=buscarCuentaDeMayor(cuenta)
 		cuentaDeMayor.subCuentas.each{ c->
 			actualizarMovimientos(c,periodo)
 		}
 		mayorizar(cuentaDeMayor,periodo)
+		cuentaDeMayor.save flush:true
+		log.info "Saldo de cuenta: ${cuenta} periodo ${periodo.mes} / ${periodo.ejercicio} ACTUALIZADO"		
 
 	}
 
@@ -62,7 +78,7 @@ class SaldoPorCuentaContableService {
 			if(periodo.mes==1){
 				def cierreAnual=SaldoPorCuentaContable.findByCuentaAndEjercicioAndMes(cuenta,periodo.ejercicio-1,13)
 
-				log.info 'SaldoInicial obtenido: '+cierreAnual
+				log.debug 'SaldoInicial obtenido: '+cierreAnual
 				saldoInicial=cierreAnual.saldoFinal
 			}else{
 				saldoInicial=SaldoPorCuentaContable.findByCuentaAndEjercicioAndMes(cuenta,periodo.ejercicio,periodo.mes-1)?.saldoFinal?:0.0
@@ -74,12 +90,12 @@ class SaldoPorCuentaContableService {
 			def debe=row.get(0)[0]?:0.0
 			def haber=row.get(0)[1]?:0.0
 			def saldo=SaldoPorCuentaContable.findOrCreateWhere(empresa:cuenta.empresa,cuenta:cuenta,ejercicio:periodo.ejercicio,mes:periodo.mes)
-			log.info "Cuenta $cuenta.clave Saldo inicial:$saldoInicial Debe:$debe Haber:$haber"
 			saldo.saldoInicial=saldoInicial
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
-			def res=saldo.save(failOnError:true)
+			def res=saldo.save(flush:true)
+			log.debug "Cuenta $cuenta.clave Saldo inicial:$saldoInicial Debe:$debe Haber:$haber"
 			return res
 		}else{
 			cuenta.subCuentas.each{c->
@@ -91,11 +107,11 @@ class SaldoPorCuentaContableService {
 	def mayorizar(CuentaContable cuenta,PeriodoContable periodo){
 
 		if(!cuenta.detalle){
-			log.info 'Mayorizando en cuenta:'+cuenta
+			//log.debug 'Mayorizando en cuenta:'+cuenta
 			def row=SaldoPorCuentaContable
 					.executeQuery("select sum(d.saldoInicial),sum(d.debe),sum(d.haber) from SaldoPorCuentaContable d where d.cuenta.padre=? and d.ejercicio=? and d.mes=?"
 					,[cuenta,periodo.ejercicio,periodo.mes])
-			log.info 'Saldos relacionados: '+row
+			//log.debug 'Saldos relacionados: '+row
 			def saldo=SaldoPorCuentaContable.findOrCreateWhere(empresa:cuenta.empresa,cuenta:cuenta,ejercicio:periodo.ejercicio,mes:periodo.mes)
 			
 			def saldoInicial=row.get(0)[0]?:0.0
@@ -106,7 +122,7 @@ class SaldoPorCuentaContableService {
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
 			def res=saldo.save(failOnError:true)
-			
+			log.debug "Cuenta $cuenta.clave Saldo inicial:$saldoInicial Debe:$debe Haber:$haber"
 			cuenta.subCuentas.each{ subCuenta ->
 				
 				mayorizar(subCuenta,periodo)

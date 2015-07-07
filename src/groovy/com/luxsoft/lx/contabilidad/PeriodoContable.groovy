@@ -2,7 +2,7 @@ package com.luxsoft.lx.contabilidad
 
 import grails.validation.Validateable
 import groovy.transform.ToString
-
+import com.luxsoft.utils.Periodo
 
 
 @ToString(includes='ejercicio,mes',includeNames=true,includePackage=false)
@@ -19,6 +19,10 @@ class PeriodoContable implements Serializable{
 
     String toString(){
     	return "$ejercicio - $mes"
+    }
+
+    Periodo toPeriodo(){
+        return Periodo.getPeriodoEnUnMes(ejercicio,mes-1)
     }
 
 

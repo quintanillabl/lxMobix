@@ -6,6 +6,9 @@ import grails.transaction.Transactional
 class PolizaService {
 
     def springSecurityService
+    
+
+    def saldoPorCuentaContableService
 
     def save(Poliza poliza) {
         poliza.with{
@@ -21,8 +24,14 @@ class PolizaService {
     }
 
     def update(Poliza poliza){
+       // assert saldoPorCuentaContableService!=null,' saldoPorcuentaContableService service not injected: '
         poliza.modificadoPor=currentUser()
         poliza.save flush:true,failOnError:true
+        saldoPorCuentaContableService.actualizarSaldos(poliza)
+        // poliza.partidas.each{
+        //     saldoPorCuentaContableService.actualizarSaldo(it.cuenta,poliza.ejercicio,poliza.mes)
+        // }
+        log.debug('Poliza actualizada: '+poliza.id)
         event('modificacionDePoliza',poliza)
         return poliza
     }

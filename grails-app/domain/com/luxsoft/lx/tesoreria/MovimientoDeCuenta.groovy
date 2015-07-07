@@ -20,6 +20,8 @@ class MovimientoDeCuenta {
 	Date fecha
 	
 	BigDecimal importe
+
+	String concepto
 	
 	String referencia
 
@@ -30,11 +32,13 @@ class MovimientoDeCuenta {
 	Date lastUpdated
 	String creadoPor
 	String modificadoPor
+	
 
     static constraints = {
 		importe(scale:4)
 		referencia(nullable:true)
 		comentario(nullable:true)
+		concepto nullable:true,maxSize:50
     }
 	
 	static mapping ={

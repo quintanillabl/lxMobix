@@ -41,6 +41,7 @@ navigation={
 			tipoDeCambio(controller:'tipoDeCambio',actio:'index')
 			bancos(controller:'banco',action:'index')
 			cuentas(controller:'cuentaBancaria',action:'index')
+			movimientos(controller:'movimientoDeCuenta',action:'index')
 			pagos(controller:'pago',action:'index')
 			cobros(controller:'cobro',action:'index')
 		}

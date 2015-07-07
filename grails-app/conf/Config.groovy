@@ -140,9 +140,12 @@ log4j.main = {
     environments{
         
       development{
-        info 'grails.app.controllers.com.luxsoft'
-        info 'grails.app.services.com.luxsoft'
-        info 'grails.app.jobs'
+        
+        info  'grails.app.controllers.com.luxsoft'
+        info  'grails.app.services.com.luxsoft'
+        info  'grails.app.jobs'
+        debug 'grails.app.services.com.luxsoft.lx.contabilidad'
+
       }
         
       produccion{
