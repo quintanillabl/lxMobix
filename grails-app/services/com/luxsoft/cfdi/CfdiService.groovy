@@ -237,7 +237,7 @@ class CfdiService {
 				, pfxData
 				, passwordPfx);
 		String msg=res.getText()
-		println 'Message: '+ new String(msg)
+		//println 'Message: '+ new String(msg)
 		//cancel.message=Base64.decode(msg)
 		String aka=res.getAck()
 		//println 'Aka:'+aka
@@ -247,11 +247,11 @@ class CfdiService {
 
 		def venta=Venta.findByCfdi(cfdi)
 		if(venta){
-			venta.comentario="VENTA CANCELADA"
-			venta.cancelada=true
-			venta.partidas.clear()
-			venta.actualizarImportes()
-			cancel.comentario="Venta Origen: "+venta.id
+			//venta.comentario="VENTA CANCELADA"
+			//venta.cancelada=true
+			//venta.partidas.clear()
+			//venta.actualizarImportes()
+			//cancel.comentario="Venta Origen: "+venta.id
 			venta?.cfdi=null
 			venta?.save()
 			venta.modificadoPor=currentUser()
