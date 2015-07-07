@@ -170,7 +170,7 @@ class CfdiController {
 			def res=[
 			'cantidad':cc.getCantidad()
 			 ,'NoIdentificacion':cc.getNoIdentificacion()
-			 ,'descripcion':cc.getDescripcion()+" "+
+			 ,'descripcion':cc.getDescripcion()
 			 ,'unidad':cc.getUnidad()
 			 ,'ValorUnitario':cc.getValorUnitario()
 			 ,'Importe':cc.getImporte()
