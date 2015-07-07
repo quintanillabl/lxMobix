@@ -23,7 +23,7 @@ class Cliente {
 
     static constraints = {
     	direccion nullable:true
-		nombre unique:true
+		nombre unique:['empresa']
 		emailCfdi nullable:true
 		rfc blank:false,minSize:12,maxSize:13
     }
