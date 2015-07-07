@@ -101,6 +101,9 @@ class CfdiController {
 			 ,'ValorUnitario':cc.getValorUnitario()
 			 ,'Importe':cc.getImporte()
 			 ]
+			 if(cc.cuentaPredial){
+				res.CUENTA_PREDIAL=cc.cuentaPredial.numero
+			}
 			return res
 		}
 		def repParams=CfdiPrintUtils.resolverParametros(cfdi)
@@ -167,7 +170,7 @@ class CfdiController {
 			def res=[
 			'cantidad':cc.getCantidad()
 			 ,'NoIdentificacion':cc.getNoIdentificacion()
-			 ,'descripcion':cc.getDescripcion()
+			 ,'descripcion':cc.getDescripcion()+" "+
 			 ,'unidad':cc.getUnidad()
 			 ,'ValorUnitario':cc.getValorUnitario()
 			 ,'Importe':cc.getImporte()
