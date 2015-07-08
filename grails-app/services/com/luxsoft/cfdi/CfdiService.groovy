@@ -66,6 +66,8 @@ class CfdiService {
 		comprobante.setMetodoDePago(venta.formaDePago)
 		comprobante.setMoneda(venta.moneda.getCurrencyCode())
 		comprobante.setTipoCambio("1.0")
+		if(venta.cuentaDePago)
+				comprobante.setNumCtaPago(venta.cuentaDePago)
 		
 		comprobante.setTipoDeComprobante(TipoDeComprobante.INGRESO)
 		comprobante.setLugarExpedicion(empresa.direccion.municipio)

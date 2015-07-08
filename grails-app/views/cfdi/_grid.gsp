@@ -8,6 +8,7 @@
 			<th>Receptor</th>
 			<th>UUID</th>			
 			<th>Total</th>
+			<th>Comentario</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -32,6 +33,7 @@
 					</abbr>
 				</td>
 				<td><g:formatNumber number="${row.total}" type="currency"/></td>
+				<td><g:if test="${row.cancelacion}">CANCELADO</g:if></td>
 			</tr>
 		</g:each>
 	</tbody>

@@ -33,8 +33,8 @@ class CfdiController {
 		params.max = Math.min(max ?: 50, 100)
 		params.sort=params.sort?:'dateCreated'
 		params.order='desc'
-		[cfdiInstanceList:Cfdi.findAllByEmisor(session.empresa.nombre,params), cfdiInstanceCount: Cfdi.countByEmisor(session.empresa.nombre)]
-		//[cfdiInstanceList:Cfdi.list(params), cfdiInstanceCount: Cfdi.count()]
+		//[cfdiInstanceList:Cfdi.findAllByEmisor(session.empresa.nombre,params), cfdiInstanceCount: Cfdi.countByEmisor(session.empresa.nombre)]
+		[cfdiInstanceList:Cfdi.list(params), cfdiInstanceCount: Cfdi.count()]
 	}
 
 	def search(CfdiSearch command){
@@ -146,7 +146,7 @@ class CfdiController {
 
 	}
 
-	@Secured(["hasAnyRole('ADMINISTRACION','ADMIN')"])
+	//@Secured(["hasAnyRole('VENTAS',ADMINISTRACION','ADMIN')"])
 	def cancelar(Cfdi cfdi){
 		log.info 'Cancelando cfdi: '+cfdi.uuid
 		def message=params.comentaio?:'NA'

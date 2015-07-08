@@ -16,6 +16,8 @@ class Cliente {
 	Direccion direccion
 	Empresa empresa
 
+	
+
 	Date dateCreated
 	Date lastUpdated
 
@@ -26,6 +28,7 @@ class Cliente {
 		nombre unique:['empresa']
 		emailCfdi nullable:true
 		rfc blank:false,minSize:12,maxSize:13
+		
     }
 
     static mapping = {

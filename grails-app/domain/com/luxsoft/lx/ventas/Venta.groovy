@@ -32,6 +32,8 @@ class Venta {
 	
 	String formaDePago='NO DEFINIDO'
 
+	String cuentaDePago
+
 	String status
 
 	List partidas=[]
@@ -78,6 +80,7 @@ class Venta {
 		creadoPor nullalbe:true
 		modificadoPor nullalble:true
 		cfdi nullable: true
+		cuentaDePago nullable:true,maxSize:6
 
     }
 

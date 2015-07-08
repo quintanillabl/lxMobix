@@ -4,61 +4,42 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Inmuebles</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
 </head>
 <body>
 
 	<div class="container">
 		
-		<div class="row">
-
-			<div class="col-md-12">
-				<div class="well well-sm">
-					<h2> 
-						${inmuebleInstance.clave} <small>(${inmuebleInstance.descripcion})</small>
-					</h2>
-					<g:if test="${flash.message}">
-						<span class="label label-warning">${flash.message}</span>
-					</g:if> 
-				</div>
-			</div>
-		</div><!-- end .row -->
+		
 
 
-		<div class="row toolbar-panel">
-			<div class="col-md-6 col-md-offset-3">
+		<div class="row row-header">
+			<div class="col-md-6 col-md-offset-3 toolbar-panel">
 				<div class="btn-group">
 				    <g:link action="index" class="btn btn-default ">
-				        <span class="glyphicon glyphicon-repeat"></span> Catálogo
+				        <i class="fa fa-step-backward"></i></span> Inmuebles
 				    </g:link>
 				    <g:link action="index" class="btn btn-default ">
 				        <i class="fa fa-plus"></i> Nuevo
 				    </g:link>
 				    <%-- Acciones de administrador --%>
 				    <sec:ifAllGranted roles="VENTAS">
-				    	<g:link action="delete" class="btn btn-danger " id="${inmuebleInstance.id}">
+				    	%{-- <g:link action="delete" class="btn btn-danger " id="${inmuebleInstance.id}">
 				    	    <i class="fa fa-trash"></i> Eliminar
-				    	</g:link>
-				    </sec:ifAllGranted>
-				    <sec:ifAllGranted roles="VENTAS">
+				    	</g:link> --}%
+				    	%{-- <a href="#deleteDialog" class="btn btn-danger "><i class="fa fa-trash"></i> Eliminar</a> --}%
+
 				    	<g:link action="edit" class="btn btn-default " id="${inmuebleInstance.id}">
 				    	    <i class="fa fa-pencil"></i> Editar
 				    	</g:link>
+
 				    </sec:ifAllGranted>
-				    
+				    <g:link action="print" class="btn btn-default " id="${inmuebleInstance.id}">
+				        <i class="fa fa-print"></i> Imprimir
+				    </g:link> 
+				    <lx:deleteButton bean="${inmuebleInstance}"/>
 				</div>
 				
-				<div class="btn-group">
-				    <button type="button" name="reportes"
-				            class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-				            role="menu">
-				            Reportes <span class="caret"></span>
-				    </button>
-				    <ul class="dropdown-menu">
-				        
-				    </ul>
-				</div>
+				
 			</div>
 		</div> 
 
@@ -67,7 +48,7 @@
 		    	<fieldset disabled>
 				<g:form class="form-horizontal"  >	
 					<div class="panel panel-primary">
-						<div class="panel-heading">Folio ${inmuebleInstance.id}</div>
+						<div class="panel-heading">Folio ${inmuebleInstance.id} ${inmuebleInstance.clave} <small>(${inmuebleInstance.descripcion})</small></div>
 					  <div class="panel-body">
 					    <g:hasErrors bean="${inmuebleInstance}">
 					    	<div class="alert alert-danger">
@@ -85,12 +66,15 @@
 						</f:with>
 						<g:render template="/common/direccion" bean="${inmuebleInstance}"/>
 					  </div>
-
+					  <g:if test="${flash.message}">
+					  	<span class="label label-warning">${flash.message}</span>
+					  </g:if> 
 					</div>
 				</g:form>
 				</fieldset>
 
 		    </div>
+
 		</div>
 
 		<!-- end .row 2 -->

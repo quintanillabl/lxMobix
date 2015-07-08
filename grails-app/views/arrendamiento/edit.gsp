@@ -45,6 +45,8 @@
 							<f:field property="inicio" widget-class="form-control"/>
 							<f:field property="fin" widget-class="form-control"/>
 							<f:field property="precio" widget-class="form-control moneda-field " widget-type="text"/>
+							<f:field property="formaDePago" widget-class="form-control"/>
+							<f:field property="cuentaDePago" widget-class="form-control"/>
 							<f:field property="comentario" widget-class="form-control"/>
 						</f:with>
 						</div>

@@ -4,33 +4,21 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Inmuebles</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	
 </head>
 <body>
 
 	<div class="container">
 		
-		<div class="row">
-
-			<div class="col-md-12">
-
-				<g:if test="${flash.message}">
-			  		<div class="alert alert-warning">
-			  			<span class="label label-warning ">${flash.message}</span>
-			  		</div>
-			  	</g:if> 
-			</div>
-		</div><!-- end .row -->
-
-		<div class="row ">
+		
+		<div class="row row-header">
 			
 			<div class="col-md-8 col-md-offset-2">
 				
 				<g:form class="form-horizontal" action="update" id="${inmuebleInstance.id}" method="PUT">	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Inmueble: ${inmuebleInstance}</div>
+						<div class="panel-heading">Inmueble: ${inmuebleInstance.id}</div>
 					  <div class="panel-body">
 					    <g:hasErrors bean="${inmuebleInstance}">
 					    	<div class="alert alert-danger">
@@ -41,15 +29,17 @@
 					    </g:hasErrors>
 						<f:with bean="${inmuebleInstance}">
 							<f:field property="clave" widget-class="form-control uppercase-field" />
-							<f:field property="descripcion" widget-class="form-control" />
+							<f:field property="descripcion" widget-class="form-control"/>
 							<f:field property="cuentaPredial" widget-class="form-control"/>
-							<f:field property="unidad" widget-class="form-control" />
-							<f:field property="inventariable" widget-class="form-control" />
-							<f:field property="precio" widget-class="form-control" widget-type="text"/>
 						</f:with>
 						<g:render template="/common/direccion" bean="${inmuebleInstance}"/>
 					  </div>
-					
+				  	<g:if test="${flash.message}">
+				    		<div class="alert alert-warning">
+				    			<span class="label label-warning ">${flash.message}</span>
+				    		</div>
+				    </g:if> 
+						
 					 
 					  <div class="panel-footer">
 					  	

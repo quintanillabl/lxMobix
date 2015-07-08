@@ -121,6 +121,19 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label class="label-control col-sm-2">F.Pago</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+										value="${arrendamientoInstance.formaDePago}" >
+									</div>
+									<label class="label-control col-sm-2">Cuenta</label>
+									<div class="col-sm-4">
+										<input type="text" class="form-control" 
+										value="${arrendamientoInstance.cuentaDePago}" >
+									</div>
+								</div>
+								
+								<div class="form-group">
 									<label class="label-control col-sm-2">Comentario</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" 
