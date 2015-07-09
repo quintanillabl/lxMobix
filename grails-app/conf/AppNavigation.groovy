@@ -35,6 +35,7 @@ navigation={
 			polizas(controller:'poliza',action:'index')
 			balanza(controller:'balanza',action:'index')
 			reportes(controller:'contabilidad',action:'index')
+			cierreAnual(controller:'poliza',action:'cierreAnual')
 			contabilidadElectronica(controller:'contabilidadElectronica',action:'index')
 		}
 		tesoreria(){

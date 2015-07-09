@@ -16,6 +16,7 @@ class SaldoPorCuentaContableService {
 				found=new SaldoPorCuentaContable(empresa:empresa,cuenta:cuenta,ejercicio:ejercicio,mes:mes)
 				found.save failOnError:true
 			}
+			actualizarSaldo(found)
 		}
 	}
 
@@ -46,6 +47,12 @@ class SaldoPorCuentaContableService {
 		poliza.partidas.each{
 			actualizarSaldo(it.cuenta,periodo)
 		}
+	}
+
+	def actualizarSaldo(PolizaDet polizaDet){
+		def poliza=polizaDet.poliza
+		def periodo=new PeriodoContable(ejercicio:poliza.ejercicio,mes:poliza.mes)
+		actualizarSaldo(polizaDet.cuenta,periodo)
 	}
 
 

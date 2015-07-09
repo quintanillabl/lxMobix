@@ -203,6 +203,15 @@ class Periodo implements Comparable<Periodo>{
 		return year;
 	}
 
+	public static Integer currentYear(){
+		return obtenerYear(new Date())
+	}
+
+	public static Integer currentMes(){
+		return obtenerMes(new Date())+1
+	}
+	
+
 	static final List MESES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE']
 	static final List TRIMESTRES=['PRIMER','SEGUNDO','TERCERO','CUARTO']
 	static final List CUATRIMESTRES=['PRIMER','SEGUNDO','TERCERO']

@@ -1,41 +1,39 @@
-<%@ page import="com.luxsoft.lx.contabilidad.PolizaDet" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'polizaDet.label', default: 'PolizaDet')}" />
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<a href="#edit-polizaDet" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="edit-polizaDet" class="content scaffold-edit" role="main">
-			<h1><g:message code="default.edit.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<g:hasErrors bean="${polizaDetInstance}">
-			<ul class="errors" role="alert">
-				<g:eachError bean="${polizaDetInstance}" var="error">
-				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-				</g:eachError>
-			</ul>
-			</g:hasErrors>
-			<g:form url="[resource:polizaDetInstance, action:'update']" method="PUT" >
-				<g:hiddenField name="version" value="${polizaDetInstance?.version}" />
-				<fieldset class="form">
-					<g:render template="form"/>
-				</fieldset>
-				<fieldset class="buttons">
-					<g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-				</fieldset>
-			</g:form>
-		</div>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Concepto de poliza</title>
+	
+</head>
+<body>
+
+	<div class="container">
+		
+		<div class="row">
+
+			<div class="col-md-12">
+
+				<div class="page-header">
+				  	<g:if test="${flash.message}">
+				  		<small><span class="label label-warning ">${flash.message}</span></small>
+				  	</g:if> 
+				  	<g:if test="${flash.error}">
+				  		<small><span class="label label-danger ">${flash.error}</span></small>
+				  	</g:if> 
+				  </h3>
+				</div>
+			</div>
+		</div><!-- end .row -->
+
+		<div class="row ">
+			<div class="col-md-8 col-md-offset-2">
+				<g:render template="editForm"/>
+			</div>
+		</div> <!-- end .row 2 -->
+
+	</div>
+	
+	
+</body>
 </html>

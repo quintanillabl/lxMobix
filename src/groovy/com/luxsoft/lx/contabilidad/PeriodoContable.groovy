@@ -9,12 +9,12 @@ import com.luxsoft.utils.Periodo
 @Validateable(nullable=true)
 class PeriodoContable implements Serializable{
 	
-	Integer ejercicio
-    Integer mes
+	Integer ejercicio=Periodo.currentYear()
+    Integer mes=Periodo.currentMes()
 
     static constraints={
-        ejercicio inList:(2015..2018)
-        mes inList:(1..12)
+        ejercicio inList:(2014..2018)
+        mes inList:(1..13)
     }
 
     String toString(){

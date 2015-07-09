@@ -24,13 +24,9 @@ class PolizaService {
     }
 
     def update(Poliza poliza){
-       // assert saldoPorCuentaContableService!=null,' saldoPorcuentaContableService service not injected: '
         poliza.modificadoPor=currentUser()
         poliza.save flush:true,failOnError:true
         saldoPorCuentaContableService.actualizarSaldos(poliza)
-        // poliza.partidas.each{
-        //     saldoPorCuentaContableService.actualizarSaldo(it.cuenta,poliza.ejercicio,poliza.mes)
-        // }
         log.debug('Poliza actualizada: '+poliza.id)
         event('modificacionDePoliza',poliza)
         return poliza
@@ -42,6 +38,7 @@ class PolizaService {
         poliza.actualizar()
         poliza.save flush:true,failOnError:true
         event('modificacionDePoliza',poliza)
+        saldoPorCuentaContableService.actualizarSaldos(poliza)
     }
 
     def eleiminarPartida(PolizaDet det){
@@ -50,14 +47,27 @@ class PolizaService {
         poliza.removeFromPartidas(det)
         poliza.actualizar()
         poliza.save flush:true,failOnError:true
-        event('modificacionDePoliza',poliza)
+        event('bajaDePolizaDet',poliza)
+        saldoPorCuentaContableService.actualizarSaldo(det)
         return poliza
     }
 
     def delete(Poliza poliza){
         log.debug 'Eliminando poliza: '+poliza.id
         poliza.delete flush:true
+        saldoPorCuentaContableService.actualizarSaldos(poliza)
         event('bajaDePoliza',poliza)
+    }
+
+
+    def actualizarPartida(PolizaDet det){
+        Poliza poliza=det.poliza
+        poliza.modificadoPor=currentUser()
+        poliza.actualizar()
+        poliza.save flush:true,failOnError:true
+        event('modificacionDePolizaDet',poliza)
+        saldoPorCuentaContableService.actualizarSaldo(det)
+        return det;
     }
 
 

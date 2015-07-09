@@ -48,7 +48,9 @@ class PolizaDetController {
     }
 
     def edit(PolizaDet polizaDetInstance) {
-        respond polizaDetInstance
+        def poliza=polizaDetInstance.poliza
+        [polizaInstance:poliza,polizaDetInstance:polizaDetInstance]
+        
     }
 
     @Transactional
@@ -57,21 +59,13 @@ class PolizaDetController {
             notFound()
             return
         }
-
         if (polizaDetInstance.hasErrors()) {
             respond polizaDetInstance.errors, view:'edit'
             return
         }
-
-        polizaDetInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'PolizaDet.label', default: 'PolizaDet'), polizaDetInstance.id])
-                redirect polizaDetInstance
-            }
-            '*'{ respond polizaDetInstance, [status: OK] }
-        }
+        polizaDetInstance=polizaService.actualizarPartida(polizaDetInstance)
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'PolizaDet.label', default: 'PolizaDet'), polizaDetInstance.id])
+        redirect controller:'poliza',action:'edit',params:[id:polizaDetInstance.poliza.id]
     }
 
     @Transactional

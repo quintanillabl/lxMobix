@@ -94,6 +94,7 @@
 				  			<thead>
 				  				<tr>
 				  					<th>Cuenta</th>
+				  					<th>Descripción</th>
 				  					<th>Debe</th>
 				  					<th>Haber</th>
 				  					<th>Concepto</th>
@@ -107,13 +108,24 @@
 				  				<g:each in="${polizaInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
 				  						<td >
-				  							<g:link  controller="polizaDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"cuenta")}
+				  							<g:link  controller="polizaDet" action="edit" id="${row.id}">
+				  								${fieldValue(bean:row,field:"cuenta.clave")}
+				  							</g:link>
+				  						</td>
+				  						<td >
+				  							<g:link  controller="polizaDet" action="edit" id="${row.id}">
+				  								${fieldValue(bean:row,field:"cuenta.descripcion")}
 				  							</g:link>
 				  						</td>
 				  						<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
 				  						<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
-				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
+				  						<td>
+				  							<small>
+				  								<abbr title="${row.concepto}">
+				  								${org.apache.commons.lang.StringUtils.substring(row.concepto,0,20)}
+				  								</abbr>
+				  							</small>
+				  						</td>
 				  						<td>${fieldValue(bean:row,field:"asiento")}</td>
 				  						<td>${fieldValue(bean:row,field:"referencia")}</td>
 				  						<td>${fieldValue(bean:row,field:"origen")}</td>

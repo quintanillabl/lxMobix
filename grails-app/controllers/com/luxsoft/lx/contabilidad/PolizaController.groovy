@@ -14,6 +14,7 @@ class PolizaController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
 
     def polizaService
+    def cierreContableService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -106,6 +107,26 @@ class PolizaController {
         if (!model.periodo) 
             model.periodo=session.periodoContable
         //println "View is now ${modelAndView.viewName}"
+    }
+
+    def cierreAnual(){
+        [polizaInstanceList:Poliza.findByEmpresaAndTipo(session.empresa,'CIERRE_ANUAL')]
+    }
+
+    @Transactional
+    def generarCierreAnual(PeriodoContable command){
+        if (command == null) {
+            notFound()
+            return
+        }
+
+        if (command.hasErrors()) {
+            render view:'create',model:[polizaInstance:command]
+            return
+        }
+        cierreContableService.generarCierreAnual(session.empresa,command.ejercicio)
+        redirect action:'cierreAnual'
+
     }
 }
 
