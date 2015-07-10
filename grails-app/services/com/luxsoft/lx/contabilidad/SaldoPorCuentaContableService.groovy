@@ -91,8 +91,8 @@ class SaldoPorCuentaContableService {
 				saldoInicial=SaldoPorCuentaContable.findByCuentaAndEjercicioAndMes(cuenta,periodo.ejercicio,periodo.mes-1)?.saldoFinal?:0.0
 			}
 			def row=PolizaDet
-				.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and d.poliza.ejercicio=? and d.poliza.mes=? and d.poliza.tipo!=?"
-				,[cuenta,periodo.ejercicio,periodo.mes,'CIERRE_ANUAL'])
+				.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and d.poliza.ejercicio=? and d.poliza.mes=? "
+				,[cuenta,periodo.ejercicio,periodo.mes])
 				
 			def debe=row.get(0)[0]?:0.0
 			def haber=row.get(0)[1]?:0.0

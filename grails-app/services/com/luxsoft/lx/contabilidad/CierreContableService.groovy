@@ -12,6 +12,8 @@ class CierreContableService {
 
     def saldoPorCuentaContableService
 
+
+
     def generarSaldosParaCierre(Empresa empresa,Integer ejercicio){
         
     	def cuentas=CuentaContable.findAllByEmpresaAndPadreIsNull(empresa)
@@ -137,6 +139,7 @@ class CierreContableService {
     	}
         poliza.actualizar()
         poliza=polizaService.save(poliza)
+        saldoPorCuentaContableService.actualizarSaldos(poliza)
         return poliza
     	
     }

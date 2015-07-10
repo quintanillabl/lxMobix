@@ -43,11 +43,9 @@
 		        	    <i class="fa fa-cog"></i></span> Generar Cierre
 		        	</g:link>
 		        </g:if>
-		        <g:else>
-		        	<g:link action="actualizar" class="btn btn-default ">
-		        	    <i class="fa fa-cog"></i></span> Actualizar
-		        	</g:link>
-		        </g:else>
+		        <g:link action="actualizar" class="btn btn-default ">
+		            <i class="fa fa-cog"></i></span> Actualizar
+		        </g:link>
 		        <g:link action="print" class="btn btn-default " >
 		            <i class="fa fa-print"></i> Imprimir
 		        </g:link> 
