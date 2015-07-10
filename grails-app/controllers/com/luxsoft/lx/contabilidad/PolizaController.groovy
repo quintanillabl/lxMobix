@@ -15,6 +15,7 @@ class PolizaController {
 
     def polizaService
     def cierreContableService
+    
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -59,15 +60,19 @@ class PolizaController {
 
     @Transactional
     def update(Poliza polizaInstance) {
+
         if (polizaInstance == null) {
             notFound()
             return
         }
-
+        
         if (polizaInstance.hasErrors()) {
+            println 'Errores de validacion: '+polizaInstance.errors
+            println 'Params: '+params
             respond polizaInstance.errors, view:'edit'
             return
         }
+
         polizaInstance=polizaService.update(polizaInstance)
         flash.message="Poliza ${polizaInstance.id} actualizada"
         redirect action:'edit',id:polizaInstance.id
@@ -113,19 +118,25 @@ class PolizaController {
         [polizaInstanceList:Poliza.findByEmpresaAndTipo(session.empresa,'CIERRE_ANUAL')]
     }
 
-    @Transactional
-    def generarCierreAnual(PeriodoContable command){
-        if (command == null) {
-            notFound()
-            return
-        }
+    // @Transactional
+    // def generarCierreAnual(PeriodoContable command){
+    //     if (command == null) {
+    //         notFound()
+    //         return
+    //     }
 
-        if (command.hasErrors()) {
-            render view:'create',model:[polizaInstance:command]
-            return
-        }
-        cierreContableService.generarCierreAnual(session.empresa,command.ejercicio)
-        redirect action:'cierreAnual'
+    //     if (command.hasErrors()) {
+    //         render view:'create',model:[polizaInstance:command]
+    //         return
+    //     }
+    //     cierreContableService.generarPolizaDeCierre(session.empresa,command.ejercicio)
+    //     redirect action:'cierreAnual'
+
+    // }
+    @Transactional
+    def generarCierreAnual(){
+        cierreContableService.generarPolizaDeCierre(session.empresa,session.periodoContable.ejercicio)
+        redirect action:'index'
 
     }
 }

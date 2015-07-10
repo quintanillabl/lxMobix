@@ -24,6 +24,7 @@ class PolizaService {
     }
 
     def update(Poliza poliza){
+        println 'Actualizando poliza: '+poliza
         poliza.modificadoPor=currentUser()
         poliza.save flush:true,failOnError:true
         saldoPorCuentaContableService.actualizarSaldos(poliza)

@@ -64,7 +64,7 @@
 				    		</g:hasErrors>
 
 							<f:with bean="${polizaInstance}">
-								<g:hiddenField name="poliza.id" value="${polizaInstance.id}"/>
+								%{-- <g:hiddenField name="poliza.id" value="${polizaInstance.id}"/> --}%
 								<div class="col-sm-6">
 									<f:display property="ejercicio" />
 									<f:display property="mes"  />

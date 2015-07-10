@@ -37,12 +37,12 @@
 
 		    <div class="btn-group">
 		        
-		        <g:link action="index" class="btn btn-default ">
+		        <g:link action="cierreAnual" class="btn btn-default ">
 		            <span class="glyphicon glyphicon-repeat"></span> Refrescar
 		        </g:link>
-		        <a class="btn btn-default " href="#ejercicioDialog" data-toggle="modal" >
+		        %{-- <a class="btn btn-default " href="#ejercicioDialog" data-toggle="modal" >
 		        	<i class="fa fa-cog"></i> Generar
-		        </a>
+		        </a> --}%
 		        
 		    </div>
 		    

@@ -14,6 +14,7 @@ class SaldoPorCuentaContableController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def saldoPorCuentaContableService
+    def cierreContableService
 
     def index(Integer max) {
         
@@ -153,4 +154,13 @@ class SaldoPorCuentaContableController {
         //redirect(uri: request.getHeader('referer') )
         redirect action:'index'
     }
+
+    @Transactional
+    def generarCierreAnual(){
+        log.info "Generando saldos para cierre anual ${session.periodoContable.ejercicio} / ${session.periodoContable.mes}"
+        cierreContableService.generarSaldosParaCierre(session.empresa,session.periodoContable.ejercicio)
+        redirect action:'index'
+
+    }
 }
+

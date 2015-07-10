@@ -37,9 +37,17 @@
 		        <g:link action="index" class="btn btn-default ">
 		            <span class="glyphicon glyphicon-repeat"></span> Refrescar
 		        </g:link>
-		        <g:link action="actualizar" class="btn btn-default ">
-		            <i class="fa fa-cog"></i></span> Actualizar
-		        </g:link>
+		        
+		        <g:if test="${session.periodoContable.mes==13}">
+		        	<g:link action="generarCierreAnual" class="btn btn-default " onclick="return confirm('Generar cierre anual '+${session.periodoContable.ejercicio});">
+		        	    <i class="fa fa-cog"></i></span> Generar Cierre
+		        	</g:link>
+		        </g:if>
+		        <g:else>
+		        	<g:link action="actualizar" class="btn btn-default ">
+		        	    <i class="fa fa-cog"></i></span> Actualizar
+		        	</g:link>
+		        </g:else>
 		        <g:link action="print" class="btn btn-default " >
 		            <i class="fa fa-print"></i> Imprimir
 		        </g:link> 

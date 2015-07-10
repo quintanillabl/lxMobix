@@ -46,7 +46,12 @@
 		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
 		        </a>
 		        <g:link action="create" class="btn btn-default "><i class="fa fa-plus"></i> Nuevo</g:link>
+		        <g:if test="${session.periodoContable.mes==13}">
+		        	<g:link action="generarCierreAnual" class="btn btn-default "><i class="fa fa-cog"></i> Cierre anual</g:link>
+		        	
+		        </g:if>
 		    </div>
+
 		   
 		    <div class="btn-group">
 		        <button type="button" name="reportes"
