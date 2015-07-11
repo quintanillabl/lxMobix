@@ -44,12 +44,17 @@ class PolizaService {
 
     def eleiminarPartida(PolizaDet det){
         Poliza poliza=det.poliza
+        
+        def ejercicio=poliza.ejercicio
+        def mes=poliza.mes
+        def cuenta=det.cuenta
+
         poliza.modificadoPor=currentUser()
         poliza.removeFromPartidas(det)
         poliza.actualizar()
         poliza.save flush:true,failOnError:true
         event('bajaDePolizaDet',poliza)
-        saldoPorCuentaContableService.actualizarSaldo(det)
+        saldoPorCuentaContableService.actualizarSaldo(cuenta,ejercicio,mes)
         return poliza
     }
 

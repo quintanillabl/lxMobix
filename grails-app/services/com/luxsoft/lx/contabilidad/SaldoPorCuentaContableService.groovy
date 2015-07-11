@@ -13,7 +13,7 @@ class SaldoPorCuentaContableService {
 		cuentas.each{ cuenta->
 			def found=SaldoPorCuentaContable.findByEmpresaAndCuentaAndEjercicioAndMes(empresa,cuenta,ejercicio,mes)
 			if(!found){
-				found=new SaldoPorCuentaContable(empresa:empresa,cuenta:cuenta,ejercicio:ejercicio,mes:mes)
+				found=new SaldoPorCuentaContable(empresa:cuenta.empresa,cuenta:cuenta,ejercicio:ejercicio,mes:mes)
 				found.save failOnError:true
 			}
 			actualizarSaldo(found)
