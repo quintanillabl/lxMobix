@@ -21,8 +21,9 @@ class BalanzaController {
         def periodo=session.periodoContable
         //def balanza=Balanza.findWhere(empresa: session.empresa,ejercicio:periodo.ejercicio,mes:periodo.mes)
         def saldos=SaldoPorCuentaContable.findAllWhere(empresa: session.empresa,ejercicio:periodo.ejercicio,mes:periodo.mes)
+        println 'Saldos registrados: '+saldos.size()
         //[partidas:balanza.partidas?:[0]]
-        [partidas:saldos?:[0]]
+        [partidas:saldos]
     }
 
     def show(Balanza balanzaInstance) {
