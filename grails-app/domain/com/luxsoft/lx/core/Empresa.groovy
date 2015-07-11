@@ -27,6 +27,8 @@ class Empresa {
 	boolean timbradoDePrueba=true
 	String usuarioPac
 	String passwordPac
+
+
 	
 	Date dateCreated
 	Date lastUpdated
@@ -48,10 +50,13 @@ class Empresa {
 		passwordPfx nullable:true	
 		usuarioPac nullable:true
 		passwordPac nullable:true
+		branding nullable:true,unique:true
 		
     }
 	
 	static transients = ['certificado','certificadoPfx','privateKey']
+
+	static hasOne = [branding: EmpresaBranding]
 	
 	
 	X509Certificate getCertificado(){

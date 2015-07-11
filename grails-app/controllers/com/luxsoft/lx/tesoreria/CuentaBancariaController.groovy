@@ -14,8 +14,9 @@ class CuentaBancariaController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond CuentaBancaria.list(params), model:[cuentaBancariaInstanceCount: CuentaBancaria.count()]
+        params.max = Math.min(max ?: 20, 100)
+        def list=CuentaBancaria.findAllByEmpresa(session.empresa,params)
+        respond list, model:[cuentaBancariaInstanceCount: CuentaBancaria.countByEmpresa(session.empresa)]
     }
 
     def show(CuentaBancaria cuentaBancariaInstance) {

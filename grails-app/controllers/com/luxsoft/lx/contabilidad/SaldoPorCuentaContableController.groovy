@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
+import com.luxsoft.lx.bi.ReportCommand
 
 @Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
 @Transactional(readOnly = true)
@@ -15,6 +16,7 @@ class SaldoPorCuentaContableController {
 
     def saldoPorCuentaContableService
     def cierreContableService
+     def reportService
 
     def index(Integer max) {
         
@@ -161,6 +163,22 @@ class SaldoPorCuentaContableController {
         cierreContableService.generarSaldosParaCierre(session.empresa,session.periodoContable.ejercicio)
         redirect action:'index'
 
+    }
+
+    def print(){
+        def command=new ReportCommand()
+        command.reportName="BalanzaDeComprobacion"
+        command.empresa=session.empresa
+        params.YEAR=session.periodoContable.ejercicio
+        params.MES=session.periodoContable.mes
+        params.EMPRESA=session.empresa.nombre
+        params.INICIAL=0.0
+        def stream=reportService.build(command,params)
+        def file="Balanza_${cparams.YEAR}${params.MES}_"+new Date().format('ss')+'.'+command.formato.toLowerCase()
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
     }
 }
 

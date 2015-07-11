@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
+import com.luxsoft.lx.bi.ReportCommand
 
 @Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
 @Transactional(readOnly = true)
@@ -15,6 +16,7 @@ class PolizaController {
 
     def polizaService
     def cierreContableService
+    def reportService
     
 
     def index(Integer max) {
@@ -114,25 +116,23 @@ class PolizaController {
         //println "View is now ${modelAndView.viewName}"
     }
 
+    def print(Poliza polizaInstance){
+        def command=new ReportCommand()
+        command.reportName="PolizaContable"
+        command.empresa=session.empresa
+        def stream=reportService.build(command,[ID:polizaInstance.id,EMPRESA:session.empresa.nombre])
+        def file="Poliza_${polizaInstance.tipo}_${polizaInstance.folio}_${polizaInstance.ejercicio}${polizaInstance.mes}"+new Date().format('ss')+'.'+command.formato.toLowerCase()
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+    }
+
     def cierreAnual(){
         [polizaInstanceList:Poliza.findByEmpresaAndTipo(session.empresa,'CIERRE_ANUAL')]
     }
 
-    // @Transactional
-    // def generarCierreAnual(PeriodoContable command){
-    //     if (command == null) {
-    //         notFound()
-    //         return
-    //     }
-
-    //     if (command.hasErrors()) {
-    //         render view:'create',model:[polizaInstance:command]
-    //         return
-    //     }
-    //     cierreContableService.generarPolizaDeCierre(session.empresa,command.ejercicio)
-    //     redirect action:'cierreAnual'
-
-    // }
+    
     @Transactional
     def generarCierreAnual(){
         cierreContableService.generarPolizaDeCierre(session.empresa,session.periodoContable.ejercicio)

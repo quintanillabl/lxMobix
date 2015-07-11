@@ -39,14 +39,31 @@
 		        <g:link action="actualizar" class="btn btn-default ">
 		            <i class="fa fa-cog"></i></span> Actualizar
 		        </g:link>
-		        <g:link action="print" class="btn btn-default " >
-		            <i class="fa fa-print"></i> Imprimir
-		        </g:link> 
+		        
 		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
 		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
 		        </a>
 		    </div>
-		    
+		    <div class="btn-group">
+		        <button type="button" name="reportes"
+		                class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+		                role="menu">
+		                Reportes <span class="caret"></span>
+		        </button>
+
+		        <ul class="dropdown-menu">
+		        	<li>
+		        		<g:link action="balanzaDeComprobacion" >
+		        		    <i class="fa fa-print"></i> Balanza de comprobación
+		        		</g:link> 
+		        	</li>
+		        	<li>
+		        		<g:link action="balanceGeneral" >
+		        		    <i class="fa fa-print"></i> Balance general
+		        		</g:link> 
+		        	</li>
+		        </ul>
+		    </div>
 		    
 		</div>
 

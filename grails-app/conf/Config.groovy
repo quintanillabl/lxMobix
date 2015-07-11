@@ -243,8 +243,24 @@ beans {
   }
 }
 grails.plugins.twitterbootstrap.fixtaglib = true
+
 grails.plugin.databasemigration.updateOnStart = true
 grails.plugin.databasemigration.updateOnStartFileNames = ['changelog.groovy']
 
+
+
+environments {
+    test {
+        grails.plugin.databasemigration.updateOnStart = false
+        //grails.plugin.databasemigration.autoMigrateScripts = ['RunApp','TestApp']
+        //grails.plugin.databasemigration.forceAutoMigrate = true
+        //grails.plugin.databasemigration.dropOnStart = true
+        // if (loadTestData) {
+        //     grails.plugin.databasemigration.updateOnStartFileNames = ['testchangelog.groovy', 'testdata.groovy']
+        // } else {
+        //     grails.plugin.databasemigration.updateOnStartFileNames = ['testchangelog.groovy']
+        // }
+    }
+}
 
 
