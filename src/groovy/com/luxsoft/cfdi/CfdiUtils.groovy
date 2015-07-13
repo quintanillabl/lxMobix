@@ -97,4 +97,30 @@ class CfdiUtils {
 		return receptor
 	}
 
+	static Direccion toDireccion(TUbicacionFiscal domicilio){
+		def direccion=new Direccion()
+		direccion.calle=domicilio.getCalle()
+		direccion.codigoPostaldomicilio.getCodigoPostal()
+		direccion.colonia=domicilio.getColonia()
+		direccion.estado=domicilio.getEstado()
+		direccion.municipio=domicilio.getMunicipio()
+		direccion.numeroExterior=domicilio.getNoExterior()
+		direccion.numeroInterior=domicilio.getNoInterior()
+		direccion.pais=domicilio.getPais()
+		return direccion
+	}
+
+	static Direccion toDireccion(TUbicacion domicilio){
+		def direccion=new Direccion()
+		direccion.calle=domicilio.getCalle()
+		direccion.codigoPostal=domicilio.getCodigoPostal()
+		direccion.colonia=domicilio.getColonia()
+		direccion.estado=domicilio.getEstado()
+		direccion.municipio=domicilio.getMunicipio()
+		direccion.numeroExterior=domicilio.getNoExterior()
+		direccion.numeroInterior=domicilio.getNoInterior()
+		direccion.pais=domicilio.getPais()
+		return direccion
+	}
+
 }
