@@ -117,7 +117,7 @@ class ImportacionUtils {
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
-		            username:use,
+		            username:user,
 		            password:password)
 		Sql sql=new Sql(ds)
 		sql.rows("select v.*,c.uuid from venta v  join cfdi c on(v.id=c.origen)")
