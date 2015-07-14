@@ -1,4 +1,6 @@
-<table class="table table-striped table-bordered table-condensed">
+<asset:stylesheet src="datatables/dataTables.css"/>
+<asset:javascript src="datatables/dataTables.js"/> 
+<table class="table table-striped table-bordered table-condensed" id="grid">
 	<thead>
 		<tr>
 			<g:sortableColumn property="id" title="Id"/>
@@ -33,7 +35,10 @@
 					</abbr>
 				</td>
 				<td><g:formatNumber number="${row.total}" type="currency"/></td>
-				<td><g:if test="${row.cancelacion}">CANCELADO</g:if></td>
+				<td>
+					<g:if test="${row.cancelacion}">CANCELADO</g:if>
+					<g:else>${row.comentario}</g:else>
+				</td>
 			</tr>
 		</g:each>
 	</tbody>
@@ -41,3 +46,23 @@
 <div class="pagination">
 	<g:paginate total="${cfdiInstanceCount ?: 0}"/>
 </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$('#grid').dataTable( {
+        	"paging":   false,
+        	"ordering": false,
+        	"info":     false
+        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
+    	} );
+    	
+    	$("#filtro").on('keyup',function(e){
+    		var term=$(this).val();
+    		$('#grid').DataTable().search(
+				$(this).val()
+    		        
+    		).draw();
+    	});
+
+	});
+</script>

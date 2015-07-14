@@ -45,6 +45,14 @@
 		            <li>
 		                <g:link action="create" ><i class="fa fa-plus"></i> Nuevo</g:link>
 		            </li>
+		            %{-- <sec:ifAllGranted roles="ADMIN">
+		            	<li>
+		            	    <g:link controller="importacion" action="importarVentas" onclick="return confirm('Importar ventas?');">
+		            	    	<i class="fa fa-upload"></i> Importar
+		            	    </g:link>
+		            	</li>
+		        	</sec:ifAllGranted> --}%
+		            
 		        </ul>
 		    </div>
 		    <div class="btn-group">

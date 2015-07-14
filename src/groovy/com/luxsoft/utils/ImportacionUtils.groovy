@@ -16,7 +16,7 @@ class ImportacionUtils {
 	private static final log=LogFactory.getLog(this)
 
 
-	static  importarCfdis(String host){
+	public static  importarCfdis(String host){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
@@ -34,6 +34,7 @@ class ImportacionUtils {
 		    cfdi.creadoPor='admin'
 		    cfdi.modificadoPor='admin'
 		    cfdi.timbrado=df.parse(cfdi.timbreFiscal.fechaTimbrado)
+		    cfdi.comentario=row.comentario
 		    if(Periodo.obtenerYear(cfdi.fecha)==2015){
 		    	def found=Cfdi.findByUuid(cfdi.uuid)
 		    	if(found==null){
@@ -43,15 +44,13 @@ class ImportacionUtils {
 	    		}else{
 	    			log.info "Cfdi ${cfdi} ya ha sido importado"
 	    		}
-		        
-		        
 		    }
 		}
 		return res
 
 	}
 
-	static generarVentas(String host){
+	public static importarVentas(String host){
 		def ventas=findVentas(host)
 		Cfdi.findAllByGrupo('CARGA_INICIAL').each{cfdi ->
 			def empresa=Empresa.findByRfc(cfdi.emisorRfc)
@@ -85,6 +84,23 @@ class ImportacionUtils {
 					tipo:'ARRENDAMIENTO',
 					formaDePago:cfdi.getComprobante().getMetodoDePago()
 					)
+				
+				def partidas=findPartidasDeVentas(host,ventaRow.id)
+				partidas.each{ det->
+					def producto=Producto.findByClave('RT_MENSUAL')
+					def ventaDet=new VentaDet(
+							producto:producto,
+							cantidad:det.cantidad,
+							precio:det.precio,
+							importeBruto:det.importe,
+							descuentoTasa:0.0,
+						    descuento:0.0,
+						    importeNeto:det.importe,
+						    impuesto:0.0,
+							comentario:det.comentario
+						)
+					venta.addToPartidas(ventaDet)
+				}
 				venta=venta.save failOnError:true,flush:true
 			    //println 'Alta de venta: '+venta+ 'Valida: '+venta.errors
 			    println 'Venta generada: '+venta
@@ -97,7 +113,7 @@ class ImportacionUtils {
 
 	}
 
-	static findVentas(String host){
+	private static findVentas(String host){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
@@ -105,6 +121,17 @@ class ImportacionUtils {
 		            password:'sys')
 		Sql sql=new Sql(ds)
 		sql.rows("select v.*,c.uuid from venta v  join cfdi c on(v.id=c.origen)")
+	}
+
+	private static findPartidasDeVentas(String host,Long id){
+		SingleConnectionDataSource ds=new SingleConnectionDataSource(
+		            driverClassName:'com.mysql.jdbc.Driver',
+		    		url:"jdbc:mysql://${host}:3306/mobix",
+		            username:'root',
+		            password:'sys')
+		Sql sql=new Sql(ds)
+		return sql.rows("select v.*,p.descripcion,p.clave from venta_det v  join producto p on(v.producto_id=p.id) where venta_id=?",id)
+
 	}
 	
 	

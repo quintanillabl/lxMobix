@@ -42,6 +42,7 @@ class Cfdi {
 	
 	ComprobanteDocument comprobanteDocument
 	TimbreFiscal timbreFiscal
+	String comentario
 
 	static hasOne = [cancelacion: CancelacionDeCfdi]
 
@@ -67,6 +68,7 @@ class Cfdi {
 		acuseEstado nullable:true
 		acuseCodigoEstatus nullable:true
 		grupo nullable:true,maxSize:20
+		comentario nullable:true,maxSize:100
     }
 	
 	static transients = ['comprobanteDocument','timbreFiscal']
