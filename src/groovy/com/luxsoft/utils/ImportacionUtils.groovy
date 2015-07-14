@@ -85,7 +85,7 @@ class ImportacionUtils {
 					formaDePago:cfdi.getComprobante().getMetodoDePago()
 					)
 				
-				def partidas=findPartidasDeVentas(host,ventaRow.id)
+				def partidas=findPartidasDeVentas(host,user,password,ventaRow.id)
 				partidas.each{ det->
 					def producto=Producto.findByClave('RT_MENSUAL')
 					def ventaDet=new VentaDet(
