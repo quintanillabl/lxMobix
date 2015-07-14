@@ -16,12 +16,12 @@ class ImportacionUtils {
 	private static final log=LogFactory.getLog(this)
 
 
-	public static  importarCfdis(String host){
+	public static  importarCfdis(String host,String user,String password){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
-		            username:'root',
-		            password:'sys')
+		            username:user,
+		            password:password)
 		Sql sql=new Sql(ds)
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 		def res=[]
@@ -50,8 +50,8 @@ class ImportacionUtils {
 
 	}
 
-	public static importarVentas(String host){
-		def ventas=findVentas(host)
+	public static importarVentas(String host,String user,String password){
+		def ventas=findVentas(host,user,password)
 		Cfdi.findAllByGrupo('CARGA_INICIAL').each{cfdi ->
 			def empresa=Empresa.findByRfc(cfdi.emisorRfc)
 			assert empresa,'No existe la empresa: '+cfdi.emisorRfc
@@ -113,22 +113,22 @@ class ImportacionUtils {
 
 	}
 
-	private static findVentas(String host){
+	private static findVentas(String host,String user,String password){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
-		            username:'root',
-		            password:'sys')
+		            username:use,
+		            password:password)
 		Sql sql=new Sql(ds)
 		sql.rows("select v.*,c.uuid from venta v  join cfdi c on(v.id=c.origen)")
 	}
 
-	private static findPartidasDeVentas(String host,Long id){
+	private static findPartidasDeVentas(String host,String user,String password,Long id){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
-		            username:'root',
-		            password:'sys')
+		            username:user,
+		            password:password)
 		Sql sql=new Sql(ds)
 		return sql.rows("select v.*,p.descripcion,p.clave from venta_det v  join producto p on(v.producto_id=p.id) where venta_id=?",id)
 
