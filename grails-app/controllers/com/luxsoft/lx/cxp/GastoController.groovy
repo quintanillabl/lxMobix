@@ -107,7 +107,8 @@ class GastoController {
             return
         }
         File xmlFile = File.createTempFile(xml.getName(),".temp");
-        println 'Xml File:'+xmlFile.getCanonicalPath()
+        xml.transferTo(xmlFile)
+        //println 'Xml File:'+xmlFile.getCanonicalPath()
         def gasto=gastoService.importar(xmlFile)
         if(gasto.instanceOf(Gasto)){
             flash.message="Gasto importado desde archivo XML ${xml.getName()}"
