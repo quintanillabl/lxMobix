@@ -161,8 +161,7 @@
 								<th>Cantidad</th>
 								<th>Unidad</th>
 								<th>Precio</th>
-								<th>Impuesto</th>
-								<th>Total</th>
+								<th>Importe</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -183,8 +182,7 @@
 									<td>${formatNumber(number:row.cantidad,format:'##.##')}</td>
 									<td>${fieldValue(bean:row,field:"producto.unidad")}</td>
 									<td>${g.formatNumber(number:row.precio,type:'currency')}</td>
-									<td>${g.formatNumber(number:row.impuesto,type:'currency')}</td>
-									<td>${g.formatNumber(number:row.total,type:'currency')}</td>
+									<td>${g.formatNumber(number:row.importeNeto,type:'currency')}</td>
 									<td>
 										<g:if test="${!row.venta.cfdi}">
 											<g:link controller="ventaDet" action="delete" id="${row.id}" 

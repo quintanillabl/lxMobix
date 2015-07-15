@@ -4,15 +4,15 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">Selección de archivo XML para importar gasto</h4>
+				<h4 class="modal-title" id="myModalLabel">Selección de archivo XML (CFDI) para importar el gasto</h4>
 			</div>
 			
-			<g:uploadForm class="form" action="registrarCfdiXml" id="${gastoInstance.id}">
+			<g:uploadForm class="form" action="importarCfdi" id="${gastoInstance?.id}">
 				<div class="modal-body">
 					
 					<div class="form-group">
 					    <label for="inputFile">Archivo de importación</label>
-					    <input type="file" id="inputFile" class="form-control" name="file" accept="application/txt" autocomplete="off">
+					    <input type="file" id="inputFile" class="form-control" name="xmlFile" accept="application/txt" autocomplete="off">
 					    <p class="help-block">Seleccion el archivo para cargar</p>
 					 </div> 
 				</div>

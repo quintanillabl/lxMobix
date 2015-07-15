@@ -101,6 +101,7 @@ grails.project.dependency.resolution = {
         compile ":spring-security-core:2.0-RC5"
         compile ":console:1.5.5"
         compile ":jasper:1.11.0"
+        compile ":cxf-client:2.0"
 
         // Uncomment these to enable additional asset-pipeline capabilities
         //compile ":sass-asset-pipeline:1.9.0"

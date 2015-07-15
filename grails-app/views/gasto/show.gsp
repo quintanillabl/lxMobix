@@ -14,7 +14,7 @@
 
 
 		<div class="row toolbar-panel">
-			<div class="col-md-6 ">
+			<div class="col-md-10 ">
 				<div class="btn-group">
 				    <g:link action="index" class="btn btn-default ">
 				        <i class="fa fa-step-backward"></i> Gastos
@@ -28,6 +28,27 @@
 				    <g:link action="edit" class="btn btn-default " id="${gastoInstance.id}">
 				        <i class="fa fa-pencil"></i> Editar
 				    </g:link>
+				    <g:if test="${!gastoInstance.acuse}">
+				    	<a href="#uploadFileDialog" data-toggle="modal" class="btn btn-default">
+				    		<i class="fa fa-upload"></i></span> Importar CFDI
+				    	</a>
+				    	<g:link action="validarEnElSat" onclick="return confirm('Validar en el SAT?');"
+				    		class="btn btn-default " id="${gastoInstance.id}">
+				    	    <i class="fa fa-check-square-o"></i> Validar (SAT)
+				    	</g:link> 
+				    </g:if>
+				    <g:else>
+				    	<g:link  action="mostrarAcuse" 
+				    		id="${gastoInstance.id}"
+				    		class="btn btn-default " >
+				    		<i class="fa fa-file-code-o"></i> Acuse
+				    	</g:link>
+				    	<g:link  action="descargarAcuse" 
+				    		id="${gastoInstance.id}"
+				    		class="btn btn-default " >
+				    		<i class="fa fa-download"></i> Descargar acuse
+				    	</g:link>
+				    </g:else>
 				   
 				</div>
 				
@@ -60,18 +81,21 @@
 				    					<f:display property="fecha" cols="col-sm-8" colsLabel="col-sm-4"/>
 				    					<f:display property="serie"  cols="col-sm-8" colsLabel="col-sm-4"/>
 				    					<f:display property='moneda' cols="col-sm-8" colsLabel="col-sm-4"/>
-				    					<f:display property='uuid' label="UUID" cols="col-sm-8" colsLabel="col-sm-4"/>
+				    					<f:display property='acuseEstado' cols="col-sm-8" colsLabel="col-sm-4" label="Acuse (SAT)"/>
+				    					
 
 				    				</div>
 				    				<div class="col-sm-6">
 				    					<f:field property="vencimiento"  cols="col-sm-9" colsLabel="col-sm-3"/>
 				    					<f:field property="folio" widget-class="form-control "  cols="col-sm-9" colsLabel="col-sm-3"/>
 				    					
-				    					<f:field property="tipoDeCambio" widget-class="form-control" cols="col-sm-9" colsLabel="col-sm-3"/>
+				    					<f:display property="tipoDeCambio" cols="col-sm-9" colsLabel="col-sm-3" label="T.C."/>
+				    					<f:display property="acuseCodigoEstatus" cols="col-sm-9" colsLabel="col-sm-3" label="Stat(SAT)"/>
 				    				</div>
 				    				<div class="col-sm-12">
 				    					%{-- <f:field property="cuentaContable" widget-class="form-control" 
 				    						label="Cta" /> --}%
+				    					<f:display property='uuid' label="UUID" />
 				    					<f:display property='cuentaContable' label="Cta contable"/>
 				    					<f:field property="comentario" widget-class="form-control"  />
 				    				</div>

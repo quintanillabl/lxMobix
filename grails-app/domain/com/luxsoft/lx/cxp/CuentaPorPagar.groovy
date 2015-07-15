@@ -62,6 +62,10 @@ class CuentaPorPagar {
 	String serie
 	String folio
 
+	byte[] acuse
+	String acuseEstado
+	String acuseCodigoEstatus
+
 	String comentario
 
 	Date dateCreated
@@ -82,7 +86,7 @@ class CuentaPorPagar {
 		retensionIva(sacle:4)
 		
 		comentario(nullable:true)
-    	uuid nullable:true,maxSize:40
+    	uuid nullable:true,maxSize:40,unique:true
     	serie nullable:true,maxSize:20
     	folio nullable:true,maxSize:20
     	vencimiento (validator:{vencimiento,gasto->
@@ -92,18 +96,21 @@ class CuentaPorPagar {
     	})
     	cfdiXmlFileName nullable:true,maxSize:200
 		cfdiXml nullable:true,maxSize:(1024 * 512)  // 50kb para almacenar el xml
+		acuse nullable:true,maxSize:(1024*256)
+		acuseEstado nullable:true,maxSize:100
+		acuseCodigoEstatus nullable:true,maxSize:100
 		
     }
 	
 	static mapping ={
 		proveedor fetch:'join'
-		//requisitado formula:'(select ifnull(sum(x.total),0) from requisicion_det x where x.factura_id=id)'
+		requisitado formula:'(select ifnull(sum(x.requisitado),0) from requisicion_det x where x.cuenta_por_pagar_id=id)'
 		//pagosAplicados formula:'(select ifnull(sum(x.total),0) from aplicacion x where x.factura_id=id)'
 		fecha type:'date'
 		vencimiento type:'date'
 	}
 	
-	static transients = ['pendienteRequisitar','saldoActual','saldoAlCorte']
+	static transients = ['pendienteRequisitar','saldoActual','saldoAlCorte','pagosAplicados']
 	
 	
 	

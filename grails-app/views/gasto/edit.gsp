@@ -19,9 +19,28 @@
 				    <g:link action="index" class="btn btn-default ">
 				        <i class="fa fa-step-backward"></i> Gastos
 				    </g:link>
-				    <a href="#uploadFileDialog" data-toggle="modal" class="btn btn-default">
-				    	<i class="fa fa-upload"></i></span> Importar CFDI
-				    </a>
+				    <g:if test="${!gastoInstance.acuse}">
+				    	<a href="#uploadFileDialog" data-toggle="modal" class="btn btn-default">
+				    		<i class="fa fa-upload"></i></span> Importar CFDI
+				    	</a>
+				    	<g:link action="validarEnElSat" onclick="return confirm('Validar en el SAT?');"
+				    		class="btn btn-default " id="${gastoInstance.id}">
+				    	    <i class="fa fa-check-square-o"></i> Validar (SAT)
+				    	</g:link> 
+				    </g:if>
+				    <g:else>
+				    	<g:link  action="mostrarAcuse" 
+				    		id="${gastoInstance.id}"
+				    		class="btn btn-default " >
+				    		<i class="fa fa-file-code-o"></i> Acuse
+				    	</g:link>
+				    	<g:link  action="descargarAcuse" 
+				    		id="${gastoInstance.id}"
+				    		class="btn btn-default " >
+				    		<i class="fa fa-download"></i> Descargar acuse
+				    	</g:link>
+				    </g:else>
+				    
 				    <g:link action="print" class="btn btn-default " id="${gastoInstance.id}">
 				        <i class="fa fa-print"></i> Imprimir
 				    </g:link> 
@@ -32,10 +51,8 @@
 				    <buttn id="saveBtn" class="btn btn-success">
 				    	<i class="fa fa-floppy-o"></i> Salvar
 				    </buttn>
-				    <g:link action="delete" class="btn btn-danger " id="${gastoInstance.id}"
-				    	onclick="return confirm('Eliminar el gasto: '+${gastoInstance.id});">
-				        <i class="fa fa-trash"></i> Eliminar
-				    </g:link>
+				  
+				    <lx:deleteButton bean="${gastoInstance}" />
 					
 				   
 				</div>
@@ -73,17 +90,18 @@
 										widget-readonly="readonly"
 										cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="uuid" label="UUID"
-										widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4" 
-										widget-readonly="readonly"/>
+										widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:display property="acuseEstado" cols="col-sm-8" colsLabel="col-sm-4"/>
 
 								</div>
 								<div class="col-sm-4">
-									<f:field property="vencimiento"  cols="col-sm-9" colsLabel="col-sm-3"/>
-									<f:field property="folio" widget-class="form-control "  cols="col-sm-9" colsLabel="col-sm-3"/>
-									<f:field property="comentario" widget-class="form-control"  cols="col-sm-9" colsLabel="col-sm-3"/>
-									<f:field property="tipoDeCambio" 
+									<f:field property="vencimiento"  cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="folio" widget-class="form-control "  cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="comentario" widget-class="form-control"  cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="tipoDeCambio" label="T.C."
 										widget-readonly="readonly"
-										widget-class="form-control" cols="col-sm-9" colsLabel="col-sm-3"/>
+										widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:display property="acuseCodigoEstatus" cols="col-sm-8" colsLabel="col-sm-4" label="Stat(SAT)"/>
 								</div>
 
 								<div class="col-sm-4" id="totalesPanel">

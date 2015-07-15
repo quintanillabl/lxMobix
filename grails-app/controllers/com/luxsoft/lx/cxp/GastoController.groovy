@@ -99,42 +99,54 @@ class GastoController {
     }
 
     @Transactional
-    def uploadCfdi(){
-        def xml=request.getFile('xml')
-        //def referencia=params.referencia
-        //def grupo=params.grupo
-        def user=getAuthenticatedUser().username
-        if (xml.empty) {
-            flash.message = 'CFDI incorrecto (archivo vacío)'
+    def importarCfdi(){
+        def xml=request.getFile('xmlFile')
+        if(xml==null){
+            flash.message="Archivo XML no localizado"
             redirect action:'index'
             return
         }
-        try {
-            log.info 'Cargando CFDI con archivo: '+xml
-            Cfdi cfdi=importadorService.cargarComprobante(xml.getBytes(),xml.getOriginalFilename())
-            flash.message="CFDI  de gastos importado "+cfdi.toString()
-            redirect action:'show',params:[id:cfdi.id]
-        }
-        catch(CfdiException e) {
-            flash.message=e.message
-            println 'Error cargando CFDI: '+e.message
-            redirect action:'index'
-        }
-    }
-
-    @Transactional
-    def registrarCfdiXml(Gasto gasto){
-        def xml=request.getFile('file')
-        if (xml.empty) {
-            flash.message = 'CFDI incorrecto (archivo vacío)'
+        File xmlFile = File.createTempFile(xml.getName(),".temp");
+        println 'Xml File:'+xmlFile.getCanonicalPath()
+        def gasto=gastoService.importar(xmlFile)
+        if(gasto.instanceOf(Gasto)){
+            flash.message="Gasto importado desde archivo XML ${xml.getName()}"
             redirect action:'edit',id:gasto.id
             return
         }
-        gasto.xml=xml.getBytes()
-        gasto.xmlName=xml.getOriginalFilename()
-        gasto.save failOnError:true
-        flash.message="CFDI cargado"
+        flash.message="No es posible importar el gasto desde el archivo ${xml.getName()}"
+        redirect action:'index'
+
+    }
+
+   
+
+    @Transactional
+    def validarEnElSat(Gasto gasto){
+        if(gasto.acuse){
+            flash.message="Factura de gastos (CFDI) ya validado en el SAT"
+            redirect action:'edit',id:gasto.id
+            return
+        }
+        gastoService.validarEnElSat(gasto)
+        flash.message="Factura de gastos (CFDI) validado en el SAT"
         redirect action:'edit',id:gasto.id
+        return
+    }
+
+    def mostrarAcuse(Gasto gasto){
+        def acuse=gastoService.toAcuse(gasto.acuse)
+        def xml=gastoService.toXml(acuse)
+        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+    }
+
+    def descargarAcuse(Gasto gasto){
+        log.info 'Descargando archivo xml: '+gasto.uuid
+        response.setContentType("application/octet-stream")
+        response.setHeader("Content-disposition", "filename=Acuse_${gasto.uuid}.xml")
+        response.outputStream << gasto.cfdiXml
+        return
+        
     }
 }
 

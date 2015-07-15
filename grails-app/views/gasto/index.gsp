@@ -48,9 +48,10 @@
 		            <li>
 		                <g:link action="create" ><i class="fa fa-plus"></i> Nuevo</g:link>
 		            </li>
+		            
 		            <li>
-		            	<a href="#uploadFileDialog" data-toggle="modal">
-		            		<i class="fa fa-upload"></i></span> Importar 
+		            	<a href="#uploadFileDialog" data-toggle="modal" >
+		            		<i class="fa fa-upload"></i></span> Importar CFDI
 		            	</a>
 		            </li>
 		        </ul>
@@ -89,7 +90,7 @@
 					</thead>
 					<tbody>
 						<g:each in="${gastoInstanceList}" var="row">
-							<tr id="${row.id}">
+							<tr id="${row.id}" class="${row?.acuseCodigoEstatus?.startsWith('S')?'success':'warning' }">
 								<td >
 									<g:link  action="show" id="${row.id}">
 										${formatNumber(number:row.id,format:'####')}
@@ -97,20 +98,38 @@
 								</td>
 								<td >
 									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"proveedor")}
+										
+										<abbr title="${row.proveedor.nombre}">
+											${org.apache.commons.lang.StringUtils.left(row.proveedor.nombre,25)}
+										</abbr>
 									</g:link>
 								</td>
 								<td>
 									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"uuid")}
+										<abbr title="${row.uuid}">
+											${org.apache.commons.lang.StringUtils.substringAfterLast(row.uuid,'-')}
+										</abbr>
 									</g:link>
 								</td>
-								<td>${fieldValue(bean:row,field:"serie")}</td>
-								<td>${fieldValue(bean:row,field:"folio")}</td>
+								<td>
+									<abbr title="${row.serie}">
+										${org.apache.commons.lang.StringUtils.substring(row.serie,0,5)}
+									</abbr>
+								</td>
+								<td>
+									<abbr title="${row.folio}">
+										${org.apache.commons.lang.StringUtils.right(row.folio,5)}
+									</abbr>
+								</td>
 								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
 								<td><g:formatDate date="${row.vencimiento}" format="dd/MM/yyyy"/></td>
 								<td>${formatNumber(number:row.total,type:"currency")}</td>
-								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+								<td>
+									<small>
+										<g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/>
+									</small>
+									
+								</td>
 							</tr>
 						</g:each>
 					</tbody>
@@ -121,6 +140,7 @@
 			</div>
 		</div> <!-- end .row 2 -->
 		%{-- <g:render template="uploadXmlFile"/> --}%
+		<g:render template="uploadXmlFile"/>
 
 	</div>
 
