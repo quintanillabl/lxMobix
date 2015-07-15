@@ -33,12 +33,16 @@ class GastoService {
             partidas=delegate.partidas?:[] as Set
         } 
         gasto.save failOnError:true
-
         return gasto
     }
 
     def update(Gasto gasto){
-
+        gasto.with{
+            modificadoPor=springSecurityService.getCurrentUser().username
+        }
+        actualizarImportes gasto
+        gasto.save failOnError:true
+        return gasto
     }
 
     def agregarConcepto(Gasto gasto,GastoDet det){
@@ -46,16 +50,22 @@ class GastoService {
         if(det.cuentaContable==null)
             det.cuentaContable=gasto.cuentaContable
         gasto.addToPartidas(det)
-        actualizarImportes gasto
-        gasto.save failOnError:true
+        //actualizarImportes gasto
+        //gasto.save failOnError:true
+        update(gasto)
     }
 
     def eleiminarPartida(GastoDet det){
         Gasto gasto=det.gasto
         gasto.removeFromPartidas(det)
-        gasto.actualizarImportes()
-        gasto=gasto.save failOnError:true
-        return gasto
+        // actualizarImportes()
+        // gasto=gasto.save failOnError:true
+        update(gasto)
+    }
+
+    def actualizarPartida(GastoDet det){
+        Gasto gasto=det.gasto
+        return update(gasto)
     }
 
 
@@ -69,6 +79,7 @@ class GastoService {
                 partidas*.actualizarImportes()
                 importe=partidas.sum(0.0,{it.importe}) 
                 subTotal=importe-descuento
+                if(impuestoTasa>1) impuestoTasa/=100
                 impuesto=MonedaUtils.calcularImpuesto(subTotal,impuestoTasa?:MonedaUtils.IVA)
 
             }

@@ -40,6 +40,9 @@
 				    		<i class="fa fa-download"></i> Descargar acuse
 				    	</g:link>
 				    </g:else>
+				    <g:if test="${gastoInstance.cfdiXml}">
+				    	<g:link class="btn btn-default " action="mostrarXml" resource="${cfdiInstance}">CFDI</g:link>
+				    </g:if>
 				    
 				    <g:link action="print" class="btn btn-default " id="${gastoInstance.id}">
 				        <i class="fa fa-print"></i> Imprimir
@@ -108,6 +111,7 @@
 									<f:field property="importe"  cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="descuento" cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="subTotal" cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="impuestoTasa"  cols="col-sm-8" colsLabel="col-sm-4" label="IVA (%)"/>
 									<f:field property="impuesto"  cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="total"  cols="col-sm-8" colsLabel="col-sm-4"/>
 								</div>
@@ -124,7 +128,7 @@
 				  					<th>Valor unitario</th>
 				  					<th>Importe</th>
 				  					
-				  					<th>Cuental</th>
+				  					<th>Cuenta</th>
 				  					<th>Comentario</th>
 				  					<td></td>
 				  				</tr>

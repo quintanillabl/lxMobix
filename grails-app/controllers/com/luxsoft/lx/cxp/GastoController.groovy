@@ -149,6 +149,12 @@ class GastoController {
         return
         
     }
+
+    def verCfdiXml(Gasto gasto){
+        def acuse=gastoService.toAcuse(gasto.acuse)
+        def xml=gastoService.toXml(acuse)
+        render(text: xml, contentType: "text/xml", encoding: "UTF-8")
+    }
 }
 
 import org.grails.databinding.BindingFormat

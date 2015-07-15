@@ -123,7 +123,7 @@
 				  					<th>Valor unitario</th>
 				  					<th>Importe</th>
 				  					
-				  					<th>Cuental</th>
+				  					<th>Cuenta</th>
 				  					<th>Comentario</th>
 				  					
 				  				</tr>

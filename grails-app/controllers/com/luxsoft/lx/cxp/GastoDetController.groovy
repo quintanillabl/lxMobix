@@ -61,21 +61,15 @@ class GastoDetController {
             notFound()
             return
         }
-
         if (gastoDetInstance.hasErrors()) {
             respond gastoDetInstance.errors, view:'edit'
             return
         }
-
-        gastoDetInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.updated.message', args: [message(code: 'GastoDet.label', default: 'GastoDet'), gastoDetInstance.id])
-                redirect gastoDetInstance
-            }
-            '*'{ respond gastoDetInstance, [status: OK] }
-        }
+        //gastoDetInstance.save flush:true
+        gastoService.actualizarPartida(gastoDetInstance)
+        flash.message="Partida de gasto actualizada satisfactoriamente"
+        redirect controller:'gasto',action:'edit',id:gastoDetInstance.gasto.id
+        
     }
 
     @Transactional
