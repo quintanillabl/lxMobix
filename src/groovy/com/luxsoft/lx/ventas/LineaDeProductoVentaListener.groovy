@@ -15,7 +15,7 @@ class LineaDeProductoVentaListener {
 		if(det.producto.linea.clave=='SERV_INM'){
 			def direccion=det?.inmueble?.direccion
 			if(direccion){
-				def comentario="Pago de ${det.producto.descripcion.trim()} para  inmueble:${direccion.toLabel()} (${det.comentario})"
+				def comentario="${det.producto.descripcion.trim()}  del  inmueble ubicado en:${direccion.toLabel()} ${det.comentario}"
 				log.debug 'Ajustando el comentari de la partida a: '+comentario
 				det.comentario=comentario
 			}
