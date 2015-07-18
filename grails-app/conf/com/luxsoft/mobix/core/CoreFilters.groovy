@@ -47,7 +47,7 @@ class CoreFilters {
                 if(!session.empresa &&  (actionName!='auth') &&  (actionName!='denied') 
                     && (actionName!='seleccionDeEmpresa') 
                     && (actionName!='setCurrentEmpresa') ){
-                    println 'Before: '+actionName+ " Controller: "+controllerName+ ' Empresa: '+session.empresa
+                    
                     redirect controller:'home',action:'seleccionDeEmpresa'
                     return false
                 }

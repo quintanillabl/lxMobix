@@ -29,7 +29,7 @@ class HomeController {
         assert empresa, "No se puede fijar empresa nula"
         def origin=request.getHeader('referer')
         session.empresa=empresa
-        println 'Origen: '+origin
+       
         //redirect action: 'index' //action:'index'
         //respond empresa,view:'index',model:[empresa:empresa]
         render view:'index'

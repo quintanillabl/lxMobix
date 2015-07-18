@@ -74,7 +74,7 @@ class Venta {
 	static hasMany = [partidas: VentaDet]
 
     static constraints = {
-    	tipo inList:['ARRENDAMIENTO','NORMAL']
+    	tipo inList:['ARRENDAMIENTO','NORMAL','SERVICIOS']
     	formaDePago maxSize:20,blank:false
 		comentario nullable:true
 		creadoPor nullalbe:true

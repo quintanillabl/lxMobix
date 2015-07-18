@@ -12,10 +12,14 @@ class LineaDeProductoVentaListener {
 	
 	def beforeSavePartida(VentaDet det){
 		log.debug 'Evaluando partida: '+det
-		if(det?.producto?.linea){
-			if(det.producto.linea.clave==''){
-				log.debug 'Ajustando el comentari de la partida: '+det
+		if(det.producto.linea.clave=='SERV_INM'){
+			def direccion=det?.inmueble?.direccion
+			if(direccion){
+				def comentario="Pago de ${det.producto.descripcion.trim()} para  inmueble:${direccion.toLabel()} (${det.comentario})"
+				log.debug 'Ajustando el comentari de la partida a: '+comentario
+				det.comentario=comentario
 			}
+			
 		}
 		return det
 	}

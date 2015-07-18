@@ -2,15 +2,7 @@
 
 	<div class="panel panel-primary">
 		<div class="panel-heading">Agregar partida a venta ${ventaInstance.folio} ${ventaInstance.cliente} (${ventaInstance.tipo})</div>
-	  	%{-- <div class="panel-body">
-	    	<g:hasErrors bean="${ventaDetInstance}">
-	    		<div class="alert alert-danger">
-	    			<ul class="errors" >
-	    				<g:renderErrors bean="${ventaDetInstance}" as="list" />
-	    			</ul>
-	    		</div>
-	    	</g:hasErrors>
-	  	</div> --}%
+	  	
 		<div class="panel-body col-md-10">
 		<fieldset>
 			<legend>  <span id="productoLabel">Seleccione un producto</span></legend>
@@ -24,8 +16,6 @@
 			<g:form name="ventaDetForm" action="save" class="form-horizontal">	
 			
 				<g:hiddenField name="venta.id" value="${ventaInstance.id}"/>
-				
-				
 				
 				<div class="form-group">
 					<label for="producto" class="col-sm-3 control-label">Producto</label>
@@ -42,7 +32,7 @@
 				<div class="form-group">
 					<label for="cantidad" class="col-sm-3 control-label">Cantidad</label>
 					<div class="col-sm-4">
-						<input id="cantidad" class="form-control"
+						<input id="cantidad" class="form-control data-moneda"
 							value="${ventaDetInstance?.cantidad}" 
 							name="cantidad"
 							type="text"  autocomplete="off">
@@ -75,7 +65,19 @@
 							value="${ventaDetInstance?.comentario }">
 					</div>
 				</div>
-			
+				<g:if test="${ventaInstance.tipo=='SERVICIOS'}">
+					<f:field bean="${ventaDetInstance}" property="inmueble" cols="col-sm-9" colsLabel="col-sm-3"/>
+				</g:if>
+				%{-- <f:with bean="${ventaDetInstance}">
+					<f:field property="cantidad" widget-class="data-moneda"/>
+					<f:field property="precio"   widget-class="data-moneda" widget-class="form-control"/>
+					<f:field property="descuento" label="Descuento(%)"/>
+					<f:field property="comentario"/>
+				</f:with>
+				<g:if test="${ventaInstance.tipo=='SERVICIOS'}">
+					<f:field bean="${ventaDetInstance}" property="inmueble"/>
+				</g:if> --}%
+				
 			</g:form>
 		</fieldset>
 		</div>					
@@ -100,6 +102,7 @@
 	$(document).ready(function(){
 		$(".data-moneda").autoNumeric({wEmpty:'zero',aSep:""});
 		$(".data-descuento").autoNumeric({vMin: '0', vMax: '99.9999'})
+		
 		$("#producto").autocomplete({
 			source:'<g:createLink controller="producto" action="getProductosAsJSON"/>',
             minLength: 2,
@@ -111,13 +114,12 @@
 				validar();		
 			}
 		});
+		
 		$("#cantidad").on('blur',function(e){
 			validar();
 		});
 
 		$("input[type=submit]").attr("disabled", "disabled");
-		
-		
 
 		var validar=function(){
 			var cantidad= $("#cantidad").val();

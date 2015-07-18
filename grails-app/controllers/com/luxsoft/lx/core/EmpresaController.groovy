@@ -111,8 +111,6 @@ class EmpresaController {
         //def empresa=Empresa.get(params.id)
         //println 'Cambiando a empres: '+empresa
         session.empresa=empresa
-        println 'Empresa en operacion: '+session.empresa
-
         redirect controller:'home',action:'index'
 
     }

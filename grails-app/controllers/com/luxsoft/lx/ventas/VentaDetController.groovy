@@ -117,6 +117,7 @@ class VentaDetController {
 
 import grails.validation.Validateable
 import com.luxsoft.lx.core.Producto
+import com.luxsoft.mobix.core.Inmueble
 @Validateable
 class VentaDetCommand{
 
@@ -127,6 +128,7 @@ class VentaDetCommand{
         BigDecimal descuentoTasa=0.0
         BigDecimal impuesto=0.0
         String comentario
+        Inmueble inmueble
 
     static constraints={
         importFrom VentaDet
@@ -140,7 +142,8 @@ class VentaDetCommand{
             precio:precio,
             descuentoTasa:descuentoTasa,
             impuesto:impuesto,
-            comentario:comentario
+            comentario:comentario,
+            inmueble:inmueble
             )
         return det
 

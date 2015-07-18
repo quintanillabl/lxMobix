@@ -8,6 +8,7 @@ import groovy.transform.EqualsAndHashCode
 
 import com.luxsoft.lx.core.Producto
 import com.luxsoft.lx.utils.MonedaUtils
+import com.luxsoft.mobix.core.Inmueble
 
 @EqualsAndHashCode(includes='producto,cantidad')
 //@ToString(includes='producto,cantidad',includeNames=true,includePackage=false)
@@ -31,6 +32,8 @@ class VentaDet {
 
 	String comentario
 
+    Inmueble inmueble
+
 	Date dateCreated
 	Date lastUpdated
 
@@ -45,6 +48,7 @@ class VentaDet {
     	importeNeto(scale:4)
     	impuesto(scale:4)
     	comentario nullable:true
+        inmueble nullable:true
         
     }
 
