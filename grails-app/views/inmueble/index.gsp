@@ -101,19 +101,15 @@
 
 	</div>
 
-
-
-
 	<script type="text/javascript">
-		$(document).ready(function(){
-			
+		$(function(){
 			$('#grid').dataTable( {
 	        	"paging":   false,
 	        	"ordering": false,
 	        	"info":     false
 	        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
 	    	} );
-	    	
+
 	    	$("#filtro").on('keyup',function(e){
 	    		var term=$(this).val();
 	    		$('#grid').DataTable().search(
@@ -121,8 +117,20 @@
 	    		        
 	    		).draw();
 	    	});
-
 		});
+    	$(document).keydown(function(e){
+    	    console.log("Key pressed "+e.keyCode);
+    	    //CTRL + S keydown combo
+    	      /*
+	    	if(e.altKey && e.keyCode == 83){
+	            var location='<g:createLink controller="consulta" action="socios"/>';
+	            console.log("I've been pressed!: Ctrl+s "+location);
+	            window.location=location;
+	      	}
+	      	*/
+    	});
+
 	</script>
+
 </body>
 </html>

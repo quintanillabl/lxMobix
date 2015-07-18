@@ -67,6 +67,14 @@
 							autocomplete="off" >
 					</div>
 				</div>
+				<div class="form-group">
+					<label for="descuentoTasa" class="col-sm-3 control-label">Comentario</label>
+					<div class="col-sm-9">
+						<input id="comentario" class="form-control" 
+							name="comentario"  
+							value="${ventaDetInstance?.comentario }">
+					</div>
+				</div>
 			
 			</g:form>
 		</fieldset>

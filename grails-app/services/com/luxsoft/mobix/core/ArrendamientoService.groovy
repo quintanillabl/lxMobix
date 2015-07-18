@@ -16,7 +16,7 @@ class ArrendamientoService {
     	def clave="RT_${a.tipo}"
     	Producto p=Producto.findByClave(clave)
     	if(!p){
-            def linea=Linea.findByClave('RENTA')
+            def linea=Linea.findByEmpresaAndClave(a.empresa,'RENTA')
             if(linea==null)
                 throw new ArrendamientoException(message:'No exite la linea RENTA dada de alta')
     		p = new Producto(clave:clave,descripcion:"Renta ${a.tipo}",unidad:'SERVICIO',linea:linea,empresa:a.empresa)

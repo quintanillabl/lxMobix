@@ -5,6 +5,7 @@ import com.luxsoft.cfdi.CfdiSellador
 import com.luxsoft.cfdi.CfdiTimbrador
 import grails.util.Environment
 import com.luxsoft.lx.contabilidad.ContaListener
+import com.luxsoft.lx.ventas.*
 
 // Place your Spring DSL code here
 beans = {
@@ -39,4 +40,11 @@ beans = {
 	localeResolver(FixedLocaleResolver,Locale.US)
 
 	contaListener(ContaListener){}
+
+	ventaListenerManager(VentaListenerManager){
+		listeners=[
+			ref('lineaDeProductoVentaListener')
+		]
+	}
+	lineaDeProductoVentaListener(LineaDeProductoVentaListener){}
 }

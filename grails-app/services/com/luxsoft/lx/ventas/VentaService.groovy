@@ -10,6 +10,7 @@ class VentaService {
 
 	def springSecurityService
     def cfdiService
+    def ventaListenerManager
     
 
     def save(Venta venta) {
@@ -51,6 +52,19 @@ class VentaService {
             throw new VentaException(message:'Venta ya facturada',venta:venta)
         def cfdi=cfdiService.generar(venta)
         return venta
+
+    }
+
+    def agregarPartida(Venta venta,VentaDet det){
+        
+        det.actualizarImportes()
+        
+        //Aplicando listeners
+        ventaListenerManager.beforeSavePartida(det)
+
+        venta.addToPartidas(det)
+        venta.actualizarImportes()
+        venta.save failOnError:true
 
     }
 

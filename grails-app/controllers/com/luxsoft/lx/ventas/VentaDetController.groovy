@@ -45,15 +45,17 @@ class VentaDetController {
             respond command.errors, model:[ventaInstance:command.venta,ventaDetInstance:command],view:'create'
             return
         }
-
-        /** ---------- Persistencia mover a service ------------**/
+        def ventaDetInstance=command.toVentaDet()
+        def venta=command.venta
+        venta=ventaService.agregarPartida(venta,ventaDetInstance)
+        /** ---------- Persistencia mover a service ------------
         def ventaDetInstance=command.toVentaDet()
         ventaDetInstance.actualizarImportes()
         def venta=command.venta
         venta.addToPartidas(ventaDetInstance)
         venta.actualizarImportes()
         venta.save failOnError:true
-        /** --------------------------------------------------- **/
+         --------------------------------------------------- **/
 
         flash.message="Partida agregada"
         redirect controller:'venta',action:'show',params:[id:venta.id]

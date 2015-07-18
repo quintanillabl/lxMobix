@@ -27,4 +27,16 @@
 		<g:render template="/_menu/footer"/>
 		<div id="spinner" class="spinner" style="display:none;"><g:message code="spinner.alt" default="Loading&hellip;"/></div>
 	</body>
+	<script type="text/javascript">
+		$(function(){
+			$(document).keydown(function(e){
+			    if(e.altKey && e.keyCode == 80){
+		            var location='<g:createLink controller="producto" action="index"/>';
+		            console.log("I've been pressed!: Alt+p "+location);
+		            window.location=location;
+			    }
+			});
+		});
+
+	</script>      
 </html>
