@@ -219,14 +219,12 @@
 		
 		$("form#totalesForm :input").each(function(){
 		 	var input = $(this); // This is the jquery object of the input, do what you will
-		 	input.removeAttr("type").prop('type','text')
+		 	input.removeAttr("type")
+		 	.prop('type','text')
 		 	.addClass('form-control')
 		 	.addClass('text-right');
 		});
-		var edit=true;
-		if(edit){
-
-		}
+		
 	});
 </script>
 	
