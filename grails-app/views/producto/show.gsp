@@ -27,7 +27,7 @@
 				    	    <i class="fa fa-trash"></i> Eliminar
 				    	</g:link>
 				    </sec:ifAllGranted>
-				    <sec:ifAllGranted roles="CONTABILIDAD">
+				    <sec:ifAllGranted roles="VENTAS">
 				    	<g:link action="edit" class="btn btn-default " id="${productoInstance.id}">
 				    	    <i class="fa fa-pencil"></i> Editar
 				    	</g:link>

@@ -110,6 +110,7 @@ class GastoService {
             assert cuenta,'No se ha declarado la cuenta general de gastos'
             if('Receptor'==receptor.name()){
                 def empresa=Empresa.findByRfc(receptor.attributes()['rfc'])
+               // assert empresa,'No existe empresa para: '+receptor.name()+ ' RFC: '+receptor.attributes()['rfc']+ 'Archivo: '+xmlFile.name
                 log.debug 'Importando Gasto/Compra para '+empresa
                 
                 def emisorNode= xml.breadthFirst().find { it.name() == 'Emisor'}
@@ -164,15 +165,18 @@ class GastoService {
                             cfdiXml:xmlFile.getBytes()
                         )
                         def traslados=xml.breadthFirst().find { it.name() == 'Traslados'}
-                        traslados.children().each{ t->
-                            //println it.name()+ ' Val: '+it.attributes() 
-                            if(t.attributes()['impuesto']=='IVA'){
-                                println 'IVA: '+t.name()+ ' Val: '+t.attributes() 
-                                def tasa=t.attributes()['tasa'] as BigDecimal
-                                gasto.impuestoTasa=tasa
-                                gasto.impuesto=t.attributes()['importe'] as BigDecimal
+                        if(traslados){
+                            traslados.children().each{ t->
+                                //println it.name()+ ' Val: '+it.attributes() 
+                                if(t.attributes()['impuesto']=='IVA'){
+                                    println 'IVA: '+t.name()+ ' Val: '+t.attributes() 
+                                    def tasa=t.attributes()['tasa'] as BigDecimal
+                                    gasto.impuestoTasa=tasa
+                                    gasto.impuesto=t.attributes()['importe'] as BigDecimal
+                                }
                             }
                         }
+                        
                         
                         def conceptos=xml.breadthFirst().find { it.name() == 'Conceptos'}
                         conceptos.children().each{

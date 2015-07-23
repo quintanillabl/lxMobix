@@ -68,6 +68,7 @@
 				<g:if test="${ventaInstance.tipo=='SERVICIOS'}">
 					<f:field bean="${ventaDetInstance}" property="inmueble" cols="col-sm-9" colsLabel="col-sm-3"/>
 				</g:if>
+				
 				%{-- <f:with bean="${ventaDetInstance}">
 					<f:field property="cantidad" widget-class="data-moneda"/>
 					<f:field property="precio"   widget-class="data-moneda" widget-class="form-control"/>
