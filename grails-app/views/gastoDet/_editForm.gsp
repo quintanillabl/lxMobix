@@ -7,7 +7,7 @@
   	
 	<div class="panel-body ">
 	
-		<legend>  <span id="conceptoLabel">Concepto ${gastoDetInstance.concepto}</span></legend>
+		<legend>  <span id="conceptoLabel">Concepto ${gastoDetInstance.descripcion}</span></legend>
 		<g:hasErrors bean="${gastoDetInstance}">
 			<div class="alert alert-danger">
 				<ul class="errors" >
@@ -20,7 +20,9 @@
 		<g:form name="updateForm" action="update" class="form-horizontal" method="PUT">	
 			<g:hiddenField name="id" value="${gastoDetInstance.id}"/>
 			<f:with bean="${gastoDetInstance}">
-				<f:field property="concepto" widget-class="form-control uppercase-field" cols="col-sm-8" colsLabel="col-sm-3"/>
+				<g:hiddenField name="concepto" value="${gastoDetInstance.concepto}"/>
+				%{-- <f:field property="concepto" widget-class="form-control uppercase-field" cols="col-sm-8" colsLabel="col-sm-3"/> --}%
+				
 				<f:field property="descripcion" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="unidad" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="cantidad" 
@@ -31,10 +33,10 @@
 					widget-class="form-control numeric" 
 					widget-type="text" cols="col-sm-8" 
 					colsLabel="col-sm-3"/>
-				<f:field property="cuentaContable"  cols="col-sm-8" colsLabel="col-sm-3">
+				%{-- <f:field property="cuentaContable"  cols="col-sm-8" colsLabel="col-sm-3">
 					<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
 					<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >
-				</f:field>
+				</f:field> --}%
 				<f:field property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 			</f:with>
 		</g:form>

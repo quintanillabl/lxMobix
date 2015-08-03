@@ -96,7 +96,7 @@
 				    					%{-- <f:field property="cuentaContable" widget-class="form-control" 
 				    						label="Cta" /> --}%
 				    					<f:display property='uuid' label="UUID" />
-				    					<f:display property='cuentaContable' label="Cta contable"/>
+				    					%{-- <f:display property='cuentaContable' label="Cta contable"/> --}%
 				    					<f:field property="comentario" widget-class="form-control"  />
 				    				</div>
 				    			</div>
@@ -116,7 +116,7 @@
 				  		<table id="grid" class="table table-striped table-bordered table-condensed">
 				  			<thead>
 				  				<tr>
-				  					<th>Concepto</th>
+				  					%{-- <th>Concepto</th> --}%
 				  					<th>Descripcion</th>
 				  					<th>Unidad</th>
 				  					<th>Cantidad</th>
@@ -131,11 +131,11 @@
 				  			<tbody>
 				  				<g:each in="${gastoInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
-				  						<td >
+				  						%{-- <td >
 				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
 				  								${fieldValue(bean:row,field:"concepto")}
 				  							</g:link>
-				  						</td>
+				  						</td> --}%
 				  						<td>
 				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
 				  								${fieldValue(bean:row,field:"descripcion")}

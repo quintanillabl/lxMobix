@@ -3,7 +3,7 @@
   	
 	<div class="panel-body ">
 	
-		<legend>  <span id="conceptoLabel">${gastoDetInstance.concepto}</span></legend>
+		<legend>  <span id="conceptoLabel">${gastoDetInstance.descripcion}</span></legend>
 		<g:hasErrors bean="${gastoDetInstance}">
 			<div class="alert alert-danger">
 				<ul class="errors" >
@@ -14,7 +14,7 @@
 		
 		<form class="form-horizontal">	
 			<f:with bean="${gastoDetInstance}">
-				<f:display property="descripcion"/>
+				
 				<f:display property="unidad"/>
 				<f:display property="cantidad"/>
 				<f:display property="valorUnitario"  label="Precio"/>

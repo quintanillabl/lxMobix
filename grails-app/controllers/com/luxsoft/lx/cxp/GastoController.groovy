@@ -20,8 +20,8 @@ class GastoController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 20, 100)
-        params.sort=params.sort?:'lastUpdated'
+        params.max = 200
+        params.sort=params.sort?:'fecha'
         params.order='desc'
         respond Gasto.findAllByEmpresa(session.empresa,params), model:[gastoInstanceCount: Gasto.countByEmpresa(session.empresa)]
     }
