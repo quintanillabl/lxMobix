@@ -87,7 +87,7 @@
 								<div class="col-sm-4">
 									<f:field property="fecha" cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="serie" widget-class="form-control "  cols="col-sm-8" colsLabel="col-sm-4"/>
-									<f:field property="cuentaContable" widget-class="form-control" label="Cta" cols="col-sm-8" colsLabel="col-sm-4"/>
+									%{-- <f:field property="cuentaContable" widget-class="form-control" label="Cta" cols="col-sm-8" colsLabel="col-sm-4"/> --}%
 									<f:field property="moneda" 
 										widget-class="form-control" 
 										widget-readonly="readonly"
