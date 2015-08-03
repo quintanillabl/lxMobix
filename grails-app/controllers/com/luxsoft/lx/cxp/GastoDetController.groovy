@@ -99,7 +99,7 @@ import grails.validation.Validateable
 class GastoDetCommand{
 
     Gasto gasto    
-    String concepto
+    String concepto="GASTO"
     String descripcion
     BigDecimal cantidad
     BigDecimal valorUnitario
