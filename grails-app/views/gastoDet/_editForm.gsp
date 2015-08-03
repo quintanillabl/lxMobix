@@ -33,10 +33,10 @@
 					widget-class="form-control numeric" 
 					widget-type="text" cols="col-sm-8" 
 					colsLabel="col-sm-3"/>
-				%{-- <f:field property="cuentaContable"  cols="col-sm-8" colsLabel="col-sm-3">
+				<f:field property="cuentaContable"  cols="col-sm-8" colsLabel="col-sm-3">
 					<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
 					<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >
-				</f:field> --}%
+				</f:field>
 				<f:field property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 			</f:with>
 		</g:form>
