@@ -14,7 +14,7 @@ import org.apache.commons.lang.exception.ExceptionUtils
 @Transactional(readOnly = true)
 class VentaController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
     def ventaService 
 
     def index(Integer max) {

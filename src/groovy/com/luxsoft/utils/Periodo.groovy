@@ -210,6 +210,16 @@ class Periodo implements Comparable<Periodo>{
 	public static Integer currentMes(){
 		return obtenerMes(new Date())+1
 	}
+
+	public static Periodo ytd(){
+		Calendar cal=Calendar.getInstance();
+		cal.set(Calendar.MONTH,0);
+		cal.set(Calendar.DATE,1);
+		Date inicio=cal.getTime();
+		Periodo p=new Periodo(fechaInicial:inicio,fechaFinal:new Date());
+		return p;
+		
+	}
 	
 
 	static final List MESES=['ENERO','FEBRERO','MARZO','ABRIL','MAYO','JUNIO','JULIO','AGOSTO','SEPTIEMBRE','OCTUBRE','NOVIEMBRE','DICIEMBRE']
