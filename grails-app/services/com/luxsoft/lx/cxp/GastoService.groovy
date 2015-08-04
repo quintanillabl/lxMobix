@@ -150,7 +150,6 @@ class GastoService {
                         gasto=new Gasto(
                             empresa:empresa,
                             proveedor:proveedor,
-                            cuentaContable:cuenta,
                             fecha:fecha,
                             vencimiento:fecha+1,
                             importe:data['subTotal'] as BigDecimal,
@@ -184,7 +183,6 @@ class GastoService {
                             println model
                             def det=new GastoDet(
                                 cuentaContable:cuenta,
-                                concepto:'GASTO',
                                 descripcion:model['descripcion'],
                                 unidad:model['unidad'],
                                 cantidad:model['cantidad'],
