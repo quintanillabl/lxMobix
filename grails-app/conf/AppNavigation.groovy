@@ -45,6 +45,7 @@ navigation={
 			movimientos(controller:'movimientoDeCuenta',action:'index')
 			pagos(controller:'pago',action:'index')
 			cobros(controller:'cobro',action:'index')
+			saldos(controller:'saldoPorCuentaBancaria',action:'index')
 		}
 		info(view:'info')
 	}

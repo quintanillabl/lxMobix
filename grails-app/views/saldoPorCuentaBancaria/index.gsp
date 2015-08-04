@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Movimientos de cuentas</title>
+	<title>Saldos de cuentas</title>
 	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
 	<asset:javascript src="datatables/jquery.dataTables.js"/> 
 </head>
@@ -16,7 +16,7 @@
 			<div class="col-md-12">
 				<div class="alert alert-info">
 					<h4>
-						<p class="text-center"> Movimientos de cuentas bancarias  (<small>${session.empresa.nombre}</small>)</p>
+						<p class="text-center"> Saldos de cuentas bancarias (<small>${session.empresa.nombre}</small>)</p>
 						
 							
 					</h4>
@@ -34,7 +34,9 @@
 
 		    <div class="btn-group">
 		        <lx:refreshButton/>
-		        <lx:createButton/>
+		        <g:link action="actualizarSaldos" class="btn btn-primary" onclick="return confirm('Actualizar saldo de todas las cuentas?');">
+		        	<i class="fa fa-cog"></i> Actualizar saldos
+		        </g:link>
 		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
 		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
 		        </a>
@@ -48,11 +50,7 @@
 		        </button>
 
 		        <ul class="dropdown-menu">
-		        	<li>
-		        		<g:link action="estadoDeCuenta"> Estado de cuenta</g:link>	
-		        	</li>
-		              
-		            
+		        	
 		        </ul>
 		    </div>
 		    
@@ -65,33 +63,29 @@
 
 					<thead>
 						<tr>
-							<th>Nombre</th>
 							<th>Cuenta</th>
-							<th>Importe</th>
-							<th>Concepto</th>
-							<th>Referencia</th>
-							<th>Comentario</th>
-							<th>Creado</th>
+							<th>Inicial</th>
+							<th>Ingresos</th>
+							<th>Egresos</th>
+							<th>Final</th>
+							<th>Modificado</th>
+							<th>Cierre</th>
 						</tr>
 					</thead>
 					<tbody>
-						<g:each in="${movimientoDeCuentaInstanceList}" var="row">
+						<g:each in="${saldoPorCuentaBancariaInstanceList}" var="row">
 							<tr id="${row.id}">
 								<td >
 									<g:link  action="show" id="${row.id}">
 										${fieldValue(bean:row,field:"cuenta.nombre")}
 									</g:link>
 								</td>
-								<td>
-									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"cuenta.numero")}
-									</g:link>
-								</td>
-								<td>${formatNumber(number:row.importe,type:'currency')}</td>
-								<td>${fieldValue(bean:row,field:"concepto")}</td>
-								<td>${fieldValue(bean:row,field:"referencia")}</td>
-								<td>${fieldValue(bean:row,field:"comentario")}</td>
+								<td>${formatNumber(number:row.saldoInicial,type:'currency')}</td>
+								<td>${formatNumber(number:row.ingresos,type:'currency')}</td>
+								<td>${formatNumber(number:row.egresos,type:'currency')}</td>
+								<td>${formatNumber(number:row.saldoFinal,type:'currency')}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+								<td><g:formatDate date="${row.cierre}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>
 						</g:each>
 					</tbody>

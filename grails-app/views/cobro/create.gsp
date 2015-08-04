@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Movimiento de cuenta</title>
+	<title>Registro de cobro</title>
 	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>
@@ -15,7 +15,7 @@
 			<div class="col-md-12">
 
 				<div class="page-header">
-				  <h3>Alta de movimiento  <small> (${session.empresa})</small>
+				  <h3>Alta de cobro  <small> (${session.empresa})</small>
 				  	<g:if test="${flash.message}">
 				  		<small><span class="label label-warning ">${flash.message}</span></small>
 				  	</g:if> 
@@ -36,21 +36,23 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Datos generales</div>
 					  	<div class="panel-body">
-						    <g:hasErrors bean="${movimientoDeCuentaInstance}">
+						    <g:hasErrors bean="${cobroInstance}">
 						    	<div class="alert alert-danger">
 						    		<ul class="errors" >
-						    			<g:renderErrors bean="${movimientoDeCuentaInstance}" as="list" />
+						    			<g:renderErrors bean="${cobroInstance}" as="list" />
 						    		</ul>
 						    	</div>
 						    </g:hasErrors>
 						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
-							<f:with bean="${movimientoDeCuentaInstance}">
+							<f:with bean="${cobroInstance}">
 								<div class="col-sm-12">
-									<f:field property="cuenta" wrapper="bootstrap3" widget-class="form-control"/>
+									<f:field property="cliente" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="fecha" wrapper="bootstrap3"/>
-									<f:field property="importe" widget="money" wrapper="bootstrap3"/>
-									<f:field property="concepto" wrapper="bootstrap3" widget-class="form-control"/>
+									<f:field property="formaDePago" wrapper="bootstrap3" widget-class="form-control"/>
+									<f:field property="banco" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
+									<f:field property="importe" widget="money" wrapper="bootstrap3"/>
+									<f:field property="cuentaDestino" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="comentario" wrapper="bootstrap3" widget-class="form-control"/>
 								</div>
 								

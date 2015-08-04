@@ -16,9 +16,7 @@
 			<div class="col-md-12">
 				<div class="alert alert-info">
 					<h4>
-						<p class="text-center"> Movimientos de cuentas bancarias  (<small>${session.empresa.nombre}</small>)</p>
-						
-							
+						<p class="text-center"> Registro de cobros  (<small>${session.empresa.nombre}</small>)</p>
 					</h4>
 					<g:if test="${flash.message}">
 						<span class="label label-warning">${flash.message}</span>
@@ -49,9 +47,8 @@
 
 		        <ul class="dropdown-menu">
 		        	<li>
-		        		<g:link action="estadoDeCuenta"> Estado de cuenta</g:link>	
+		        		<g:link controller="report" action="cobranza"> Cobros x Periodo</g:link>	
 		        	</li>
-		              
 		            
 		        </ul>
 		    </div>
@@ -65,31 +62,29 @@
 
 					<thead>
 						<tr>
-							<th>Nombre</th>
-							<th>Cuenta</th>
-							<th>Importe</th>
-							<th>Concepto</th>
+							<th>Cliente</th>
+							<th>Fecha</th>
+							<th>F.P.</th>
 							<th>Referencia</th>
+							<th>Importe</th>
+							<th>Destino</th>
 							<th>Comentario</th>
-							<th>Creado</th>
+							<th>Modificado</th>
 						</tr>
 					</thead>
 					<tbody>
-						<g:each in="${movimientoDeCuentaInstanceList}" var="row">
+						<g:each in="${cobroInstanceList}" var="row">
 							<tr id="${row.id}">
 								<td >
-									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"cuenta.nombre")}
+									<g:link  action="edit" id="${row.id}">
+										${fieldValue(bean:row,field:"cliente")}
 									</g:link>
 								</td>
-								<td>
-									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"cuenta.numero")}
-									</g:link>
-								</td>
-								<td>${formatNumber(number:row.importe,type:'currency')}</td>
-								<td>${fieldValue(bean:row,field:"concepto")}</td>
+								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
+								<td>${fieldValue(bean:row,field:"formaDePago")}</td>
 								<td>${fieldValue(bean:row,field:"referencia")}</td>
+								<td>${formatNumber(number:row.importe,type:'currency')}</td>
+								<td>${fieldValue(bean:row,field:"cuentaDestino.nombre")}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>

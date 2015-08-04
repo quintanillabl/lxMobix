@@ -6,10 +6,14 @@ import groovy.transform.EqualsAndHashCode
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.core.Cliente
 import com.luxsoft.lx.tesoreria.Banco
+import com.luxsoft.lx.tesoreria.CuentaBancaria
+import com.luxsoft.lx.core.Empresa
 
 @EqualsAndHashCode(includes='id,cliente')
 @ToString(includes='cliente,total,disponible,formaDePago',includeNames=true,includePackage=false)
 class Cobro {
+
+	Empresa empresa
 
 	@BindingFormat('dd/MM/yyyy')
 	Date fecha
@@ -30,12 +34,14 @@ class Cobro {
 	
 	String comentario
 
-	String usuario
-
 	Boolean anticipo=false
+
+	CuentaBancaria cuentaDestino
 	
 	Date dateCreated
 	Date lastUpdated
+	String creadoPor
+	String modificadoPor
 	
 	static hasMany = [aplicaciones: AplicacionDeCobro]
 
@@ -43,8 +49,9 @@ class Cobro {
     	comentario nullable:true, maxSize:300
     	referencia nullable:true,maxSize:20
     	banco nullable:true,maxSize:30
-    	usuario nullable:true
-    	anticipo nullable:true
+    	cuentaDestino nullable:true
+    	creadoPor maxSize:50
+    	modificadoPor maxSize:50
     }
 
     static mapping = {
@@ -55,6 +62,8 @@ class Cobro {
 	
 	BigDecimal getAplicado(){
 		//partidas.sum (0.0),{it.importeBruto}
+		if(aplicaciones==null)
+			return 0.0
 		return aplicaciones.sum(0.0,{it.importe})
 	}
 

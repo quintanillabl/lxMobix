@@ -13,20 +13,18 @@ class MovimientoDeCuentaController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index(Integer max) {
-        
+    def movimientoDeCuentaService
 
+    def index(Integer max) {
         //params.max = Math.min(max ?: 20, 100)
         params.sort=params.sort?:'lastUpdated'
         params.order='desc'
-        
         def empresa=session.empresa
-        def periodo=session.periodoContable.toPeriodo()
-       def list=MovimientoDeCuenta.findAll("from MovimientoDeCuenta m where m.empresa=? and date(m.fecha)   between  ? and ?",
-            [empresa,periodo.fechaInicial,periodo.fechaFinal],params)
-        
+        def periodo=session.periodoContable
+        def list=MovimientoDeCuenta.findAll("from MovimientoDeCuenta m where m.empresa=? and year(m.fecha)=? and month(m.fecha)=?",
+            [empresa,periodo.ejercicio,periodo.mes],params)
+        println 'Movimientos registrados: '+list.size()
         respond list
-        
     }
 
     def show(MovimientoDeCuenta movimientoDeCuentaInstance) {
@@ -34,7 +32,7 @@ class MovimientoDeCuentaController {
     }
 
     def create() {
-        respond new MovimientoDeCuenta(params)
+        respond new MovimientoDeCuenta(fecha:new Date())
     }
 
     @Transactional
@@ -44,26 +42,22 @@ class MovimientoDeCuentaController {
             return
         }
 
-        if (movimientoDeCuentaInstance.hasErrors()) {
-            respond movimientoDeCuentaInstance.errors, view:'create'
-            return
-        }
+        // if (movimientoDeCuentaInstance.hasErrors()) {
+        //     respond movimientoDeCuentaInstance.errors, view:'create'
+        //     return
+        // }
 
-        movimientoDeCuentaInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'movimientoDeCuenta.label', default: 'MovimientoDeCuenta'), movimientoDeCuentaInstance.id])
-                redirect movimientoDeCuentaInstance
-            }
-            '*' { respond movimientoDeCuentaInstance, [status: CREATED] }
-        }
+        movimientoDeCuentaInstance=movimientoDeCuentaService.save movimientoDeCuentaInstance
+        flash.message = message(code: 'default.created.message', args: [message(code: 'movimientoDeCuenta.label', default: 'MovimientoDeCuenta'), movimientoDeCuentaInstance.id])
+        redirect movimientoDeCuentaInstance
+        
     }
 
     def edit(MovimientoDeCuenta movimientoDeCuentaInstance) {
         respond movimientoDeCuentaInstance
     }
 
+    /*
     @Transactional
     def update(MovimientoDeCuenta movimientoDeCuentaInstance) {
         if (movimientoDeCuentaInstance == null) {
@@ -76,7 +70,7 @@ class MovimientoDeCuentaController {
             return
         }
 
-        movimientoDeCuentaInstance.save flush:true
+        movimientoDeCuentaInstance=movimientoDeCuentaService.update movimientoDeCuentaInstance
 
         request.withFormat {
             form multipartForm {
@@ -86,24 +80,18 @@ class MovimientoDeCuentaController {
             '*'{ respond movimientoDeCuentaInstance, [status: OK] }
         }
     }
+    */
 
     @Transactional
     def delete(MovimientoDeCuenta movimientoDeCuentaInstance) {
-
         if (movimientoDeCuentaInstance == null) {
             notFound()
             return
         }
-
         movimientoDeCuentaInstance.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'MovimientoDeCuenta.label', default: 'MovimientoDeCuenta'), movimientoDeCuentaInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'MovimientoDeCuenta.label', default: 'MovimientoDeCuenta'), movimientoDeCuentaInstance.id])
+        redirect action:"index", method:"GET"
+        
     }
 
     protected void notFound() {

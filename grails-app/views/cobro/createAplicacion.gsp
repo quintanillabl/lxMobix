@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Movimiento de cuenta</title>
+	<title>Aplicacion de cobro</title>
 	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>
@@ -11,11 +11,9 @@
 	<div class="container">
 		
 		<div class="row">
-
 			<div class="col-md-12">
-
 				<div class="page-header">
-				  <h3>Alta de movimiento  <small> (${session.empresa})</small>
+				  <h3>Aplicación de cobro  <small> (${session.empresa})</small>
 				  	<g:if test="${flash.message}">
 				  		<small><span class="label label-warning ">${flash.message}</span></small>
 				  	</g:if> 
@@ -31,26 +29,33 @@
 			
 			<div class="col-md-8 col-md-offset-2">
 				
-				<g:form class="form-horizontal" action="save" >	
+				<g:form name="createForm" class="form-horizontal" action="saveAplicacion"  >	
 
 					<div class="panel panel-primary">
 						<div class="panel-heading">Datos generales</div>
 					  	<div class="panel-body">
-						    <g:hasErrors bean="${movimientoDeCuentaInstance}">
+						    <g:hasErrors bean="${aplicacionDeCobroInstance}">
 						    	<div class="alert alert-danger">
 						    		<ul class="errors" >
-						    			<g:renderErrors bean="${movimientoDeCuentaInstance}" as="list" />
+						    			<g:renderErrors bean="${aplicacionDeCobroInstance}" as="list" />
 						    		</ul>
 						    	</div>
 						    </g:hasErrors>
 						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
-							<f:with bean="${movimientoDeCuentaInstance}">
+						    <g:hiddenField name="cobro.id" value="${aplicacionDeCobroInstance?.pago?.id}"/>
+							<f:with bean="${aplicacionDeCobroInstance}">
 								<div class="col-sm-12">
-									<f:field property="cuenta" wrapper="bootstrap3" widget-class="form-control"/>
+									<f:field property="cuentaPorCobrar" wrapper="bootstrap3" widget-class="form-control">
+										<g:select class="form-control"  
+											name="${property}" 
+											value="${value}"
+											from="${facturas}" 
+											optionKey="id"
+											required="true"
+											/>
+									</f:field>
 									<f:field property="fecha" wrapper="bootstrap3"/>
 									<f:field property="importe" widget="money" wrapper="bootstrap3"/>
-									<f:field property="concepto" wrapper="bootstrap3" widget-class="form-control"/>
-									<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="comentario" wrapper="bootstrap3" widget-class="form-control"/>
 								</div>
 								
@@ -60,7 +65,7 @@
 						<div class="panel-footer">
 						  	<div class="form-group">
 						  		<div class="buttons col-md-offset-4 col-md-4">
-						  			<g:submitButton name="Salvar" class="btn btn-primary " />
+						  			<g:submitButton name="Aplicar" class="btn btn-primary " />
 						  			<g:link action="index" class="btn btn-default"> Cancelar</g:link>
 						  		</div>
 						  	</div>
