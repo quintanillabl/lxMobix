@@ -32,4 +32,6 @@ databaseChangeLog = {
 	include file: 'changelog_14.groovy'
 
 	include file: 'changelog_15.groovy'
+
+	include file: 'changelog_16.groovy'
 }

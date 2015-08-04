@@ -7,7 +7,6 @@ import groovy.transform.EqualsAndHashCode
 
 import com.luxsoft.lx.core.Proveedor
 import com.luxsoft.lx.core.Empresa
-import com.luxsoft.lx.contabilidad.CuentaContable
 import com.luxsoft.lx.utils.MonedaUtils
 
 @ToString(includes='proveedor,uuid,serie,folio',includeNames=true,includePackage=false)
@@ -16,8 +15,6 @@ class CuentaPorPagar {
 	
 	Empresa empresa
 	Proveedor proveedor
-	CuentaContable cuentaContable
-
 	
 	
 	@BindingFormat('dd/MM/yyyy')

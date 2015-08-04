@@ -116,7 +116,6 @@
 				  		<table id="grid" class="table table-striped table-bordered table-condensed">
 				  			<thead>
 				  				<tr>
-				  					%{-- <th>Concepto</th> --}%
 				  					<th>Descripcion</th>
 				  					<th>Unidad</th>
 				  					<th>Cantidad</th>
@@ -131,11 +130,7 @@
 				  			<tbody>
 				  				<g:each in="${gastoInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
-				  						%{-- <td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"concepto")}
-				  							</g:link>
-				  						</td> --}%
+				  						
 				  						<td>
 				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
 				  								${fieldValue(bean:row,field:"descripcion")}
