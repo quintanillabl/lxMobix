@@ -20,9 +20,7 @@
 		<g:form name="updateForm" action="update" class="form-horizontal" method="PUT">	
 			<g:hiddenField name="id" value="${gastoDetInstance.id}"/>
 			<f:with bean="${gastoDetInstance}">
-				<g:hiddenField name="concepto" value="${gastoDetInstance.concepto}"/>
-				%{-- <f:field property="concepto" widget-class="form-control uppercase-field" cols="col-sm-8" colsLabel="col-sm-3"/> --}%
-				
+				s
 				<f:field property="descripcion" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="unidad" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="cantidad" 
