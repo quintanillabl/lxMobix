@@ -155,7 +155,7 @@
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
 				  						<td>
 				  							<g:link controller="gastoDet" action="delete" id="${row.id}" 
-				  								onclick="return confirm('Eliminar partida ${row.concepto}');">
+				  								onclick="return confirm('Eliminar partida ${row.descripcion}');">
 				  								<span class="glyphicon glyphicon-trash"></span>
 				  							</g:link>
 				  						</td>

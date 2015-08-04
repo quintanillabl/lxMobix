@@ -7,7 +7,7 @@
   	
 	<div class="panel-body ">
 	
-		<legend>  <span id="conceptoLabel">Concepto ${gastoDetInstance.descripcion}</span></legend>
+		<legend>  <span id="conceptoLabel">${gastoDetInstance.descripcion}</span></legend>
 		<g:hasErrors bean="${gastoDetInstance}">
 			<div class="alert alert-danger">
 				<ul class="errors" >
