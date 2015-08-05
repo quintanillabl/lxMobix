@@ -23,10 +23,7 @@
 				        <i class="fa fa-plus"></i> Nueva
 				    </g:link>
 				    <g:if test="${!ventaInstance.cfdi}">
-				    	<g:link action="delete" class="btn btn-danger " id="${ventaInstance.id}"
-				    		onclick="return confirm('Eliminar el venta: '+${ventaInstance.id});">
-				    	    <i class="fa fa-trash"></i> Eliminar
-				    	</g:link>
+				    	
 				    	<lx:deleteButton bean="${ventaInstance}"/>
 				    	<g:link controller="ventaDet" action="create" class="btn btn-default " id="${ventaInstance.id}">
 				    	    <i class="fa fa-cart-plus"></i> Agregar
