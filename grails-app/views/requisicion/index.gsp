@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Requisiciones</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
+	<asset:javascript src="datatables/jquery.dataTables.js"/> 
 </head>
 <body>
 
@@ -106,6 +106,7 @@
 		$(document).ready(function(){
 			
 			$('#grid').dataTable( {
+				"responsive": true,
 	        	"paging":   false,
 	        	"ordering": false,
 	        	"info":     false

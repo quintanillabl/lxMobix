@@ -7,13 +7,15 @@ import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import com.luxsoft.cfdi.*
+import java.text.DecimalFormat
+
 
 
 @Secured(["hasAnyRole('GASTOS','ADMIN')"])
 @Transactional(readOnly = true)
 class RequisicionController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "GET",savePartida:"POST"]
 
     def requisicionService
 
@@ -88,6 +90,53 @@ class RequisicionController {
             }
             '*'{ render status: NO_CONTENT }
         }
+    }
+
+    @Transactional
+    def createPartida(Requisicion requisicionInstance){
+        [requisicionInstance:requisicionInstance,requisicionDetInstance:new RequisicionDet()]
+    }
+
+    @Transactional
+    def savePartida(Requisicion requisicion,RequisicionDet requisicionDetInstance){
+        //println 'Salvando partida: '+requisicionDetInstance
+        //println 'Requisicion: '+requisicion
+        requisicionService.agregarPartida(requisicion,requisicionDetInstance)
+        flash.message="Partida registrada"
+        redirect action:'edit',params:[id:requisicion.id]
+    }
+
+    @Transactional
+    def eliminarPartida(RequisicionDet requisicionDet){
+        def requisicion=requisicionDet.requisicion
+        requisicionService.eliminarPartida(requisicionDet)
+        flash.message="Partida eliminada"
+        redirect action:'edit',params:[id:requisicion.id]
+    }
+
+    def cxpPendientes(Requisicion requisicion) {
+        def proveedor=requisicion.proveedor
+        //def list=Cliente.findAllByEmpresaAndNombreIlike(session.empresa,"%"+params.term+"%",[max:10,sort:"nombre",order:"desc"])
+        params.sort='fecha'
+        params.order="desc"
+        params.max=20
+        def list =CuentaPorPagar.findAll("from CuentaPorPagar c where c.proveedor=? and c.total-c.requisitado>0 and str(c.id) like ?",[proveedor,params.term],params)
+
+        def pattern = "\$##,###.##"
+        def mf = new DecimalFormat(pattern)
+
+        list=list.collect{ c->
+            def nombre="""Id: ${c.id} (Folio:${c.folio}) ${c.fecha.format('dd/MM/yyyy')} Tot: ${mf.format(c.total)} Pen: ${mf.format(c.getPendienteRequisitar()) }
+            """
+            [id:c.id,
+            label:nombre,
+            value:nombre,
+            total:c.total,
+            pendiente:c.getPendienteRequisitar()
+            ]
+        }
+        def res=list as JSON
+        render res
     }
 
     protected void notFound() {

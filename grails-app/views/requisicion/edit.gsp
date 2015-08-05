@@ -23,8 +23,8 @@
 				        <i class="fa fa-print"></i> Imprimir
 				    </g:link> 
 			
-				    <g:link controller="requisicionDet" action="create" class="btn btn-default " id="${requisicionInstance.id}">
-				        <i class="fa fa-cart-plus"></i> Agregar concepto
+				    <g:link action="createPartida" class="btn btn-default " id="${requisicionInstance.id}">
+				        <i class="fa fa-plus"></i> Agregar concepto
 				    </g:link> 
 				    <buttn id="saveBtn" class="btn btn-success">
 				    	<i class="fa fa-floppy-o"></i> Salvar
@@ -73,7 +73,7 @@
 
 								</div>
 								<div class="col-sm-6 " id="totalesPanel">
-									<f:field property="total" cols="col-sm-4" colsLabel="col-sm-2 col-sm-offset-2"/>
+									<f:display property="total" widget="money" cols="col-sm-4" colsLabel="col-sm-2 col-sm-offset-2"/>
 								</div>
 								
 							</f:with>
@@ -83,31 +83,32 @@
 				  			<thead>
 				  				<tr>
 				  					<th>CxP</th>
+				  					<th>Folio</th>
 				  					<th>Fecha</th>
 				  					<th>Vencimiento</th>
 				  					<th>Total</th>
 				  					<th>Requisitado</th>
 				  					<th>Comentario</th>
-				  					<td></td>
+				  					<th></th>
 				  				</tr>
 				  			</thead>
 				  			<tbody>
 				  				<g:each in="${requisicionInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
+				  						<td>${row.id}</td>
 				  						<td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"cuentaPorPagar.id")}
+				  							<g:link  action="showPartida" id="${row.id}">
+				  								${fieldValue(bean:row,field:"cuentaPorPagar.folio")}
 				  							</g:link>
 				  						</td>
-				  						<td>${fieldValue(bean:row,field:"unidad")}</td>
-				  						<td><td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td></td>
-				  						<td><td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td></td>
+				  						<td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td>
+				  						<td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td>
 				  						<td>${formatNumber(number:row.cuentaPorPagar.total,format:'##.##')}</td>
 				  						<td>${g.formatNumber(number:row.requisitado,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
 				  						<td>
-				  							<g:link controller="gastoDet" action="delete" id="${row.id}" 
-				  								onclick="return confirm('Eliminar partida ${row.concepto}');">
+				  							<g:link  action="eliminarPartida" id="${row.id}" 
+				  								onclick="return confirm('Eliminar partida');">
 				  								<span class="glyphicon glyphicon-trash"></span>
 				  							</g:link>
 				  						</td>

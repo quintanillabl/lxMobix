@@ -23,6 +23,21 @@ class RequisicionService {
     	return requisicion
     }
 
+    def agregarPartida(Requisicion requisicion,RequisicionDet det){
+        requisicion.addToPartidas(det)
+        requisicion.total=requisicion.partidas.sum(0.0,{it.requisitado})
+        requisicion.save failOnError:true,flush:true
+        return requisicion
+    }
+
+    def eliminarPartida(RequisicionDet det){
+        Requisicion requisicion=det.requisicion
+        requisicion.removeFromPartidas(det)
+        requisicion.total=requisicion.partidas.sum(0.0,{it.requisitado})
+        requisicion.save failOnError:true,flush:true
+        return requisicion
+    }
+
     
 }
 
