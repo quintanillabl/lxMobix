@@ -1,7 +1,7 @@
 databaseChangeLog = {
 
 	changeSet(author: "rcancino (generated)", id: "1438695012094-1") {
-		dropForeignKeyConstraint(baseTableName: "cuenta_por_pagar", baseTableSchemaName: "lxMobix", constraintName: "FK_gsif3fmkt5ysn1q0ndk0mugbj")
+		dropForeignKeyConstraint(baseTableName: "cuenta_por_pagar", baseTableSchemaName: "lx_mobix", constraintName: "FK_gsif3fmkt5ysn1q0ndk0mugbj")
 	}
 
 	changeSet(author: "rcancino (generated)", id: "1438695012094-2") {

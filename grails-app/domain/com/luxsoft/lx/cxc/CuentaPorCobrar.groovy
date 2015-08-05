@@ -66,19 +66,9 @@ class CuentaPorCobrar {
 
     static transients = ['pagos','abonos']
 
-    static hasMany = [aplicaciones: AplicacionDeCobro]
+    //static hasMany = [aplicaciones: AplicacionDeCobro]
 
-    def beforeInsert() {
-    	actualizar()
-    }
-
-    def beforeUpdate() {
-    	actualizar()
-    }
-
-    def actualizar(){
-    	saldo=total-getPagos()-getAbonos()
-    }
+    
 
     def getPagos(){
     	if(!pagos){

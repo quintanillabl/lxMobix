@@ -43,16 +43,19 @@ class CobroService {
     	}
     }
 
-    def registrarAplicacion(Cobro cobro,AplicacionDeCobro aplicacion){	
+    def agregarAplicacion(Cobro cobro,AplicacionDeCobro aplicacion){	
 
-    	cobro.addToAplicaciones(cobro)
+        cobro.addToAplicaciones(aplicacion)
     	cobro.save flush:true,failOnError:true
-    	def cxc=aplicacion.cuentaPorPagar
-    	cxc.addToAplicaciones(aplicacion)
-    	cxc.actualizar()
-    	cxc.save flush:true
-    	
     	return cobro
+
+    }
+
+    def eliminarAplicacion(AplicacionDeCobro aplicacion){
+        def cobro=aplicacion.pago
+        cobro.removeFromAplicaciones(aplicacion)
+        cobro.save flush:true,failOnError:true
+        return cobro
 
     }
 }

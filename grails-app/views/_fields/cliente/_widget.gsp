@@ -15,7 +15,7 @@
 $(function(){
 	$(".clienteField").autocomplete({
 			source:'<g:createLink controller="cliente" action="getClientesJSON"/>',
-			minLength:3,
+			minLength:1,
 			select:function(e,ui){
 				console.log('Valor seleccionado: '+ui.item.id);
 				$("#clienteId").val(ui.item.id);

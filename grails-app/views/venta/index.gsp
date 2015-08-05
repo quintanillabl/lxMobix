@@ -82,6 +82,7 @@
 							<th>Tipo</th>
 							<th>Comentario</th>
 							<th>Total</th>
+							<th>Saldo</th>
 							<th>Estatus</th>
 							<th>Modificado</th>
 
@@ -111,6 +112,7 @@
 									
 								</td>
 								<td>${g.formatNumber(number:row.total,type:'currency')}</td>
+								<td>${g.formatNumber(number:row.saldo,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"status")}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>

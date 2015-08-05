@@ -67,7 +67,8 @@
 							<th>F.P.</th>
 							<th>Referencia</th>
 							<th>Importe</th>
-							<th>Destino</th>
+							<th>Aplicado</th>
+							<th>Disponible</th>
 							<th>Comentario</th>
 							<th>Modificado</th>
 						</tr>
@@ -84,7 +85,8 @@
 								<td>${fieldValue(bean:row,field:"formaDePago")}</td>
 								<td>${fieldValue(bean:row,field:"referencia")}</td>
 								<td>${formatNumber(number:row.importe,type:'currency')}</td>
-								<td>${fieldValue(bean:row,field:"cuentaDestino.nombre")}</td>
+								<td>${formatNumber(number:row.aplicado,type:'currency')}</td>
+								<td>${formatNumber(number:row.disponible,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>

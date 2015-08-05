@@ -16,19 +16,33 @@
 		<div class="row toolbar-panel">
 			<div class="col-md-12 ">
 				<div class="btn-group">
+				    
 				    <g:link action="index" class="btn btn-default ">
 				        <i class="fa fa-step-backward"></i> Cobros
 				    </g:link>
+
 				    <g:link action="print" class="btn btn-default " id="${cobroInstance.id}">
 				        <i class="fa fa-print"></i> Imprimir
 				    </g:link> 
-				    <g:link  action="createAplicacion" class="btn btn-default " id="${cobroInstance.id}">
-				        <i class="fa fa-plus"></i> Agregar aplicacion
-				    </g:link> 
-				    <buttn id="saveBtn" class="btn btn-success">
+
+				    <g:if test="${!cobroInstance.aplicaciones}">
+			    	    <sec:ifAllGranted roles="TESORERIA">
+			    	    	<lx:deleteButton bean="${cobroInstance}" />
+			    		</sec:ifAllGranted>
+				    	
+				    </g:if>
+				    <g:if test="${cobroInstance.disponible}">
+			    	    <sec:ifAllGranted roles="GASTOS">
+			    	    	<g:link  action="createAplicacion" class="btn btn-default " id="${cobroInstance.id}">
+			    	    		<i class="fa fa-plus"></i> Agregar aplicacion
+			    	    	</g:link>
+			    		</sec:ifAllGranted>
+				    </g:if>
+				    <button id="saveBtn" class="btn btn-success">
 				    	<i class="fa fa-floppy-o"></i> Actualizar
-				    </buttn>
-				    <lx:deleteButton bean="${cobroInstance}" />
+				    </button>
+				    
+				    
 				</div>
 			</div>
 		</div> 
@@ -87,8 +101,8 @@
 				  			<tbody>
 				  				<g:each in="${cobroInstance.aplicaciones}" var="row">
 				  					<tr id="${row.id}">
-				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.venta.folio")}</td>
-				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.venta.fecha")}</td>
+				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.folio")}</td>
+				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.fecha")}</td>
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.total,type:'currency')}</td>
 
 				  						<td>${formatDate(date:row.fecha,format:'dd/MM/yyyy')}</td>
@@ -97,8 +111,8 @@
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.saldo,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
 				  						<td>
-				  							<g:link  action="elimiarAplicacion" id="${row.id}" 
-				  								onclick="return confirm('Eliminar aplicacion para el docto: ${row.cuentaPorCobrar.venta.folio}');">
+				  							<g:link  action="deleteAplicacion" id="${row.id}" 
+				  								onclick="return confirm('Eliminar aplicacion para el docto: ${row.cuentaPorCobrar.folio}');">
 				  								<span class="glyphicon glyphicon-trash"></span>
 				  							</g:link>
 				  						</td>

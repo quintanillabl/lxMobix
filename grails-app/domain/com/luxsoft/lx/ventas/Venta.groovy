@@ -54,7 +54,7 @@ class Venta {
 
 	BigDecimal pagos=0
 
-	BigDecimal abonos=0
+	//BigDecimal abonos=0
 	
 	Cfdi cfdi
 	
@@ -86,10 +86,12 @@ class Venta {
 
     static mapping = {
 		partidas cascade: "all-delete-orphan"
-		saldo formula: 'total - pagos-abonos'
+		//saldo formula: 'total - pagos-abonos'
+		pagos formula:'(select ifnull(sum(x.importe),0) from aplicacion_de_cobro x where x.cuenta_por_cobrar_id=id)'
+		//abonos formula:'(select ifnull(sum(x.total),0) from CXCAplicacion x where x.factura_id=id)'
 	}
 
-	static transients = ['status']
+	static transients = ['status','saldo']
 
 	
 	def actualizarImportes(){
@@ -101,13 +103,10 @@ class Venta {
 		total=subTotal+impuesto
 		return this
 	}
+	
 
-	def beforeInsert() {
-		
-	}
-
-	def beforeUpdate() {
-		
+	def getSaldo(){
+		return total-pagos
 	}
 	
 

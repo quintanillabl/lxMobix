@@ -18,7 +18,7 @@ class MovimientoDeCuentaService {
     		folio=nextFolio(delegate)
     	}
     	movimiento.save(failOnError:true)
-    	
+    	saldoPorCuentaBancariaService.actualizar(movimiento)
         event('altaDemovimiento',movimiento)
     	return movimiento
     }

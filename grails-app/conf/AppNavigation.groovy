@@ -22,6 +22,7 @@ navigation={
 		operaciones(){
 			arrendamientos(controller:'arrendamiento',action:'index')
 			ventas(controller:'venta',action:'index')
+			cobros(controller:'cobro',action:'index',titleText:'Aplicación de cobros')
 			compras(controller:'compra',action:'index')
 			gastos(controller:'gasto',action:'index')
 			requisiciones(controller:'requisicion',action:'index')

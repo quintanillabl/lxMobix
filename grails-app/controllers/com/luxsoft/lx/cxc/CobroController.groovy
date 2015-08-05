@@ -5,9 +5,12 @@ package com.luxsoft.lx.cxc
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
+import com.luxsoft.lx.ventas.Venta
+import grails.converters.JSON
+import java.text.DecimalFormat
 
 
-@Secured(["hasAnyRole('ADMIN','TESORERIA')"])
+@Secured(["hasAnyRole('ADMIN','TESORERIA','GASTOS')"])
 @Transactional(readOnly = true)
 class CobroController {
 
@@ -25,7 +28,7 @@ class CobroController {
     }
 
     def create() {
-        respond new Cobro(params)
+        respond new Cobro(fecha:new Date())
     }
 
     @Transactional
@@ -48,17 +51,32 @@ class CobroController {
         }
     }
 
+    @Secured(["hasRole('GASTOS')"])
     def createAplicacion(Cobro cobroInstance){
-        [aplicacionDeCobroInstance:new AplicacionDeCobro(cobro:cobroInstance,fecha:new Date())]
+        
+        [aplicacionDeCobroInstance:new AplicacionDeCobro(pago:cobroInstance,fecha:new Date())]
     }
 
     @Transactional
-    def saveAplicacion(AplicacionDeCobro aplicacion){
-        def cobro=aplicacion.pago
+    @Secured(["hasRole('GASTOS')"])
+    def saveAplicacion(Cobro cobro,AplicacionDeCobro aplicacion,Venta factura){
+
+        
         cobro=cobroService.agregarAplicacion(cobro,aplicacion)
-        flash.message="Aplicacion registrada "
+        flash.message="Aplicacion registrada para la factura ${factura}"
         redirect action:'edit',params:[id:cobro.id]
     }
+
+    @Transactional
+    @Secured(["hasRole('GASTOS')"])
+    def deleteAplicacion(AplicacionDeCobro aplicacion){
+        def cobro=aplicacion.pago
+        cobroService.eliminarAplicacion(aplicacion)
+        flash.message="Aplicacion de cobro eliminada"
+        redirect action:'edit',params:[id:cobro.id]
+    }
+
+
 
     def edit(Cobro cobroInstance) {
         respond cobroInstance
@@ -80,6 +98,7 @@ class CobroController {
     }
 
     @Transactional
+    @Secured(["hasRole('TESORERIA')"])
     def delete(Cobro cobroInstance) {
         if (cobroInstance == null) {
             notFound()
@@ -88,6 +107,34 @@ class CobroController {
         cobroService.delete(cobroInstance)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'Cobro.label', default: 'Cobro'), cobroInstance.id])
         redirect action:"index", method:"GET"
+    }
+
+
+    def facturasPendientes(Cobro cobro){
+        def cliente=cobro.cliente
+        
+        
+        log.info 'Buscando facturas pendientes para cliente: '+cobro.cliente
+        
+        def list=Venta.findAll("from Venta v where v.cliente=? and v.total-v.pagos>=0",[cliente])
+
+        def pattern = "\$##,###.##"
+        def mf = new DecimalFormat(pattern)
+
+        list=list.collect{ v->
+            def nombre="Factura: ${v.folio} Fecha:${v.fecha.format('dd/MM/yyyy')} Total:${mf.format(v.total)} Saldo:${mf.format(v.saldo)}"
+            [id:v.id,
+            label:nombre,
+            value:nombre,
+            total:v.total,
+            saldo:v.saldo,
+            disponible:cobro.disponible
+            ]
+        }
+        def res=list as JSON
+        
+        render res
+
     }
 
     protected void notFound() {
