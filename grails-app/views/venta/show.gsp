@@ -27,6 +27,7 @@
 				    		onclick="return confirm('Eliminar el venta: '+${ventaInstance.id});">
 				    	    <i class="fa fa-trash"></i> Eliminar
 				    	</g:link>
+				    	<lx:deleteButton bean="${ventaInstance}"/>
 				    	<g:link controller="ventaDet" action="create" class="btn btn-default " id="${ventaInstance.id}">
 				    	    <i class="fa fa-cart-plus"></i> Agregar
 				    	</g:link>
