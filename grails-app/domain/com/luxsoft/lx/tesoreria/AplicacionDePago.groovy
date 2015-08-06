@@ -4,7 +4,7 @@ import org.grails.databinding.BindingFormat
 import com.luxsoft.lx.cxp.CuentaPorPagar
 import groovy.transform.EqualsAndHashCode
 
-@EqualsAndHashCode(includes='cuentaPorPagar')
+//@EqualsAndHashCode(includes='cuentaPorPagar')
 class AplicacionDePago {
 
 	CuentaPorPagar cuentaPorPagar
