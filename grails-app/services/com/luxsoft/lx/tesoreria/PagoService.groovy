@@ -11,7 +11,7 @@ class PagoService extends MovimientoDeCuentaService{
     // }
     def save(Pago pago){
         pago.concepto="PAGO PROVEEDOR"
-        pago.importe=pago.importe.abs()*-1
+        pago.importe=pago.requisicion.total.abs()*-1
         return super.save(pago)
     }
 

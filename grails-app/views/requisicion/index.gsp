@@ -4,8 +4,6 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Requisiciones</title>
-	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
-	<asset:javascript src="datatables/jquery.dataTables.js"/> 
 </head>
 <body>
 
@@ -73,6 +71,7 @@
 						<tr>
 							<th>Proveedor</th>
 							<th>Pago</th>
+							<th>Total</th>
 							<th>Comentario</th>
 							<th>Modificado</th>
 						</tr>
@@ -86,6 +85,7 @@
 									</g:link>
 								</td>
 								<td><g:formatDate date="${row.pago}" format="dd/MM/yyyy"/></td>
+								<td>${formatNumber(number:row.total,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>

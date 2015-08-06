@@ -45,7 +45,7 @@ class PagoController {
         // }
         def pagoInstance = pagoService.save(command)
         flash.message = "Pago a proveedor registrado"
-        redirect action:'edit',params:[id:pagoInstance.id]
+        redirect action:'show',params:[id:pagoInstance.id]
         
     }
 
@@ -119,6 +119,13 @@ class PagoController {
     def aplicar(Pago pago){
         pagoService.aplicar(pago)
         flash.message="Pago aplicado"
+        redirect action:'show',params:[id:pago.id]
+    }
+
+    @Transactional
+    def cancelarAplicacion(Pago pago){
+        pagoService.cancelarAplicaiones(pago)
+        flash.message="Aplicaciones de pago canceladas"
         redirect action:'show',params:[id:pago.id]
     }
 }
