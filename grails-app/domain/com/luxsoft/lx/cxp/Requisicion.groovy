@@ -5,6 +5,7 @@ import groovy.transform.EqualsAndHashCode
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.core.Proveedor
 import com.luxsoft.lx.core.Autorizacion
+import com.luxsoft.lx.tesoreria.Pago
 
 @EqualsAndHashCode(includes='empresa,proveedor,id')
 class Requisicion {
@@ -30,6 +31,8 @@ class Requisicion {
 	Date lastUpdated
 
 	static hasMany = [partidas: RequisicionDet]
+
+	
 
     static constraints = {
     	folio unique: 'empresa'

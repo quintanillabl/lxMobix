@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Movimientos de cuentas</title>
+	<title>Registro de cobros</title>
 	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
 	<asset:javascript src="datatables/jquery.dataTables.js"/> 
 </head>
@@ -70,6 +70,7 @@
 							<th>Aplicado</th>
 							<th>Disponible</th>
 							<th>Comentario</th>
+							<th>Ingreso</th>
 							<th>Modificado</th>
 						</tr>
 					</thead>
@@ -88,6 +89,7 @@
 								<td>${formatNumber(number:row.aplicado,type:'currency')}</td>
 								<td>${formatNumber(number:row.disponible,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
+								<td>${row.ingreso.id}</td>
 								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
 							</tr>
 						</g:each>

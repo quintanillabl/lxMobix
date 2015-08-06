@@ -87,7 +87,7 @@
 										${fieldValue(bean:row,field:"cuenta.numero")}
 									</g:link>
 								</td>
-								<td>${formatNumber(number:row.importe,type:'currency')}</td>
+								<td class="${row.importe<=0?'text-danger':'text-success'}">${formatNumber(number:row.importe,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"concepto")}</td>
 								<td>${fieldValue(bean:row,field:"referencia")}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>

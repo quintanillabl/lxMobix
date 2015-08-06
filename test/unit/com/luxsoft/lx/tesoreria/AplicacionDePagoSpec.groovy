@@ -1,4 +1,4 @@
-package com.luxsoft.lx.cxp
+package com.luxsoft.lx.tesoreria
 
 import grails.test.mixin.TestFor
 import spock.lang.Specification

@@ -3,6 +3,10 @@ package com.luxsoft.lx.tesoreria
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
+import grails.converters.JSON
+import java.text.DecimalFormat
+import com.luxsoft.lx.cxp.Requisicion
+
 
 
 
@@ -12,9 +16,13 @@ class PagoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def pagoService
+
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Pago.list(params), model:[pagoInstanceCount: Pago.count()]
+        params.max = 200
+        params.sort=params.sort?:'fecha'
+        params.order='desc'
+        respond Pago.findAllByEmpresa(session.empresa,params), model:[pagoInstanceCount: Pago.countByEmpresa(session.empresa)]
     }
 
     def show(Pago pagoInstance) {
@@ -22,30 +30,23 @@ class PagoController {
     }
 
     def create() {
-        [pagoInstance:new Pago()]
+        [pagoInstance:new Pago(fecha:new Date())]
     }
 
     @Transactional
-    def save(Pago pagoInstance) {
-        if (pagoInstance == null) {
+    def save(Pago command) {
+        if (command == null) {
             notFound()
             return
         }
-
-        if (pagoInstance.hasErrors()) {
-            respond pagoInstance.errors, view:'create'
-            return
-        }
-
-        pagoInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'pago.label', default: 'Pago'), pagoInstance.id])
-                redirect pagoInstance
-            }
-            '*' { respond pagoInstance, [status: CREATED] }
-        }
+        // if (command.hasErrors()) {
+        //     respond command.errors, view:'create'
+        //     return
+        // }
+        def pagoInstance = pagoService.save(command)
+        flash.message = "Pago a proveedor registrado"
+        redirect action:'edit',params:[id:pagoInstance.id]
+        
     }
 
     def edit(Pago pagoInstance) {
@@ -89,6 +90,36 @@ class PagoController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def requisicionesPendientes(){
+        
+        log.info 'Buscando requisiciones pendientes de pago '
+        
+        def list=Requisicion.findAll("from Requisicion r where r  not in(select p.requisicion from Pago p)")
+
+        def pattern = "\$##,###.##"
+        def mf = new DecimalFormat(pattern)
+
+        list=list.collect{ r->
+            def nombre="Id: ${r.id} (${r.proveedor}) Pago:${r.pago.format('dd/MM/yyyy')} Total:${mf.format(r.total)} "
+            [id:r.id,
+            label:nombre,
+            value:nombre,
+            total:r.total
+            ]
+        }
+        def res=list as JSON
+        
+        render res
+
+    }
+
+    @Transactional
+    def aplicar(Pago pago){
+        pagoService.aplicar(pago)
+        flash.message="Pago aplicado"
+        redirect action:'show',params:[id:pago.id]
     }
 }
 

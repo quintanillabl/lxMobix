@@ -4,9 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Requisición ${requisicionInstance?.id}</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
-	<asset:javascript src="forms/autoNumeric.js"/>
+	
 </head>
 <body>
 
@@ -48,13 +46,13 @@
 
 							<f:with bean="${requisicionInstance}">
 								<div class="col-sm-6">
-									<f:field property="pago" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
-									<f:field property="tipo" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
-									<f:field property="comentario" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
+									<f:display property="pago" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
+									<f:display property="tipo" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
+									<f:display property="comentario" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
 
 								</div>
 								<div class="col-sm-6 " id="totalesPanel">
-									<f:field property="total" cols="col-sm-4" colsLabel="col-sm-2 col-sm-offset-2"/>
+									<f:display property="total" cols="col-sm-4" colsLabel="col-sm-2 col-sm-offset-2"/>
 								</div>
 								
 							</f:with>
@@ -64,6 +62,7 @@
 				  			<thead>
 				  				<tr>
 				  					<th>CxP</th>
+				  					<th>Folio</th>
 				  					<th>Fecha</th>
 				  					<th>Vencimiento</th>
 				  					<th>Total</th>
@@ -75,14 +74,10 @@
 				  			<tbody>
 				  				<g:each in="${requisicionInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
-				  						<td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"cuentaPorPagar.id")}
-				  							</g:link>
-				  						</td>
-				  						<td>${fieldValue(bean:row,field:"unidad")}</td>
-				  						<td><td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td></td>
-				  						<td><td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td></td>
+				  						<td>${row.id}</td>
+				  						<td >${fieldValue(bean:row,field:"cuentaPorPagar.folio")}</td>
+				  						<td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td>
+				  						<td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td>
 				  						<td>${formatNumber(number:row.cuentaPorPagar.total,format:'##.##')}</td>
 				  						<td>${g.formatNumber(number:row.requisitado,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
@@ -97,12 +92,7 @@
 				  				<span class="label label-warning">${flash.message}</span>
 				  			</g:if> 
 				  			
-				  			%{-- <div class="form-group">
-				  				<div class="buttons col-md-4">
-				  					<g:submitButton name="Salvar" class="btn btn-primary " />
-				  					<g:link action="index" class="btn btn-default"> Cancelar</g:link>
-				  				</div>
-				  			</div> --}%
+				  			
 				  		</div>
 					</div>
 				</g:form>
@@ -125,23 +115,7 @@
 		
 	
 	</div>
-<script type="text/javascript">
-	$(function(){
-		//$(".money").autoNumeric({wEmpty:'zero',aSep:""});
-		
-		$("#totalesPanel :input").each(function(){
-		 	var input = $(this); // This is the jquery object of the input, do what you will
-		 	input.removeAttr("type")
-		 	.prop('type','text')
-		 	.prop('disabled','disabled')
-		 	.addClass('form-control')
-		 	.addClass('text-right');
-		});
 
-		
-		
-	});
-</script>
 	
 </body>
 </html>

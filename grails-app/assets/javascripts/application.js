@@ -9,6 +9,7 @@
 //= require_tree .
 //= require_self
 //= require bootstrap
+//= require dataTables.js
 
 if (typeof jQuery !== 'undefined') {
 	(function($) {

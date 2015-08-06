@@ -11,4 +11,5 @@
 *= require mobile
 *= require_self
 *= require font-awesome
+*= require dataTables.css
 */

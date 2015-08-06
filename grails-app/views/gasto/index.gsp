@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Gastos</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	%{-- <asset:stylesheet src="datatables/dataTables.css"/>
+	<asset:javascript src="datatables/dataTables.js"/>  --}%
 </head>
 <body>
 
@@ -80,12 +80,14 @@
 							<th>Id</th>
 							<th>Proveedor</th>
 							<th>UUID</th>
-							<th>Serie</th>
 							<th>Folio</th>
 							<th>Fecha</th>
 							<th>Vencimiento</th>
 							<th>Total</th>
-							<th>Modificado</th>
+							<th>Requisitado</th>
+							<th>Pagos</th>
+							<th>Saldo</th>
+							%{-- <th>Modificado</th> --}%
 						</tr>
 					</thead>
 					<tbody>
@@ -100,7 +102,7 @@
 									<g:link  action="show" id="${row.id}">
 										
 										<abbr title="${row.proveedor.nombre}">
-											${org.apache.commons.lang.StringUtils.left(row.proveedor.nombre,25)}
+											${org.apache.commons.lang.StringUtils.left(row.proveedor.nombre,20)}
 										</abbr>
 									</g:link>
 								</td>
@@ -111,11 +113,7 @@
 										</abbr>
 									</g:link>
 								</td>
-								<td>
-									<abbr title="${row.serie}">
-										${org.apache.commons.lang.StringUtils.substring(row.serie,0,5)}
-									</abbr>
-								</td>
+								
 								<td>
 									<abbr title="${row.folio}">
 										${org.apache.commons.lang.StringUtils.right(row.folio,5)}
@@ -124,12 +122,15 @@
 								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
 								<td><g:formatDate date="${row.vencimiento}" format="dd/MM/yyyy"/></td>
 								<td>${formatNumber(number:row.total,type:"currency")}</td>
-								<td>
+								<td>${formatNumber(number:row.requisitado,type:"currency")}</td>
+								<td>${formatNumber(number:row.pagosAplicados,type:"currency")}</td>
+								<td>${formatNumber(number:row.saldo,type:"currency")}</td>
+								%{-- <td>
 									<small>
 										<g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/>
 									</small>
 									
-								</td>
+								</td> --}%
 							</tr>
 						</g:each>
 					</tbody>
@@ -148,12 +149,24 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			
-			$('#grid').dataTable( {
-	        	"paging":   false,
-	        	"ordering": false,
-	        	"info":     false
-	        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
-	    	} );
+			// $('#grid').dataTable( {
+	  //       	"paging":   false,
+	  //       	"ordering": false,
+	  //       	"info":     false
+	  //       	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
+	  //   	} );
+ 			$('#grid').dataTable({
+                responsive: true,
+                "language": {
+					"url": "${assetPath(src: 'plugins/dataTables/dataTables.spanish.txt')}"
+	    		},
+	    		"dom": 'T<"clear">lfrtip',
+	    		"tableTools": {
+	    		    "sSwfPath": "${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}"
+	    		},
+	    		"order": []
+            });
+	    		    	
 	    	
 	    	$("#filtro").on('keyup',function(e){
 	    		var term=$(this).val();

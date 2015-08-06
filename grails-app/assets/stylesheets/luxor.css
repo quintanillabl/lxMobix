@@ -9,6 +9,7 @@
 *
 *= require bootstrap
 *= require font-awesome
+*= require dataTables.css
 *= require_self
 */
 body{

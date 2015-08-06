@@ -19,8 +19,10 @@ class CobroController {
     def cobroService
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Cobro.list(params), model:[cobroInstanceCount: Cobro.count()]
+        params.max = 200
+        params.sort=params.sort?:'fecha'
+        params.order='desc'
+        respond Cobro.findAllByEmpresa(session.empresa,params), model:[cobroInstanceCount: Cobro.countByEmpresa(session.empresa)]
     }
 
     def show(Cobro cobroInstance) {
@@ -45,9 +47,10 @@ class CobroController {
             
         }
         catch(CobroException e) {
+            log.error(e)
             flash.message=e.message
             flash.error=e.message
-            render view:'create',model:[cobroInstane:e.cobro]
+            render view:'create',model:[cobroInstance:e.cobro]
         }
     }
 
@@ -105,7 +108,7 @@ class CobroController {
             return
         }
         cobroService.delete(cobroInstance)
-        flash.message = message(code: 'default.deleted.message', args: [message(code: 'Cobro.label', default: 'Cobro'), cobroInstance.id])
+        flash.message = "Cobro ${cobroInstance.id} eliminado"
         redirect action:"index", method:"GET"
     }
 

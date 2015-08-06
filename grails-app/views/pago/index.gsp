@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Pagos</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	%{-- <asset:stylesheet src="datatables/dataTables.css"/>
+	<asset:javascript src="datatables/dataTables.js"/>  --}%
 </head>
 <body>
 
@@ -72,11 +72,13 @@
 					<thead>
 						<tr>
 							<th>Proveedor</th>
-							<th>Requisición</th>
+							<th>Req</th>
 							<th>Fecha</th>
 							<th>Cuenta</th>
+							<th>Total</th>
+							<th>Aplicado</th>
 							<th>Comentario</th>
-							<th>Modificado</th>
+							
 						</tr>
 					</thead>
 					<tbody>
@@ -89,9 +91,11 @@
 								</td>
 								<td>${fieldValue(bean:row,field:"requisicion.id")}</td>
 								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
-								<td>${fieldValue(bean:row,field:"cuenta")}</td>
+								<td>${fieldValue(bean:row,field:"cuenta.nombre")} ${fieldValue(bean:row,field:"cuenta.numero")}</td>
+								<td>${formatNumber(number:row.importe,type:'currency')}</td>
+								<td>${formatNumber(number:row.aplicado,type:'currency')}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
-								<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+								%{-- <td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td> --}%
 							</tr>
 						</g:each>
 					</tbody>
@@ -102,19 +106,31 @@
 			</div>
 		</div> <!-- end .row 2 -->
 		%{-- <g:render template="uploadXmlFile"/> --}%
-
+	${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}
 	</div>
 
 
 	<script type="text/javascript">
 		$(document).ready(function(){
+ 			$('#grid').dataTable({
+                responsive: true,
+                "language": {
+					"url": "${assetPath(src: 'plugins/dataTables/dataTables.spanish.txt')}"
+	    		},
+	    		"dom": 'T<"clear">ltip',
+	    		"tableTools": {
+	    		    "sSwfPath": "${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}"
+	    		},
+	    		"order": []
+            });
 			
-			$('#grid').dataTable( {
-	        	"paging":   false,
-	        	"ordering": false,
-	        	"info":     false
-	        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
-	    	} );
+			// $('#grid').dataTable( {
+			// 	responsive: true,
+	  //       	"paging":   false,
+	  //       	"ordering": false,
+	  //       	"info":     false
+	  //       	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
+	  //   	} );
 	    	
 	    	$("#filtro").on('keyup',function(e){
 	    		var term=$(this).val();

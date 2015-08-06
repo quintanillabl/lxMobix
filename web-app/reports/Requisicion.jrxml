@@ -41,8 +41,8 @@
 	<parameter name="TESORERIA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="AUTORIZADO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ID" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.FECHA,R.FECHA_DEL_PAGO AS FECHADEPAGO,R.MONEDA,R.TC
-,R.FORMA_DE_PAGO AS FORMADEPAGO,R.COMENTARIO,D.DOCUMENTO,D.FECHA_DOCUMENTO,R.CONCEPTO
+	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC
+,'NO_DISP' AS FORMADEPAGO,R.COMENTARIO,D.DOCUMENTO,D.FECHA_DOCUMENTO,R.CONCEPTO
 ,D.TOTAL,D.TOTAL_DOCUMENTO,R.DESCUENTO_FINANCIERO
 FROM requisicion R 
 JOIN requisicion_det  D ON(D.requisicion_id=R.id) 

@@ -7,6 +7,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder
 
 import com.luxsoft.lx.contabilidad.CuentaContable
 import com.luxsoft.lx.core.Empresa
+import com.luxsoft.lx.cxc.Cobro
 
 class MovimientoDeCuenta {
 	
@@ -39,12 +40,15 @@ class MovimientoDeCuenta {
 		referencia(nullable:true)
 		comentario(nullable:true)
 		concepto nullable:true,maxSize:50
+		cobro nullable:true
     }
 	
 	static mapping ={
 		fecha type:'date'
 		cuenta fetch:'join'
 	}
+
+	static belongsTo = [cobro: Cobro]
 	
 	String toString(){
 		return "Folio:$folio ${cuenta}  (${fecha.format('dd/MM/yyyy')}) ${importe}"

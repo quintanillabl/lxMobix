@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import com.luxsoft.cfdi.*
 import java.text.DecimalFormat
+import com.luxsoft.lx.bi.ReportCommand
 
 
 
@@ -18,6 +19,8 @@ class RequisicionController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "GET",savePartida:"POST"]
 
     def requisicionService
+
+    def reportService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
@@ -137,6 +140,20 @@ class RequisicionController {
         }
         def res=list as JSON
         render res
+    }
+
+    def print(Requisicion requisicion){
+        def command=new ReportCommand()
+        command.reportName="Requisicion"
+        command.empresa=session.empresa
+        params.EMPRESA=session.empresa.nombre
+        def stream=reportService.build(command,params)
+        def file="Requisicion_${requisicion.id}.pdf"
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+        
     }
 
     protected void notFound() {

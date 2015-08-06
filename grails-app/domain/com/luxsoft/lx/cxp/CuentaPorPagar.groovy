@@ -100,14 +100,17 @@ class CuentaPorPagar {
     }
 	
 	static mapping ={
-		proveedor fetch:'join'
+		//proveedor fetch:'join'
 		requisitado formula:'(select ifnull(sum(x.requisitado),0) from requisicion_det x where x.cuenta_por_pagar_id=id)'
-		//pagosAplicados formula:'(select ifnull(sum(x.total),0) from aplicacion x where x.factura_id=id)'
+		pagosAplicados formula:'(select ifnull(sum(x.importe),0) from aplicacion_de_pago x where x.cuenta_por_pagar_id=id)'
+		pagosAplicados formula:'(select ifnull(sum(x.importe),0) from aplicacion_de_pago x where x.cuenta_por_pagar_id=id)'
+		
 		fecha type:'date'
 		vencimiento type:'date'
 	}
 	
-	static transients = ['pendienteRequisitar','saldoActual','saldoAlCorte','pagosAplicados']
+	//static transients = ['pendienteRequisitar','saldoActual','saldoAlCorte','pagosAplicados']
+	static transients = ['pendienteRequisitar','saldoActual','saldoAlCorte','saldo']
 	
 	
 	
@@ -125,6 +128,10 @@ class CuentaPorPagar {
 	public BigDecimal getSaldoActual(){
 		def pag=pagosAplicados?:0.0
 		return total-pag
+	}
+
+	public BigDecimal getSaldo(){
+		return getSaldoActual()
 	}
 	
 }

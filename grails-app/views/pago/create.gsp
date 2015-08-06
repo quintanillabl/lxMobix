@@ -4,6 +4,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Pago</title>
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
+	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>
 
@@ -28,9 +31,9 @@
 
 		<div class="row ">
 			
-			<div class="col-md-6 col-md-offset-3 ">
+			<div class="col-md-8 col-md-offset-2 ">
 				
-				<g:form class="form-horizontal" action="save" >	
+				<g:form name="createForm" class="form-horizontal" action="save" >	
 
 					<div class="panel panel-primary">
 						<div class="panel-heading">Datos generales</div>
@@ -45,21 +48,31 @@
 						    </g:hasErrors>
 						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
 							<f:with bean="${pagoInstance}">
-								<f:field property="requisicion" widget-class="form-control"/>
-								<f:field property="cuenta" widget-class="form-control"/>
-								<f:field property="formaDePago" widget-class="form-control"/>
-								<f:field property="fecha" widget-class="form-control"/>
+								<f:field property="requisicion" wrapper="bootstrap3">
+									<g:hiddenField id="requisicion" name="requisicion.id" value="${value}" />
+									<input 
+										id="requisicionField" 
+										type="text" 
+										class="form-control" 
+										value="${value}" 
+										placeholder="Seleccione la requisición a pagar"
+										required autofocus="true">
+									</input>
+								</f:field>
+								<f:field property="cuenta"  wrapper="bootstrap3" widget-class="form-control"/>
+								<f:field property="formaDePago" wrapper="bootstrap3" widget-class="form-control"/>
+								<f:field property="fecha" wrapper="bootstrap3" widget-class="form-control"/>
 								
-								<f:field property="importe" widget-class="form-control"/>
-								<f:field property="referencia" />
-								<f:field property="comentario" widget-class="form-control"/>
+								<f:field property="importe" wrapper="bootstrap3" widget="money" />
+								<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
+								<f:field property="comentario" wrapper="bootstrap3" widget-class="form-control"/>
 							</f:with>
 					  	</div>
 					 
 						<div class="panel-footer">
 						  	<div class="form-group">
 						  		<div class="buttons col-md-offset-4 col-md-4">
-						  			<g:submitButton name="Salvar" class="btn btn-primary " />
+						  			<g:submitButton id="saveBtn" name="Salvar" class="btn btn-primary " />
 						  			<g:link action="index" class="btn btn-default"> Cancelar</g:link>
 						  		</div>
 						  	</div>
@@ -77,13 +90,35 @@
 
 	<script type="text/javascript">
 		$(function(){
-			$("#formPanel :input").each(function(){
-			 	var input = $(this); // This is the jquery object of the input, do what you will
-			 	input.removeAttr("type")
-			 	.prop('type','text')
-			 	.addClass('form-control')
-			 	.addClass('text-right');
+			$("#importe").attr("required","required")
+				.attr("readonly","readonly")
+				;
+			$(".money").autoNumeric('init',{wEmpty:'zero',mRound:'B',aSign: '$'});
+			$('form[name=createForm]').submit(function(e){
+	    		var button=$("#saveBtn");
+	    		button.attr('disabled','disabled')
+	    		.html('Procesando...');
+	    		$(".money,.porcentaje,.tc",this).each(function(index,element){
+	    		  var val=$(element).val();
+	    		  var name=$(this).attr('name');
+	    		  var newVal=$(this).autoNumeric('get');
+	    		  $(this).val(newVal);
+	    		  console.log('Enviando elemento numerico con valor:'+name+" : "+val+ " new val:"+newVal);
+	    		});
+	    		//e.preventDefault(); 
+	    		return true;
 			});
+			$("#requisicionField").autocomplete({
+				source:'<g:createLink  action="requisicionesPendientes"/>',
+				minLength:1,
+				select:function(e,ui){
+					console.log('Valor seleccionado: '+ui.item.id);
+					$("#requisicion").val(ui.item.id);
+					$("#importe").autoNumeric('set',ui.item.total);
+				}
+			});
+
+			
 		});
 	</script>
 	

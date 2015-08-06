@@ -3,5 +3,4 @@
 	value="${value?.id}"
 	from="${com.luxsoft.lx.tesoreria.CuentaBancaria.findAllByEmpresa(session.empresa)}" 
 	optionKey="id" 
-	noSelection="[null:'Seleccione una cuenta']"
 	/>

@@ -24,7 +24,9 @@ class MovimientoDeCuentaController {
         def list=MovimientoDeCuenta.findAll("from MovimientoDeCuenta m where m.empresa=? and year(m.fecha)=? and month(m.fecha)=?",
             [empresa,periodo.ejercicio,periodo.mes],params)
         println 'Movimientos registrados: '+list.size()
-        respond list
+        //respond list
+        //respond MovimientoDeCuenta.findAll()
+        [movimientoDeCuentaInstanceList:list]
     }
 
     def show(MovimientoDeCuenta movimientoDeCuentaInstance) {

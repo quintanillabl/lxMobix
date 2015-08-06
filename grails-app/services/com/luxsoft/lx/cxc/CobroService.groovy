@@ -10,6 +10,8 @@ class CobroService {
 
 	def movimientoDeCuentaService
 
+    def saldoPorCuentaBancariaService
+
     def save(Cobro cobro) {
 		assert !cobro.id,"El cobro $cobro.id ya ha sido persistido"
 		cobro.with{
@@ -17,30 +19,31 @@ class CobroService {
 			creadoPor=user
 			modificadoPor=user
 		}
-		cobro.validate()
+        
+		cobro.validate(["cliente","fecha","formaDePago","banco","referencia","importe","cuentaDestino","comentario"])
 		if(cobro.hasErrors()){
 			throw new CobroException(message:'Errores de validacion en el cobro',cobro:cobro)
 		}
-		cobro.save(failOnError:true)
-		registrarIngreso(cobro)
+        def ingreso=generarIngreso(cobro)
+        ingreso=movimientoDeCuentaService.save(ingreso)
+        cobro.ingreso=ingreso
+        cobro.save(failOnError:true,flush:true)
+        //saldoPorCuentaBancariaService.actualizar(cobro.ingreso)
 	    event('altaDeCobro',cobro)
 		return cobro
     }
 
 
-    def registrarIngreso(Cobro cobro){
-    	if(cobro.cuentaDestino){
-    		def mov=new MovimientoDeCuenta(
-    			empresa:cobro.empresa,
-    			cuenta:cobro.cuentaDestino,
-    			fecha:cobro.fecha,
-    			importe:cobro.importe,
-    			concepto:'COBRO',
-    			referencia:cobro.referencia,
-    			comentario:cobro.comentario
-    			)
-    		movimientoDeCuentaService.save(mov)
-    	}
+    def generarIngreso(Cobro cobro){
+    	def ingreso=new MovimientoDeCuenta(
+            empresa:cobro.empresa,
+            cuenta:cobro.cuentaDestino,
+            fecha:cobro.fecha,
+            importe:cobro.importe,
+            concepto:'COBRO',
+            referencia:cobro.referencia,
+            comentario:cobro.comentario
+        )
     }
 
     def agregarAplicacion(Cobro cobro,AplicacionDeCobro aplicacion){	
@@ -56,6 +59,13 @@ class CobroService {
         cobro.removeFromAplicaciones(aplicacion)
         cobro.save flush:true,failOnError:true
         return cobro
+
+    }
+
+    def delete(Cobro cobro){
+        def ingreso=cobro.ingreso
+        cobro.delete flush:true
+        saldoPorCuentaBancariaService.actualizar(ingreso)
 
     }
 }

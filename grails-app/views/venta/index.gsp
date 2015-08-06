@@ -6,8 +6,8 @@
 	<title>Ventas</title>
 	%{-- <asset:stylesheet src="datatables/dataTables.css"/>
 	<asset:javascript src="datatables/dataTables.js"/>  --}%
-	<asset:stylesheet src="datatables/jquery.dataTables.css"/>
-	<asset:javascript src="datatables/jquery.dataTables.js"/> 
+	%{-- <asset:stylesheet src="datatables/jquery.dataTables.css"/>
+	<asset:javascript src="datatables/jquery.dataTables.js"/>  --}%
 </head>
 <body>
 
@@ -27,9 +27,9 @@
 		</div><!-- end .row -->
 
 		<div class="row toolbar-panel">
-		    <div class="col-md-6">
+		    <div id="toolbar" class="col-md-4">
 		    	<input type='text' id="filtro" placeholder="Filtrar" class="form-control" autofocus="on">
-		      </div>
+		     </div>
 
 		    <div class="btn-group">
 		        
@@ -121,9 +121,9 @@
 						</g:each>
 					</tbody>
 				</table>
-				<div class="pagination">
+				%{-- <div class="pagination">
 					<g:paginate total="${ventaInstanceCount ?: 0}"/>
-				</div>
+				</div> --}%
 			</div>
 		</div> <!-- end .row 2 -->
 
@@ -135,12 +135,24 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			
-			$('#grid').dataTable( {
-	        	"paging":   false,
-	        	"ordering": false,
-	        	"info":     false
-	        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
-	    	} );
+			// $('#grid').dataTable( {
+	  //       	"paging":   false,
+	  //       	"ordering": false,
+	  //       	"info":     false
+	  //       	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
+	  //   	} );
+ 			$('#grid').dataTable({
+                responsive: true,
+                "language": {
+					"url": "${assetPath(src: 'plugins/dataTables/dataTables.spanish.txt')}"
+	    		},
+	    		//"dom": '<lf<t>ip>',
+	    		"dom": 'T<"clear">lfrtip',
+	    		"tableTools": {
+	    		    "sSwfPath": "${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}"
+	    		},
+	    		"order": []
+            });
 	    	
 	    	$("#filtro").on('keyup',function(e){
 	    		var term=$(this).val();
