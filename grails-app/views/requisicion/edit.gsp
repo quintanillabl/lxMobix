@@ -95,7 +95,7 @@
 				  			<tbody>
 				  				<g:each in="${requisicionInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
-				  						<td>${row.id}</td>
+				  						<td>${row.cuentaPorPagar.id}</td>
 				  						<td >
 				  							<g:link  action="showPartida" id="${row.id}">
 				  								${fieldValue(bean:row,field:"cuentaPorPagar.folio")}
