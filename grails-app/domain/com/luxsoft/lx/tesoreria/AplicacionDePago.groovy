@@ -2,7 +2,9 @@ package com.luxsoft.lx.tesoreria
 
 import org.grails.databinding.BindingFormat
 import com.luxsoft.lx.cxp.CuentaPorPagar
+import groovy.transform.EqualsAndHashCode
 
+@EqualsAndHashCode(includes='cuentaPorPagar')
 class AplicacionDePago {
 
 	CuentaPorPagar cuentaPorPagar
@@ -22,7 +24,6 @@ class AplicacionDePago {
 
     static mapping = {
 		fecha type:'date'
-		aplicaciones cascade: "all-delete-orphan"
 		
 	}
 	

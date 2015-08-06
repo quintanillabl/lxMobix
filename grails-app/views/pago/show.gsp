@@ -31,10 +31,13 @@
 			        	    	<i class="fa fa-plus"></i> Aplicar
 			        	    </g:link>
 			        	</g:if>
-			        	<g:link  action="cancelarAplicacion" class="btn btn-danger " id="${pagoInstance.id}" 
-			        		onclick="return confirm('Cancelar aplicaciones del pago?');">
-			        		<i class="fa fa-plus"></i> Cancelar aplicación
-			        	</g:link>
+			        	<g:else>
+			        		<g:link  action="cancelarAplicacion" class="btn btn-danger " id="${pagoInstance.id}" 
+			        			onclick="return confirm('Cancelar aplicaciones del pago?');">
+			        			<i class="fa fa-plus"></i> Cancelar aplicación
+			        		</g:link>
+			        	</g:else>
+			        	
 			    	</sec:ifAllGranted>
 				</div>
 			</div>

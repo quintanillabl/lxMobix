@@ -40,16 +40,11 @@ class ChequeController {
             respond chequeInstance.errors, view:'create'
             return
         }
-
+        chequeInstance.cuenta=chequeInstance.egreso.cuenta
         chequeInstance.save flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'cheque.label', default: 'Cheque'), chequeInstance.id])
-                redirect chequeInstance
-            }
-            '*' { respond chequeInstance, [status: CREATED] }
-        }
+        flash.message = message(code: 'default.created.message', args: [message(code: 'cheque.label', default: 'Cheque'), chequeInstance.id])
+        redirect chequeInstance
+        
     }
 
     def edit(Cheque chequeInstance) {

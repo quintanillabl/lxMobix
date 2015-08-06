@@ -29,9 +29,12 @@ class PagoService extends MovimientoDeCuentaService{
     }
 
     def cancelarAplicaiones(Pago pago){
-    	if(pago.aplicaciones){
-    		pago.aplicaciones.clear()
-    		pago.save flush:true
-    	}
+        log.info 'Cancelando aplicaciones del pago:'+pago.id
+        def aplicaciones=pago.aplicaciones
+        aplicaciones.each{
+            pago.removeFromAplicaciones(it)
+        }
+        log.info 'Aplicaciones del pago: '+pago.aplicaciones.size()
+        pago.save flush:true
     }
 }
