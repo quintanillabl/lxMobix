@@ -74,7 +74,7 @@
 				  			<tbody>
 				  				<g:each in="${requisicionInstance.partidas}" var="row">
 				  					<tr id="${row.id}">
-				  						<td>${row.id}</td>
+				  						<td>${row.cuentaPorPagar.id}</td>
 				  						<td >${fieldValue(bean:row,field:"cuentaPorPagar.folio")}</td>
 				  						<td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td>
 				  						<td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td>
