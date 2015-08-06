@@ -215,7 +215,7 @@ environments{
           ventas='FACTURA'
         }
     }
-    grails.assets.bundle=true
+    //grails.assets.bundle=true
   }
     
   production{
