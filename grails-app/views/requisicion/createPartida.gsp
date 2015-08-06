@@ -94,7 +94,7 @@
 <script type="text/javascript">
 	$(function(){
 		//$(".money").autoNumeric({wEmpty:'zero',aSep:""});
-		$(".money").autoNumeric('init',{wEmpty:'zero',mRound:'B',aSign: '$'});
+		$(".money").autoNumeric('init',{wEmpty:'zero',aSign: '$'});
 
 		
 
