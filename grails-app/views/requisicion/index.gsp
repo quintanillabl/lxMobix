@@ -69,6 +69,7 @@
 
 					<thead>
 						<tr>
+							<th>Folio</th>
 							<th>Proveedor</th>
 							<th>Pago</th>
 							<th>Total</th>
@@ -79,6 +80,11 @@
 					<tbody>
 						<g:each in="${requisicionInstanceList}" var="row">
 							<tr id="${row.id}">
+								<td >
+									<g:link  action="show" id="${row.id}">
+										${row.folio}
+									</g:link>
+								</td>
 								<td >
 									<g:link  action="show" id="${row.id}">
 										${fieldValue(bean:row,field:"proveedor")}

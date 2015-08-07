@@ -83,16 +83,10 @@ class RequisicionController {
             notFound()
             return
         }
-
         requisicionInstance.delete flush:true
-
-        request.withFormat {
-            form multipartForm {
-                flash.message = message(code: 'default.deleted.message', args: [message(code: 'Requisicion.label', default: 'Requisicion'), requisicionInstance.id])
-                redirect action:"index", method:"GET"
-            }
-            '*'{ render status: NO_CONTENT }
-        }
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'Requisicion.label', default: 'Requisicion'), requisicionInstance.id])
+        redirect action:"index"
+        
     }
 
     @Transactional

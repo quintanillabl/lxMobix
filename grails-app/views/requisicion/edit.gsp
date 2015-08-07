@@ -55,7 +55,7 @@
 				<g:form name="updateForm" class="form-horizontal"  action="update" id="${requisicionInstance.id}" method="PUT">	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Proveedor: ${requisicionInstance.proveedor} Id: ${requisicionInstance.id}</div>
+						<div class="panel-heading">Proveedor: ${requisicionInstance.proveedor} Folio: ${requisicionInstance.folio}</div>
 				  		<div class="panel-body">
 				    		<g:hasErrors bean="${requisicionInstance}">
 				    			<div class="alert alert-danger">

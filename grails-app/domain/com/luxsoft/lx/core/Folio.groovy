@@ -7,7 +7,7 @@ class Folio {
 	Long folio=0
 
     static constraints = {
-		serie blank:false,maxSize:10
+		serie size:1..20
 		folio nullable:false
     }
 	

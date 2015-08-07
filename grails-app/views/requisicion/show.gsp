@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Requisición ${requisicionInstance?.id}</title>
+	<title>Requisición ${requisicionInstance?.folio}</title>
 	
 </head>
 <body>
@@ -34,7 +34,7 @@
 				<g:form name="updateForm" class="form-horizontal"   id="${requisicionInstance.id}">	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Proveedor: ${requisicionInstance.proveedor} Id: ${requisicionInstance.id}</div>
+						<div class="panel-heading">Folio: ${requisicionInstance.folio} (${requisicionInstance.proveedor} )</div>
 				  		<div class="panel-body">
 				    		<g:hasErrors bean="${requisicionInstance}">
 				    			<div class="alert alert-danger">
