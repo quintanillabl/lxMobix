@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Cobro ${pagoInstance?.id}</title>
+	<title>Pago ${pagoInstance?.id}</title>
 	
 </head>
 <body>
@@ -22,9 +22,9 @@
 				    <g:link action="print" class="btn btn-default " id="${pagoInstance.id}">
 				        <i class="fa fa-print"></i> Imprimir
 				    </g:link> 
-
 				    
 			        <sec:ifAllGranted roles="TESORERIA">
+			        	
 			        	<g:if test="${!pagoInstance.aplicaciones}">
 			        	    <lx:deleteButton bean="${pagoInstance}" />
 			        	    <g:link  action="aplicar" class="btn btn-default " id="${pagoInstance.id}" onclick="return confirm('Aplicar el pago?');">
@@ -75,7 +75,36 @@
 									<f:display property="aplicado" widget="money" wrapper="bootstrap3"/>
 									<f:display property="disponible" widget="money" wrapper="bootstrap3"/>
 									<f:display property="creadoPor" widget-class="form-control" wrapper="bootstrap3"/>
+									<g:if test="${pagoInstance.cuenta.tipo=='CHEQUES'}">
+										<legend>Cheque: </legend>
+										<f:display property="cheque.cuenta" />
+										<f:display property="cheque.folio" />
+										<f:display property="cheque.impresion" />
+										<div class="form-group">
+											<div class="col-sm-10 col-sm-offset-2">
+												<sec:ifAllGranted roles="TESORERIA">
+													<g:if test="${!pagoInstance.cheque}">
+														<g:link action="generarCheque" class="btn btn-primary " id="${pagoInstance.id}" onclick="return confirm('Generar cheque?');">
+														    <i class="fa fa-list-alt"></i> Generar
+														</g:link> 
+													</g:if>
+													<g:else>
+														<div class="btn-group">
+															<lx:printButton/>
+															<g:if test="${!pagoInstance.cheque.impresion}">
+																<lx:deleteButton bean="${pagoInstance.cheque}"/>
+															</g:if>
+															
+														</div>
+														
+													</g:else>
+												</sec:ifAllGranted>
+												
+											</div>
+										</div>
+									</g:if>
 								</div>
+								
 								
 							</f:with>
 				  		</div>

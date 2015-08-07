@@ -18,6 +18,8 @@ class PagoController {
 
     def pagoService
 
+    def chequeService
+
     def index(Integer max) {
         params.max = 200
         params.sort=params.sort?:'fecha'
@@ -127,6 +129,14 @@ class PagoController {
         pagoService.cancelarAplicaiones(pago)
         flash.message="Aplicaciones de pago canceladas"
         redirect action:'show',params:[id:pago.id]
+    }
+
+    @Transactional
+    def generarCheque(Pago pagoInstance){
+        assert pagoInstance.cuenta.tipo=='CHEQUES','El pago no es con cheque'
+        assert pagoInstance.cheque==null,'Cheque ya generado para el pago '+pagoInstance.id
+        pagoInstance=chequeService.generarCheque(pagoInstance)
+        redirect action:'show', params:[id:pagoInstance.id]
     }
 }
 

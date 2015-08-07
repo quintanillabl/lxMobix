@@ -6,13 +6,18 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
 @Transactional(readOnly = true)
+import grails.plugin.springsecurity.annotation.Secured
+
+@Secured(["hasRole('TESORERIA')"])
 class ChequeController {
+
+    def chequeService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
         params.max = 200
-        params.sort=params.sort?:'fecha'
+        params.sort=params.sort?:'dateCreated'
         params.order='desc'
         def empresa=session.empresa
         def query=Cheque.where{
@@ -26,6 +31,7 @@ class ChequeController {
     }
 
     def create() {
+        def disponibles=MovimientoDeCuenta.findAll("from MovimientoDeCuenta m join m.cuenta c where m.empresa=? and c.tipo=? ")
         respond new Cheque(params)
     }
 
@@ -35,13 +41,12 @@ class ChequeController {
             notFound()
             return
         }   
-        chequeInstance.validate(["movimiento","folio"])
+        chequeInstance.validate(["movimiento"])
         if (chequeInstance.hasErrors()) {
             respond chequeInstance.errors, view:'create'
             return
         }
-        chequeInstance.cuenta=chequeInstance.egreso.cuenta
-        chequeInstance.save flush:true
+        chequeInstance=chequeService.registrarCheque(chequeInstance.egreso.id)
         flash.message = message(code: 'default.created.message', args: [message(code: 'cheque.label', default: 'Cheque'), chequeInstance.id])
         redirect chequeInstance
         

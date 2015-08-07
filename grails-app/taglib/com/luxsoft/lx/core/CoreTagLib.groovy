@@ -78,4 +78,92 @@ class CoreTagLib {
         def model=[action:action,controller:controller,id:id,label:label]
         out << render(template:"/common/buttons/backButton" ,model:model)
     }
+    def dateCell={attrs ->
+        //out<<render(template:"/common/deleteDialog")
+        out<<"<td>${g:formatDate(date="attrs.date", format="dd/MM/yyyy")}</td>"
+        // out<<"<td>${g:.formatDate(date:attrs.date,format:'dd/MM/yyyy')}</td>"
+        //out << "<a href="#deleteDialog" class="btn btn-danger"><i class="fa fa-trash"></i> Eliminar</a>"
+    }
+
+    /**
+     * Renders la fecha en el fomrato estandarizado dd/MM/yyyy
+     * @attrs date REQUIRED La fecha a formatear
+     */
+    def shortDate={ attrs ->
+        out << g.formatDate(date:attrs.date,format:"dd/MM/yyyy")
+    }
+    
+    /**
+     * Formatea un numero a una cantidad moentaria  
+     * 
+     * @attrs number REQUIRED El numero a formatear en moneda
+     */
+    def moneyFormat={ attrs ->
+        out <<g.formatNumber(number:attrs.number, type:"currency", currencyCode:"MXN",locale:"es_MX")
+    }
+    
+    /**
+     * Da formato adecuado a los cantidades utlizadas en medidas de kilos
+     * @attrs number REQUIRED El numero de kilos a dar formato
+     */
+    def kilosFormat={attrs ->
+        out <<g.formatNumber(number:attrs.number, format:"###,###,###")
+    }
+    
+    /**
+     * Da formato adecuado a cantidades utilizadas para expresar millares de hojas
+     * 
+     * @attrs number REQUIRED El numero de millares a dar formato
+     */
+    def millaresFormat={attrs ->
+        out <<g.formatNumber(number:attrs.number, format:"###,###,###.###")
+    }
+
+    def idFormat={ attrs ->
+        out <<g.formatNumber(number:attrs.id, format:"###")
+
+    }
+
+    /**
+    *
+    * Genera un TD apropiado para la columna de identificacion 
+    * 
+    * @attrs id REQUIRED La propiedad id del bean a mostrar
+    * @attrs action La accion para el Link generado default show
+    * @attrs controller El controlador para la accion
+    **/
+    def idTableRow={ attrs ->
+        def action=attrs.action?:'show'
+        def controller=attrs.controller?:controllerName
+        def id=attrs.id
+        if(!id)
+            throw new IllegalArgumentException("Tag lx:idTableRow Debe pasar el  id ")
+        StringBuilder sb = new StringBuilder()
+        // sb <<"<td> ${g.link(action:action,controller:controller,id:id)}"
+        // sb <<"</td>"
+        // out<<sb.toString()
+
+        sb << """
+            <td>
+                <a href="${g.createLink(action:action,controller:controller,id:id)}">${id}</a>
+            </td>
+        """
+        out<<sb.toString()
+    }
+
+    /**
+     * Presneta un td formateao en moneda para el importe especificado
+     * 
+     * @attrs number REQUIRED El numero a formatear en moneda
+     */
+    def moneyTableRow={ attrs ->
+        //out << "<td class="${attrs.number>0?'text-success':'text-danger'}">"
+        def number=attrs.number
+        out <<"""
+           <td class="${number>=0?'text-success':'text-danger'}"> 
+        """
+        //out <<"<td class=${number>=0?text-success:text-danger}>" 
+        out << lx.moneyFormat(number:attrs.number)
+        out << "</td>"
+    }
 }

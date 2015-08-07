@@ -117,13 +117,14 @@ class RequisicionController {
         params.sort='fecha'
         params.order="desc"
         params.max=20
-        def list =CuentaPorPagar.findAll("from CuentaPorPagar c where c.proveedor=? and c.total-c.requisitado>0 and str(c.id) like ?",[proveedor,params.term],params)
+        def hql="from CuentaPorPagar c where c.empresa=? and c.proveedor=? and c.total-c.requisitado>0 and str(c.id) like ?"
+        def list =CuentaPorPagar.findAll(hql,[session.empresa,proveedor,params.term],params)
 
         def pattern = "\$##,###.##"
         def mf = new DecimalFormat(pattern)
 
         list=list.collect{ c->
-            def nombre="""Id: ${c.id} (Folio:${c.folio}) ${c.fecha.format('dd/MM/yyyy')} Tot: ${mf.format(c.total)} Pen: ${mf.format(c.getPendienteRequisitar()) }
+            def nombre="""Id: ${c.id} (Folio:${c.folio}) ${c.fecha.format('dd/MM/yyyy')} Tot: ${mf.format(c.total)} Pen: ${mf.format(c.getPendienteRequisitar()) } (${c.empresa.clave})
             """
             [id:c.id,
             label:nombre,

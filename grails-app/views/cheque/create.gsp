@@ -45,10 +45,15 @@
 						    </g:hasErrors>
 						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
 							<f:with bean="${chequeInstance}">
-								<div class="col-sm-8">
-									<f:field property="egreso" wrapper="bootstrap3" widget-class="form-control"/>
-									<f:field property="folio"  widget="numeric" wrapper="bootstrap3"/>
-								</div>
+								<f:field property="egreso"  widget-class="form-control">
+									<g:select class="form-control"  
+										name="${property}" 
+										value="${value?.id}"
+										from="${disponibles}" 
+										optionKey="id"
+										required=""/>
+								</f:field>
+									
 							</f:with>
 					  	</div>
 					 
