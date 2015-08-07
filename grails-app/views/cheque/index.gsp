@@ -60,7 +60,7 @@
 							<th>Folio</th>
 							<th>Importe</th>
 							<th>Impreso</th>
-							<th>Cancelación</th>
+							%{-- <th>Cancelación</th> --}%
 						</tr>
 					</thead>
 					<tbody>
@@ -82,14 +82,14 @@
 								<td><g:formatNumber number="${row.folio}" format="####"/></td>
 								<td><lx:moneyFormat number="${row.egreso.importe.abs()}"/></td>
 								<td><lx:shortDate date="${row.impresion}"/></td>
-								<td><g:if test="${!row.cancelacion }">
+								%{-- <td><g:if test="${!row.cancelacion }">
 										<g:link action="cancelar" id="${row.id}" ><i class="icon-remove-sign"></i> Cancelar</g:link>
 									</g:if>
 									<g:else>
 										<lx:shortDate date="${row.cancelacion}"/>	
 									</g:else>
 								</td>				
-								
+								 --}%
 								
 								
 							</tr>

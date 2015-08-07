@@ -19,9 +19,7 @@
 				        <i class="fa fa-step-backward"></i> Pagos
 				    </g:link>
 
-				    <g:link action="print" class="btn btn-default " id="${pagoInstance.id}">
-				        <i class="fa fa-print"></i> Imprimir
-				    </g:link> 
+				   
 				    
 			        <sec:ifAllGranted roles="TESORERIA">
 			        	
@@ -90,9 +88,15 @@
 													</g:if>
 													<g:else>
 														<div class="btn-group">
-															<lx:printButton/>
+															<lx:printButton action="imprimirCheque" id="${pagoInstance.id}"/>
 															<g:if test="${!pagoInstance.cheque.impresion}">
-																<lx:deleteButton bean="${pagoInstance.cheque}"/>
+																<a class="btn btn-danger " 
+																	data-toggle="modal" 
+																	data-target="#cancelDialog">
+																	<i class="fa fa-ban"></i> Cancelar
+																</a> 
+																
+
 															</g:if>
 															
 														</div>
@@ -172,6 +176,41 @@
 				</div>
 			</div>
 		</g:if>
+
+		<div class="modal fade" id="cancelDialog" tabindex="-1">
+			<div class="modal-dialog ">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Cancelar cheque</h4>
+					</div>
+
+					<g:form action="cancelarCheque" class="form-horizontal" method="DELETE">
+						<g:hiddenField name="id" value="${pagoInstance.id}"/>
+						<div class="modal-body">
+							<div class="form-group">
+								<label for="comentario" class="control-label col-sm-2">Comentario</label>
+								<div class="col-sm-10">
+									<input name="comentario" class="form-control" value="" required>
+								</div>
+							</div>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+							<g:submitButton class="btn btn-danger" name="aceptar"
+									value="Cancelar" />
+						</div>
+					</g:form>
+
+
+				</div>
+				<!-- moda-content -->
+			</div>
+			<!-- modal-di -->
+		</div>
+
 	
 	</div>
 

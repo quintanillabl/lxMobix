@@ -6,8 +6,8 @@ import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import java.text.DecimalFormat
 import com.luxsoft.lx.cxp.Requisicion
-
-
+import com.luxsoft.lx.bi.ReportCommand
+import com.luxsoft.cfdi.ImporteALetra
 
 
 @Secured(["hasAnyRole('ADMIN','TESORERIA')"])
@@ -19,6 +19,8 @@ class PagoController {
     def pagoService
 
     def chequeService
+
+    def reportService
 
     def index(Integer max) {
         params.max = 200
@@ -137,6 +139,33 @@ class PagoController {
         assert pagoInstance.cheque==null,'Cheque ya generado para el pago '+pagoInstance.id
         pagoInstance=chequeService.generarCheque(pagoInstance)
         redirect action:'show', params:[id:pagoInstance.id]
+    }
+
+    @Transactional
+    def imprimirCheque(Pago pagoInstance){
+
+        def cheque=pagoInstance.cheque
+        
+        def command=new ReportCommand()
+        command.reportName=cheque.cuenta.impresionTemplate
+        command.empresa=session.empresa
+        
+        params.ID=pagoInstance.cheque.id as String
+        params.IMPLETRA=ImporteALetra.aLetra(pagoInstance.importe.abs())
+        def stream=reportService.build(command,params)
+        def file="Cheque_${cheque.cuenta.numero}_${cheque.folio}.pdf"
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+
+    }
+
+    @Transactional
+    def cancelarCheque(Pago pagoInstance,String comentario){
+        def cheque=pagoInstance.cheque
+        flash.message="Cheque cancelado ${comentario}"
+        redirect action:'show',params:[id:pagoInstance.id]
     }
 }
 
