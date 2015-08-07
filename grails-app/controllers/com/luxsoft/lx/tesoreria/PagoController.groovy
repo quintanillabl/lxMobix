@@ -100,13 +100,14 @@ class PagoController {
         
         log.info 'Buscando requisiciones pendientes de pago '
         
-        def list=Requisicion.findAll("from Requisicion r where r  not in(select p.requisicion from Pago p)")
+        def list=Requisicion.findAll("from Requisicion r where r.empresa=? and r  not in(select p.requisicion from Pago p)",
+            session.empresa)
 
         def pattern = "\$##,###.##"
         def mf = new DecimalFormat(pattern)
 
         list=list.collect{ r->
-            def nombre="Id: ${r.id} (${r.proveedor}) Pago:${r.pago.format('dd/MM/yyyy')} Total:${mf.format(r.total)} "
+            def nombre="Id: ${r.folio} (${r.proveedor}) Pago:${r.pago.format('dd/MM/yyyy')} Total:${mf.format(r.total)} "
             [id:r.id,
             label:nombre,
             value:nombre,
