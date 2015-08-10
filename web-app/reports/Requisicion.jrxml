@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="RequisicionNew"
+		 name="Requisicion"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
@@ -32,7 +32,9 @@
 	<parameter name="FECHA" isForPrompting="false" class="java.util.Date"/>
 	<parameter name="FORMA_DE_PAGO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="IMP_TOT" isForPrompting="false" class="java.math.BigDecimal"/>
-	<parameter name="MONEDA" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="MONEDA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["MXN"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="TIPO_CAMBIO" isForPrompting="false" class="java.math.BigDecimal"/>
 	<parameter name="AUTORIZO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="COMPRAS" isForPrompting="false" class="java.lang.String"/>
@@ -42,23 +44,26 @@
 	<parameter name="AUTORIZADO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ID" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC
-,'NO_DISP' AS FORMADEPAGO,R.COMENTARIO,D.DOCUMENTO,D.FECHA_DOCUMENTO,R.CONCEPTO
-,D.TOTAL,D.TOTAL_DOCUMENTO,R.DESCUENTO_FINANCIERO
+,'NO_DISP' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
+,C.FOLIO AS DOCUMENTO,C.FECHA AS FECHA_DOCUMENTO,R.TIPO AS CONCEPTO
+,D.requisitado AS TOTAL,C.TOTAL AS TOTAL_DOCUMENTO,0.0 AS DESCUENTO_FINANCIERO
 FROM requisicion R 
 JOIN requisicion_det  D ON(D.requisicion_id=R.id) 
+JOIN cuenta_por_pagar C ON(C.ID=D.cuenta_por_pagar_id)
 JOIN proveedor P ON(P.id=R.proveedor_id)
 WHERE R.ID=$P{ID}]]></queryString>
 
 	<field name="ID" class="java.lang.Long"/>
 	<field name="AFAVOR" class="java.lang.String"/>
-	<field name="FECHA" class="java.sql.Timestamp"/>
-	<field name="FECHADEPAGO" class="java.sql.Timestamp"/>
+	<field name="PAGO" class="java.sql.Date"/>
+	<field name="FECHADEPAGO" class="java.sql.Date"/>
 	<field name="MONEDA" class="java.lang.String"/>
 	<field name="TC" class="java.math.BigDecimal"/>
 	<field name="FORMADEPAGO" class="java.lang.String"/>
 	<field name="COMENTARIO" class="java.lang.String"/>
+	<field name="FECHA" class="java.sql.Date"/>
 	<field name="DOCUMENTO" class="java.lang.String"/>
-	<field name="FECHA_DOCUMENTO" class="java.sql.Timestamp"/>
+	<field name="FECHA_DOCUMENTO" class="java.sql.Date"/>
 	<field name="CONCEPTO" class="java.lang.String"/>
 	<field name="TOTAL" class="java.math.BigDecimal"/>
 	<field name="TOTAL_DOCUMENTO" class="java.math.BigDecimal"/>

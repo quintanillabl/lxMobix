@@ -2,7 +2,7 @@
 <!-- Created with iReport - A designer for JasperReports -->
 <!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
-		 name="BANAMEX-Cheque"
+		 name="BANCOMER-Cheque"
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
@@ -59,9 +59,9 @@ where ch.id=$P{ID}]]></queryString>
 			<band height="140"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="361"
-						y="38"
-						width="304"
+						x="339"
+						y="60"
+						width="309"
 						height="26"
 						key="textField"/>
 					<box></box>
@@ -72,8 +72,8 @@ where ch.id=$P{ID}]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd-MMMMM-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="639"
-						y="11"
+						x="648"
+						y="32"
 						width="128"
 						height="15"
 						key="textField"/>
@@ -85,22 +85,22 @@ where ch.id=$P{ID}]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="362"
-						y="64"
-						width="303"
+						x="339"
+						y="91"
+						width="420"
 						height="24"
 						key="textField-1"/>
 					<box></box>
-					<textElement verticalAlignment="Bottom">
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[new String("(").concat($P{IMPLETRA}).concat(")")]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="692"
-						y="61"
-						width="77"
+						x="670"
+						y="73"
+						width="99"
 						height="12"
 						key="textField"/>
 					<box></box>

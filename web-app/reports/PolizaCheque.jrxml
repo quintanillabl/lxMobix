@@ -28,14 +28,13 @@
 	<queryString><![CDATA[SELECT ch.ID,M.FECHA,p.nombre AS AFAVOR,-m.importe as IMPORTE,CH.FOLIO,c.nombre as BANCO,R.COMENTARIO
 FROM cheque ch 
 join movimiento_de_cuenta m on(m.id=ch.egreso_id) 
-join pago_proveedor pp on(pp.egreso_id=m.id) 
-join requisicion r on(r.id=pp.requisicion_id) 
+join requisicion r on(r.id=m.requisicion_id) 
 join proveedor p on(p.id=r.proveedor_id)
 join cuenta_bancaria c on(c.id=m.cuenta_id)
 where ch.id=$P{ID}]]></queryString>
 
 	<field name="ID" class="java.lang.Long"/>
-	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="FECHA" class="java.sql.Date"/>
 	<field name="AFAVOR" class="java.lang.String"/>
 	<field name="IMPORTE" class="java.math.BigDecimal"/>
 	<field name="FOLIO" class="java.lang.Integer"/>
@@ -65,9 +64,9 @@ where ch.id=$P{ID}]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="75"
+						x="71"
 						y="131"
-						width="91"
+						width="117"
 						height="17"
 						forecolor="#000000"
 						backcolor="#000000"
@@ -339,9 +338,9 @@ where ch.id=$P{ID}]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="75"
+						x="71"
 						y="150"
-						width="91"
+						width="117"
 						height="18"
 						forecolor="#000000"
 						key="textField-5"/>
