@@ -155,6 +155,12 @@ class GastoController {
         def xml=gastoService.toXml(acuse)
         render(text: xml, contentType: "text/xml", encoding: "UTF-8")
     }
+
+    @Transactional
+    def corregirProveedores(){
+        gastoService.corregirProveedores()
+        redirect action:'index'
+    }
 }
 
 import org.grails.databinding.BindingFormat

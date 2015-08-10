@@ -54,6 +54,11 @@
 		            		<i class="fa fa-upload"></i></span> Importar CFDI
 		            	</a>
 		            </li>
+		            <li>
+		            	<g:link action="corregirProveedores">
+		            		Corregir proveedores
+		            	</g:link>
+		            </li>
 		        </ul>
 		    </div>
 		    <div class="btn-group">

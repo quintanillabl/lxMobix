@@ -122,7 +122,7 @@ class GastoService {
                     def nombre=emisorNode.attributes()['nombre']
                     def rfc=emisorNode.attributes()['rfc']
                     
-                    def proveedor=Proveedor.findByRfc(rfc)
+                    def proveedor=Proveedor.findByEmpresaAndRfc(empresa,rfc)
                     if(!proveedor){
                         log.debug "Alta de proveedor: $nombre ($rfc)"
                         def domicilioFiscal=emisorNode.breadthFirst().find { it.name() == 'DomicilioFiscal'}
@@ -268,6 +268,42 @@ class GastoService {
             
         } catch (JAXBException e) {
             e.printStackTrace();
+        }
+    }
+
+    def corregirProveedores(){
+        def gastos=Gasto.findAll().each{
+            def proveedor=it.proveedor
+            if(proveedor.empresa.id!=it.empresa.id){
+                log.info "Corrigiendo proveedor para el gasto ${it}"
+                def empresa=it.empresa
+                def found=Proveedor.findByEmpresaAndRfc(empresa,proveedor.rfc)
+                if(!found){
+                    println "Dando de alta al proveedor ${proveedor.rfc} para la empresa:${empresa}"
+                    def direccion=new Direccion(
+                        calle:proveedor.direccion.calle,
+                        numeroInterior:proveedor.direccion.numeroInterior,
+                        numeroExterior:proveedor.direccion.numeroExterior,
+                        colonia:proveedor.direccion.colonia,
+                        municipio:proveedor.direccion.municipio,
+                        codigoPostal:proveedor.direccion.codigoPostal,
+                        estado:proveedor.direccion.estado,
+                        pais:proveedor.direccion.pais
+                        )
+                    found=new Proveedor(
+                        empresa:empresa,
+                        nombre:proveedor.nombre,
+                        direccion:direccion,
+                        rfc:proveedor.rfc,
+                        nacional:proveedor.nacional,
+                        email:proveedor.email,
+                        www:proveedor.www
+                    )
+                    found.save flush:true
+                }
+                it.proveedor=found
+                it.save flush:true
+            }
         }
     }
 
