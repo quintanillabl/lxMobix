@@ -89,15 +89,18 @@
 													<g:else>
 														<div class="btn-group">
 															<lx:printButton action="imprimirCheque" id="${pagoInstance.id}"/>
+															<g:link action="imprimirPoliza" class="btn btn-default" 
+																	id="${pagoInstance.id}" >
+																    Imprimir Poliza
+															</g:link> 
 															<g:if test="${!pagoInstance.cheque.impresion}">
 																<a class="btn btn-danger " 
 																	data-toggle="modal" 
 																	data-target="#cancelDialog">
 																	<i class="fa fa-ban"></i> Cancelar
 																</a> 
-																
-
 															</g:if>
+															
 															
 														</div>
 														

@@ -141,6 +141,7 @@ class RequisicionController {
         def command=new ReportCommand()
         command.reportName="Requisicion"
         command.empresa=session.empresa
+        params.ID=requisicion.id as String
         params.EMPRESA=session.empresa.nombre
         def stream=reportService.build(command,params)
         def file="Requisicion_${requisicion.id}.pdf"
@@ -150,6 +151,7 @@ class RequisicionController {
             fileName:file)
         
     }
+    
 
     protected void notFound() {
         request.withFormat {

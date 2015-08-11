@@ -162,6 +162,23 @@ class PagoController {
 
     }
 
+    def imprimirPoliza(Pago pagoInstance){
+        def cheque=pagoInstance.cheque
+        def command=new ReportCommand()
+        command.reportName="PolizaCheque"
+        command.empresa=session.empresa
+        params.ID=pagoInstance.cheque.id as String
+        params.EMPRESA=session.empresa.nombre
+        params.IMPLETRA=ImporteALetra.aLetra(pagoInstance.importe.abs())
+        def stream=reportService.build(command,params)
+        def file="PolizaCheque_${cheque.cuenta.numero}_${cheque.folio}.pdf"
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+        
+    }
+
     @Transactional
     def cancelarCheque(Pago pagoInstance,String comentario){
         def cheque=pagoInstance.cheque
