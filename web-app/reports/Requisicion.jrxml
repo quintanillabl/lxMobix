@@ -24,7 +24,7 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="COMPANY" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["IMPAP, S.A. DE C.V."]]></defaultValueExpression>
+		<defaultValueExpression ><![CDATA["INMUEBLES SAN, S.C."]]></defaultValueExpression>
 	</parameter>
 	<parameter name="PROVEEDOR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="COMENTARIO" isForPrompting="false" class="java.lang.String"/>
@@ -43,8 +43,8 @@
 	<parameter name="TESORERIA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="AUTORIZADO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ID" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC
-,'NO_DISP' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
+	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC,R.FOLIO
+,'CHEQUE' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
 ,C.FOLIO AS DOCUMENTO,C.FECHA AS FECHA_DOCUMENTO,R.TIPO AS CONCEPTO
 ,D.requisitado AS TOTAL,C.TOTAL AS TOTAL_DOCUMENTO,0.0 AS DESCUENTO_FINANCIERO
 FROM requisicion R 
@@ -59,6 +59,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 	<field name="FECHADEPAGO" class="java.sql.Date"/>
 	<field name="MONEDA" class="java.lang.String"/>
 	<field name="TC" class="java.math.BigDecimal"/>
+	<field name="FOLIO" class="java.lang.Long"/>
 	<field name="FORMADEPAGO" class="java.lang.String"/>
 	<field name="COMENTARIO" class="java.lang.String"/>
 	<field name="FECHA" class="java.sql.Date"/>
@@ -372,7 +373,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 					<box>					<bottomPen lineWidth="1.75" lineStyle="Solid" lineColor="#FFFFFF"/>
 					<rightPen lineWidth="1.75" lineStyle="Solid" lineColor="#FFFFFF"/>
 </box>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
 				<text><![CDATA[I D :]]></text>
@@ -381,7 +382,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 					<reportElement
 						x="50"
 						y="65"
-						width="50"
+						width="46"
 						height="13"
 						forecolor="#333333"
 						key="textField-39"/>
@@ -481,6 +482,38 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 						<font pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{DESCUENTO_FINANCIERO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="6"
+						y="33"
+						width="44"
+						height="13"
+						forecolor="#000000"
+						backcolor="#000000"
+						key="staticText-63"/>
+					<box>					<bottomPen lineWidth="1.75" lineStyle="Solid" lineColor="#FFFFFF"/>
+					<rightPen lineWidth="1.75" lineStyle="Solid" lineColor="#FFFFFF"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[F O L I O  :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="50"
+						y="33"
+						width="46"
+						height="13"
+						forecolor="#333333"
+						key="textField-42"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{FOLIO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -775,7 +808,7 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 						mode="Transparent"
 						x="2"
 						y="14"
-						width="71"
+						width="110"
 						height="12"
 						forecolor="#999999"
 						backcolor="#FFFFFF"
@@ -788,7 +821,7 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Helvetica" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[SIIPAP WIN EX]]></text>
+				<text><![CDATA[INMOBILIARIAS LX-MOBIX]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -901,7 +934,7 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 						mode="Transparent"
 						x="2"
 						y="14"
-						width="71"
+						width="110"
 						height="12"
 						forecolor="#999999"
 						backcolor="#FFFFFF"
@@ -914,7 +947,7 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Helvetica" pdfFontName="Helvetica-Bold" size="8" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[SIIPAP WIN EX]]></text>
+				<text><![CDATA[INMOBILIARIAS LX-MOBIX]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
