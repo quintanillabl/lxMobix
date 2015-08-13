@@ -24,7 +24,8 @@ class GastoDetController {
     }
 
     def create(Gasto gasto) {
-        [gastoInstance:gasto,gastoDetInstance:new GastoDetCommand(cuentaContable:gasto.cuentaContable)]
+      //  [gastoInstance:gasto,gastoDetInstance:new GastoDetCommand(cuentaContable:gasto.cuentaContable)]
+      [gastoInstance:gasto,gastoDetInstance:new GastoDetCommand()]
     }
 
     
