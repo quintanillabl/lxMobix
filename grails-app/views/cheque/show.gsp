@@ -23,11 +23,11 @@
 			</g:if>
 			<ol class="property-list cheque">
 			
-				<g:if test="${chequeInstance?.fechaImpresion}">
+				<g:if test="${chequeInstance?.impresion}">
 				<li class="fieldcontain">
 					<span id="fechaImpresion-label" class="property-label"><g:message code="cheque.fechaImpresion.label" default="Fecha Impresion" /></span>
 					
-						<span class="property-value" aria-labelledby="fechaImpresion-label"><g:formatDate date="${chequeInstance?.fechaImpresion}" /></span>
+						<span class="property-value" aria-labelledby="fechaImpresion-label"><g:formatDate date="${chequeInstance?.impresion}" /></span>
 					
 				</li>
 				</g:if>
