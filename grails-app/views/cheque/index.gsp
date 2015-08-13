@@ -30,7 +30,7 @@
 
 		    <div class="btn-group">
 		        <lx:refreshButton/>
-		        <lx:createButton/>
+		        %{-- <lx:createButton/> --}%
 		    </div>
 		    <div class="btn-group">
 		        <button type="button" name="reportes"
@@ -54,42 +54,37 @@
 						<tr>
 							<th>Id</th>
 							<th>Cuenta</th>
-							<th>Desc</th>
 							<th>Pago</th>
 							<th>Fecha</th>
 							<th>Folio</th>
 							<th>Importe</th>
 							<th>Impreso</th>
-							%{-- <th>Cancelación</th> --}%
+							<th>Cancelación</th>
+							<th>Comentario</th>
+							<th>User</th>
 						</tr>
 					</thead>
 					<tbody>
 						<g:each in="${chequeInstanceList}"
 							var="row">
 							<tr>
-								<td>
-									<g:link action="show"
-										id="${row.id}" >
-										${row.id}
-									</g:link>
-								</td>
-								<td>
-									${fieldValue(bean: row, field: "cuenta.numero")}
-								</td>
-								<td>${fieldValue(bean: row, field: "cuenta.nombre")}</td>
+								<td>${row.id}</td>
+								<td>${fieldValue(bean: row, field: "cuenta.numero")} (${fieldValue(bean: row, field: "cuenta.nombre")})</td>
+								
 								<td>${fieldValue(bean: row, field: "egreso.id")}</td>
 								<td><lx:shortDate date="${row.egreso.fecha }"/></td>
 								<td><g:formatNumber number="${row.folio}" format="####"/></td>
 								<td><lx:moneyFormat number="${row.egreso.importe.abs()}"/></td>
 								<td><lx:shortDate date="${row.impresion}"/></td>
-								%{-- <td><g:if test="${!row.cancelacion }">
-										<g:link action="cancelar" id="${row.id}" ><i class="icon-remove-sign"></i> Cancelar</g:link>
-									</g:if>
-									<g:else>
-										<lx:shortDate date="${row.cancelacion}"/>	
-									</g:else>
-								</td>				
-								 --}%
+								<td>${formatDate(date:row.cancelacion,format:'dd/MM/yyyy hh:mm')}</td>
+								
+								<td>
+									<abbr title="${row.comentarioCancelacion}">
+									${org.apache.commons.lang.StringUtils.substring(row.comentarioCancelacion,0,20)}
+									</abbr>
+								</td>
+								<td>${fieldValue(bean: row, field: "modificadoPor")}</td>
+								
 								
 								
 							</tr>

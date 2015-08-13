@@ -155,6 +155,8 @@ class PagoController {
         params.IMPLETRA=ImporteALetra.aLetra(pagoInstance.importe.abs())
         def stream=reportService.build(command,params)
         def file="Cheque_${cheque.cuenta.numero}_${cheque.folio}.pdf"
+        cheque.impresion=new Date()
+        cheque.save flush:true
         render(
             file: stream.toByteArray(), 
             contentType: 'application/pdf',
@@ -172,6 +174,7 @@ class PagoController {
         params.IMPLETRA=ImporteALetra.aLetra(pagoInstance.importe.abs())
         def stream=reportService.build(command,params)
         def file="PolizaCheque_${cheque.cuenta.numero}_${cheque.folio}.pdf"
+        
         render(
             file: stream.toByteArray(), 
             contentType: 'application/pdf',
@@ -182,7 +185,8 @@ class PagoController {
     @Transactional
     def cancelarCheque(Pago pagoInstance,String comentario){
         def cheque=pagoInstance.cheque
-        flash.message="Cheque cancelado ${comentario}"
+        chequeService.cancelarCheque(pagoInstance,comentario)
+        flash.message="Cheque cancelado ${cheque.id} ${comentario}"
         redirect action:'show',params:[id:pagoInstance.id]
     }
 }

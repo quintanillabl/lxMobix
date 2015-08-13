@@ -94,13 +94,13 @@
 																    Imprimir Poliza
 															</g:link> 
 															<g:if test="${!pagoInstance.cheque.impresion}">
-																<a class="btn btn-danger " 
-																	data-toggle="modal" 
-																	data-target="#cancelDialog">
-																	<i class="fa fa-ban"></i> Cancelar
-																</a> 
+																
 															</g:if>
-															
+															<a class="btn btn-danger " 
+																data-toggle="modal" 
+																data-target="#cancelDialog">
+																<i class="fa fa-ban"></i> Cancelar
+															</a> 
 															
 														</div>
 														

@@ -5,7 +5,7 @@ class Cheque {
 	CuentaBancaria cuenta
 	Integer folio
 	Date impresion
-	MovimientoDeCuenta egreso
+	//Pago egreso
 	Date cancelacion
 	String comentarioCancelacion
 
@@ -26,5 +26,7 @@ class Cheque {
 		comentarioCancelacion nullable:true
 		folio min:1
     }
+
+    static belongsTo = [egreso: Pago]
    
 }
