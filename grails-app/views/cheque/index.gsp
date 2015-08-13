@@ -68,7 +68,11 @@
 						<g:each in="${chequeInstanceList}"
 							var="row">
 							<tr>
-								<td>${row.id}</td>
+								<td>
+									<g:link action="show" id="${row.id}">
+										${row.id}
+									</g:link>
+								</td>
 								<td>${fieldValue(bean: row, field: "cuenta.numero")} (${fieldValue(bean: row, field: "cuenta.nombre")})</td>
 								
 								<td>${fieldValue(bean: row, field: "egreso.id")}</td>
