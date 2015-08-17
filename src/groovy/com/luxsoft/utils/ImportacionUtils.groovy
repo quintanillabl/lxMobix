@@ -133,7 +133,106 @@ class ImportacionUtils {
 		return sql.rows("select v.*,p.descripcion,p.clave from venta_det v  join producto p on(v.producto_id=p.id) where venta_id=?",id)
 
 	}
+
+	public static  importarCfdi(Long id,String host,String user,String password){
+			SingleConnectionDataSource ds=new SingleConnectionDataSource(
+			            driverClassName:'com.mysql.jdbc.Driver',
+			    		url:"jdbc:mysql://${host}:3306/mobix",
+			            username:user,
+			            password:password)
+			Sql sql=new Sql(ds)
+			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+			def res=[]
+			sql.eachRow("select * from cfdi where id=?  ",id){ row->
+			    def cfdi=new Cfdi()
+			    cfdi.xmlName=row.xml_name
+			    cfdi.cargarXml(row.xml)
+			    cfdi.grupo='CARGA_INICIAL'
+			    cfdi.referencia=row.origen
+			    cfdi.creadoPor='admin'
+			    cfdi.modificadoPor='admin'
+			    cfdi.timbrado=df.parse(cfdi.timbreFiscal.fechaTimbrado)
+			    cfdi.comentario=row.comentario
+			    if(Periodo.obtenerYear(cfdi.fecha)==2015){
+			    	def found=Cfdi.findByUuid(cfdi.uuid)
+			    	if(found==null){
+			    		cfdi=cfdi.save failOnError:true,flush:true
+			    		res.add(cfdi)
+			    		log.info "Cfdi importado: ${cfdi}"
+		    		}else{
+		    			log.info "Cfdi ${cfdi} ya ha sido importado"
+		    		}
+			    }
+			}
+			return res
+	}
 	
+	def importarVenta(Long cfdiId,String host,String user,String password){
+		SingleConnectionDataSource ds=new SingleConnectionDataSource(
+		            driverClassName:'com.mysql.jdbc.Driver',
+		    		url:"jdbc:mysql://${host}:3306/mobix",
+		            username:user,
+		            password:password)
+		Sql sql=new Sql(ds)
+
+		def cfdi=Cfdi.get(cfdiId)
+		def empresa=Empresa.findByRfc(cfdi.emisorRfc)
+		assert empresa,'No existe la empresa: '+cfdi.emisorRfc
+		
+		def cliente=Cliente.findByEmpresaAndRfc(empresa,cfdi.receptorRfc)
+		if(cliente==null){
+			def direccion=CfdiUtils.toDireccion(cfdi.getComprobante().getReceptor().getDomicilio())
+			cliente=new Cliente(empresa:empresa,nombre:cfdi.receptor,rfc:cfdi.receptorRfc,direccion:direccion)
+			cliente.save flush:true,failOnError:true
+			log.info 'Cliente generado: '+cliente
+		}
+
+		def venta=Venta.findByCfdi(cfdi)
+		if(venta==null){
+			def ventaRow=sql.firstRow("select v.*,c.uuid from venta v  join cfdi c on(v.id=c.origen) where c.id=?",[cfdiId])
+			
+			venta=new Venta(
+				empresa:empresa,
+				cliente:cliente,
+				cfdi:cfdi,
+				folio:cfdi.folio.toInteger(),
+				serie:cfdi.serie,
+				fecha:cfdi.fecha,
+				comentario:ventaRow.comentario?:'VENTA IMPORTADA',
+				importe:cfdi.getComprobante().getSubTotal(),
+				subTotal:cfdi.getComprobante().getSubTotal(),
+				impuesto:cfdi.getComprobante().getImpuestos().getTotalImpuestosTrasladados(),
+				total:cfdi.total,
+				creadoPor:'admin',
+				modificadoPor:'admin',
+				tipo:'ARRENDAMIENTO',
+				formaDePago:cfdi.getComprobante().getMetodoDePago()
+				)
+			
+			def partidas=findPartidasDeVentas(host,user,password,ventaRow.id)
+			partidas.each{ det->
+				def producto=Producto.findByClave('RT_MENSUAL')
+				def ventaDet=new VentaDet(
+						producto:producto,
+						cantidad:det.cantidad,
+						precio:det.precio,
+						importeBruto:det.importe,
+						descuentoTasa:0.0,
+					    descuento:0.0,
+					    importeNeto:det.importe,
+					    impuesto:0.0,
+						comentario:det.comentario
+					)
+				venta.addToPartidas(ventaDet)
+			}
+			venta=venta.save failOnError:true,flush:true
+		    //println 'Alta de venta: '+venta+ 'Valida: '+venta.errors
+		    println 'Venta importada: '+venta
+		}else{
+			println 'VENTA YA IMPORTADA..'+venta
+		}
+		
+	}
 	
 	
 }
