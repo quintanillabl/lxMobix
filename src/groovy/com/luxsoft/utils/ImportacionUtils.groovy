@@ -142,8 +142,10 @@ class ImportacionUtils {
 			            password:password)
 			Sql sql=new Sql(ds)
 			SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-			def res=[]
-			sql.eachRow("select * from cfdi where id=?  ",id){ row->
+			//def row=sql.firstRow("select * from cfdi where id=?",[id])
+			//println 'Importando CFDI:'+
+			sql.eachRow("select * from cfdi where id=?  ",[id]){ row->
+				println 'Importando: '+row
 			    def cfdi=new Cfdi()
 			    cfdi.xmlName=row.xml_name
 			    cfdi.cargarXml(row.xml)
@@ -153,21 +155,19 @@ class ImportacionUtils {
 			    cfdi.modificadoPor='admin'
 			    cfdi.timbrado=df.parse(cfdi.timbreFiscal.fechaTimbrado)
 			    cfdi.comentario=row.comentario
-			    if(Periodo.obtenerYear(cfdi.fecha)==2015){
-			    	def found=Cfdi.findByUuid(cfdi.uuid)
+			    def found=Cfdi.findByUuid(cfdi.uuid)
 			    	if(found==null){
 			    		cfdi=cfdi.save failOnError:true,flush:true
-			    		res.add(cfdi)
+			    		
 			    		log.info "Cfdi importado: ${cfdi}"
 		    		}else{
 		    			log.info "Cfdi ${cfdi} ya ha sido importado"
 		    		}
-			    }
 			}
-			return res
+			
 	}
 	
-	def importarVenta(Long cfdiId,String host,String user,String password){
+	public static importarVenta(Long cfdiId,String host,String user,String password){
 		SingleConnectionDataSource ds=new SingleConnectionDataSource(
 		            driverClassName:'com.mysql.jdbc.Driver',
 		    		url:"jdbc:mysql://${host}:3306/mobix",
@@ -187,7 +187,7 @@ class ImportacionUtils {
 			log.info 'Cliente generado: '+cliente
 		}
 
-		def venta=Venta.findByCfdi(cfdi)
+		def venta=Venta.findByEmpresaAndCfdi(empresa,cfdi)
 		if(venta==null){
 			def ventaRow=sql.firstRow("select v.*,c.uuid from venta v  join cfdi c on(v.id=c.origen) where c.id=?",[cfdiId])
 			
@@ -228,6 +228,7 @@ class ImportacionUtils {
 			venta=venta.save failOnError:true,flush:true
 		    //println 'Alta de venta: '+venta+ 'Valida: '+venta.errors
 		    println 'Venta importada: '+venta
+		    return venta
 		}else{
 			println 'VENTA YA IMPORTADA..'+venta
 		}
