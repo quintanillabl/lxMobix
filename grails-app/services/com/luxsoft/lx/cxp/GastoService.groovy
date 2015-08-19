@@ -264,7 +264,6 @@ class GastoService {
                         def conceptos=xml.breadthFirst().find { it.name() == 'Conceptos'}
                         conceptos.children().each{
                             def model=it.attributes()
-                            println model
                             def det=new GastoDet(
                                 cuentaContable:cuenta,
                                 descripcion:model['descripcion'],
@@ -274,7 +273,14 @@ class GastoService {
                                 importe:model['importe'],
                                 comentario:"Concepto importado  ${xmlFile.name}"
                             )
+                            if(gasto.partidas.size()==0){
+                                det.retensionIsr=gasto.retensionIsr
+                                det.retensionIsrTasa=gasto.retensionIsrTasa
+                                det.retensionIva=gasto.retensionIva
+                                det.retensionIvaTasa=gasto.retensionIvaTasa
+                            }
                             gasto.addToPartidas(det)
+
                         }
                         
                         gasto=save(gasto)
