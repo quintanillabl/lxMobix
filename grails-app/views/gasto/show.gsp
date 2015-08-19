@@ -28,16 +28,7 @@
 				    <g:link action="edit" class="btn btn-default " id="${gastoInstance.id}">
 				        <i class="fa fa-pencil"></i> Editar
 				    </g:link>
-				    <g:if test="${!gastoInstance.acuse}">
-				    	<a href="#uploadFileDialog" data-toggle="modal" class="btn btn-default">
-				    		<i class="fa fa-upload"></i></span> Importar CFDI
-				    	</a>
-				    	<g:link action="validarEnElSat" onclick="return confirm('Validar en el SAT?');"
-				    		class="btn btn-default " id="${gastoInstance.id}">
-				    	    <i class="fa fa-check-square-o"></i> Validar (SAT)
-				    	</g:link> 
-				    </g:if>
-				    <g:else>
+				    <g:if test="${gastoInstance.acuse}">
 				    	<g:link  action="mostrarAcuse" 
 				    		id="${gastoInstance.id}"
 				    		class="btn btn-default " >
@@ -48,7 +39,8 @@
 				    		class="btn btn-default " >
 				    		<i class="fa fa-download"></i> Descargar acuse
 				    	</g:link>
-				    </g:else>
+				    </g:if>
+				    
 				   
 				</div>
 				
@@ -107,6 +99,8 @@
 				    				<f:display property="descuento" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="subTotal" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="impuesto"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="retensionIsr"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="retensionIva"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="total"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    			</div>
 				    			

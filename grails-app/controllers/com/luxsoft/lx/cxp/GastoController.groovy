@@ -120,6 +120,30 @@ class GastoController {
 
     }
 
+    @Transactional
+    def asignarCfdi(Gasto gastoInstance){
+        def xml=request.getFile('xmlFile')
+        if(xml==null){
+            flash.message="CFDI no existe"
+            redirect action:'edit',id:gastoInstance.id
+            return
+        }
+        File xmlFile = File.createTempFile(xml.getName(),".temp");
+        xml.transferTo(xmlFile)
+        try{
+            gastoInstance=gastoService.asignarCfdi(gastoInstance,xmlFile)
+            log.info 'Asignando CFDI al gasto: '+xml.getOriginalFilename()
+            flash.message="CFDI:${xml.getOriginalFilename()} asignado al gasto: ${gastoInstance.id}"
+            redirect action:'edit',id:gastoInstance.id
+            return
+        }catch(GastoException ge){
+            flash.message=ge.message
+            flash.error=ge.message
+            redirect action:'edit',id:gastoInstance.id
+            return
+        }
+    }
+
    
 
     @Transactional

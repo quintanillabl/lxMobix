@@ -98,6 +98,73 @@ class GastoService {
         def comprobante=xml.attributes()
     }
 
+    def asignarCfdi(Gasto gasto,File xmlFile){
+        def xml = new XmlSlurper().parse(xmlFile)
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        if(xml.name()!='Comprobante'){
+            throw new GastoException(message:'Archivo XML no es un CFDI',gasto:gasto)
+        }
+        def data=xml.attributes()
+        def receptor=xml.breadthFirst().find { it.name() == 'Receptor'}
+        assert receptor.name()=='Receptor','Error en el archivo XML'
+        def empresa=Empresa.findByRfc(receptor.attributes()['rfc'])
+        if(empresa!=gasto.empresa){
+            throw new GastoException(message:"El receptor (${receptor.attributes()['rfc']}) no corresponed a la empresa del gasto (${gasto.empresa.rfc})",gasto:gasto)
+        }
+
+        def serie=xml.attributes()['serie']
+        def folio=xml.attributes()['folio']
+        def fecha=df.parse(xml.attributes()['fecha'])
+        def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
+        def uuid=timbre.attributes()['UUID']
+        def subTotal=data['subTotal'] as BigDecimal
+        
+        gasto.importe=data['subTotal'] as BigDecimal
+        gasto.descuento=data['descuento'] as BigDecimal?:0.0
+        gasto.subTotal=subTotal
+        gasto.total=data['total'] as BigDecimal
+        gasto.cfdiXmlFileName=xmlFile.name
+        gasto.uuid=uuid
+        gasto.serie=serie
+        gasto.folio=folio
+        gasto.cfdiXml=xmlFile.getBytes()
+
+        def traslados=xml.breadthFirst().find { it.name() == 'Traslados'}
+        
+        if(traslados){
+            traslados.children().each{ t->
+                if(t.attributes()['impuesto']=='IVA'){
+                    def tasa=t.attributes()['tasa'] as BigDecimal
+                    gasto.impuestoTasa=tasa
+                    gasto.impuesto=t.attributes()['importe'] as BigDecimal
+                }
+            }
+        }
+        def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
+        
+        retenciones.breadthFirst().each{
+            def map=it.attributes()
+            if(map.impuesto=='IVA'){
+               def imp=map.importe as BigDecimal
+               def tasa=imp*100/subTotal
+               gasto.retensionIva=imp
+               gasto.retensionIvaTasa=tasa
+               
+            }
+            if(map.impuesto=='ISR'){
+               def imp=map.importe as BigDecimal
+               def tasa=imp*100/subTotal
+               gasto.retensionIsr=imp
+               gasto.retensionIsrTasa=tasa
+            }
+        }
+
+        gasto.save flush:true
+
+        return gasto
+
+    }
+
     def importar(File xmlFile){
         def xml = new XmlSlurper().parse(xmlFile)
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
@@ -175,7 +242,24 @@ class GastoService {
                                 }
                             }
                         }
+                        def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
                         
+                        retenciones.breadthFirst().each{
+                            def map=it.attributes()
+                            if(map.impuesto=='IVA'){
+                               def imp=map.importe as BigDecimal
+                               def tasa=imp*100/subTotal
+                               gasto.retensionIva=imp
+                               gasto.retensionIvaTasa=tasa
+                               
+                            }
+                            if(map.impuesto=='ISR'){
+                               def imp=map.importe as BigDecimal
+                               def tasa=imp*100/subTotal
+                               gasto.retensionIsr=imp
+                               gasto.retensionIsrTasa=tasa
+                            }
+                        }
                         
                         def conceptos=xml.breadthFirst().find { it.name() == 'Conceptos'}
                         conceptos.children().each{
@@ -307,4 +391,9 @@ class GastoService {
         }
     }
 
+}
+
+class GastoException extends RuntimeException{
+    String message
+    Gasto gasto
 }

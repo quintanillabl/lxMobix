@@ -18,11 +18,21 @@ class GastoDet {
 	String comentario
 
 
+    BigDecimal retencionIsrTasa=0
+    BigDecimal retencionIsr=0
+    BigDecimal retencionIvaTasa=0
+    BigDecimal retencionIva=0
+
+
+
+
     static constraints = {
     	valorUnitario(scale:4)
     	importe(scale:4)
     	unidad maxSize:20
     	comentario nullable:true
+        retencionIsrTasa scale:4
+        retencionIvaTasa scale:4
     }
 
     static belongsTo = [gasto: Gasto]
