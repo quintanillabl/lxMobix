@@ -213,6 +213,7 @@ class GastoService {
                     def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
                     def uuid=timbre.attributes()['UUID']
                     def gasto=Gasto.findByUuid(uuid)
+                    def subTotal=data['subTotal'] as BigDecimal
                     if(gasto==null){
                         gasto=new Gasto(
                             empresa:empresa,
