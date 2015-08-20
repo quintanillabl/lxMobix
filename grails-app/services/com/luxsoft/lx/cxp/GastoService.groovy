@@ -274,11 +274,11 @@ class GastoService {
                                 importe:model['importe'],
                                 comentario:"Concepto importado  ${xmlFile.name}"
                             )
-                            if(gasto.partidas.size()==0){
-                                det.retensionIsr=gasto.retensionIsr
-                                det.retensionIsrTasa=gasto.retensionIsrTasa
-                                det.retensionIva=gasto.retensionIva
-                                det.retensionIvaTasa=gasto.retensionIvaTasa
+                            if(!gasto.partidas){
+                                det.retencionIsr=gasto.retensionIsr
+                                det.retencionIsrTasa=gasto.retensionIsrTasa
+                                det.retencionIva=gasto.retensionIva
+                                det.retencionIvaTasa=gasto.retensionIvaTasa
                             }
                             gasto.addToPartidas(det)
 

@@ -99,8 +99,8 @@
 				    				<f:display property="descuento" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="subTotal" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="impuesto"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
-				    				<f:display property="retensionIsr"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
-				    				<f:display property="retensionIva"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="retensionIsr" label="Retención ISR" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
+				    				<f:display property="retensionIva" label="Retención IVA" cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    				<f:display property="total"  cols="col-sm-6" colsLabel="col-sm-4" widget="money"/>
 				    			</div>
 				    			

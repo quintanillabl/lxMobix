@@ -162,6 +162,7 @@
 	  //   	} );
  			$('#grid').dataTable({
                 responsive: true,
+                paginate:false,
                 "language": {
 					"url": "${assetPath(src: 'plugins/dataTables/dataTables.spanish.txt')}"
 	    		},

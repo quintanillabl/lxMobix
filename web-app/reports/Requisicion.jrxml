@@ -47,6 +47,7 @@
 ,'CHEQUE' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
 ,C.FOLIO AS DOCUMENTO,C.FECHA AS FECHA_DOCUMENTO,R.TIPO AS CONCEPTO
 ,D.requisitado AS TOTAL,C.TOTAL AS TOTAL_DOCUMENTO,0.0 AS DESCUENTO_FINANCIERO
+,SUBSTR(C.ACUSE_CODIGO_ESTATUS,1,1) as ACUSE,C.ACUSE_ESTADO,C.UUID
 FROM requisicion R 
 JOIN requisicion_det  D ON(D.requisicion_id=R.id) 
 JOIN cuenta_por_pagar C ON(C.ID=D.cuenta_por_pagar_id)
@@ -69,6 +70,9 @@ WHERE R.ID=$P{ID}]]></queryString>
 	<field name="TOTAL" class="java.math.BigDecimal"/>
 	<field name="TOTAL_DOCUMENTO" class="java.math.BigDecimal"/>
 	<field name="DESCUENTO_FINANCIERO" class="java.math.BigDecimal"/>
+	<field name="ACUSE" class="java.lang.String"/>
+	<field name="ACUSE_ESTADO" class="java.lang.String"/>
+	<field name="UUID" class="java.lang.String"/>
 
 	<sortField name="DOCUMENTO" />
 
@@ -522,9 +526,9 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="165"
+						x="295"
 						y="21"
-						width="84"
+						width="86"
 						height="13"
 						forecolor="#000000"
 						backcolor="#999999"
@@ -537,14 +541,14 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<text><![CDATA[ NUMERO]]></text>
+				<text><![CDATA[FOLIO]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="333"
+						x="446"
 						y="21"
-						width="72"
+						width="56"
 						height="13"
 						forecolor="#000000"
 						backcolor="#999999"
@@ -562,9 +566,9 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="405"
+						x="502"
 						y="8"
-						width="120"
+						width="75"
 						height="26"
 						forecolor="#000000"
 						backcolor="#999999"
@@ -582,9 +586,9 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="165"
+						x="6"
 						y="8"
-						width="240"
+						width="496"
 						height="13"
 						forecolor="#000000"
 						backcolor="#999999"
@@ -597,7 +601,7 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
 						<font pdfFontName="Helvetica" size="8" isBold="false"/>
 					</textElement>
-				<text><![CDATA[F A C T U R A]]></text>
+				<text><![CDATA[COMPROBANTE  CFDI]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -614,9 +618,9 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="249"
+						x="381"
 						y="21"
-						width="84"
+						width="65"
 						height="13"
 						forecolor="#000000"
 						backcolor="#999999"
@@ -644,15 +648,75 @@ $P{MONEDA}.equals( "MXN" ) ? "(MONEDA NACIONAL)" : "(MONEDA ORIGEN)"]]></textFie
 					<pen lineWidth="2.0"/>
 </graphicElement>
 				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="246"
+						y="21"
+						width="48"
+						height="13"
+						forecolor="#000000"
+						backcolor="#999999"
+						key="staticText-64"/>
+					<box>					<topPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[ESTADO]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="214"
+						y="21"
+						width="32"
+						height="13"
+						forecolor="#000000"
+						backcolor="#999999"
+						key="staticText-65"/>
+					<box>					<topPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[ACUSE]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="6"
+						y="21"
+						width="208"
+						height="13"
+						forecolor="#000000"
+						backcolor="#999999"
+						key="staticText-66"/>
+					<box>					<topPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<leftPen lineWidth="1.0" lineColor="#CCCCCC"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#CCCCCC"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font pdfFontName="Helvetica" size="8" isBold="false"/>
+					</textElement>
+				<text><![CDATA[UUID]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
 			<band height="14"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="332"
+						x="446"
 						y="0"
-						width="60"
+						width="55"
 						height="13"
 						forecolor="#000000"
 						key="textField-10"/>
@@ -665,22 +729,22 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL_DOCUMENTO}.multiply( new BigDecimal($F{TC}
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="165"
+						x="295"
 						y="0"
-						width="85"
+						width="86"
 						height="13"
 						key="textField"/>
 					<box></box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Center">
 						<font size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{DOCUMENTO}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="248"
+						x="381"
 						y="0"
-						width="84"
+						width="65"
 						height="13"
 						key="textField"/>
 					<box></box>
@@ -691,9 +755,9 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL_DOCUMENTO}.multiply( new BigDecimal($F{TC}
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="404"
+						x="501"
 						y="0"
-						width="93"
+						width="76"
 						height="13"
 						key="textField"/>
 					<box></box>
@@ -702,6 +766,45 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL_DOCUMENTO}.multiply( new BigDecimal($F{TC}
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleValue()) ) : 
 $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleValue()) ) : $F{TOTAL}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="246"
+						y="0"
+						width="48"
+						height="13"
+						key="textField-43"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ACUSE_ESTADO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="214"
+						y="0"
+						width="31"
+						height="13"
+						key="textField-44"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{ACUSE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="6"
+						y="0"
+						width="208"
+						height="13"
+						key="textField-45"/>
+					<box></box>
+					<textElement textAlignment="Center">
+						<font size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{UUID}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -966,7 +1069,7 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="203"
+						x="300"
 						y="12"
 						width="107"
 						height="13"
@@ -983,9 +1086,9 @@ $P{MONEDA}.equals( "MXN" ) ? $F{TOTAL}.multiply( new BigDecimal($F{TC}.doubleVal
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="412"
+						x="509"
 						y="12"
-						width="85"
+						width="68"
 						height="13"
 						forecolor="#333333"
 						key="textField"/>
@@ -998,7 +1101,7 @@ $P{MONEDA}.equals( "MXN" ) ? $V{SUMAPAGAR}.multiply( new BigDecimal($F{TC}.doubl
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="339"
+						x="436"
 						y="12"
 						width="60"
 						height="13"
@@ -1024,9 +1127,9 @@ $P{MONEDA}.equals( "MXN" ) ? $V{SUMAFAC}.multiply( new BigDecimal($F{TC}.doubleV
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="412"
+						x="509"
 						y="9"
-						width="119"
+						width="68"
 						height="0"
 						forecolor="#999999"
 						key="line-11"/>

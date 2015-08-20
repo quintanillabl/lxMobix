@@ -113,8 +113,8 @@
 									<f:field property="subTotal" cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="impuestoTasa"  cols="col-sm-8" colsLabel="col-sm-4" label="IVA (%)"/>
 									<f:field property="impuesto"  cols="col-sm-8" colsLabel="col-sm-4"/>
-									<f:display property="retensionIva"  cols="col-sm-8" colsLabel="col-sm-4" widget="money"/>
-									<f:display property="retensionIsr"  cols="col-sm-8" colsLabel="col-sm-4" widget="money"/>
+									<f:display property="retensionIva" label="Retención IVA" cols="col-sm-8" colsLabel="col-sm-4" widget="money"/>
+									<f:display property="retensionIsr" label="Retención ISR" cols="col-sm-8" colsLabel="col-sm-4" widget="money"/>
 									<f:field property="total"  cols="col-sm-8" colsLabel="col-sm-4"/>
 								</div>
 								
