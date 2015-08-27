@@ -179,15 +179,18 @@ class GastoService {
             assert cuenta,'No se ha declarado la cuenta general de gastos'
             if('Receptor'==receptor.name()){
                 def empresa=Empresa.findByRfc(receptor.attributes()['rfc'])
+
                // assert empresa,'No existe empresa para: '+receptor.name()+ ' RFC: '+receptor.attributes()['rfc']+ 'Archivo: '+xmlFile.name
                 log.debug 'Importando Gasto/Compra para '+empresa
                 
                 def emisorNode= xml.breadthFirst().find { it.name() == 'Emisor'}
+                if(empresa==null){
+                    empresa=Empresa.findByRfc(emisorNode.attributes()['rfc'])
+                    assert empresa,'No existe empresa que pueda registrar este CFDI'
+                }
                 
                 if('Emisor'==emisorNode.name()){
-                    emisorNode.breadthFirst().each{
-                        log.debug it.name()
-                    }
+
                     def nombre=emisorNode.attributes()['nombre']
                     def rfc=emisorNode.attributes()['rfc']
                     
