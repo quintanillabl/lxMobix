@@ -141,8 +141,8 @@ class GastoService {
             }
         }
         def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
-        
-        retenciones.breadthFirst().each{
+        if(retenciones){
+            retenciones.breadthFirst().each{
             def map=it.attributes()
             if(map.impuesto=='IVA'){
                def imp=map.importe as BigDecimal
@@ -157,7 +157,9 @@ class GastoService {
                gasto.retensionIsr=imp
                gasto.retensionIsrTasa=tasa
             }
+        }    
         }
+        
 
         gasto.save flush:true
 
