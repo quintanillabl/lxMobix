@@ -244,23 +244,25 @@ class GastoService {
                             }
                         }
                         def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
-                        
-                        retenciones.breadthFirst().each{
-                            def map=it.attributes()
-                            if(map.impuesto=='IVA'){
-                               def imp=map.importe as BigDecimal
-                               def tasa=imp*100/subTotal
-                               gasto.retensionIva=imp
-                               gasto.retensionIvaTasa=tasa
-                               
-                            }
-                            if(map.impuesto=='ISR'){
-                               def imp=map.importe as BigDecimal
-                               def tasa=imp*100/subTotal
-                               gasto.retensionIsr=imp
-                               gasto.retensionIsrTasa=tasa
+                        if(retenciones){
+                            retenciones.breadthFirst().each{
+                                def map=it.attributes()
+                                if(map.impuesto=='IVA'){
+                                   def imp=map.importe as BigDecimal
+                                   def tasa=imp*100/subTotal
+                                   gasto.retensionIva=imp
+                                   gasto.retensionIvaTasa=tasa
+                                   
+                                }
+                                if(map.impuesto=='ISR'){
+                                   def imp=map.importe as BigDecimal
+                                   def tasa=imp*100/subTotal
+                                   gasto.retensionIsr=imp
+                                   gasto.retensionIsrTasa=tasa
+                                }
                             }
                         }
+                        
                         
                         def conceptos=xml.breadthFirst().find { it.name() == 'Conceptos'}
                         conceptos.children().each{
