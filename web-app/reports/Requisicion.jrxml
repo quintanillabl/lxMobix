@@ -43,7 +43,7 @@
 	<parameter name="TESORERIA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="AUTORIZADO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ID" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT R.ID,P.NOMBRE AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC,R.FOLIO
+	<queryString><![CDATA[SELECT R.ID,r.a_favor AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC,R.FOLIO
 ,'CHEQUE' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
 ,C.FOLIO AS DOCUMENTO,C.FECHA AS FECHA_DOCUMENTO,R.TIPO AS CONCEPTO
 ,D.requisitado AS TOTAL,C.TOTAL AS TOTAL_DOCUMENTO,0.0 AS DESCUENTO_FINANCIERO
