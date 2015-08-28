@@ -80,8 +80,7 @@ class PagoController {
             notFound()
             return
         }
-
-        pagoInstance.delete flush:true
+        pagoService.delete(pagoInstance)
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'Pago.label', default: 'Pago'), pagoInstance.id])
         redirect action:"index", method:"GET"
     }
@@ -111,7 +110,9 @@ class PagoController {
             [id:r.id,
             label:nombre,
             value:nombre,
-            total:r.total
+            total:r.total,
+            afavor:r.aFavor,
+            pago:r.pago.format('dd/MM/yyyy')
             ]
         }
         def res=list as JSON

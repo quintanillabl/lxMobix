@@ -10,6 +10,7 @@ class RequisicionService {
     def save(Requisicion requisicion) {
     	if(!requisicion.id){
     		requisicion.folio=folioService.nextFolio(requisicion.empresa,'REQUISICONES')
+            requisicion.aFavor=requisicion.proveedor.nombre
     	}
     	if(!requisicion.partidas) requisicion.partidas=[] as Set
     	requisicion.total=requisicion.partidas.sum(0.0,{it.requisitado})

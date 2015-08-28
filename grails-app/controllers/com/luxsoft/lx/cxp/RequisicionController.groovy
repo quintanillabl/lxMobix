@@ -23,7 +23,7 @@ class RequisicionController {
     def reportService
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+        params.max = Math.min(max ?: 400, 1000)
         respond Requisicion.findAllByEmpresa(session.empresa,params), 
             model:[requisicionInstanceCount: Requisicion.countByEmpresa(session.empresa)]
     }
@@ -64,14 +64,14 @@ class RequisicionController {
             notFound()
             return
         }
-        requisicionInstance.validate(['proveedor','pago','comentario','tipo'])
+        requisicionInstance.validate(['proveedor','aFavor','pago','comentario','tipo'])
         if (requisicionInstance.hasErrors()) {
-            respond requisicionInstance.errors, view:'create'
+            render view:'edit',model:[requisicionInstance:requisicionInstance]
             return
         }
         requisicionInstance=requisicionService.update requisicionInstance
         flash.message="Requisición actualizada: ${requisicionInstance.id}"
-        redirect action:'index'
+        redirect action:'edit',id:requisicionInstance.id
 
         
     }

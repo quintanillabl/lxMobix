@@ -60,6 +60,7 @@
 							<f:with bean="${pagoInstance}">
 								<div class="col-sm-6">
 									<f:display property="requisicion" wrapper="bootstrap3"/>
+									<f:display property="aFavor" wrapper="bootstrap3"/>
 									<f:display property="fecha" wrapper="bootstrap3" />
 									<f:display property="folio" widget-class="form-control" wrapper="bootstrap3"/>
 									<f:display property="cuenta" wrapper="bootstrap3" widget-class="form-control"/>

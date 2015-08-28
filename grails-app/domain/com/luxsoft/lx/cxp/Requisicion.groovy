@@ -11,8 +11,10 @@ import com.luxsoft.lx.tesoreria.Pago
 class Requisicion {
 
 	Empresa empresa
-	
+
 	Proveedor proveedor
+
+	String aFavor
 
 	Long folio
 
@@ -32,14 +34,13 @@ class Requisicion {
 
 	static hasMany = [partidas: RequisicionDet]
 
-	
-
     static constraints = {
     	folio unique: 'empresa'
     	comentario nullable:true
     	autorizacion nullable:true
-    	tipo inList:['GASTO','COMPRA']
+    	tipo inList:['GASTO','COMPRA','HONORARIOS'],maxSize:50
     	total scale:4
+    	aFavor nullable:true
     }
 
     static mapping = {

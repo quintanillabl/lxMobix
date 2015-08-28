@@ -45,15 +45,22 @@
 				    		</g:hasErrors>
 
 							<f:with bean="${requisicionInstance}">
-								<div class="col-sm-6">
-									<f:display property="pago" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
-									<f:display property="tipo" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
-									<f:display property="comentario" widget-class="form-control" cols="col-sm-6" colsLabel="col-sm-3 col-sm-offset-1"/>
+								<div class="row">
+									<div class="col-md-12">
+										<f:display property="aFavor" widget-class="form-control"/>
+									</div>
+									<div class="col-sm-8">
 
+										<f:display property="pago" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
+										<f:display property="tipo" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
+										<f:display property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
+
+									</div>
+									<div class="col-sm-4 " id="totalesPanel">
+										<f:display property="total" widget="money" />
+									</div>
 								</div>
-								<div class="col-sm-6 " id="totalesPanel">
-									<f:display property="total" cols="col-sm-4" colsLabel="col-sm-2 col-sm-offset-2"/>
-								</div>
+								
 								
 							</f:with>
 				  		</div>
@@ -66,6 +73,7 @@
 				  					<th>Fecha</th>
 				  					<th>Vencimiento</th>
 				  					<th>Total</th>
+				  					<th>Saldo</th>
 				  					<th>Requisitado</th>
 				  					<th>Comentario</th>
 				  					
@@ -78,7 +86,8 @@
 				  						<td >${fieldValue(bean:row,field:"cuentaPorPagar.folio")}</td>
 				  						<td><g:formatDate date="${row.cuentaPorPagar.fecha}" format="dd/MM/yyyy"/></td>
 				  						<td><g:formatDate date="${row.cuentaPorPagar.vencimiento}" format="dd/MM/yyyy"/></td>
-				  						<td>${formatNumber(number:row.cuentaPorPagar.total,format:'##.##')}</td>
+				  						<td>${g.formatNumber(number:row.cuentaPorPagar.total,type:'currency')}</td>
+				  						<td>${g.formatNumber(number:row.cuentaPorPagar.saldo,type:'currency')}</td>
 				  						<td>${g.formatNumber(number:row.requisitado,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
 				  						

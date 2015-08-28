@@ -11,7 +11,9 @@ class PagoService extends MovimientoDeCuentaService{
     // }
     def save(Pago pago){
         pago.concepto="PAGO PROVEEDOR"
+        pago.aFavor=pago.requisicion.aFavor
         pago.importe=pago.requisicion.total.abs()*-1
+        pago.fecha=pago.requisicion.pago
         return super.save(pago)
     }
 
@@ -26,6 +28,17 @@ class PagoService extends MovimientoDeCuentaService{
     				comentario:'Aplicacion de pago')
     		}
     	}
+    }
+
+    def delete(Pago pago){
+        if(pago.aplicaciones){
+            throw new RuntimeException("Pago ya con aplicaciones no se puede eliminar");
+        }
+        if(pago.cheque){
+            def cheque=pago.cheque
+            cheque.delete flush:true
+        }
+        pago.delete flush:true
     }
 
     def cancelarAplicaiones(Pago pago){

@@ -64,6 +64,7 @@
 								<f:field property="fecha" wrapper="bootstrap3" widget-class="form-control"/>
 								
 								<f:field property="importe" wrapper="bootstrap3" widget="money" />
+								<f:field property="aFavor" wrapper="bootstrap3" widget-class="form-control" widget-readOnly="readOnly"/>
 								<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
 								<f:field property="comentario" wrapper="bootstrap3" widget-class="form-control"/>
 							</f:with>
@@ -115,6 +116,8 @@
 					console.log('Valor seleccionado: '+ui.item.id);
 					$("#requisicion").val(ui.item.id);
 					$("#importe").autoNumeric('set',ui.item.total);
+					$("#aFavor").val(ui.item.afavor);
+					$("#fecha").val(ui.item.pago)
 				}
 			});
 

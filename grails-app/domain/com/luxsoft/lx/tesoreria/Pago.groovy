@@ -10,6 +10,8 @@ class Pago extends MovimientoDeCuenta{
 
 	FormaDePago formaDePago
 
+	String aFavor
+
 	Cheque cheque
 
 	static hasMany = [aplicaciones: AplicacionDePago]
@@ -20,6 +22,7 @@ class Pago extends MovimientoDeCuenta{
     static constraints = {
     	formaDePago inList:[FormaDePago.TRANSFERENCIA,FormaDePago.CHEQUE,FormaDePago.EFECTIVO]
     	//cheque nullable:true
+    	aFavor nullable:true
     }
     
     static embedded = ['autorizacion']
