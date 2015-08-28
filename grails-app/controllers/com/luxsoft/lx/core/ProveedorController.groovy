@@ -7,7 +7,7 @@ import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 
-@Secured(["hasAnyRole('CONTABILIDAD','ADMINISTRACION','ADMIN','TESORERIA')"])
+@Secured(["hasAnyRole('CONTABILIDAD','ADMINISTRACION','ADMIN','TESORERIA','GASTOS')"])
 @Transactional(readOnly = true)
 class ProveedorController {
 
