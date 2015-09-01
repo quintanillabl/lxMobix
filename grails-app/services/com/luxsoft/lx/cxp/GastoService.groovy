@@ -16,6 +16,7 @@ import javax.xml.bind.Unmarshaller
 import org.apache.commons.lang.exception.ExceptionUtils
 import com.luxsoft.cfdi.Acuse
 import java.text.DecimalFormat
+import groovy.xml.*
 
 
 @Transactional
@@ -306,14 +307,30 @@ class GastoService {
         return null
     }
 
+    def getXml(Gasto gasto){
+        ByteArrayInputStream is=new ByteArrayInputStream(gasto.cfdiXml)
+        def xml = new XmlSlurper().parse(is)
+        return xml
+    }
+
+    def getCfdiXml(Gasto gasto){
+        ByteArrayInputStream is=new ByteArrayInputStream(gasto.cfdiXml)
+        def xml = new XmlSlurper().parse(is)
+        return XmlUtil.serialize(xml)
+    }
+
     def Acuse validarEnElSat(Gasto gasto){
         try {
             def emisor=gasto.proveedor.rfc
             def receptor=gasto.empresa.rfc
-            DecimalFormat format=new DecimalFormat("####.000000")
-            String stotal=format.format(gasto.total)
-            String qq="?re=$emisor&rr=$receptor&tt=$stotal&id=$gasto.uuid"
-            log.debug 'Validando en SAT Expresion impresa: '+qq
+            def xml=getXml(gasto)
+            def data=xml.attributes()
+            def total=data['total']
+            //DecimalFormat format=new DecimalFormat("####.000000")
+            //String stotal=format.format(gasto.total)
+            String qq="?re=$emisor&rr=$receptor&tt=$total&id=${gasto.uuid.toUpperCase()}"
+            log.info 'Validando en SAT Expresion impresa: '+qq
+
             Acuse acuse=consultaService.consulta(qq)
             gasto.acuseEstado=acuse.getEstado().getValue().toString()
             gasto.acuseCodigoEstatus=acuse.getCodigoEstatus().getValue().toString()

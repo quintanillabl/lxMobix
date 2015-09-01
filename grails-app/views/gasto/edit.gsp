@@ -42,7 +42,7 @@
 				    	</g:link>
 				    </g:else>
 				    <g:if test="${gastoInstance.cfdiXml}">
-				    	<g:link class="btn btn-default " action="mostrarXml" resource="${cfdiInstance}">CFDI</g:link>
+				    	<g:link class="btn btn-default " action="mostrarCfdi" id="${gastoInstance.id}">CFDI</g:link>
 				    </g:if>
 				    
 				    <g:link action="print" class="btn btn-default " id="${gastoInstance.id}">

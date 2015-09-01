@@ -28,6 +28,9 @@
 				    <g:link action="edit" class="btn btn-default " id="${gastoInstance.id}">
 				        <i class="fa fa-pencil"></i> Editar
 				    </g:link>
+				    <g:if test="${gastoInstance.cfdiXml}">
+				    	<g:link class="btn btn-default " action="mostrarCfdi" id="${gastoInstance.id}">CFDI</g:link>
+				    </g:if>
 				    <g:if test="${gastoInstance.acuse}">
 				    	<g:link  action="mostrarAcuse" 
 				    		id="${gastoInstance.id}"
@@ -54,7 +57,7 @@
 				<g:form class="form-horizontal"  >	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Id: ${gastoInstance.id}</div>
+						<div class="panel-heading">Proveedor: ${gastoInstance.proveedor} Id: ${gastoInstance.id}</div>
 				  		<div class="panel-body">
 				  			<g:if test="${flash.message}">
 				  				<span class="label label-warning">${flash.message}</span>

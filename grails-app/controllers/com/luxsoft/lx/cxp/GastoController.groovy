@@ -148,16 +148,18 @@ class GastoController {
 
     @Transactional
     def validarEnElSat(Gasto gasto){
-        if(gasto.acuse){
-            flash.message="Factura de gastos (CFDI) ya validado en el SAT"
-            redirect action:'edit',id:gasto.id
-            return
-        }
+        // if(gasto.acuse){
+        //     flash.message="Factura de gastos (CFDI) ya validado en el SAT"
+        //     redirect action:'edit',id:gasto.id
+        //     return
+        // }
         gastoService.validarEnElSat(gasto)
         flash.message="Factura de gastos (CFDI) validado en el SAT"
         redirect action:'edit',id:gasto.id
         return
     }
+
+
 
     def mostrarAcuse(Gasto gasto){
         def acuse=gastoService.toAcuse(gasto.acuse)
@@ -174,9 +176,8 @@ class GastoController {
         
     }
 
-    def verCfdiXml(Gasto gasto){
-        def acuse=gastoService.toAcuse(gasto.acuse)
-        def xml=gastoService.toXml(acuse)
+    def mostrarCfdi(Gasto gasto){
+        def xml=gastoService.getCfdiXml(gasto)
         render(text: xml, contentType: "text/xml", encoding: "UTF-8")
     }
 
