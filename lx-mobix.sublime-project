@@ -50,6 +50,10 @@
 			"path": "grails-app/utils"
 		},
 		{
+			"name": "libs",
+			"path": "lib"
+		},
+		{
 			"name": "Scripts",
 			"path": "scripts"
 		},

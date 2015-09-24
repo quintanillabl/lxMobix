@@ -17,7 +17,7 @@ class LineaDeProductoVentaListener {
 			if(direccion){
 				def comentario="${det.producto.descripcion.trim()}  DEL INMUEBLE UBICADO EN:${direccion.toLabel()}"
 				log.debug 'Ajustando el comentari de la partida a: '+comentario
-				det.comentario=comentario
+				det.comentario=comentario+', '+de.venta.comentario
 			}
 			
 		}
