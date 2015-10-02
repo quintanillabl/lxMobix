@@ -48,7 +48,7 @@
 						    </g:hasErrors>
 							<f:with bean="${impuestoRetenidoInstance}">
 								<div class="col-sm-7">
-									<g:hiddenField name="retencion.id" value="${session.empresa.id}"/>
+									<g:hiddenField name="retencion.id" value="${cfdiRetencionesInstance.id}"/>
 									<f:field property="baseRet" widget="money" wrapper="bootstrap3"/>
 									<f:field property="impuesto" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="montoRet" widget="money" wrapper="bootstrap3"/>
