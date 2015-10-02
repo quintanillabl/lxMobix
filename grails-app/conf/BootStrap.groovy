@@ -4,6 +4,8 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider
 
 class BootStrap {
 
+	def cfdiRetencionesService
+
     def init = { servletContext ->
 
     	java.security.Security.addProvider(new BouncyCastleProvider())
@@ -36,7 +38,8 @@ class BootStrap {
 		if(!admin.getAuthorities().contains(contaRol))
 			UsuarioRol.create(admin,contaRol,true)	
 
-		
+		cfdiRetencionesService.buildCatalogoDeRetenciones()
+		cfdiRetencionesService.buildCatalogoDeImpuestos()
 		
 		
 		

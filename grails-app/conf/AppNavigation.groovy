@@ -29,6 +29,7 @@ navigation={
 			//cuentasPorPagar()
 			cuentasPorCobrar(titleText:'CxC')
 			cfdis(controller:'cfdi',action:'index')
+			retenciones(controller:'cfdiRetenciones',action:'index',titleText:'Retenciones')
 		}
 		contabilidad(){
 			cuentasContables(controller:'cuentaContable',action:'index',titleText:'Cuentas')

@@ -58,4 +58,6 @@ databaseChangeLog = {
 	include file: 'changelog_27.groovy'
 
 	include file: 'changelog_28.groovy'
+
+	include file: 'RetencionesCfdi.groovy'
 }
