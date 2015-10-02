@@ -125,7 +125,7 @@ class CfdiService {
 			c.setCantidad(det.cantidad)
 			c.setUnidad(det.producto.unidad)
 			c.setNoIdentificacion(det.producto.clave)
-			String desc =det.comentario?:''+' '+ venta.comentario?:''
+			String desc = (det.comentario?:'')+' '+ venta.comentario?:''
 			//desc = StringUtils.abbreviate(desc, 250)
 			c.setDescripcion(desc)
 			
