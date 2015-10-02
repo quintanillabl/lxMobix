@@ -22,7 +22,7 @@ class RetencionesTimbrador {
 	private static final log=LogFactory.getLog(this)
 	
 	CfdiRetenciones timbrar(CfdiRetenciones cfdi){
-		log.info 'Usando cliente edicom: '+cfdi
+		log.info 'Usando cliente edicom: '+cfdiClient
 		def empresa=Empresa.findByRfc(cfdi.emisorRfc)
 		
 		assert empresa.usuarioPac,"Debe registrar un usuario para el servicio del PAC "

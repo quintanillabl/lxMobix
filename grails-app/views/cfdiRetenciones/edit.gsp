@@ -20,9 +20,7 @@
 				        <i class="fa fa-step-backward"></i> Comprobantes
 				    </g:link>
 				    <g:if test="${cfdiRetencionesInstance.uuid}">
-			    	    <g:link class="btn btn-default " action="descargarXml" resource="${cfdiRetencionesInstance}">
-			    	    	<span class="glyphicon glyphicon-cloud-download"> Descargar XML</span>
-			    	    </g:link>
+			    	    
 			    	    <a href="#enviarCorreoForm" data-toggle="modal" class="btn btn-default">
 			    			<span class="glyphicon glyphicon-envelope"></span> Enviar
 			    		</a>
@@ -37,9 +35,9 @@
 				    	<g:link action="generarXml" class="btn btn-default " id="${cfdiRetencionesInstance.id}">
 				    	    <i class="fa fa-qrcode"></i> Generar XML
 				    	</g:link>
-				    	<g:link action="timbrar" class="btn btn-success " id="${cfdiRetencionesInstance.id}">
+				    	%{-- <g:link action="timbrar" class="btn btn-success " id="${cfdiRetencionesInstance.id}">
 				    	    <i class="fa fa-qrcode"></i> Timbrar
-				    	</g:link>
+				    	</g:link> --}%
 				    	<buttn id="saveBtn" class="btn btn-primary">
 				    		<i class="fa fa-floppy-o"></i> Actualizar
 				    	</buttn>
@@ -50,6 +48,9 @@
 						<g:link class="btn btn-default " action="descargarXml" resource="${cfdiRetencionesInstance}">
 							<span class="glyphicon glyphicon-cloud-download"> Descargar XML</span>
 						</g:link>
+						<a href="#uploadFileDialog" data-toggle="modal" class="btn btn-default">
+							<i class="fa fa-upload"></i></span> Importar Timbrado
+						</a>
 					</g:if>
 					 
 				</div>
@@ -114,7 +115,10 @@
 									<f:field property="totalExcento" widget="money" cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:display property="totalRetenido" widget="money" cols="col-sm-8" colsLabel="col-sm-4"/>
 
-									
+									<g:if test="${cfdiRetencionesInstance.uuid}">
+										<f:display property="uuid" cols="col-sm-8" colsLabel="col-sm-4"/>
+										<f:display property="fechaDeTimbrado" cols="col-sm-8" colsLabel="col-sm-4"/>
+									</g:if>
 
 								</div>
 							</f:with>
@@ -178,7 +182,37 @@
 			</div>
 		</g:if>
 		
-	
+	<div class="modal fade" id="uploadFileDialog" tabindex="-1">
+		<div class="modal-dialog ">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Selección de archivo XML Timbrado</h4>
+				</div>
+				
+				<g:uploadForm class="form" action="cargarXml" id="${cfdiRetencionesInstance?.id}">
+					<div class="modal-body">
+						
+						<div class="form-group">
+						    <label for="inputFile">Archivo de importación</label>
+						    <input type="file" id="inputFile" class="form-control" name="xmlFile" accept="application/txt" autocomplete="off">
+						    <p class="help-block">Seleccion el archivo para cargar</p>
+						 </div> 
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+						<g:submitButton class="btn btn-primary" name="aceptar"value="Aceptar" />
+					</div>
+				</g:uploadForm>
+
+
+			</div>
+			<!-- moda-content -->
+		</div>
+		<!-- modal-di -->
+	</div>
 
 	</div>
 <script type="text/javascript">

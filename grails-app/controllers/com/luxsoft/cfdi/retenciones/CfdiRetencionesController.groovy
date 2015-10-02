@@ -159,11 +159,22 @@ class CfdiRetencionesController {
             redirect action:'show',id:cfdiRetenciones.id
             return
         }
-        cfdiRetenciones=cfdiRetencionesService.timbrar(cfdiRetenciones)
-        flash.message="Comprobante timbrado"
+        /*
+        try {
+            cfdiRetenciones=cfdiRetencionesService.timbrar(cfdiRetenciones)
+            flash.message="Comprobante timbrado"
+            redirect action:'edit',id:cfdiRetenciones.id
+        }
+        catch(Exception e) {
+            e.printStacktrace()
+            log.error e
+            redirect action:'edit',id:cfdiRetenciones.id
+        }
+        */
+        flash.message="Por el momento no se puede timbrar desde esta aplicación solicite a SISTEMAS el timbrado"
         redirect action:'edit',id:cfdiRetenciones.id
+        
     }
-
     
     def agregarImpuesto(CfdiRetenciones cfdiRetencionesInstance){
         if (cfdiRetencionesInstance == null) {
@@ -193,14 +204,28 @@ class CfdiRetencionesController {
         redirect action:'edit',id:cfdiRetenciones.id
     }
 
+    @Transactional
+    def cargarXml(CfdiRetenciones cfdiRetencionesInstance){
+        if (cfdiRetencionesInstance == null) {
+            notFound()
+            return
+        }
+
+        def xml=request.getFile('xmlFile')
+        if(xml==null){
+            flash.message="Archivo XML no localizado"
+            redirect action:'index'
+            return
+        }
+
+        File xmlFile = File.createTempFile(xml.getName(),".temp");
+        xml.transferTo(xmlFile)
+        cfdiRetencionesInstance=cfdiRetencionesService.cargarXml(cfdiRetencionesInstance,xmlFile)
+        redirect action:'edit',id:cfdiRetencionesInstance.id
+    }
+
 
     def mostrarXml(CfdiRetenciones cfdiRetencionesInstance){
-        // ByteArrayInputStream is=new ByteArrayInputStream(cfdiRetencionesInstance.xml)
-        // def xml = new XmlSlurper().parse(is)
-        // def res= XmlUtil.serialize(xml)
-        // render(text: xml, contentType: "text/xml", encoding: "UTF-8")
-
-        //def xml=cfdiRetencionesService.toXml(cfdiRetencionesInstance)
         render(text:cfdiRetencionesInstance.toXml(), contentType: "text/xml", encoding: "UTF-8")
     }
 

@@ -10,10 +10,12 @@ import javax.xml.bind.Unmarshaller
 import javax.xml.validation.Schema
 import javax.xml.validation.SchemaFactory
 import javax.xml.transform.stream.StreamSource
+import java.text.SimpleDateFormat
 
 import com.luxsoft.cfdi.retenciones.ObjectFactory
 import com.luxsoft.cfdi.retenciones.Retenciones
 import com.luxsoft.lx.core.Folio
+
 
 @Transactional
 class CfdiRetencionesService {
@@ -57,6 +59,27 @@ class CfdiRetencionesService {
         retenciones=retencionesBuilder.buildXml(retenciones)
         return retenciones
 
+    }
+
+    def cargarXml(CfdiRetenciones retenciones,File xmlFile){
+
+        def xml = new XmlSlurper().parse(xmlFile)
+        def data=xml.attributes()
+        def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
+        def emisor=xml.breadthFirst().find { it.name() == 'Emisor'}
+
+        //def empresa=Empresa.findByRfc(emisor.attributes()['RFCEmisor'])
+
+        SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        
+        
+        retenciones.uuid=timbre.attributes()['UUID']
+        retenciones.fechaDeTimbrado=df.parse(timbre.attributes()['FechaTimbrado'])
+        retenciones.xml=xmlFile.getBytes()
+        retenciones.xmlName=xmlFile.name
+        
+        
+        retenciones.save flush:true
     }
 
     /*
