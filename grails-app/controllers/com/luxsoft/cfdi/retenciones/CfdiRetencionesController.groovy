@@ -10,7 +10,7 @@ import grails.converters.JSON
 import groovy.xml.*
 
 @Transactional(readOnly = true)
-@Secured(["hasAnyRole('OPERADOR','VENTAS','ADMIN')"])
+@Secured(["hasAnyRole('CONTABILIDAD_MANAGER')"])
 class CfdiRetencionesController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]

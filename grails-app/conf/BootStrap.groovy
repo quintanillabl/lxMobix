@@ -38,6 +38,9 @@ class BootStrap {
 		if(!admin.getAuthorities().contains(contaRol))
 			UsuarioRol.create(admin,contaRol,true)	
 
+		def contaManagerRol=Rol.findOrSaveWhere(authority:'CONTABILIDAD_MANAGER')
+		
+
 		cfdiRetencionesService.buildCatalogoDeRetenciones()
 		cfdiRetencionesService.buildCatalogoDeImpuestos()
 		
