@@ -12,13 +12,15 @@ class PolizaFolio {
 	Integer ejercicio
 	Long mes
 	String tipo
+	String subTipo
 	Long folio=0
 
 	Date dateCreated
 	Date lastUpdated
 
     static constraints = {
-		tipo maxSize:10
+		tipo maxSize:50
+		subTipo maxSize:50
 		mes inList:(1..12)  
 		folio nullable:false,unique:['empresa','tipo','mes']
     }
@@ -29,7 +31,7 @@ class PolizaFolio {
 	}
 	
 	String toString(){
-		return "${emresa.clave} (${ejercicio} ${mes}) $tipo - $folio"
+		return "${emresa.clave} (${ejercicio} ${mes}) $tipo_$subTipo - $folio"
 	}
 
    

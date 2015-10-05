@@ -1,5 +1,5 @@
 @javax.xml.bind.annotation.XmlSchema(
-        namespace = "www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo",
+        namespace = "http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo",
         xmlns= {
                 @XmlNs(prefix = "PLZ",namespaceURI="http://www.sat.gob.mx/esquemas/ContabilidadE/1_1/PolizasPeriodo")
         },

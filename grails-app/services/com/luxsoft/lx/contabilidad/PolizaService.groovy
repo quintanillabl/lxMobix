@@ -79,7 +79,8 @@ class PolizaService {
 
 
     private Long nextFolio(Poliza poliza){
-        def folio=PolizaFolio.findByEmpresaAndEjercicioAndMesAndTipo(poliza.empresa,poliza.ejercicio,poliza.mes,poliza.tipo)
+        def folio=PolizaFolio.findByEmpresaAndEjercicioAndMesAndTipoAndSubTipo(
+            poliza.empresa,poliza.ejercicio,poliza.mes,poliza.tipo,poliza.subTipo)
         if(folio==null){
             folio=new PolizaFolio(empresa:poliza.empresa,ejercicio:poliza.ejercicio,mes:poliza.mes,tipo:poliza.tipo,folio:0l)
         }
