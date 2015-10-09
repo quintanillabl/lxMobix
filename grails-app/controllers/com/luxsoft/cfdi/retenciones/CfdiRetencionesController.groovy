@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured
 import com.luxsoft.lx.core.*
 import grails.converters.JSON
 import groovy.xml.*
+import com.luxsoft.lx.bi.ReportCommand
 
 @Transactional(readOnly = true)
 @Secured(["hasAnyRole('CONTABILIDAD_MANAGER')"])
@@ -16,6 +17,8 @@ class CfdiRetencionesController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def cfdiRetencionesService
+
+    def reportService
 
     def index(Integer max) {
         params.max = Math.min(max ?: 100, 1000)
@@ -237,7 +240,34 @@ class CfdiRetencionesController {
         return
     }
 
+    def print(CfdiRetenciones cfdiRetencionesInstance){
+        
+        /*
+        def modelData=cfdiRetencionesInstance.impuestosRetenidos.collect { cc ->
+            def res=[TIPO_IMPUESTO:'IVA']
+            return res
+        }
+        */
+        def modelData=[]
+        []<<[TIPO_IMPUESTO:'IVA']
 
+        def repParams=RetencionesPrintUtils.resolverParametros(cfdiRetencionesInstance)
+        
+        repParams.FECHA=cfdiRetencionesInstance.fecha.format("yyyy-MM-dd'T'HH:mm:ss")
+        repParams.COMPANY=session.empresa.nombre
+
+        def command=new ReportCommand()
+        command.reportName="RetencionesPagosCFDI"
+        command.empresa=session.empresa
+        log.info 'Generando impreion de comprobante de retenciones y pagos con parameotros: '+repParams
+        def stream=reportService.build(command,repParams)
+        def file="ComprobanteDeRetencionPago_${cfdiRetencionesInstance.id}_${cfdiRetencionesInstance.uuid}"+'.'+command.formato.toLowerCase()
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+        
+    }
 
 
 }
