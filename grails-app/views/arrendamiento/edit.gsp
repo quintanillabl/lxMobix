@@ -5,6 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Arrendamiento ${arrendamientoInstance.id}</title>
 	<asset:javascript src="forms/autoNumeric.js"/>
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
 </head>
 <body>
 
@@ -47,6 +49,12 @@
 							<f:field property="precio" widget-class="form-control moneda-field " widget-type="text"/>
 							<f:field property="formaDePago" widget-class="form-control"/>
 							<f:field property="cuentaDePago" widget-class="form-control"/>
+							<f:field property="cuentaContable"  >
+								<g:hiddenField id="cuentaId" name="cuentaContable.id" 
+									value="${arrendamientoInstance?.cuentaContable?.id}"/>
+								<input type="text" id="cuentaField" class="form-control" 
+									value="${arrendamientoInstance?.cuentaContable}" >
+							</f:field>
 							<f:field property="comentario" widget-class="form-control"/>
 						</f:with>
 						</div>
@@ -78,6 +86,13 @@
 <script type="text/javascript">
 	$(function(){
 		$(".moneda-field").autoNumeric({wEmpty:'zero',aSep:""});
+		$("#cuentaField").autocomplete({
+			source:'<g:createLink controller="cuentaContable" action="getCuentasDeDetalleJSON"/>',
+			minLength:3,
+			select:function(e,ui){
+				$("#cuentaId").val(ui.item.id);
+			}
+		});
 	});
 </script>
 	

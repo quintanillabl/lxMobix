@@ -4,8 +4,9 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Cliente</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
 </head>
 <body>
 
@@ -45,6 +46,10 @@
 							<g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
 							<f:field property="nombre" widget-class="form-control " />
 							<f:field property="rfc" widget-class="form-control"/>
+							<f:field property="cuentaContable"  >
+								<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
+								<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >
+							</f:field>
 							
 						</f:with>
 						<g:render template="/common/direccion" bean="${clienteInstance}"/>
@@ -67,6 +72,20 @@
 				
 			</div>
 		</div> <!-- end .row 2 -->
+
+		<script type="text/javascript">
+			$(function (){
+
+				$("#cuentaField").autocomplete({
+					source:'<g:createLink controller="cuentaContable" action="getCuentasDeDetalleJSON"/>',
+					minLength:3,
+					select:function(e,ui){
+						$("#cuentaId").val(ui.item.id);
+					}
+				});
+
+			});
+		</script>
 
 	</div>
 

@@ -3,18 +3,21 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="layout" content="application"/>
 	<title>Póliza ${polizaInstance?.id}</title>
 	<asset:stylesheet src="datatables/dataTables.css"/>
 	<asset:javascript src="datatables/dataTables.js"/> 
 </head>
 <body>
 
+
+
 	<div class="container form-panel">
 
 		<div class="row toolbar-panel">
 			<div class="col-md-6 ">
 				<div class="btn-group">
-				    <g:link action="index" class="btn btn-default ">
+				    <g:link action="index" class="btn btn-default " params="[subTipo:polizaInstance.subTipo]">
 				        <i class="fa fa-step-backward"></i> Pólizas
 				    </g:link>
 				    <g:link action="create" class="btn btn-default ">
@@ -57,13 +60,19 @@
 				    				<f:display property="ejercicio" />
 				    				<f:display property="mes"  />
 				    				<f:display property='tipo' />
+				    				<f:display property='subTipo' />
 				    				<f:display property='folio' />
-				    				<f:display property="fecha"  />
+				    				<div class="form-group">
+				    					<label for="fecha" class="control-label col-sm-2">LabelDesc</label>
+				    					<div class="col-sm-10">
+				    						<input name="fecha" class="form-control" 
+				    							value="${polizaInstance.fecha.format('dd/MM/yyyy')}">
+				    					</div>
+				    				</div>
 
 				    			</div>
 				    			<div class="col-sm-6">
 				    				<f:display property="concepto"  />
-				    				<f:display property="comentario"  />
 				    				<f:display property="debe"  widget="money"/>
 				    				<f:display property="haber"  widget="money"/>
 				    				

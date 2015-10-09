@@ -83,6 +83,7 @@
 							<g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
 							<f:field property="nombre" widget-class="form-control " />
 							<f:field property="rfc" widget-class="form-control"/>
+							<f:field property="cuentaContable" widget-class="form-control"/>
 							
 						</f:with>
 						<g:render template="/common/direccion" bean="${clienteInstance}"/>

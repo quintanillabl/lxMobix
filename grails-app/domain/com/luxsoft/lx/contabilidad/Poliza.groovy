@@ -53,7 +53,7 @@ class Poliza {
 		mes inList:(1..13)
 		tipo(inList:['INGRESO','EGRESO','DIARIO'])
 		subTipo(maxSize:30)
-		folio unique:['empresa','ejercicio','mes','tipo']
+		folio unique:['empresa','ejercicio','mes','tipo','subTipo']
 		debe(nullable:false,scale:6)
 		haber(nullable:false,scale:6)
 		concepto(maxSize:300)
@@ -65,6 +65,7 @@ class Poliza {
 	
 	static mapping ={
 		partidas cascade: "all-delete-orphan"
+		fecha type:'date'
 	}
 	
 	static transients = {'cuadre'}

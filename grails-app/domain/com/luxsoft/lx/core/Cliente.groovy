@@ -3,6 +3,7 @@ package com.luxsoft.lx.core
 
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
+import com.luxsoft.lx.contabilidad.CuentaContable
 
 @ToString(includes='nombre',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes='nombre,rfc')
@@ -16,6 +17,8 @@ class Cliente {
 	Direccion direccion
 	Empresa empresa
 
+	CuentaContable cuentaContable
+
 	
 
 	Date dateCreated
@@ -28,6 +31,7 @@ class Cliente {
 		nombre unique:['empresa']
 		emailCfdi nullable:true
 		rfc blank:false,minSize:12,maxSize:13
+		cuentaContable nullable:true
 		
     }
 

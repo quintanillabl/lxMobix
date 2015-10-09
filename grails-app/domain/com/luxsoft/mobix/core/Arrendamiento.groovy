@@ -9,6 +9,7 @@ import com.luxsoft.lx.core.Producto
 import com.luxsoft.utils.Periodo
 import groovy.time.TimeCategory
 import com.luxsoft.lx.core.FormaDePago
+import com.luxsoft.lx.contabilidad.CuentaContable
 
 
 @ToString(excludes='dateCreated,lastUpdated',includeNames=true,includePackage=false)
@@ -48,6 +49,8 @@ class Arrendamiento {
 
 	String cuentaDePago
 
+	CuentaContable cuentaContable
+
 	//List documentos
 	//List rentas
 
@@ -65,6 +68,7 @@ class Arrendamiento {
     	proximaFactura nullable:true
     	formaDePago nullable:true
 		cuentaDePago nullable:true,maxSize:6
+		cuentaContable nullable:true
     }
 
     static hasMany = [rentas:Renta]

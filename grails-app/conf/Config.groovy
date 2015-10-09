@@ -147,7 +147,7 @@ log4j.main = {
         debug 'grails.app.services.com.luxsoft.lx.contabilidad'
         debug 'com.luxsoft.lx.utils'
         info 'com.luxsoft.cfdi.retenciones'
-
+        info 'com.luxsoft.econta.polizas.generadores'
       }
         
       produccion{

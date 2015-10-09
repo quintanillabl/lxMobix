@@ -138,8 +138,8 @@ class CuentaContableController {
         
         def term=params.term+'%'
         log.info 'Buscando cuenta: '+term
-        def args=[session.empresa,term,term]
-        def params=[max:20,sort:"clave",order:"desc"]
+        def args=[session.empresa,term,term.toLowerCase()]
+        def params=[max:30,sort:"clave",order:"desc"]
         def hql="from CuentaContable c where c.empresa=? and c.detalle=true and ( c.clave like ? or lower(c.descripcion) like ?) "
         def list=CuentaContable.findAll(hql,args,params)
         //def list=CuentaSat.findAllByCodigoIlikeOrNombreIlike(term,term,[max:20,sort:"codigo",order:"asc"])

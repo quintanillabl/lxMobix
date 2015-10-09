@@ -17,9 +17,10 @@ class PolizaController {
     def polizaService
     def cierreContableService
     def reportService
+    def polizaGenerator
     
 
-    def index(Integer max) {
+    def index2(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         params.sort=params.sort?:'lastUpdated'
         params.order='desc'
@@ -30,6 +31,48 @@ class PolizaController {
         def polizasCount=Poliza.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
         respond polizas,model:[polizaInstanceCount: polizasCount]
     }
+
+    def index(){
+        def subTipo=params.subTipo?:'TODAS'
+        def ejercicio=session.periodoContable.ejercicio
+        def mes=session.periodoContable.mes
+        
+        def polizas=Poliza.where{
+            empresa==session.empresa &&
+            ejercicio==ejercicio &&
+            mes==mes &&
+            subTipo==subTipo
+        }
+        if(subTipo!='TODAS'){
+            polizas=polizas.where {subTipo==subTipo}
+        }
+        def list=polizas.list(sort:'lastUpdated',order:'desc')
+        
+        respond list,model:[subTipo:subTipo]
+        //render view:'index',model:[polizaInstanceList:polizas,subTipo:subTipo]
+        
+    }
+
+    @Transactional
+    def generar(GeneradorDePolizaCommand command){
+        if(command == null) {
+            notFound()
+            return
+        }
+        if (command.hasErrors()) {
+            flash.message="Errores: "+command.errors
+            //render view:command.tipo?:'index'
+            redirect action:'index',model:[tipo:command.tipo]
+            return
+        }
+        log.info 'Generando poliza: '+command
+        def poliza = polizaGenerator.generar(command.empresa,command.tipo,command.fecha)
+        flash.message="Póliza generada ${poliza.id}"
+        
+        //redirect action:'index',params:[subTipo:command.tipo]
+        redirect action:'show',id:poliza.id
+    }
+
 
     def show(Poliza polizaInstance) {
         respond polizaInstance
@@ -143,7 +186,26 @@ class PolizaController {
 
 import org.grails.databinding.BindingFormat
 import com.luxsoft.lx.core.Empresa
+import groovy.transform.ToString
 
+@ToString(includeNames=true,includePackage=false)
+class GeneradorDePolizaCommand{
+    Empresa empresa
+
+    Integer ejercicio
+
+    Integer mes
+
+    String tipo
+
+    @BindingFormat('dd/MM/yyyy')
+    Date fecha=new Date()
+    static constraints = {
+        ejercicio inList:(2014..2018)
+        mes inList:(1..13)
+        tipo(maxSize:30)
+    }
+}
 
 class PolizaCommand{
 
@@ -151,18 +213,11 @@ class PolizaCommand{
     Integer ejercicio
     Integer mes
     String tipo
+
     @BindingFormat('dd/MM/yyyy')
     Date fecha=new Date()
     String concepto
-    String comentario
-
-
-    // PolizaCommand(){}
-
-    // PolizaCommand(PeriodoContable p){
-    //     mes=p.mes
-    //     ejercicio=p.ejercicio
-    // }
+    
 
     static constraints={
         importFrom Poliza

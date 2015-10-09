@@ -13,7 +13,7 @@ import com.luxsoft.cfdi.Cfdi
 
 
 @EqualsAndHashCode(includes='cliente,empresa,folio')
-@ToString(includes='cliente,folio',includeNames=true,includePackage=false)
+@ToString(includes='cliente,folio,fecha,tipo,total',includeNames=true,includePackage=false)
 //@Resource
 class Venta {
 

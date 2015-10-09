@@ -12,7 +12,7 @@ class PolizaDet {
 	BigDecimal debe
 	BigDecimal haber
 	String concepto
-
+	String descripcion
 	String asiento
 	String referencia
 	String origen
@@ -29,6 +29,7 @@ class PolizaDet {
     	referencia nullable:true
 		origen(nullable:true,maxSize:20)
 		entidad(nullable:true,maxSize:50)
+		descripcion(nullable:true,maxSize:50)
     }
 	
 	static mapping ={
