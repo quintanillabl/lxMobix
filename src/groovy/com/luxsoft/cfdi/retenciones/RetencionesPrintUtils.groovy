@@ -2,6 +2,7 @@ package com.luxsoft.cfdi.retenciones
 
 
 import java.text.MessageFormat
+import java.text.DecimalFormat
 import java.awt.Image
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -24,6 +25,8 @@ class RetencionesPrintUtils {
 	private static final log=LogFactory.getLog(this)
 	
 	static resolverParametros(CfdiRetenciones retenciones){
+
+		DecimalFormat df = new DecimalFormat("###,###.##");
 		
 		ByteArrayInputStream is=new ByteArrayInputStream(retenciones.xml)
 		def xml=new XmlSlurper().parse(is)
@@ -35,10 +38,11 @@ class RetencionesPrintUtils {
 
 		def parametros=[:]
 		parametros["IMP_CON_LETRA"]=ImporteALetra.aLetra(retenciones.getTotal())
+		parametros["OPERACION"]=df.format(retenciones.getTotal())
 		parametros["MES_FINAL"]=xmlPeriodo['MesIni']
 		parametros["MES_INICIAL"]=xmlPeriodo['MesFin']
 		parametros["EJERCICIO"]=xmlPeriodo['Ejerc']
-		parametros["CADENA_ORIGINAL"]="PENDIENTE"
+		parametros["CADENA_ORIGINAL"]=""
 		parametros["SELLO_DIGITAL"]=xmlRet['Sello']
 		parametros["CLAVE_RET"]=xmlRet['CveRetenc']
 		parametros["RECEPTOR_NOMBRE"]=retenciones.receptor  
@@ -46,15 +50,15 @@ class RetencionesPrintUtils {
 		parametros["RECEPTOR_RFC"]=retenciones.receptorRfc
 		parametros["EMISOR_NOMBRE"]=retenciones.emisor  
 		parametros["EMISOR_RFC"]=retenciones.emisorRfc
-		parametros["DESCRIPCION_RET"]=retenciones.retencionDescripcion
+		parametros["DESCRIPCION_RET"]=retenciones.tipoDeRetencion.descripcion
 		parametros["FOLIO_FISCAL"]=retenciones.uuid
 		parametros["FECHA"]=xmlRet['FechaExp']
 		parametros["FOLIO"]=xmlRet['FolioInt']
 		
 		//parametros["OPERACION"]
-		parametros["GRAVADO"]=retenciones.totalGravado as String
-		parametros["EXENTO"]=retenciones.totalExcento as String
-		parametros["RETENIDO"]=retenciones.totalRetenido as String
+		parametros["GRAVADO"]=df.format(retenciones.totalGravado)
+		parametros["EXENTO"]=df.format(retenciones.totalExcento)
+		parametros["RETENIDO"]=df.format(retenciones.totalRetenido)
 		//parametros["GRUPO"]=
 		//parametros["DESTINATARIO"]
 		
