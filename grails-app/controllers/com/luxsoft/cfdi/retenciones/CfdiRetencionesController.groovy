@@ -249,7 +249,7 @@ class CfdiRetencionesController {
         }
         */
         def modelData=[]
-        []<<[TIPO_IMPUESTO:'IVA']
+        modelData<<[TIPO_IMPUESTO:'IVA']
 
         def repParams=RetencionesPrintUtils.resolverParametros(cfdiRetencionesInstance)
         
@@ -260,7 +260,7 @@ class CfdiRetencionesController {
         command.reportName="RetencionesPagosCFDI"
         command.empresa=session.empresa
         log.info 'Generando impreion de comprobante de retenciones y pagos con parameotros: '+repParams
-        def stream=reportService.build(command,repParams)
+        def stream=reportService.build(command,repParams,modelData)
         def file="ComprobanteDeRetencionPago_${cfdiRetencionesInstance.id}_${cfdiRetencionesInstance.uuid}"+'.'+command.formato.toLowerCase()
         render(
             file: stream.toByteArray(), 
