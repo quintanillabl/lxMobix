@@ -249,7 +249,12 @@ class CfdiRetencionesController {
         }
         */
         def modelData=[]
-        modelData<<[TIPO_IMPUESTO:'IVA']
+        if(cfdiRetencionesInstance.impuestosRetenidos){
+
+        }else{
+            modelData<<[TIPO_IMPUESTO:null]
+        }
+        
 
         def repParams=RetencionesPrintUtils.resolverParametros(cfdiRetencionesInstance)
         
