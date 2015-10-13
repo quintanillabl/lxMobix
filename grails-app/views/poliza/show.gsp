@@ -132,7 +132,6 @@
 				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
 				  						<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
 				  						<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
-				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
 				  						<td>${fieldValue(bean:row,field:"descripcion")}</td>
 				  						<td>${fieldValue(bean:row,field:"asiento")}</td>
 				  						<td>${fieldValue(bean:row,field:"referencia")}</td>
