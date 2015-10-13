@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.contabilidad.Poliza
 import com.luxsoft.lx.contabilidad.CuentaContable
+import com.luxsoft.utils.Periodo
 
 
 @Transactional
@@ -24,7 +25,7 @@ class ProcesadorDePolizaService {
 
     	} else {
     		log.info "GENERANDO poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-    		def poliza=build(poliza,empresa,fecha,tipo,subTipo)
+    		def poliza=build(empresa,fecha,tipo,subTipo)
     		poliza = procesar(poliza)
     		return polizaService.save(poliza)
     	}
