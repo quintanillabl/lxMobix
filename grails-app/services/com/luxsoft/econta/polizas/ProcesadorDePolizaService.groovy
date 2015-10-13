@@ -42,6 +42,7 @@ class ProcesadorDePolizaService {
 	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
 		poliza.addToPartidas(
         	cuenta:cuenta,
+        	concepto:cuenta.descripcion,
             debe:importe,
             haber:0.0,
             descripcion:descripcion,
@@ -55,6 +56,7 @@ class ProcesadorDePolizaService {
 	def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
 		poliza.addToPartidas(
         	cuenta:cuenta,
+        	concepto:cuenta.descripcion,
             debe:0.0,
             haber:importe,
             descripcion:descripcion,

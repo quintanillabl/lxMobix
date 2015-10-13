@@ -112,10 +112,9 @@
 				  			<thead>
 				  				<tr>
 				  					<th>Cuenta</th>
-				  					<th>Desc</th>
+				  					<th>Concepto</th>
 				  					<th>Debe</th>
 				  					<th>Haber</th>
-				  					<th>Concepto</th>
 				  					<th>Descripcion</th>
 				  					<th>Asiento</th>
 				  					<th>Referencia</th>
@@ -130,7 +129,7 @@
 				  								${fieldValue(bean:row,field:"cuenta.clave")}
 				  							</g:link>
 				  						</td>
-				  						<td>${fieldValue(bean:row,field:"cuenta.descripcion")}</td>
+				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
 				  						<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
 				  						<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"concepto")}</td>

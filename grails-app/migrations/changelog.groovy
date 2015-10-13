@@ -68,4 +68,6 @@ databaseChangeLog = {
 	include file: 'Econta_Polizas_03.groovy'
 
 	include file: 'Econta_Polizas_05.groovy'
+
+	include file: 'Econta_Polizas_06.groovy'
 }

@@ -17,7 +17,6 @@ class PolizaDeFacturacionService extends ProcesadorDePolizaService{
 	
 
 	def generar(Empresa empresa,Date fecha){
-		println 'GENERANDO POLIA DE FACTURACION......'
 		return generar(empresa,'DIARIO','FACTURACION',fecha)
 	}
 
@@ -33,11 +32,11 @@ class PolizaDeFacturacionService extends ProcesadorDePolizaService{
 
     		if(venta.tipo=='ARRENDAMIENTO' && venta.cfdi){
     			venta.partidas.each{det ->
-    				println "Com: "+det.producto.class
+    				
     				descripcion="Prov F.${venta.cfdi.folio} ${det.producto.clave} ${det.comentario} "
     				//descripcion=it.producto.clave
     			}
-    			descripcion=StringUtils.substring(descripcion,0,50)
+    			descripcion=StringUtils.substring(descripcion,0,255)
     			cargoAClientes( poliza, venta,descripcion)
     	        
     	        venta.partidas.each{

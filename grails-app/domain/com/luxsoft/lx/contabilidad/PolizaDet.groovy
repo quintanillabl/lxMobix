@@ -29,7 +29,7 @@ class PolizaDet {
     	referencia nullable:true
 		origen(nullable:true,maxSize:20)
 		entidad(nullable:true,maxSize:50)
-		descripcion(nullable:true,maxSize:50)
+		descripcion(nullable:true,maxSize:255)
     }
 	
 	static mapping ={
