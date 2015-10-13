@@ -33,7 +33,7 @@ class PolizaDeFacturacionService extends ProcesadorDePolizaService{
     		if(venta.tipo=='ARRENDAMIENTO' && venta.cfdi){
     			venta.partidas.each{det ->
     				
-    				descripcion="Prov F.${venta.cfdi.folio} ${det.producto.clave} ${det.comentario} "
+    				descripcion="Prov F.${venta.cfdi.folio} ${det.producto.clave} ${venta.comentario} "
     				//descripcion=it.producto.clave
     			}
     			descripcion=StringUtils.substring(descripcion,0,255)
