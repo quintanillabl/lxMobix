@@ -19,12 +19,18 @@ class PolizaService {
                 folio=nextFolio(poliza)
 
         }
-    	poliza.save flush:true,failOnError:true
+        poliza.partidas.each{
+            
+            if(it.hasErrors()) println 'Errores: '+it.errors
+        }
+        poliza.actualizar()
+        log.info 'Salvando poliza: '+poliza
+    	poliza=poliza.save failOnError:true
     	return poliza
     }
 
     def update(Poliza poliza){
-        println 'Actualizando poliza: '+poliza
+        log.info 'Actualizando poliza: '+poliza
         poliza.modificadoPor=currentUser()
         poliza.save flush:true,failOnError:true
         saldoPorCuentaContableService.actualizarSaldos(poliza)
@@ -59,7 +65,7 @@ class PolizaService {
     }
 
     def delete(Poliza poliza){
-        log.debug 'Eliminando poliza: '+poliza.id
+        log.info 'Eliminando poliza: '+poliza.id
         poliza.delete flush:true
         saldoPorCuentaContableService.actualizarSaldos(poliza)
         event('bajaDePoliza',poliza)

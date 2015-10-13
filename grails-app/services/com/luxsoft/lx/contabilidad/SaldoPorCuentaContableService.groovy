@@ -74,7 +74,7 @@ class SaldoPorCuentaContableService {
 		}
 		mayorizar(cuentaDeMayor,periodo)
 		cuentaDeMayor.save flush:true
-		log.info "Saldo de cuenta: ${cuenta} periodo ${periodo.mes} / ${periodo.ejercicio} ACTUALIZADO"		
+		log.debug "Saldo de cuenta: ${cuenta} periodo ${periodo.mes} / ${periodo.ejercicio} ACTUALIZADO"		
 
 	}
 

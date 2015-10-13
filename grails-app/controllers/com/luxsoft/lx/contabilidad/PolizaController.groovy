@@ -12,12 +12,16 @@ import com.luxsoft.lx.bi.ReportCommand
 @Transactional(readOnly = true)
 class PolizaController {
 
-    static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
+    static allowedMethods = [save: "POST", update: "GET", delete: "GET"]
+
+    def generadorDePolizaService
 
     def polizaService
+    
     def cierreContableService
+
     def reportService
-    def polizaGenerator
+
     
 
     def index2(Integer max) {
@@ -40,12 +44,13 @@ class PolizaController {
         def polizas=Poliza.where{
             empresa==session.empresa &&
             ejercicio==ejercicio &&
-            mes==mes &&
-            subTipo==subTipo
+            mes==mes
         }
+
         if(subTipo!='TODAS'){
             polizas=polizas.where {subTipo==subTipo}
         }
+
         def list=polizas.list(sort:'lastUpdated',order:'desc')
         
         respond list,model:[subTipo:subTipo]
@@ -65,10 +70,9 @@ class PolizaController {
             redirect action:'index',model:[tipo:command.tipo]
             return
         }
-        log.info 'Generando poliza: '+command
-        def poliza = polizaGenerator.generar(command.empresa,command.tipo,command.fecha)
+        log.debug 'Generando poliza: '+command
+        def poliza = generadorDePolizaService.generar(command.empresa,command.tipo,command.fecha)
         flash.message="Póliza generada ${poliza.id}"
-        
         //redirect action:'index',params:[subTipo:command.tipo]
         redirect action:'show',id:poliza.id
     }
@@ -112,15 +116,20 @@ class PolizaController {
         }
         
         if (polizaInstance.hasErrors()) {
-            println 'Errores de validacion: '+polizaInstance.errors
-            println 'Params: '+params
             respond polizaInstance.errors, view:'edit'
             return
         }
-
+        /*
         polizaInstance=polizaService.update(polizaInstance)
         flash.message="Poliza ${polizaInstance.id} actualizada"
-        redirect action:'edit',id:polizaInstance.id
+        */
+        log.debug 'Actualizando/Recalculando poliza: '+polizaInstance
+        def poliza = generadorDePolizaService.generar(
+            polizaInstance.empresa,
+            polizaInstance.subTipo,
+            polizaInstance.fecha)
+        flash.message="Póliza actualizada ${poliza.id}"
+        redirect action:'show',id:polizaInstance.id
         
     }
 
@@ -132,7 +141,7 @@ class PolizaController {
         }
         polizaService.delete(polizaInstance)
         flash.message="Poliza ${polizaInstance.id} eliminada"
-        redirect action:'index'
+        redirect action:'index',params:[subTipo:polizaInstance.subTipo]
     }
 
     protected void notFound() {

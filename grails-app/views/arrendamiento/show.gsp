@@ -133,7 +133,7 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="label-control col-sm-2">Cuenta Deudora</label>
+									<label class="label-control col-sm-2">Cuenta contable</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control" colsLabel="col-sm-3" cols="col-sm-9"
 										value="${arrendamientoInstance.cuentaContable}" >

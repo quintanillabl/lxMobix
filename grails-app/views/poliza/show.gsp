@@ -29,7 +29,19 @@
 				    <g:link action="edit" class="btn btn-default " id="${polizaInstance.id}">
 				        <i class="fa fa-pencil"></i> Editar
 				    </g:link>
-				   
+				   <g:if test="${polizaInstance.tipo!='GENERICA'}">
+				   		
+				   		<g:link action="update" class="btn btn-default " 
+				   			id="${polizaInstance.id}"
+				   			onclick="return confirm('Recalular poliza: '+${polizaInstance.id});">
+				   		    <i class="fa fa-cog"></i> Recalcular
+				   		</g:link>
+				   		<g:link action="delete" class="btn btn-danger " 
+				   			id="${polizaInstance.id}"
+				   			onclick="return confirm('Eliminar el poliza: '+${polizaInstance.id});">
+				   		    <i class="fa fa-trash"></i> Eliminar
+				   		</g:link>
+				   </g:if>
 				</div>
 				
 				
@@ -42,11 +54,13 @@
 				<g:form class="form-horizontal"  >	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Id: ${polizaInstance.id}</div>
-				  		<div class="panel-body">
-				  			<g:if test="${flash.message}">
+						<div class="panel-heading">Id: ${polizaInstance.id}
+							<g:if test="${flash.message}">
 				  				<span class="label label-warning">${flash.message}</span>
 				  			</g:if> 
+						</div>
+				  		<div class="panel-body">
+				  			
 				    		<g:hasErrors bean="${polizaInstance}">
 				    			<div class="alert alert-danger">
 				    				<ul class="errors" >
@@ -75,6 +89,18 @@
 				    				<f:display property="concepto"  />
 				    				<f:display property="debe"  widget="money"/>
 				    				<f:display property="haber"  widget="money"/>
+				    				<f:display property="dateCreated" label="Creado">
+				    					<input type="text" 
+				    						value="${polizaInstance.dateCreated.format('dd/MM/yyyy HH:mm:ss')} (${polizaInstance.creadoPor})"
+				    						class="form-control" disabled
+				    						>
+				    				</f:display>
+				    				<f:display property="lastUpdated" label="Creado">
+				    					<input type="text" 
+				    						value="${polizaInstance.lastUpdated.format('dd/MM/yyyy HH:mm:ss')} (${polizaInstance.modificadoPor})"
+				    						class="form-control" disabled
+				    						>
+				    				</f:display>
 				    				
 
 				    			</div>
@@ -86,9 +112,11 @@
 				  			<thead>
 				  				<tr>
 				  					<th>Cuenta</th>
+				  					<th>Desc</th>
 				  					<th>Debe</th>
 				  					<th>Haber</th>
 				  					<th>Concepto</th>
+				  					<th>Descripcion</th>
 				  					<th>Asiento</th>
 				  					<th>Referencia</th>
 				  					<th>Origen</th>
@@ -99,12 +127,14 @@
 				  					<tr id="${row.id}">
 				  						<td >
 				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"cuenta")}
+				  								${fieldValue(bean:row,field:"cuenta.clave")}
 				  							</g:link>
 				  						</td>
+				  						<td>${fieldValue(bean:row,field:"cuenta.descripcion")}</td>
 				  						<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
 				  						<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
+				  						<td>${fieldValue(bean:row,field:"descripcion")}</td>
 				  						<td>${fieldValue(bean:row,field:"asiento")}</td>
 				  						<td>${fieldValue(bean:row,field:"referencia")}</td>
 				  						<td>${fieldValue(bean:row,field:"origen")}</td>
