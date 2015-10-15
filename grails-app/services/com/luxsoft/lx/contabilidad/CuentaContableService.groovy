@@ -18,7 +18,7 @@ class CuentaContableService {
     def agregarSubCuenta(CuentaContable cuenta,CuentaContable subCuenta){
     	
     	assert !cuenta.detalle,'Cuenta de detalle no puede recibir sub cuentas'
-    	subCuenta.clave=cuenta.clave+'-'+subCuenta.clave
+    	subCuenta.clave=cuenta.clave.split('-')[0]+'-'+subCuenta.clave.padLeft(4,'0')
     	subCuenta.tipo=cuenta.tipo
     	subCuenta.subTipo=cuenta.subTipo
     	subCuenta.naturaleza=cuenta.naturaleza

@@ -30,6 +30,7 @@ abstract class  AbstractProcesador {
     		found.partidas.clear()
     		log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
     		procesar(found)
+            cuadrar(found)
     		return polizaService.update(found)
 
     	} else {
@@ -37,6 +38,7 @@ abstract class  AbstractProcesador {
     		def poliza=build(empresa,fecha,tipo,subTipo)
     		//poliza = procesar(poliza)
             procesar(poliza)
+            cuadrar(poliza)
     		return polizaService.save(poliza)
     	}
     }
@@ -48,7 +50,7 @@ abstract class  AbstractProcesador {
 		poliza.addToPartidas(
         	cuenta:cuenta,
         	concepto:cuenta.descripcion,
-            debe:importe,
+            debe:importe.abs(),
             haber:0.0,
             descripcion:descripcion,
             asiento:asiento,
@@ -63,7 +65,7 @@ abstract class  AbstractProcesador {
         	cuenta:cuenta,
         	concepto:cuenta.descripcion,
             debe:0.0,
-            haber:importe,
+            haber:importe.abs(),
             descripcion:descripcion,
             asiento:asiento,
             referencia:referencia,
@@ -89,4 +91,39 @@ abstract class  AbstractProcesador {
 		log.debug 'Poliaza preparada: '+poliza
 		return poliza
 	}
+
+    def cuadrar(def poliza){
+        def dif=poliza.debe-poliza.haber
+        if(dif.abs()<=1.0){
+            log.info "Cuadrando diferencia de $dif"
+            if(dif<0.0){
+                def cuenta=PolizaUtils.OtrosGastosNoFiscales(poliza.empresa)
+                poliza.addToPartidas(
+                    cuenta:cuenta,
+                    concepto:cuenta.descripcion,
+                    debe:dif.abs(),
+                    haber:0.0,
+                    descripcion:'CUADRE AUTOMATICO',
+                    asiento:'CUADRE',
+                    referencia:'CUADRE',
+                    origen:'NO APLICA',
+                    entidad:'NO APLICA'
+                )
+
+            }else if( dif > 0.0 ){
+                def cuenta=PolizaUtils.ContableNoFiscales(poliza.empresa)
+                poliza.addToPartidas(
+                    cuenta:cuenta,
+                    concepto:cuenta.descripcion,
+                    debe:0.0,
+                    haber:dif.abs(),
+                    descripcion:'CUADRE AUTOMATICO',
+                    asiento:'CUADRE',
+                    referencia:'CUADRE',
+                    origen:'NO APLICA',
+                    entidad:'NO APLICA'
+                )
+            }
+        }
+    }
 }

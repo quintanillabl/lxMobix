@@ -5,9 +5,8 @@ import com.luxsoft.lx.contabilidad.*
 class PolizaUtils {
 
 
-	public static OtrosIngresos = CuentaContable.findByClave('704-0001')
-	public static IvaTrasladadoPendiente = CuentaContable.findByClave('209-0001')
-	public static IvaAcreditable = CuentaContable.findByClave('118-0001')
+	
+	
 	
 	public static void buildProcesadores(){
 		ProcesadorDePoliza.findOrSaveWhere(
@@ -112,5 +111,24 @@ class PolizaUtils {
 			label: 'Honorarios (Con ret)',
 			service:'polizaDeHonorariosConRetenciones')
 		
+	}
+
+
+	public static IvaTrasladadoPendiente(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'209-0001')
+	} 
+	
+
+	public static IvaAcreditable(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'118-0001')	
+	}
+	
+
+	public static ContablesNoFiscales(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'704-0002')	
+	}
+
+	public static OtrosGastosNoFiscales(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'703-0002')		
 	}
 }

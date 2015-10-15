@@ -74,7 +74,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		
 		cargoA(
 			poliza,
-			IvaAcreditable,
+			IvaAcreditable(poliza.empresa),
 			gasto.impuesto,
 			descripcion,
 			'PAGO',
