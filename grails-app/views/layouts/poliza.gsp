@@ -1,3 +1,4 @@
+
 <g:applyLayout name="application">
 
 <html>
@@ -8,7 +9,7 @@
 </html>
   <body>
 
-    <div class="container">
+    <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
           
@@ -32,27 +33,29 @@
         </div>
       </div>
           <div class="row">
-          	<div class="col-md-2">
+          	<div class="col-md-3">
 
             	<div class="list-group">
                 
                 <g:link class="list-group-item ${subTipo=='TODAS'?'active':''}" 
                   action="index" params="[subTipo:'TODAS']">
-                  <i class="fa fa-bars"></i> TODAS
+                  <i class="fa fa-bars"></i> Todas
                 </g:link>
 
-                <g:link class="list-group-item ${subTipo=='FACTURACION'?'active':''}" 
-                  action="index" params="[subTipo:'FACTURACION']">
-                  <i class="fa fa-bars"></i> Facturación
-                </g:link>
-                <g:link class="list-group-item ${subTipo=='GENERICA'?'active':''}" 
-                  action="index" params="[subTipo:'GENERICA']">
-                  <i class="fa fa-bars"></i> GENERICA
-                </g:link> 
+                <g:each in="${procesadores}" var="row">
+                  
+                  <g:link class="list-group-item ${subTipo==row.nombre?'active':''}" 
+                    action="index" params="[subTipo:row.nombre]">
+                    <i class="fa fa-bars"></i> ${row.label}
+                  </g:link>
+
+                </g:each>
+                
+                
   				    </div>
           	</div><!-- End .col-md-2 side bar -->
 
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <g:pageProperty name="page.document"/>    
             </div>
           </div>

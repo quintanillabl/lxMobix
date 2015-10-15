@@ -6,7 +6,11 @@ import grails.transaction.Transactional
 class CuentaContableService {
 
     def save(CuentaContable cuenta) {
-    	if(cuenta.padre==null) cuenta.nivel=1
+    	if(cuenta.padre==null) {
+            cuenta.nivel=1
+            cuenta.clave=cuenta.clave+'-0000'
+        }
+            
     	cuenta=cuenta.save failOnError:true
     	return cuenta
     }

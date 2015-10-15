@@ -4,7 +4,10 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">Generar póliza tipo ${subTipo}</h4>
+				<h4 class="modal-title" id="myModalLabel">
+					Generar póliza tipo ${subTipo}
+					
+				</h4>
 			</div>
 			<g:form action="generar" class="form-horizontal" >
 				<div class="modal-body">
@@ -13,6 +16,7 @@
 						<g:hiddenField name="tipo" value="${subTipo}"/>
 						<g:hiddenField name="ejercicio" value="${session.periodoContable.ejercicio}"/>
 						<g:hiddenField name="mes" value="${session.periodoContable.mes}"/>
+						<g:hiddenField name="procesador.id" value="${procesador?.id}"/>
 						<fieldset disabled>
 							<f:field property="ejercicio" widget-class="form-control" value="${session.periodoContable.ejercicio}"/>
 							<f:field property="mes" widget-class="form-control" value="${session.periodoContable.mes}"/>

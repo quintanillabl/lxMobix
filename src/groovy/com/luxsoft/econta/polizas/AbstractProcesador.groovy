@@ -1,40 +1,45 @@
 package com.luxsoft.econta.polizas
 
-import grails.transaction.Transactional
+
+
 
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.contabilidad.Poliza
 import com.luxsoft.lx.contabilidad.CuentaContable
 import com.luxsoft.utils.Periodo
 
+import static com.luxsoft.econta.polizas.PolizaUtils.*
+import static org.apache.commons.lang.StringUtils.*
 
-@Transactional
-class ProcesadorDePolizaService {
 
+abstract class  AbstractProcesador {
+
+    
 	def polizaService
 
+    def generar(def empresa,def fecha,def procesador){
+        return generar(empresa,procesador.tipo,procesador.nombre,fecha)
+    }
+
     def generar(Empresa empresa,String tipo,String subTipo,Date fecha){
+        log.info "Generando poliza $empresa $tipo $subTipo $fecha"
 
     	def found = find(empresa,subTipo,fecha)
-    	 
+
     	if (found) {
     		found.partidas.clear()
     		log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-    		found=procesar(found)
+    		procesar(found)
     		return polizaService.update(found)
 
     	} else {
-    		log.info "GENERANDO poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
+    		log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
     		def poliza=build(empresa,fecha,tipo,subTipo)
-    		poliza = procesar(poliza)
+    		//poliza = procesar(poliza)
+            procesar(poliza)
     		return polizaService.save(poliza)
     	}
     }
-
-    def procesar(def poliza){
-
-    }
-
     
 
     /// Metodos comunes

@@ -11,6 +11,7 @@ class PolizaService {
     def saldoPorCuentaContableService
 
     def save(Poliza poliza) {
+
         poliza.with{
             def user=currentUser()
             creadoPor=user
@@ -19,10 +20,11 @@ class PolizaService {
                 folio=nextFolio(poliza)
 
         }
+
         poliza.partidas.each{
-            
             if(it.hasErrors()) println 'Errores: '+it.errors
         }
+
         poliza.actualizar()
         log.info 'Salvando poliza: '+poliza
     	poliza=poliza.save failOnError:true
@@ -33,7 +35,7 @@ class PolizaService {
         log.info 'Actualizando poliza: '+poliza
         poliza.modificadoPor=currentUser()
         poliza.save flush:true,failOnError:true
-        saldoPorCuentaContableService.actualizarSaldos(poliza)
+        //saldoPorCuentaContableService.actualizarSaldos(poliza)
         log.debug('Poliza actualizada: '+poliza.id)
         event('modificacionDePoliza',poliza)
         return poliza
@@ -88,10 +90,17 @@ class PolizaService {
         def folio=PolizaFolio.findByEmpresaAndEjercicioAndMesAndTipoAndSubTipo(
             poliza.empresa,poliza.ejercicio,poliza.mes,poliza.tipo,poliza.subTipo)
         if(folio==null){
-            folio=new PolizaFolio(empresa:poliza.empresa,ejercicio:poliza.ejercicio,mes:poliza.mes,tipo:poliza.tipo,folio:0l)
+            folio=new PolizaFolio(
+                empresa:poliza.empresa,
+                ejercicio:poliza.ejercicio,
+                mes:poliza.mes,
+                tipo:poliza.tipo,
+                subTipo:poliza.subTipo,
+                folio:0l)
         }
         def res=folio.next()
-        folio.save()
+
+        folio.save(flush:true,failOnError:true)
         return res
     }
 

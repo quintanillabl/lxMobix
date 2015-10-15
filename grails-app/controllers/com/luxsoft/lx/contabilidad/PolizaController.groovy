@@ -14,7 +14,7 @@ class PolizaController {
 
     static allowedMethods = [save: "POST", update: "GET", delete: "GET"]
 
-    def generadorDePolizaService
+    def generadorDePoliza
 
     def polizaService
     
@@ -46,14 +46,15 @@ class PolizaController {
             ejercicio==ejercicio &&
             mes==mes
         }
-
+        def procesador = null
         if(subTipo!='TODAS'){
             polizas=polizas.where {subTipo==subTipo}
+            procesador = ProcesadorDePoliza.findByNombre(subTipo)
         }
 
-        def list=polizas.list(sort:'lastUpdated',order:'desc')
+        def list=polizas.list(sort:'folio',order:'asc')
         
-        respond list,model:[subTipo:subTipo]
+        respond list,model:[subTipo:subTipo,procesador:procesador]
         //render view:'index',model:[polizaInstanceList:polizas,subTipo:subTipo]
         
     }
@@ -67,14 +68,18 @@ class PolizaController {
         if (command.hasErrors()) {
             flash.message="Errores: "+command.errors
             //render view:command.tipo?:'index'
-            redirect action:'index',model:[tipo:command.tipo]
+            redirect action:'index',params:[subTipo:command.tipo]
             return
         }
         log.debug 'Generando poliza: '+command
-        def poliza = generadorDePolizaService.generar(command.empresa,command.tipo,command.fecha)
+        def poliza = generadorDePoliza.generar(
+            command.empresa,
+            command.fecha,
+            command.procesador)
+
         flash.message="Póliza generada ${poliza.id}"
-        //redirect action:'index',params:[subTipo:command.tipo]
         redirect action:'show',id:poliza.id
+        //redirect action:'index',params:[subTipo:command.tipo]
     }
 
 
@@ -119,16 +124,19 @@ class PolizaController {
             respond polizaInstance.errors, view:'edit'
             return
         }
-        /*
-        polizaInstance=polizaService.update(polizaInstance)
-        flash.message="Poliza ${polizaInstance.id} actualizada"
-        */
+        
         log.debug 'Actualizando/Recalculando poliza: '+polizaInstance
-        def poliza = generadorDePolizaService.generar(
-            polizaInstance.empresa,
-            polizaInstance.subTipo,
-            polizaInstance.fecha)
-        flash.message="Póliza actualizada ${poliza.id}"
+        def procesador=ProcesadorDePoliza.findByNombre(polizaInstance.subTipo)
+        if(procesador){
+            def poliza = generadorDePoliza.generar(
+                polizaInstance.empresa,
+                polizaInstance.fecha,
+                procesador
+                )
+            flash.message="Póliza actualizada ${poliza.id}"
+        } else {
+            flash.messabe = "No existe procesador para la poliza por lo que no se puede re calcular"
+        }
         redirect action:'show',id:polizaInstance.id
         
     }
@@ -199,6 +207,7 @@ import groovy.transform.ToString
 
 @ToString(includeNames=true,includePackage=false)
 class GeneradorDePolizaCommand{
+    
     Empresa empresa
 
     Integer ejercicio
@@ -207,8 +216,11 @@ class GeneradorDePolizaCommand{
 
     String tipo
 
+    ProcesadorDePoliza procesador
+
     @BindingFormat('dd/MM/yyyy')
     Date fecha=new Date()
+    
     static constraints = {
         ejercicio inList:(2014..2018)
         mes inList:(1..13)

@@ -9,7 +9,8 @@
 </head>
 <body>
 <content tag="document">
-
+	<g:set var="procesadores" 
+		value="${com.luxsoft.lx.contabilidad.ProcesadorDePoliza.list()}" scope="request" />
 	<div class="row toolbar-panel">
 	    <div class="col-md-4">
 	    	<input type='text' id="filtro" placeholder="Filtrar" class="form-control" autofocus="on">
@@ -23,9 +24,12 @@
 	        <a data-target="#periodoDialog" data-toggle="modal" class="btn btn-default " >
 	        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
 	        </a>
-	        <a data-target="#generarDialog" data-toggle="modal" class="btn btn-default ">
-	        	<i class="fa fa-cog"></i> Generar
-	        </a>
+	        <g:if test="${procesador}">
+	        	<a data-target="#generarDialog" data-toggle="modal" class="btn btn-default ">
+	        		<i class="fa fa-cog"></i> Generar
+	        	</a>
+	        </g:if>
+	        
 	        
 	        <g:if test="${session.periodoContable.mes==13}">
 	        	<g:link action="generarCierreAnual" class="btn btn-default "><i class="fa fa-cog"></i> Cierre anual</g:link>

@@ -5,7 +5,7 @@ import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 //import com.luxsoft.lx.utils.MonedaUtils
 
-@ToString(includes='descripcion,cantidad,importe',includeNames=true,includePackage=false)
+@ToString(includes='descripcion,cuentaContable,cantidad,importe',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes='concepto,descripcion,cantidad,importe')
 class GastoDet {
 

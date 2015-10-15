@@ -7,6 +7,7 @@ import grails.util.Environment
 import com.luxsoft.lx.contabilidad.ContaListener
 import com.luxsoft.lx.ventas.*
 import com.luxsoft.cfdi.retenciones.*
+import com.luxsoft.econta.polizas.*
 
 
 // Place your Spring DSL code here
@@ -78,6 +79,10 @@ beans = {
 		}
 		
 	}
+
+	generadorDePoliza(GeneradorDePoliza){}
+
+	
 
 	
 
