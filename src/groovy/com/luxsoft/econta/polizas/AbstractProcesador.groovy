@@ -9,7 +9,7 @@ import com.luxsoft.lx.contabilidad.CuentaContable
 import com.luxsoft.utils.Periodo
 
 import static com.luxsoft.econta.polizas.PolizaUtils.*
-import static org.apache.commons.lang.StringUtils.*
+import org.apache.commons.lang.StringUtils
 
 
 abstract class  AbstractProcesador {
@@ -52,7 +52,7 @@ abstract class  AbstractProcesador {
         	concepto:cuenta.descripcion,
             debe:importe.abs(),
             haber:0.0,
-            descripcion:descripcion,
+            descripcion:StringUtils.substring(descripcion,0,255),
             asiento:asiento,
             referencia:referencia,
             origen:entidad.id.toString(),
@@ -66,7 +66,7 @@ abstract class  AbstractProcesador {
         	concepto:cuenta.descripcion,
             debe:0.0,
             haber:importe.abs(),
-            descripcion:descripcion,
+            descripcion:StringUtils.substring(descripcion,0,255),
             asiento:asiento,
             referencia:referencia,
             origen:entidad.id.toString(),
