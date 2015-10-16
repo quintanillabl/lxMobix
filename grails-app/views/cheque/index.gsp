@@ -54,6 +54,7 @@
 						<tr>
 							<th>Id</th>
 							<th>Cuenta</th>
+							<th>A Favor</th>
 							<th>Pago</th>
 							<th>Fecha</th>
 							<th>Folio</th>
@@ -74,7 +75,7 @@
 									</g:link>
 								</td>
 								<td>${fieldValue(bean: row, field: "cuenta.numero")} (${fieldValue(bean: row, field: "cuenta.nombre")})</td>
-								
+								<td>${fieldValue(bean: row, field: "egreso.aFavor")}</td>
 								<td>${fieldValue(bean: row, field: "egreso.id")}</td>
 								<td><lx:shortDate date="${row.egreso.fecha }"/></td>
 								<td><g:formatNumber number="${row.folio}" format="####"/></td>
