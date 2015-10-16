@@ -30,22 +30,28 @@
 		<defaultValueExpression ><![CDATA[$F{SALDO_INICIAL}]]></defaultValueExpression>
 	</parameter>
 	<queryString><![CDATA[SELECT 
-X.ID,X.CLAVE AS NoCUENTA,X.DESCRIPCION AS CUENTA,C.ID,C.CLAVE,C.DESCRIPCION AS CONCEPTO,S.SALDO_INICIAL,S.DEBE,S.HABER,S.SALDO_FINAL
+X.ID,X.CLAVE AS NoCUENTA,X.DESCRIPCION AS CUENTA,C.ID,C.CLAVE AS CLAVE_SUB,C.DESCRIPCION AS CONCEPTO,S.SALDO_INICIAL,S.DEBE,S.HABER,S.SALDO_FINAL
+,Y.CODIGO AS COD_SAT_SUB
+,Z.CODIGO AS COD_SAT_MY
 FROM saldo_por_cuenta_contable S 
 JOIN cuenta_contable C ON(C.ID=S.CUENTA_ID)  
 JOIN cuenta_contable X ON(X.ID=C.PADRE_ID) 
+JOIN CUENTA_SAT Y ON(Y.ID=C.cuenta_sat_id)
+JOIN CUENTA_SAT Z ON(Z.ID=X.cuenta_sat_id)
 WHERE S.EJERCICIO=$P{YEAR} AND S.MES=$P{MES}
 ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 
 	<field name="ID" class="java.lang.Long"/>
 	<field name="NoCUENTA" class="java.lang.String"/>
 	<field name="CUENTA" class="java.lang.String"/>
-	<field name="CLAVE" class="java.lang.String"/>
+	<field name="CLAVE_SUB" class="java.lang.String"/>
 	<field name="CONCEPTO" class="java.lang.String"/>
 	<field name="SALDO_INICIAL" class="java.math.BigDecimal"/>
 	<field name="DEBE" class="java.math.BigDecimal"/>
 	<field name="HABER" class="java.math.BigDecimal"/>
 	<field name="SALDO_FINAL" class="java.math.BigDecimal"/>
+	<field name="COD_SAT_SUB" class="java.lang.String"/>
+	<field name="COD_SAT_MY" class="java.lang.String"/>
 
 	<variable name="SALDO_INICIAL_TOT" class="java.math.BigDecimal" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[$F{SALDO_INICIAL}]]></variableExpression>
@@ -85,9 +91,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 			<band height="13"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
+						x="40"
 						y="0"
-						width="73"
+						width="54"
 						height="11"
 						key="textField-19"/>
 					<box></box>
@@ -98,9 +104,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="78"
+						x="94"
 						y="0"
-						width="200"
+						width="209"
 						height="11"
 						key="textField-20"/>
 					<box></box>
@@ -111,9 +117,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="354"
+						x="372"
 						y="0"
-						width="76"
+						width="69"
 						height="11"
 						key="textField-21"/>
 					<box></box>
@@ -124,9 +130,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="506"
+						x="510"
 						y="0"
-						width="76"
+						width="69"
 						height="11"
 						key="textField-22"/>
 					<box></box>
@@ -137,9 +143,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="441"
 						y="0"
-						width="76"
+						width="69"
 						height="11"
 						key="textField-23"/>
 					<box></box>
@@ -150,9 +156,9 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="278"
+						x="303"
 						y="0"
-						width="76"
+						width="69"
 						height="11"
 						key="textField-24"/>
 					<box></box>
@@ -160,6 +166,19 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO_INICIAL_CTA}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="0"
+						width="38"
+						height="11"
+						key="textField-34"/>
+					<box></box>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" size="7" isBold="true"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COD_SAT_MY}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -289,9 +308,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="5"
+						x="40"
 						y="3"
-						width="73"
+						width="54"
 						height="13"
 						forecolor="#000000"
 						key="staticText-4"
@@ -301,7 +320,7 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[No.CTA]]></text>
@@ -309,9 +328,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="78"
+						x="94"
 						y="3"
-						width="200"
+						width="209"
 						height="13"
 						forecolor="#000000"
 						key="staticText-5"
@@ -329,9 +348,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="354"
+						x="372"
 						y="3"
-						width="76"
+						width="69"
 						height="13"
 						forecolor="#000000"
 						key="staticText-6"
@@ -349,9 +368,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="506"
+						x="510"
 						y="3"
-						width="76"
+						width="69"
 						height="13"
 						forecolor="#000000"
 						key="staticText-7"
@@ -393,9 +412,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="278"
+						x="303"
 						y="3"
-						width="76"
+						width="69"
 						height="13"
 						forecolor="#000000"
 						key="staticText-22"
@@ -413,9 +432,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="430"
+						x="441"
 						y="3"
-						width="76"
+						width="69"
 						height="13"
 						forecolor="#000000"
 						key="staticText-23"
@@ -430,28 +449,48 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 					</textElement>
 				<text><![CDATA[HABER]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="3"
+						width="38"
+						height="13"
+						forecolor="#000000"
+						key="staticText-30"
+						isPrintInFirstWholeBand="true"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="SansSerif" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[COD SAT]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
 			<band height="9"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="5"
+						x="40"
 						y="0"
-						width="73"
+						width="54"
 						height="9"
 						key="textField"/>
 					<box></box>
 					<textElement>
 						<font size="7"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CLAVE}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CLAVE_SUB}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="83"
+						x="99"
 						y="0"
-						width="195"
+						width="204"
 						height="9"
 						key="textField"/>
 					<box></box>
@@ -462,9 +501,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="354"
+						x="372"
 						y="0"
-						width="76"
+						width="69"
 						height="9"
 						key="textField"/>
 					<box></box>
@@ -475,9 +514,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="506"
+						x="510"
 						y="0"
-						width="76"
+						width="69"
 						height="9"
 						key="textField"/>
 					<box></box>
@@ -488,9 +527,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="278"
+						x="303"
 						y="0"
-						width="76"
+						width="69"
 						height="9"
 						key="textField-13"/>
 					<box></box>
@@ -501,9 +540,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="441"
 						y="0"
-						width="76"
+						width="69"
 						height="9"
 						key="textField-14"/>
 					<box></box>
@@ -511,6 +550,19 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 						<font size="7"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{HABER}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="2"
+						y="0"
+						width="38"
+						height="9"
+						key="textField-33"/>
+					<box></box>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{COD_SAT_SUB}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -638,9 +690,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 			<band height="71"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="354"
+						x="372"
 						y="4"
-						width="76"
+						width="69"
 						height="14"
 						key="textField"/>
 					<box></box>
@@ -651,9 +703,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="506"
+						x="510"
 						y="4"
-						width="76"
+						width="69"
 						height="14"
 						key="textField"/>
 					<box></box>
@@ -783,7 +835,7 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 						mode="Opaque"
 						x="144"
 						y="4"
-						width="134"
+						width="159"
 						height="14"
 						forecolor="#000000"
 						key="staticText-12"
@@ -841,9 +893,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="430"
+						x="441"
 						y="4"
-						width="76"
+						width="69"
 						height="14"
 						key="textField-15"/>
 					<box></box>
@@ -854,9 +906,9 @@ $P{MES}.equals("12") ? "DICIEMBRE" :
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="278"
+						x="303"
 						y="4"
-						width="76"
+						width="69"
 						height="14"
 						key="textField-16"/>
 					<box></box>
