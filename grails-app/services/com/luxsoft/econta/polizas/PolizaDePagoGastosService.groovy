@@ -26,7 +26,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		pagos.each{ pago ->
 			def descripcion = 'PENDIENTE'
 
+
 			def referencia='ND'
+			
 
 			if(pago.cheque){
 				referencia = "CH-"+pago.cheque.folio
@@ -34,8 +36,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 			pago.aplicaciones.each { aplicacion ->
 
-				cargoAGastos( poliza,aplicacion,descripcion,referencia)
-				cargoAIvaAcreditable( poliza,aplicacion,descripcion,referencia)
+				def gasto = aplicacion.cuentaPorPagar
+				def desc = "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+				
+				cargoAGastos( poliza,aplicacion,desc,referencia)
+				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			}
 			abonoABancos(poliza,pago,descripcion,referencia)
 			if(pago.formaDePago==FormaDePago.CHEQUE){
@@ -67,10 +72,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		def gasto = aplicacion.cuentaPorPagar
 		if( gasto ) {
-
+			//def desc = "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 			def gastoDet = gasto.partidas.find{ it.cuentaContable }
 			assert gastoDet,'No hay cuenta contable asignada para registrar el gasto '+gasto
 			log.info 'Cargo a gasto :'+gastoDet
+			
 
 			cargoA(poliza,
 				gastoDet.cuentaContable,
@@ -106,11 +112,20 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 	def abonoABancos(def poliza,def pago,descripcion,def referencia){
 		def cuenta=pago.cuenta.cuentaContable
 		assert cuenta,"La cuenta de banco ${pago.cuenta} no tiene cuenta contable asignada"
+		def desc=""
+		pago.aplicaciones.each{ aplicacion ->
+			def gasto = aplicacion.cuentaPorPagar
+			if(gasto){
+				desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+			}
+			
+		}
+
 		abonoA(
 			poliza,
 			pago.cuenta.cuentaContable,
 			pago.importe,
-			descripcion,
+			desc,
 			'PAGO',
 			referencia,
 			pago
