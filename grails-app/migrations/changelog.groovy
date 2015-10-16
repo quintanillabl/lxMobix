@@ -74,4 +74,6 @@ databaseChangeLog = {
 	
 
 	include file: 'Econta_Polizas_07.groovy'
+
+	include file: 'Econta_Polizas_Efresos_01.groovy'
 }

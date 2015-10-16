@@ -38,6 +38,8 @@ class Poliza {
 
 	List partidas=[]
 
+	
+
 	Date cierre
 
 	Date dateCreated
@@ -46,7 +48,7 @@ class Poliza {
 	String creadoPor
 	String modificadoPor
 	
-	static hasMany = [partidas:PolizaDet]
+	static hasMany = [partidas:PolizaDet,cheques:PolizaCheque]
 
     static constraints = {
 		ejercicio inList:(2014..2018)
@@ -65,6 +67,7 @@ class Poliza {
 	
 	static mapping ={
 		partidas cascade: "all-delete-orphan"
+		cheques  cascade: "all-delete-orphan"
 		fecha type:'date'
 	}
 	

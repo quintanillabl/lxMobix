@@ -12,6 +12,8 @@ class Pago extends MovimientoDeCuenta{
 
 	String aFavor
 
+	String rfc
+
 	Cheque cheque
 
 	static hasMany = [aplicaciones: AplicacionDePago]
@@ -23,6 +25,7 @@ class Pago extends MovimientoDeCuenta{
     	formaDePago inList:[FormaDePago.TRANSFERENCIA,FormaDePago.CHEQUE,FormaDePago.EFECTIVO]
     	//cheque nullable:true
     	aFavor nullable:true
+    	rfc nullable:true,maxSize:13
     }
     
     static embedded = ['autorizacion']

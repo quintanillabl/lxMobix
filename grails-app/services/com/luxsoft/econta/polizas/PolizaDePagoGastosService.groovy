@@ -6,6 +6,7 @@ import com.luxsoft.lx.cxp.GastoDet
 import com.luxsoft.lx.contabilidad.CuentaContable
 import static com.luxsoft.econta.polizas.PolizaUtils.*
 import org.apache.commons.lang.StringUtils
+import com.luxsoft.lx.core.FormaDePago
 
 
 @Transactional
@@ -37,6 +38,23 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				cargoAIvaAcreditable( poliza,aplicacion,descripcion,referencia)
 			}
 			abonoABancos(poliza,pago,descripcion,referencia)
+			if(pago.formaDePago==FormaDePago.CHEQUE){
+				
+				def cheque=pago.cheque
+				assert cheque,'Pago sin cheque registrado'
+				assert cheque.cuenta
+				def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
+				poliza.addToCheques(
+					numero:cheque.folio.toString(),
+					bancoEmisorNacional:cheque.cuenta.banco.bancoSat,
+					cuentaOrigen:cheque.cuenta.numero,
+					fecha:cheque.dateCreated,
+					beneficiario:pago.aFavor,
+					rfc:rfc,
+					monto:pago.importe
+				)
+
+			}
 		}
 		
 		

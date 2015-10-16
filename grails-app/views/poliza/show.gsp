@@ -15,7 +15,7 @@
 	<div class="container form-panel">
 
 		<div class="row toolbar-panel">
-			<div class="col-md-6 ">
+			<div class="col-md-12 ">
 				<div class="btn-group">
 				    <g:link action="index" class="btn btn-default " params="[subTipo:polizaInstance.subTipo]">
 				        <i class="fa fa-step-backward"></i> Pólizas
@@ -43,8 +43,6 @@
 				   		</g:link>
 				   </g:if>
 				</div>
-				
-				
 			</div>
 		</div> 
 
@@ -52,7 +50,6 @@
 		    <div class="col-md-12 ">
 		    	<fieldset disabled>
 				<g:form class="form-horizontal"  >	
-
 					<div class="panel panel-primary">
 						<div class="panel-heading">Id: ${polizaInstance.id}
 							<g:if test="${flash.message}">
@@ -101,62 +98,83 @@
 				    						class="form-control" disabled
 				    						>
 				    				</f:display>
-				    				
-
 				    			</div>
-				    			
-				    			
 				    		</f:with>
-				  		</div>
-				  		<table id="grid" class="table table-striped table-bordered table-condensed">
-				  			<thead>
-				  				<tr>
-				  					<th>Cuenta</th>
-				  					<th>Concepto</th>
-				  					<th>Debe</th>
-				  					<th>Haber</th>
-				  					<th>Descripcion</th>
-				  					<th>Asiento</th>
-				  					<th>Referencia</th>
-				  					<th>Origen</th>
-				  				</tr>
-				  			</thead>
-				  			<tbody>
-				  				<g:each in="${polizaInstance.partidas}" var="row">
-				  					<tr id="${row.id}">
-				  						<td >
-				  							<g:link  controller="gastoDet" action="show" id="${row.id}">
-				  								${fieldValue(bean:row,field:"cuenta.clave")}
-				  							</g:link>
-				  						</td>
-				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
-				  						<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
-				  						<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
-				  						<td>${fieldValue(bean:row,field:"descripcion")}</td>
-				  						<td>${fieldValue(bean:row,field:"asiento")}</td>
-				  						<td>${fieldValue(bean:row,field:"referencia")}</td>
-				  						<td>${fieldValue(bean:row,field:"origen")}</td>
-				  						
-				  					</tr>
-				  				</g:each>
-				  			</tbody>
-				  		</table>
-				  		
-				  		<div class="panel-footer">
-				  			<g:if test="${flash.message}">
-				  				<span class="label label-warning">${flash.message}</span>
-				  			</g:if> 
 				  		</div>
 
 					</div>
 				</g:form>
 				</fieldset>
 			</div>
-			
-			
-
 		</div><!-- end .row 2 -->
+		
+		<div class="row">
+			<div>
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#transacciones"   data-toggle="tab">Transacciones</a>
+					</li>
+					<li>
+						<a href="#cheques"   data-toggle="tab">Cheques</a>
+					</li>
+					<li>
+						<a href="#transferencias"   data-toggle="tab">Transferencias</a>
+					</li>
+					<li>
+						<a href="#otras"   data-toggle="tab">Otros</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="transacciones">
+						<table id="grid" class="table table-striped table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>Cuenta</th>
+									<th>Concepto</th>
+									<th>Debe</th>
+									<th>Haber</th>
+									<th>Descripcion</th>
+									<th>Asiento</th>
+									<th>Referencia</th>
+									<th>Origen</th>
+								</tr>
+							</thead>
+							<tbody>
+								<g:each in="${polizaInstance.partidas}" var="row">
+									<tr id="${row.id}">
+										<td >
+											<g:link  controller="gastoDet" action="show" id="${row.id}">
+												${fieldValue(bean:row,field:"cuenta.clave")}
+											</g:link>
+										</td>
+										<td>${fieldValue(bean:row,field:"concepto")}</td>
+										<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
+										<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
+										<td>${fieldValue(bean:row,field:"descripcion")}</td>
+										<td>${fieldValue(bean:row,field:"asiento")}</td>
+										<td>${fieldValue(bean:row,field:"referencia")}</td>
+										<td>${fieldValue(bean:row,field:"origen")}</td>
+										
+									</tr>
+								</g:each>
+							</tbody>
+						</table>
+					</div>
 
+					<div class="tab-pane" id="cheques">
+						<g:render template="chequesGrid"/>
+					</div>
+					<div class="tab-pane" id="transferencias">
+						PENDIENTE
+						%{-- <g:render template="transferenciasGrid"/> --}%
+					</div>
+					<div class="tab-pane" id="otras">
+						PENDIENTE
+						%{-- <g:render template="otrasFormasDePagoGrid"/> --}%
+					</div>
+				</div>
+			</div>
+		</div>
 		
 		<g:if test="${flash.error}">
 			<div class="row">
