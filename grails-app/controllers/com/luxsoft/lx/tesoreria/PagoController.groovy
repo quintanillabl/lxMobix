@@ -23,7 +23,7 @@ class PagoController {
     def reportService
 
     def index(Integer max) {
-        params.max = 200
+        params.max = 2000
         params.sort=params.sort?:'fecha'
         params.order='desc'
         respond Pago.findAllByEmpresa(session.empresa,params), model:[pagoInstanceCount: Pago.countByEmpresa(session.empresa)]

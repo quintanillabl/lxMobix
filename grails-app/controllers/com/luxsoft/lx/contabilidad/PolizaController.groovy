@@ -77,7 +77,7 @@ class PolizaController {
                 command.empresa,
                 command.fecha,
                 command.procesador)
-            flash.message="Polizas generadas: PENDIENTE"
+            flash.message="Polizas generadas: "+polizas.size()
             redirect action:'index',params:[subTipo:command.tipo]
         }else{
             def poliza = generadorDePoliza.generar(

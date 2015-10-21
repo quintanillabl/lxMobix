@@ -3,9 +3,6 @@ package com.luxsoft.econta.polizas
 import com.luxsoft.lx.contabilidad.*
 
 class PolizaUtils {
-
-
-	
 	
 	
 	public static void buildProcesadores(){
@@ -130,5 +127,10 @@ class PolizaUtils {
 
 	public static OtrosGastosNoFiscales(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'703-0002')		
+	}
+
+	public static IsrRetenido(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'216-0001')
+		
 	}
 }

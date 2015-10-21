@@ -86,6 +86,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			
 			cargoAGastos( poliza,aplicacion,desc,referencia)
 			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
+			def cxp = aplicacion.cuentaPorPagar
+			if(cxp.retensionIsr || cxp.retensionIva){
+				abonoARetenciones(poliza,cxp,pago,referencia)
+			}
+
 		}
 		abonoABancos(poliza,pago,descripcion,referencia)
 			
@@ -181,6 +186,22 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			det.cheque=polCheque
 		}
 		poliza.addToPartidas(det)
+	}
+
+	def abonoARetenciones(def poliza,def cxp,def pago,def referencia){
+		
+		if(cxp.retensionIsr){
+			def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+			abonoA(
+				poliza,
+				PolizaUtils.IsrRetenido(poliza.empresa),
+				cxp.retensionIsr.abs(),
+				desc,
+				'PAGO',
+				referencia,
+				cxp
+			)
+		}
 	}
 
 	def find(def empresa, String subTipo, Date fecha,String entidad,Long origen){
