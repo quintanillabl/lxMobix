@@ -68,6 +68,14 @@ class PolizaService {
 
     def delete(Poliza poliza){
         log.info 'Eliminando poliza: '+poliza.id
+        poliza.partidas.each{
+            if(it.cheque){
+                //println 'Eliminando cheque: '+it
+                def c=it.cheque
+                it.cheque=null
+                c.delete flush:true
+            }
+        }
         poliza.delete flush:true
         saldoPorCuentaContableService.actualizarSaldos(poliza)
         event('bajaDePoliza',poliza)

@@ -8,6 +8,8 @@ import static com.luxsoft.econta.polizas.PolizaUtils.*
 import org.apache.commons.lang.StringUtils
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.contabilidad.*
+import com.luxsoft.lx.contabilidad.Poliza
+
 
 @Transactional
 class PolizaDePagoGastosService extends AbstractProcesador{
@@ -21,7 +23,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		pagos.each{ pago ->
 				
-			def poliza = find(empresa,subTipo,fecha)
+				//def poliza = find(empresa,subTipo,fecha,pago.class.name,pago.id)
+			def poliza = Poliza.find(
+				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
+				[empresa,subTipo,fecha,pago.class.name,pago.id])
 
 			if (poliza) {
 				poliza.partidas.clear()
@@ -33,7 +38,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			} else {
 				log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
 				poliza=build(empresa,fecha,tipo,subTipo)
+				poliza.entidad=pago.class.name
+				poliza.origen=pago.id
 		        procesar(poliza,pago)
+		        poliza.actualizar()
 		        cuadrar(poliza)
 				poliza=polizaService.save(poliza)
 			}
@@ -173,6 +181,15 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			det.cheque=polCheque
 		}
 		poliza.addToPartidas(det)
+	}
+
+	def find(def empresa, String subTipo, Date fecha,String entidad,Long origen){
+    	log.info "Buscando poliza ${subTipo} $fecha $empresa $entidad $origen"
+		
+		def found = Poliza.find(
+			"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
+			[empresa,subTipo,fecha,entidad,origen])
+		return found
 	}
 
 }

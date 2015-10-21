@@ -75,7 +75,7 @@ abstract class  AbstractProcesador {
 	}
 
     def find(def empresa, String subTipo, Date fecha){
-    	log.info "Buscando poliza ${subTipo} $fecha $empresa"
+    	log.debug "Buscando poliza ${subTipo} $fecha $empresa"
 		
 		def found = Poliza.find(
 			"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=?",

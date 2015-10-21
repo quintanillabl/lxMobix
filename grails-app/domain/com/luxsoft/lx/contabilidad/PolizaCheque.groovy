@@ -10,6 +10,8 @@ import com.luxsoft.lx.sat.BancoSat
 @EqualsAndHashCode(includes='cuentaOrigen,numero,fecha')
 class PolizaCheque {
 
+    PolizaDet polizaDet
+
 	String numero
 	
 	BancoSat bancoEmisorNacional
@@ -45,7 +47,7 @@ class PolizaCheque {
     	tipoDeCambio scale:5
     }
 
-    static belongsTo = [polizaDet:PolizaDet]
+    //static belongsTo = [polizaDet:PolizaDet]
 
     static mapping = {
     	fecha type:'date'

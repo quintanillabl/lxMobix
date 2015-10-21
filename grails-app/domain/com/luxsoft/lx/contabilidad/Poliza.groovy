@@ -38,7 +38,9 @@ class Poliza {
 
 	List partidas=[]
 
-	
+	Long origen
+
+	String entidad
 
 	Date cierre
 
@@ -62,6 +64,8 @@ class Poliza {
 		creadoPor nullable:true,maxSize:50
 		modificadoPor nullable:true,maxSize:50
 		cierre nullable:true
+		origen nullable:true
+		entidad nullable:true
     }
 	
 	
