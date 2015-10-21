@@ -72,14 +72,24 @@ class PolizaController {
             return
         }
         log.debug 'Generando poliza: '+command
-        def poliza = generadorDePoliza.generar(
-            command.empresa,
-            command.fecha,
-            command.procesador)
+        if(command.procesador.tipo=='EGRESO'){
+            def polizas=generadorDePoliza.generar(
+                command.empresa,
+                command.fecha,
+                command.procesador)
+            flash.message="Polizas generadas: PENDIENTE"
+            redirect action:'index',params:[subTipo:command.tipo]
+        }else{
+            def poliza = generadorDePoliza.generar(
+                command.empresa,
+                command.fecha,
+                command.procesador)
 
-        flash.message="Póliza generada ${poliza.id}"
-        redirect action:'show',id:poliza.id
-        //redirect action:'index',params:[subTipo:command.tipo]
+            flash.message="Póliza generada ${poliza.id}"
+            redirect action:'show',id:poliza.id
+        }
+        
+        
     }
 
 
@@ -128,12 +138,12 @@ class PolizaController {
         log.debug 'Actualizando/Recalculando poliza: '+polizaInstance
         def procesador=ProcesadorDePoliza.findByNombre(polizaInstance.subTipo)
         if(procesador){
-            def poliza = generadorDePoliza.generar(
+            generadorDePoliza.generar(
                 polizaInstance.empresa,
                 polizaInstance.fecha,
                 procesador
                 )
-            flash.message="Póliza actualizada ${poliza.id}"
+            flash.message="Póliza actualizada ${polizaInstance.id}"
         } else {
             flash.messabe = "No existe procesador para la poliza por lo que no se puede re calcular"
         }

@@ -22,7 +22,7 @@ class PeriodoContable implements Serializable{
     }
 
     Periodo toPeriodo(){
-        return Periodo.getPeriodoEnUnMes(ejercicio,mes-1)
+        return Periodo.getPeriodoEnUnMes(mes-1,ejercicio)
     }
 
 

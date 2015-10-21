@@ -17,11 +17,11 @@ class PolizaDet {
 	String referencia
 	String origen
 	String entidad
-
-	
 	
 	
 	static belongsTo = [poliza:Poliza]
+
+	static hasOne = [cheque: PolizaCheque]
 
     static constraints = {
     	concepto(nullable:true,maxSize:50)
@@ -30,6 +30,7 @@ class PolizaDet {
 		origen(nullable:true,maxSize:20)
 		entidad(nullable:true,maxSize:50)
 		descripcion(nullable:true,maxSize:255)
+		cheque(nullable:true)
     }
 	
 	static mapping ={

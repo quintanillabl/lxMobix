@@ -30,6 +30,10 @@ class PolizaCheque {
 
 	BigDecimal tipoDeCambio = 1.0
 
+    Date dateCreated
+    
+    Date lastUpdated
+
 
     static constraints = {
     	numero minSize:1,maxSize:20
@@ -41,7 +45,7 @@ class PolizaCheque {
     	tipoDeCambio scale:5
     }
 
-    static belongsTo = [poliza:Poliza]
+    static belongsTo = [polizaDet:PolizaDet]
 
     static mapping = {
     	fecha type:'date'

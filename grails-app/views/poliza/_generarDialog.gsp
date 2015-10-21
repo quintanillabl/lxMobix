@@ -1,3 +1,5 @@
+<asset:stylesheet src="jquery-ui.css"/>
+<asset:javascript src="jquery-ui/autocomplete.js"/>
 <div class="modal fade" id="generarDialog" tabindex="-1">
 	<div class="modal-dialog ">
 		<div class="modal-content">
@@ -22,11 +24,20 @@
 							<f:field property="mes" widget-class="form-control" value="${session.periodoContable.mes}"/>
 						</fieldset>
 						
-						<f:field property="fecha" />
+						<f:field property="fecha" >
+							<input 
+								id="fecha" 
+								type="text" 
+								name="fecha"  
+								class="form-control " 
+								/>
+						</f:field>
 					</f:with>
 				</div>
 				
 				<div class="modal-footer">
+					
+					
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 					<g:submitButton class="btn btn-info" name="aceptar"
 							value="Generar" />
@@ -38,3 +49,16 @@
 	</div>
 	<!-- modal-di -->
 </div>
+<script type="text/javascript">
+	$(function(){
+		$("#fecha").datepicker({
+			changeMonth: false,
+	      	changeYear: false,
+	      	showAnim: "fadeIn",
+	      	hideIfNoPrevNext: true,
+	      	minDate:"${formatDate(date:session.periodoContable.toPeriodo().fechaInicial,format:'dd/MM/yyyy')}",
+	      	maxDate:"${formatDate(date:session.periodoContable.toPeriodo().fechaFinal,format:'dd/MM/yyyy')}",
+	      	showOptions: { direction: "up" }
+		});
+	});
+</script>

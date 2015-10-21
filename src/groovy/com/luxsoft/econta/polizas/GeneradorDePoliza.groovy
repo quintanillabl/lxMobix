@@ -2,6 +2,7 @@ package com.luxsoft.econta.polizas
 
 import org.springframework.context.ApplicationContextAware
 import org.springframework.context.ApplicationContext
+import com.luxsoft.lx.contabilidad.ProcesadorDePoliza
 
 class GeneradorDePoliza  implements ApplicationContextAware{
 
@@ -15,6 +16,8 @@ class GeneradorDePoliza  implements ApplicationContextAware{
         def res=service.generar(empresa,fecha,procesador)
         return res
     }
+
+    
 
     public void setApplicationContext(ApplicationContext applicationContext){
         context=applicationContext

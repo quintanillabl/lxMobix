@@ -22,7 +22,7 @@ class PolizaFolio {
 		tipo maxSize:50
 		subTipo maxSize:50
 		mes inList:(1..13)
-		folio nullable:false,unique:['empresa','tipo','mes']
+		folio nullable:false,unique:['empresa','tipo','subTipo','mes','ejercicio']
     }
 	
 	Long next(){

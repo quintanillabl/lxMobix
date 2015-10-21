@@ -62,7 +62,7 @@
 							<th>Impreso</th>
 							<th>Cancelación</th>
 							<th>Comentario</th>
-							<th>User</th>
+							%{-- <th>User</th> --}%
 						</tr>
 					</thead>
 					<tbody>
@@ -88,7 +88,7 @@
 									${org.apache.commons.lang.StringUtils.substring(row.comentarioCancelacion,0,20)}
 									</abbr>
 								</td>
-								<td>${fieldValue(bean: row, field: "modificadoPor")}</td>
+								%{-- <td>${fieldValue(bean: row, field: "modificadoPor")}</td> --}%
 								
 								
 								

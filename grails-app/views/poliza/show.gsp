@@ -10,8 +10,6 @@
 </head>
 <body>
 
-
-
 	<div class="container form-panel">
 
 		<div class="row toolbar-panel">
@@ -92,12 +90,18 @@
 				    						class="form-control" disabled
 				    						>
 				    				</f:display>
-				    				<f:display property="lastUpdated" label="Creado">
+				    				<f:display property="lastUpdated" label="Modificado">
 				    					<input type="text" 
 				    						value="${polizaInstance.lastUpdated.format('dd/MM/yyyy HH:mm:ss')} (${polizaInstance.modificadoPor})"
 				    						class="form-control" disabled
 				    						>
 				    				</f:display>
+				    				<g:if test="${polizaInstance.manual}">
+				    					<div class="form-group">
+				    						<label for="manual" class="control-label col-sm-6">Póliza manual</label>
+				    						
+				    					</div>
+				    				</g:if>
 				    			</div>
 				    		</f:with>
 				  		</div>
@@ -109,70 +113,40 @@
 		</div><!-- end .row 2 -->
 		
 		<div class="row">
-			<div>
-				<ul class="nav nav-tabs">
-					<li class="active">
-						<a href="#transacciones"   data-toggle="tab">Transacciones</a>
-					</li>
-					<li>
-						<a href="#cheques"   data-toggle="tab">Cheques</a>
-					</li>
-					<li>
-						<a href="#transferencias"   data-toggle="tab">Transferencias</a>
-					</li>
-					<li>
-						<a href="#otras"   data-toggle="tab">Otros</a>
-					</li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="transacciones">
-						<table id="grid" class="table table-striped table-bordered table-condensed">
-							<thead>
-								<tr>
-									<th>Cuenta</th>
-									<th>Concepto</th>
-									<th>Debe</th>
-									<th>Haber</th>
-									<th>Descripcion</th>
-									<th>Asiento</th>
-									<th>Referencia</th>
-									<th>Origen</th>
-								</tr>
-							</thead>
-							<tbody>
-								<g:each in="${polizaInstance.partidas}" var="row">
-									<tr id="${row.id}">
-										<td >
-											<g:link  controller="gastoDet" action="show" id="${row.id}">
-												${fieldValue(bean:row,field:"cuenta.clave")}
-											</g:link>
-										</td>
-										<td>${fieldValue(bean:row,field:"concepto")}</td>
-										<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
-										<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
-										<td>${fieldValue(bean:row,field:"descripcion")}</td>
-										<td>${fieldValue(bean:row,field:"asiento")}</td>
-										<td>${fieldValue(bean:row,field:"referencia")}</td>
-										<td>${fieldValue(bean:row,field:"origen")}</td>
-										
-									</tr>
-								</g:each>
-							</tbody>
-						</table>
-					</div>
-
-					<div class="tab-pane" id="cheques">
-						<g:render template="chequesGrid"/>
-					</div>
-					<div class="tab-pane" id="transferencias">
-						PENDIENTE
-						%{-- <g:render template="transferenciasGrid"/> --}%
-					</div>
-					<div class="tab-pane" id="otras">
-						PENDIENTE
-						%{-- <g:render template="otrasFormasDePagoGrid"/> --}%
-					</div>
-				</div>
+			<div class="col-md-12">
+				<table id="grid" class="table table-striped table-bordered table-condensed">
+					<thead>
+						<tr>
+							<th>Cuenta</th>
+							<th>Concepto</th>
+							<th>Debe</th>
+							<th>Haber</th>
+							<th>Descripcion</th>
+							<th>Asiento</th>
+							<th>Referencia</th>
+							<th>Origen</th>
+						</tr>
+					</thead>
+					<tbody>
+						<g:each in="${polizaInstance.partidas}" var="row">
+							<tr id="${row.id}">
+								<td >
+									<g:link  controller="gastoDet" action="show" id="${row.id}">
+										${fieldValue(bean:row,field:"cuenta.clave")}
+									</g:link>
+								</td>
+								<td>${fieldValue(bean:row,field:"concepto")}</td>
+								<td>${g.formatNumber(number:row.debe,type:'currency')}</td>
+								<td>${g.formatNumber(number:row.haber,type:'currency')}</td>
+								<td>${fieldValue(bean:row,field:"descripcion")}</td>
+								<td>${fieldValue(bean:row,field:"asiento")}</td>
+								<td>${fieldValue(bean:row,field:"referencia")}</td>
+								<td>${fieldValue(bean:row,field:"origen")}</td>
+								
+							</tr>
+						</g:each>
+					</tbody>
+				</table>
 			</div>
 		</div>
 		

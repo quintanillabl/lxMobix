@@ -48,7 +48,7 @@ class Poliza {
 	String creadoPor
 	String modificadoPor
 	
-	static hasMany = [partidas:PolizaDet,cheques:PolizaCheque]
+	static hasMany = [partidas:PolizaDet]
 
     static constraints = {
 		ejercicio inList:(2014..2018)

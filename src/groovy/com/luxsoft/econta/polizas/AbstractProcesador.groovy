@@ -93,7 +93,7 @@ abstract class  AbstractProcesador {
 	}
 
     def cuadrar(def poliza){
-        def dif=poliza.debe-poliza.haber
+        def dif=poliza.debe.abs()-poliza.haber.abs()
         if(dif.abs()<=1.0){
             log.info "Cuadrando diferencia de $dif"
             if(dif<0.0){
