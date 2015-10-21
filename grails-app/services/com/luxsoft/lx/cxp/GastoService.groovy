@@ -48,8 +48,10 @@ class GastoService {
 
     def agregarConcepto(Gasto gasto,GastoDet det){
 
-        if(det.cuentaContable==null)
-            det.cuentaContable=gasto.cuentaContable
+        //if(det.cuentaContable==null)
+            //det.cuentaContable=gasto.cuentaContable
+        if(!det.concepto)
+            det.concepto=gasto.concepto
         gasto.addToPartidas(det)
         //actualizarImportes gasto
         //gasto.save failOnError:true

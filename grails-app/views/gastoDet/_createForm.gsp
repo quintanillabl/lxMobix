@@ -20,7 +20,14 @@
 		<g:form name="updateForm" action="save" class="form-horizontal">	
 			<g:hiddenField name="gasto.id" value="${gastoInstance.id}"/>
 			<f:with bean="${gastoDetInstance}">
-				<f:field property="concepto" widget-class="form-control uppercase-field" cols="col-sm-8" colsLabel="col-sm-3"/>
+				
+				<f:field property="concepto" cols="col-sm-8" colsLabel="col-sm-3">
+					<g:select class="form-control"  
+						name="${property}" 
+						value="${value}"
+						from="${com.luxsoft.lx.cxp.Gasto.CONCEPTOS}" 
+						/>
+				</f:field>
 				<f:field property="descripcion" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="unidad" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="cantidad" 

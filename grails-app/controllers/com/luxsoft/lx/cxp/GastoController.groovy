@@ -224,6 +224,7 @@ class GastoCommand{
     String folio
 
     String comentario
+    String concepto
 
     static constraints={
         importFrom Gasto

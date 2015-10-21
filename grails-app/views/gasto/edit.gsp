@@ -102,6 +102,7 @@
 									<f:field property="vencimiento"  cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="folio" widget-class="form-control "  cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="comentario" widget-class="form-control"  cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="concepto" widget-class="form-control"  cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:field property="tipoDeCambio" label="T.C."
 										widget-readonly="readonly"
 										widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
@@ -126,6 +127,7 @@
 				  				<tr>
 				  					%{-- <th>Concepto</th> --}%
 				  					<th>Descripcion</th>
+				  					<th>Concepto</th>
 				  					<th>Unidad</th>
 				  					<th>Cantidad</th>
 				  					<th>Valor unitario</th>
@@ -149,6 +151,7 @@
 				  								${fieldValue(bean:row,field:"descripcion")}
 				  							</g:link>
 				  						</td>
+				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
 				  						<td>${fieldValue(bean:row,field:"unidad")}</td>
 				  						<td>${formatNumber(number:row.cantidad,format:'##.##')}</td>
 				  						<td>${g.formatNumber(number:row.valorUnitario,type:'currency')}</td>

@@ -93,6 +93,7 @@
 				    					<f:display property='uuid' label="UUID" />
 				    					%{-- <f:display property='cuentaContable' label="Cta contable"/> --}%
 				    					<f:field property="comentario" widget-class="form-control"  />
+				    					<f:field property="concepto" widget-class="form-control"  />
 				    				</div>
 				    			</div>
 				    			
@@ -114,6 +115,7 @@
 				  			<thead>
 				  				<tr>
 				  					<th>Descripcion</th>
+				  					<th>Concepto</th>
 				  					<th>Unidad</th>
 				  					<th>Cantidad</th>
 				  					<th>Valor unitario</th>
@@ -133,6 +135,7 @@
 				  								${fieldValue(bean:row,field:"descripcion")}
 				  							</g:link>
 				  						</td>
+				  						<td>${fieldValue(bean:row,field:"concepto")}</td>
 				  						<td>${fieldValue(bean:row,field:"unidad")}</td>
 				  						<td>${formatNumber(number:row.cantidad,format:'##.##')}</td>
 				  						<td>${g.formatNumber(number:row.valorUnitario,type:'currency')}</td>

@@ -17,6 +17,7 @@
 				
 				<f:display property="unidad"/>
 				<f:display property="cantidad"/>
+				<f:display property="concepto"/>
 				<f:display property="valorUnitario"  label="Precio"/>
 				<f:display property="cuentaContable" label="Cuenta"/>
 				<f:display property="comentario" />

@@ -35,6 +35,13 @@
 					<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
 					<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >
 				</f:field>
+				<f:field property="concepto" cols="col-sm-8" colsLabel="col-sm-3">
+					<g:select class="form-control"  
+						name="${property}" 
+						value="${value}"
+						from="${com.luxsoft.lx.cxp.Gasto.CONCEPTOS}" 
+						/>
+				</f:field>
 				<f:field property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 			</f:with>
 		</g:form>

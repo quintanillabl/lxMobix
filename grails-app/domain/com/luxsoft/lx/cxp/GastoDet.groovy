@@ -16,6 +16,7 @@ class GastoDet {
 	BigDecimal valorUnitario
 	BigDecimal importe
 	String comentario
+    String concepto
 
 
     BigDecimal retencionIsrTasa=0
@@ -33,6 +34,7 @@ class GastoDet {
     	comentario nullable:true
         retencionIsrTasa scale:4
         retencionIvaTasa scale:4
+        concepto nullable:true,maxSize:50
     }
 
     static belongsTo = [gasto: Gasto]
