@@ -23,6 +23,22 @@ class PolizaUtils {
 			label: 'Cobranza',
 			service:'polizaDeCobranzaService')
 
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'PROVISION_GASTOS',
+			label: 'Provision (Gastos)',
+			service:'polizaDeProvisionGastos')
+
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'COMISIONES_BANCARIAS',
+			label:'Comisiones',
+			tipo:'EGRESO',
+			service:'polizaDeComisionesBancarias')
+		
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'INVERSIONES',
+			label:'Inversiones',
+			service:'polizaDeInversiones')
+
 		/*
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'PAGO_IMPUESTOS',
@@ -42,16 +58,7 @@ class PolizaUtils {
 			tipo:'DIARIO',
 			service:'polizaDeAmortizaciones')
 		
-		ProcesadorDePoliza.findOrSaveWhere(
-			nombre:'COMISIONES_BANCARIAS',
-			label:'Comisiones',
-			tipo:'EGRESO',
-			service:'polizaDeComisionesBancarias')
-		
-		ProcesadorDePoliza.findOrSaveWhere(
-			nombre:'INVERSIONES',
-			label:'Inversiones',
-			service:'polizaDeInversiones')
+
 		
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'DETERMINACION_DE_IVA',
@@ -69,10 +76,7 @@ class PolizaUtils {
 			label: 'Traspaso (IVA)',
 			service:'polizaDeTraspasoDeIvaDeterminado')
 		
-		ProcesadorDePoliza.findOrSaveWhere(
-			nombre:'PROVISION_GASTOS',
-			label: 'Provision (Gastos)',
-			service:'polizaDeProvisionGastos')
+
 		
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'HONORARIOS',
