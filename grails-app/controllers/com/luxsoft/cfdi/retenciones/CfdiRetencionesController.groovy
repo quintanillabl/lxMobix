@@ -250,7 +250,14 @@ class CfdiRetencionesController {
         */
         def modelData=[]
         if(cfdiRetencionesInstance.impuestosRetenidos){
-
+            modelData=cfdiRetencionesInstance.impuestosRetenidos.collect { cc ->
+                def res=[TIPO_IMPUESTO:cc.impuesto.descripcion,
+                         TIPO_PAGO:cc.tipoPagoRet,
+                         BASE_RETENCION:cc.baseRet,
+                         IMPUESTO_RETENIDO:cc.montoRet
+                        ]
+                return res
+            }
         }else{
             modelData<<[TIPO_IMPUESTO:null]
         }
