@@ -17,7 +17,13 @@ class PolizaUtils {
 			label:'Pagos (Gastos)',
 			tipo:'EGRESO',
 			service:'polizaDePagoGastosService')
-		
+
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'COBRANZA',
+			label: 'Cobranza',
+			service:'polizaDeCobranza')
+
+		/*
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'PAGO_IMPUESTOS',
 			label:'Pagos (Impuestos)',
@@ -98,15 +104,13 @@ class PolizaUtils {
 			label: 'Honorarios asimilados',
 			service:'polizaDeHonorariosAsimiladosASalarios')
 		
-		ProcesadorDePoliza.findOrSaveWhere(
-			nombre:'COBRANZA',
-			label: 'Cobranza',
-			service:'polizaDeCobranza')
+		
 		
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'HONORARIOS_CON_RETENCIONES',
 			label: 'Honorarios (Con ret)',
 			service:'polizaDeHonorariosConRetenciones')
+		*/
 		
 	}
 
