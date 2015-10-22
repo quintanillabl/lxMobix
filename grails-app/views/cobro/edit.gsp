@@ -80,6 +80,7 @@
 									<f:display property="importe" widget="money" wrapper="bootstrap3"/>
 									<f:display property="aplicado" widget="money" wrapper="bootstrap3"/>
 									<f:display property="disponible" widget="money" wrapper="bootstrap3"/>
+									
 								</div>
 								
 							</f:with>

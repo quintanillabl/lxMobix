@@ -16,7 +16,8 @@ $(function(){
 		changeMonth: true,
       	changeYear: true,
       	showAnim: "fadeIn",
-      	showOptions: { direction: "up" }
+      	showOptions: { direction: "up" },
+      	format: 'dd/mm/yy'
 	});
 });
 </script>
