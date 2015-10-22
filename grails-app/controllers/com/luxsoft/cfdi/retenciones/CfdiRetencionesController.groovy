@@ -223,7 +223,7 @@ class CfdiRetencionesController {
 
         File xmlFile = File.createTempFile(xml.getName(),".temp");
         xml.transferTo(xmlFile)
-        cfdiRetencionesInstance=cfdiRetencionesService.cargarXml(cfdiRetencionesInstance,xml.getName())
+        cfdiRetencionesInstance=cfdiRetencionesService.cargarXml(cfdiRetencionesInstance,xmlFile)
         redirect action:'edit',id:cfdiRetencionesInstance.id
     }
 
