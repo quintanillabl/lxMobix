@@ -22,7 +22,7 @@ class PolizaDeFacturacionService extends AbstractProcesador{
     	def empresa=poliza.empresa
     	def fecha=poliza.fecha
     	def ventas=Venta.findAll("from Venta v where v.empresa=? and date(fecha)=?",[empresa,fecha])
-    	log.info "Generando poliza de facturacion para ${fecha.format('dd/MM/yyyy')} ventas registradas: ${ventas.size()}"
+    	log.info "Generando poliza de facturacion para ${fecha.format('dd/MM/yyyy')} ventas registradas: ${ventas.size()} Empresa ${empresa}"
 
     	ventas.each{ venta ->
     		log.info 'Procesando: '+venta
@@ -82,7 +82,7 @@ class PolizaDeFacturacionService extends AbstractProcesador{
 	def abonoAIvaTraladadoPendiente(def poliza,def venta,def descripcion){
 		abonoA(
 			poliza,
-			IvaTrasladadoPendiente,
+			IvaTrasladadoPendiente(poliza.empresa),
 			venta.impuesto,
 			descripcion,
 			venta.tipo,
@@ -107,7 +107,7 @@ class PolizaDeFacturacionService extends AbstractProcesador{
 	def abonoAOtrosIngresos(def poliza,def venta,def descripcion){
 		abonoA(
 			poliza,
-			OtrosIngresos,
+			ContablesNoFiscales(poliza.empresa),
 			venta.subTotal,
 			descripcion,
 			venta.tipo,
