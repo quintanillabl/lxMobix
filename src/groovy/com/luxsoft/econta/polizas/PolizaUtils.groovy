@@ -21,7 +21,7 @@ class PolizaUtils {
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'COBRANZA',
 			label: 'Cobranza',
-			service:'polizaDeCobranza')
+			service:'polizaDeCobranzaService')
 
 		/*
 		ProcesadorDePoliza.findOrSaveWhere(
@@ -118,7 +118,9 @@ class PolizaUtils {
 	public static IvaTrasladadoPendiente(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'209-0001')
 	} 
-	
+	public static IvaTrasladadoCobrado(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'208-0001')	
+	}
 
 	public static IvaAcreditable(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'118-0001')	

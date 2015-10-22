@@ -117,9 +117,11 @@ class CobroController {
         def cliente=cobro.cliente
         
         
-        log.info 'Buscando facturas pendientes para cliente: '+cobro.cliente
+        log.info 'Buscando facturas pendientes para cliente: '+cobro.cliente+ ' Term: '+params.term
         
-        def list=Venta.findAll("from Venta v where v.cliente=? and v.total-v.pagos>=0",[cliente])
+        def list=Venta.findAll(
+            "from Venta v where v.empresa=? and v.cliente=? and v.total-v.pagos>=0 and str(v.folio) like ? order by v.fecha desc",
+            [cobro.empresa,cliente,params.term])
 
         def pattern = "\$##,###.##"
         def mf = new DecimalFormat(pattern)
