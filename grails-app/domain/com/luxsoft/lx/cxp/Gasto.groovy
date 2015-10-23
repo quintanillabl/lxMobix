@@ -12,7 +12,7 @@ class Gasto extends CuentaPorPagar{
 
     static mapping = {
 		partidas cascade: "all-delete-orphan"
-		concepto nullable:true,maxSize:50
+		concepto nullalbe:true,maxSize:50
 	}
 
 

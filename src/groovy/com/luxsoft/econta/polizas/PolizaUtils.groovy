@@ -26,18 +26,18 @@ class PolizaUtils {
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'PROVISION_GASTOS',
 			label: 'Provision (Gastos)',
-			service:'polizaDeProvisionGastos')
+			service:'polizaDeProvisionGastosService')
 
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'COMISIONES_BANCARIAS',
 			label:'Comisiones',
 			tipo:'EGRESO',
-			service:'polizaDeComisionesBancarias')
+			service:'polizaDeComisionesBancariasService')
 		
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'INVERSIONES',
 			label:'Inversiones',
-			service:'polizaDeInversiones')
+			service:'polizaDeInversionesService')
 
 		/*
 		ProcesadorDePoliza.findOrSaveWhere(
@@ -129,6 +129,10 @@ class PolizaUtils {
 	public static IvaAcreditable(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'118-0001')	
 	}
+
+	public static IvaPendienteDeAcreditar(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'119-0001')
+	}
 	
 
 	public static ContablesNoFiscales(def empresa){
@@ -156,5 +160,9 @@ class PolizaUtils {
 	// Abono
 	public static ImpuestoRetenidoDeIva(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'216-0003')	
+	}
+
+	public static AcredoresDiversos(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'205-0001')
 	}
 }

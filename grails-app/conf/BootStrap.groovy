@@ -34,6 +34,11 @@ class BootStrap {
     	Date.metaClass.asPeriodoText{
     		return delegate.format('MMMM - yyyy')
     	}
+        
+        Date.metaClass.isSameMonth{ fecha ->
+            return  ( delegate.getAt(Calendar.YEAR)==fecha.getAt(Calendar.YEAR) ) && (delegate.getAt(Calendar.MONTH)==fecha.getAt(Calendar.MONTH))
+        }
+
 
     	java.security.Security.addProvider(new BouncyCastleProvider())
 

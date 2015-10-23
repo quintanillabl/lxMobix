@@ -3,7 +3,10 @@ package com.luxsoft.econta.polizas
 import grails.transaction.Transactional
 import com.luxsoft.lx.cxc.Cobro
 import static com.luxsoft.econta.polizas.PolizaUtils.*
-
+/**
+* 
+* TODO: Ajustar para manejar el saldo cuando se trate de saldo parcial
+**/
 class PolizaDeCobranzaService extends AbstractProcesador{
 
     def generar(def empresa,Date fecha){
@@ -39,6 +42,7 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 		)
 
 	}
+
 	def abonoAClientes(def poliza,def cobro,def descripcion){
 		
 		cobro.aplicaciones.each{ aplicacion ->

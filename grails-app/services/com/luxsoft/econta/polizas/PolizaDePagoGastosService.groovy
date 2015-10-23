@@ -118,7 +118,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				descripcion,
 				'PAGO',
 				referencia,
-				aplicacion.pago
+				gasto
 			)
 
 		}

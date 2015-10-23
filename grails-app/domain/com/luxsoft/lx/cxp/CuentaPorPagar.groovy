@@ -8,6 +8,7 @@ import groovy.transform.EqualsAndHashCode
 import com.luxsoft.lx.core.Proveedor
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.utils.MonedaUtils
+import com.luxsoft.lx.tesoreria.AplicacionDePago
 
 @ToString(includes='proveedor,uuid,serie,folio',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes='id')
@@ -132,6 +133,14 @@ class CuentaPorPagar {
 
 	public BigDecimal getSaldo(){
 		return getSaldoActual()
+	}
+
+	public BigDecimal buscarSaldoAlCorte(Date corte){
+		def found=AplicacionDePago.executeQuery(
+			"select sum(a.importe) from AplicacionDePago a where a.cuentaPorPagar=? and date(a.fecha)<=?",[this,corte])
+    	def aplicado=found[0]?:0.0
+    	def saldo=this.total-aplicado
+    	return saldo
 	}
 	
 }
