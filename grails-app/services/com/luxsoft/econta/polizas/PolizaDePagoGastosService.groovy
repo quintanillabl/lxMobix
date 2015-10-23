@@ -168,6 +168,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			def cheque=pago.cheque
 			assert cheque,'Pago sin cheque registrado'
 			assert cheque.cuenta
+			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
 			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
 			def polCheque=new PolizaCheque(
 				polizaDet:det,
