@@ -88,7 +88,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
 			if(cxp.retensionIsr || cxp.retensionIva){
-				abonoARetenciones(poliza,gasto,cxp,pago,referencia)
+				abonoARetencionIsr(poliza,gasto,cxp,pago,referencia)
+				cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
 			}
 
 		}
@@ -185,7 +186,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		poliza.addToPartidas(det)
 	}
 
-	def abonoARetenciones(def poliza,def gasto,def cxp,def pago,def referencia){
+	def abonoARetencionIsr(def poliza,def gasto,def cxp,def pago,def referencia){
 		def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 		if(cxp.retensionIsr){
 			cargoA(
@@ -199,6 +200,34 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			)
 		}
 		if(cxp.retensionIva){
+			abonoA(
+				poliza,
+				ImpuestoRetenidoDeIva(poliza.empresa),
+				cxp.retensionIva.abs(),
+				desc,
+				'PAGO',
+				referencia,
+				cxp
+			)
+		}
+	}
+
+	def cargoAbonoARetencionIva(def poliza,def gasto,def cxp,def pago,def referencia){
+		
+		
+		if(cxp.retensionIva){
+			def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+			
+			cargoA(
+				poliza,
+				IvaRetenidoPendient(poliza,empresa),
+				cxp.retensionIva.abs(),
+				desc,
+				'PAGO',
+				referencia,
+				cxp
+			)
+			
 			abonoA(
 				poliza,
 				ImpuestoRetenidoDeIva(poliza,empresa),

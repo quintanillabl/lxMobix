@@ -18,7 +18,7 @@ class Gasto extends CuentaPorPagar{
 
 	static String[] CONCEPTOS=[
 		'GASTOS',
-		'HONORAROS_CON_RETENCION',
+		'HONORARIOS_CON_RETENCION',
 		'HONORARIOS_SIN_RETENCION',
 		'HONORARIOS_ASIMILADOS']
 	
