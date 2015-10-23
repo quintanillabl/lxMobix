@@ -189,7 +189,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 	def abonoARetencionIsr(def poliza,def gasto,def cxp,def pago,def referencia){
 		def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 		if(cxp.retensionIsr){
-			cargoA(
+			abonoA(
 				poliza,
 				RetencionIsrHonorarios(poliza.empresa),
 				cxp.retensionIsr.abs(),
