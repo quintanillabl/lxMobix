@@ -24,7 +24,7 @@ class PolizaDet {
 	static hasOne = [cheque: PolizaCheque]
 
     static constraints = {
-    	concepto(nullable:true,maxSize:50)
+    	concepto(nullable:true,maxSize:300)
     	asiento nullable:true,maxSize:20
     	referencia nullable:true
 		origen(nullable:true,maxSize:20)

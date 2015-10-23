@@ -49,6 +49,7 @@ navigation={
 			cobros(controller:'cobro',action:'index')
 			saldos(controller:'saldoPorCuentaBancaria',action:'index')
 			cheques(controller:'cheque',action:'index')
+			comisiones(controller:'comision',action:'index')
 		}
 		info(view:'info')
 	}

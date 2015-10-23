@@ -41,6 +41,7 @@ class MovimientoDeCuenta {
 		comentario(nullable:true)
 		concepto nullable:true,maxSize:50
 		cobro nullable:true
+		comision nullable:true
     }
 	
 	static mapping ={
@@ -48,7 +49,8 @@ class MovimientoDeCuenta {
 		cuenta fetch:'join'
 	}
 
-	static belongsTo = [cobro: Cobro]
+	static belongsTo = [cobro: Cobro,comision:Comision]
+	//static belongsTo =[Traspaso,Comision,PagoProveedor,CompraDeMoneda]
 	
 	String toString(){
 		return "Folio:$folio ${cuenta}  (${fecha.format('dd/MM/yyyy')}) ${importe}"
