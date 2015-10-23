@@ -191,8 +191,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		if(cxp.retensionIsr){
 			cargoA(
 				poliza,
-				IvaRetenidoPendient(poliza.empresa),
-				cxp.retensionIva.abs(),
+				RetencionIsrHonorarios(poliza.empresa),
+				cxp.retensionIsr.abs(),
 				desc,
 				'PAGO',
 				referencia,
