@@ -199,17 +199,6 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				cxp
 			)
 		}
-		if(cxp.retensionIva){
-			abonoA(
-				poliza,
-				ImpuestoRetenidoDeIva(poliza.empresa),
-				cxp.retensionIva.abs(),
-				desc,
-				'PAGO',
-				referencia,
-				cxp
-			)
-		}
 	}
 
 	def cargoAbonoARetencionIva(def poliza,def gasto,def cxp,def pago,def referencia){
