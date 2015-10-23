@@ -111,7 +111,7 @@ abstract class  AbstractProcesador {
                 )
 
             }else if( dif > 0.0 ){
-                def cuenta=PolizaUtils.ContableNoFiscales(poliza.empresa)
+                def cuenta=PolizaUtils.ContablesNoFiscales(poliza.empresa)
                 poliza.addToPartidas(
                     cuenta:cuenta,
                     concepto:cuenta.descripcion,

@@ -26,7 +26,7 @@ class PolizaService {
         }
 
         poliza.actualizar()
-        log.info 'Salvando poliza: '+poliza
+        log.info 'Salvando poliza: '+poliza+ ' Partidas: '+poliza.partidas.size()
     	poliza=poliza.save failOnError:true
     	return poliza
     }
