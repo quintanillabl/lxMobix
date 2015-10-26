@@ -50,6 +50,7 @@ navigation={
 			saldos(controller:'saldoPorCuentaBancaria',action:'index')
 			cheques(controller:'cheque',action:'index')
 			comisiones(controller:'comision',action:'index')
+			inversiones(controller:'inversion',action:'index')
 		}
 		info(view:'info')
 	}

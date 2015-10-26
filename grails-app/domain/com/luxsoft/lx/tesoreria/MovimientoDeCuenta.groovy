@@ -42,6 +42,7 @@ class MovimientoDeCuenta {
 		concepto nullable:true,maxSize:50
 		cobro nullable:true
 		comision nullable:true
+		traspaso nullable:true
     }
 	
 	static mapping ={
@@ -49,7 +50,7 @@ class MovimientoDeCuenta {
 		cuenta fetch:'join'
 	}
 
-	static belongsTo = [cobro: Cobro,comision:Comision]
+	static belongsTo = [cobro: Cobro,comision:Comision,traspaso:Traspaso]
 	//static belongsTo =[Traspaso,Comision,PagoProveedor,CompraDeMoneda]
 	
 	String toString(){

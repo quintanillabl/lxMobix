@@ -53,25 +53,11 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
     	def empresa = poliza.empresa
     	def fecha = poliza.fecha
     	
-    	// def tp=''
-    	// switch(pago.formaDePago) {
-    	// 	case FormaDePago.CHEQUE:
-    	// 		tp='CH-'+pago.referencia
-    	// 		break
-    	// 	case FormaDePago.TRANSFERENCIA:
-    	// 		tp='TR-'+pago?.cheque?.folio
-    	// 		break
-    	// 	default:
-    	// 	break
-    	// }
-
-    	// poliza.concepto="${tp} ${pago.aFavor}"
     	def desc="$comision.cuenta.numero ($comision.cuenta.nombre) ${comision.fecha.asPeriodoText()}"
     	cargoAComisiones(poliza,comision,desc)
     	cargoAIvaAcreditable(poliza,comision,desc)
     	abonoABancos(poliza,comision,desc)
-    	abonoAIvaAcreditable(poliza,comision,desc)
-    	//abonoAIvaBancos(poliza,comision,desc)
+    	
     	
     }
 
@@ -101,7 +87,7 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
     	abonoA(
     		poliza,
     		comision.cuenta.cuentaContable,
-    		comision.comision.abs(),
+    		comision.comision.abs()+comision.impuesto.abs(),
     		descripcion,
     		'COMISION',
     		comision.referenciaBancaria,
@@ -109,16 +95,6 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
     	)
     }
 
-    def abonoAIvaAcreditable(def poliza,def comision,def descripcion){
-    	abonoA(
-    		poliza,
-    		IvaAcreditable(poliza.empresa),
-    		comision.impuesto.abs(),
-    		descripcion,
-    		'COMISION',
-    		comision.referenciaBancaria,
-    		comision
-    	)
-    }
+   
  
 }

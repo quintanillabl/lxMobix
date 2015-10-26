@@ -61,35 +61,17 @@ databaseChangeLog = {
 
 	include file: 'RetencionesCfdi.groovy'
 
-	// include file: 'Econta_Polizas_01.groovy'
-
-	// include file: 'Econta_Polizas_02.groovy'
-
-	// include file: 'Econta_Polizas_03.groovy'
-
-	// include file: 'Econta_Polizas_05.groovy'
-
-	// include file: 'Econta_Polizas_06.groovy'
-
-	// include file: 'Econta_Polizas_07.groovy'
-
-	// include file: 'Econta_Polizas_Efresos_01.groovy'
-
 	include file: 'Econta_01.groovy'
 
-	
-
 	include file: 'Econta_02.groovy'
-
-	
 
 	include file: 'Econta_03.groovy'
 
 	include file: 'Econta_04.groovy'
 
-	
-
 	include file: 'ComisionesBancarias_01.groovy'
 
 	include file: 'Econta_05.groovy'
+
+	include file: 'Traspasos_01.groovy'
 }
