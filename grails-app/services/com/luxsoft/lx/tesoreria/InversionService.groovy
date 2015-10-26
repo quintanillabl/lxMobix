@@ -39,6 +39,7 @@ class InversionService {
 
 		def importe=inversion.importe
 
+		/*
 		def importeIsr=(inversion.importe*(inversion.tasaIsr/100))/inversion.cuentaOrigen.diasInversionIsr
 		importeIsr=importeIsr*inversion.plazo
 		if(tasa>0){
@@ -46,10 +47,11 @@ class InversionService {
 			rendimiento=(rendimiento/360)*inversion.plazo
 			rendimiento=rendimiento-importeIsr
 		}
+		*/
 
 		importe+=inversion.rendimientoReal
 		
-		inversion.importeIsr=importeIsr
+		//inversion.importeIsr=importeIsr
 		
 		inversion.rendimientoCalculado=rendimiento
 		//inversion.rendimientoReal=rendimiento
