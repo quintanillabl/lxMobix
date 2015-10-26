@@ -36,32 +36,14 @@ class Comision {
 	
 	
 	
-	def generarMovimientos(){
+	// def generarMovimientos(){
 		
-		addToMovimientos(
-			empresa:this.empresa,
-			cuenta:this.cuenta,
-			fecha:this.fecha,
-			moneda:this.cuenta.moneda,
-			importe:comision.abs()*-1.0,
-			concepto:"Comision "+comentario,
-			referencia:this.referenciaBancaria,
-			comentario:'COMISION_BANCARIA')
-
-		if(getImpuestoMN().abs()>0){
-			addToMovimientos(cuenta:this.cuenta
-				,fecha:this.fecha
-				,moneda:this.cuenta.moneda
-				,importe:impuesto.abs()*-1.0
-				,concepto:"Iva comision "+comentario
-				,referencia:this.referenciaBancaria
-				,comentario:'IMPUESTO_COMISION_BANCARIA')
-		}
 		
-	}
+		
+	// }
 	
-	def beforeInsert(){
-		generarMovimientos()
-	}
+	// def beforeInsert(){
+	// 	generarMovimientos()
+	// }
 }
 

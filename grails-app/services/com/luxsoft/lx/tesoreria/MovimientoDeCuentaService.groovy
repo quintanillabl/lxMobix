@@ -23,8 +23,17 @@ class MovimientoDeCuentaService {
     	return movimiento
     }
 
+    def preparar(MovimientoDeCuenta movimiento){
+        movimiento.with{
+            def user=springSecurityService.getCurrentUser().username
+            creadoPor=user
+            modificadoPor=user
+            folio=nextFolio(delegate)
+        }
+    }
 
-    private Long nextFolio(MovimientoDeCuenta movimiento){
+
+    Long nextFolio(MovimientoDeCuenta movimiento){
         def folio=Folio.findByEmpresaAndSerie(movimiento.empresa,'MOVIMIENTO_DE_CUENTA')
         if(folio==null){
             folio=new Folio(empresa:movimiento.empresa,serie:'MOVIMIENTO_DE_CUENTA',folio:0l)

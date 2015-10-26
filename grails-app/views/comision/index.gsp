@@ -10,60 +10,43 @@
 <content tag="header">
 	Comisiones bancarias
 </content>
-	%{-- <body>
-		<a href="#list-comision" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="list-comision" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<table>
-			<thead>
-					<tr>
+<content tag="grid">
+	
+
+	<table id="grid" class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Fecha</th>
+				<th>Cuenta</th>
+				<th>Comision</th>
+				<th>Tasa(IVA)</th>
+				<th>Impuesto</th>
+				<th>Rererencia</th>
+				<th>Comentario</th>
+			</tr>
+		</thead>
+		<tbody>
+			<g:each in="${comisionInstanceList}" var="row">
+				<tr>
+					<lx:idTableRow id="${row.id}"/>
+					<td>
+						<g:link action="show" id="${row.id}">
+							<lx:shortDate date="${row.fecha }"/>
+						</g:link>
+						
+					</td>
+					<td>${fieldValue(bean: row, field: "cuenta.numero")} (${fieldValue(bean: row, field: "cuenta.nombre")})</td>
+					<td><lx:moneyFormat number="${row.comision}"/></td>
+					<td><g:formatNumber number="${row.impuestoTasa}" format="##.##"/></td>
+					<td><lx:moneyFormat number="${row.impuesto}"/></td>
+					<td>${fieldValue(bean: row, field: "referenciaBancaria")} </td>
+					<td>${fieldValue(bean: row, field: "comentario")} </td>
 					
-						<g:sortableColumn property="comentario" title="${message(code: 'comision.comentario.label', default: 'Comentario')}" />
-					
-						<g:sortableColumn property="referenciaBancaria" title="${message(code: 'comision.referenciaBancaria.label', default: 'Referencia Bancaria')}" />
-					
-						<g:sortableColumn property="comision" title="${message(code: 'comision.comision.label', default: 'Comision')}" />
-					
-						<th><g:message code="comision.cuenta.label" default="Cuenta" /></th>
-					
-						<th><g:message code="comision.empresa.label" default="Empresa" /></th>
-					
-						<g:sortableColumn property="fecha" title="${message(code: 'comision.fecha.label', default: 'Fecha')}" />
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${comisionInstanceList}" status="i" var="comisionInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${comisionInstance.id}">${fieldValue(bean: comisionInstance, field: "comentario")}</g:link></td>
-					
-						<td>${fieldValue(bean: comisionInstance, field: "referenciaBancaria")}</td>
-					
-						<td>${fieldValue(bean: comisionInstance, field: "comision")}</td>
-					
-						<td>${fieldValue(bean: comisionInstance, field: "cuenta")}</td>
-					
-						<td>${fieldValue(bean: comisionInstance, field: "empresa")}</td>
-					
-						<td><g:formatDate date="${comisionInstance.fecha}" /></td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			<div class="pagination">
-				<g:paginate total="${comisionInstanceCount ?: 0}" />
-			</div>
-		</div>
-	</body> --}%
+				</tr>
+			</g:each>
+		</tbody>
+	</table>
+</content>
+	
 </html>

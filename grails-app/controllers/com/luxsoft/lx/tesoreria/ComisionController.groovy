@@ -11,9 +11,12 @@ import com.luxsoft.lx.core.TipoDeCambio
 import com.luxsoft.lx.utils.MonedaUtils
 import org.grails.databinding.BindingFormat
 
+
 @Secured(["hasAnyRole('ADMIN','TESORERIA','GASTOS')"])
 @Transactional(readOnly = true)
 class ComisionController {
+
+    def comisionService
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -33,8 +36,10 @@ class ComisionController {
         params.sort="fecha"
         params.order="desc"
         def periodo=session.periodoTesoreria
-        def list=Comision.findAll("from Comision c where date(c.fecha) between ? and ?",
-            [periodo.inicioDeMes(),periodo.finDeMes()],
+
+        def list=Comision
+            .findAll("from Comision c where c.empresa=? and date(c.fecha) between ? and ?",
+            [session.empresa,periodo.inicioDeMes(),periodo.finDeMes()],
             params)
         [comisionInstanceList:list]
     }
@@ -70,7 +75,7 @@ class ComisionController {
                 return
             }
         }
-        comisionInstance=comisionInstance.save failOnError:true
+        comisionInstance=comisionService.save(comisionInstance)
         flash.message = "Comisión bancaria ${comisionInstance.id} registrada"
         redirect comisionInstance
     }
@@ -134,14 +139,17 @@ class ComisionController {
 
 import com.luxsoft.lx.tesoreria.CuentaBancaria;
 import grails.validation.Validateable
+import com.luxsoft.lx.core.Empresa
 
 @Validateable
 class ComisionCommand {
 
+    Empresa empresa 
+
     @BindingFormat('dd/MM/yyyy')
     Date fecha
 
-    CuentaBancaria cuenta
+    CuentaBancaria cuenta 
 
     BigDecimal comision
 
@@ -161,7 +169,6 @@ class ComisionCommand {
     def toComision(){
         def comision=new Comision()
         comision.properties=properties
-        comision.tc=1
         return comision
     }
     

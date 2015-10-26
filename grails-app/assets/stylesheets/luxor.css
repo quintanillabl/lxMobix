@@ -128,4 +128,11 @@ span.summary.ng-valid {
   margin-bottom: 10px;
 }
 
+.datepicker{
+  z-index:1151;
+}
+.clsDatePicker {
+    z-index: 100000;
+}
+
 

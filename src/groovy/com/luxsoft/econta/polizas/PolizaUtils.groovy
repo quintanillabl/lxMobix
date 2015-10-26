@@ -165,4 +165,8 @@ class PolizaUtils {
 	public static AcredoresDiversos(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'205-0001')
 	}
+
+	public static ComisionesBancarias(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'701-0002')	
+	}
 }
