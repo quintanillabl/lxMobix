@@ -35,63 +35,78 @@ class PolizaDeInversionesService extends AbstractProcesador {
     }
 
     def cargoABancos(def poliza,def inversion,def descripcion){
-    	cargoA(
-    		poliza,
-    		inversion.cuentaOrigen.cuentaContable,
-    		inversion.importe.abs(),
-    		descripcion,
-    		'INVERSION ',
-    		inversion.comentario,
-    		inversion
-    	)
+    	if(inversion.importe.abs()){
+    		cargoA(
+    			poliza,
+    			inversion.cuentaDestino.cuentaContable,
+    			inversion.importe.abs(),
+    			descripcion,
+    			'INVERSION ',
+    			' ',
+    			inversion
+    		)
+    	}
+    	
     }
 
     def abonoABancos(def poliza,def inversion,def descripcion){
-    	abonoA(
-    		poliza,
-    		inversion.cuentaDestino.cuentaContable,
-    		inversion.importe.abs(),
-    		descripcion,
-    		'INVERSION ',
-    		inversion.comentario,
-    		inversion
-    	)
+    	if(inversion.importe.abs()){
+    		abonoA(
+    			poliza,
+    			inversion.cuentaOrigen.cuentaContable,
+    			inversion.importe.abs(),
+    			descripcion,
+    			'INVERSION ',
+    			' ',
+    			inversion
+    		)
+    	}
+    	
     }
 
     def cargoDeInteresesABancarios(def poliza,def inversion,def descripcion){
-    	cargoA(
-    		poliza,
-    		inversion.cuentaOrigen.cuentaContable,
-    		inversion.rendimientoReal.abs(),
-    		descripcion,
-    		'INT INVERSION ',
-    		inversion.comentario,
-    		inversion
-    	)
+    	if(inversion.rendimientoReal.abs()){
+    		cargoA(
+    			poliza,
+    			inversion.cuentaOrigen.cuentaContable,
+    			inversion.rendimientoReal.abs(),
+    			descripcion,
+    			'INT INVERSION ',
+    			' ',
+    			inversion
+    		)
+    	}
+    	
     }
 
     def abonoAInteresesBancarios(def poliza,def inversion,def descripcion){
-    	abonoA(
-    		poliza,
-    		InteresesBancarios(poliza.empresa),
-    		inversion.rendimientoReal.abs()+inversion.importeIsr.abs(),
-    		descripcion,
-    		'INT INVERSION ',
-    		inversion.comentario,
-    		inversion
-    	)
+    	if(inversion.rendimientoReal.abs()+inversion.importeIsr.abs()){
+    		abonoA(
+    			poliza,
+    			InteresesBancarios(poliza.empresa),
+    			inversion.rendimientoReal.abs()+inversion.importeIsr.abs(),
+    			descripcion,
+    			'INT INVERSION ',
+    			' ',
+    			inversion
+    		)
+    	}
+    	
     }
 
     def cargoAIsr(def poliza,def inversion,def descripcion){
-    	cargoA(
-    		poliza,
-    		IsrBancario(poliza.empresa),
-    		inversion.importeIsr.abs(),
-    		descripcion,
-    		'ISR RET INVERSION ',
-    		inversion.comentario,
-    		inversion
-    	)
+    	if(inversion.importeIsr.abs()){
+    		cargoA(
+    			poliza,
+    			IsrBancario(poliza.empresa),
+    			inversion.importeIsr.abs(),
+    			descripcion,
+    			'ISR RET INVERSION ',
+    			' ',
+    			inversion
+    		)
+    	}
+    	
     }
 
    
