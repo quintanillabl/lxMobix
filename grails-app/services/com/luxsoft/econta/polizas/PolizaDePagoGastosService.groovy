@@ -92,9 +92,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			}
 			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
-			if(cxp.retensionIsr || cxp.retensionIva){
-				abonoARetencionIsr(poliza,gasto,cxp,pago,referencia)
+			if(cxp.retensionIsr || cxp.retensionIva){				
 				cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
+				abonoARetencionIsr(poliza,gasto,cxp,pago,referencia)
 			}
 
 		}
@@ -147,11 +147,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 	def cargoAIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){
 
 		def gasto = aplicacion.cuentaPorPagar
-		
+		def impuesto = gasto.impuesto - gasto.retensionIva
 		cargoA(
 			poliza,
 			IvaAcreditable(poliza.empresa),
-			gasto.impuesto,
+			impuesto,
 			descripcion,
 			'PAGO',
 			referencia,
@@ -225,15 +225,30 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 	def abonoARetencionIsr(def poliza,def gasto,def cxp,def pago,def referencia){
 		def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 		if(cxp.retensionIsr){
-			abonoA(
-				poliza,
-				RetencionIsrHonorarios(poliza.empresa),
-				cxp.retensionIsr.abs(),
-				desc,
-				'PAGO',
-				referencia,
-				cxp
-			)
+			def concepto=gasto.concepto
+			if(concepto=='HONORARIOS_ASIMILADOS'){
+				abonoA(
+					poliza,
+					RetencionIsrHonorariosAsimilados(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PAGO',
+					referencia,
+					cxp
+				)
+			}
+			else if(concepto == 'HONORARIOS_CON_RETENCION'){
+				abonoA(
+					poliza,
+					RetencionIsrHonorarios(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PAGO',
+					referencia,
+					cxp
+				)
+			}
+			
 		}
 	}
 

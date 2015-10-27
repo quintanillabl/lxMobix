@@ -144,13 +144,15 @@ class PolizaUtils {
 	}
 
 	
-	public static RetenconHonorariosAsimilados(def empresa){
+	public static RetencionIsrHonorariosAsimilados(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'216-0004')
 	}
 
 	public static RetencionIsrHonorarios(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'216-0001')
 	}
+
+	
 
 	// Cargo
 	public static IvaRetenidoPendient(def empresa){ 
@@ -177,6 +179,11 @@ class PolizaUtils {
 	public static IsrBancario(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'750-0002')
 	}
+
+	public static Servicios(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'403-0001')	
+	}
+
 
 	
 }

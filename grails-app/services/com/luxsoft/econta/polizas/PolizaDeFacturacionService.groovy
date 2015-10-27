@@ -53,7 +53,7 @@ class PolizaDeFacturacionService extends AbstractProcesador{
     			cargoAClientes( poliza, venta,descripcion)
 
     			// println "Abono a Otros ingresos ${OtrosIngresos} de: ${it.subTotal} Desc:$descripcion"
-    			abonoAOtrosIngresos( poliza, venta, descripcion)
+    			abonoAIngresosPorServicios( poliza, venta, descripcion)
     			
     			// println "Abono a ${IVA_TRASLADADO_PENDIENTE} de: ${it.impuesto}"
     			abonoAIvaTraladadoPendiente( poliza,venta,descripcion)
@@ -104,14 +104,14 @@ class PolizaDeFacturacionService extends AbstractProcesador{
 		)
 	}
 
-	def abonoAOtrosIngresos(def poliza,def venta,def descripcion){
+	def abonoAIngresosPorServicios(def poliza,def venta,def descripcion){
 		abonoA(
 			poliza,
-			ContablesNoFiscales(poliza.empresa),
+			Servicios(poliza.empresa),
 			venta.subTotal,
 			descripcion,
 			venta.tipo,
-			'CFDI: '+renta.ventaDet.venta.cfdi.folio,
+			'CFDI: '+venta.cfdi.folio,
 			venta
 		)
 	}

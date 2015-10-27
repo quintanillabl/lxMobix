@@ -18,6 +18,8 @@ class CuentaContableController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 3000, 5000)
+        params.sort = 'clave'
+        params.order = 'asc'
         def list=CuentaContable.findAllByEmpresaAndPadreIsNull(session.empresa,params)
         respond list, model:[cuentaContableInstanceCount: CuentaContable.countByEmpresaAndPadreIsNull(session.empresa)]
     }

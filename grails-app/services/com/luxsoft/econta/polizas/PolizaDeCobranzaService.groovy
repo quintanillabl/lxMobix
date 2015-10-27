@@ -20,30 +20,31 @@ class PolizaDeCobranzaService extends AbstractProcesador{
                          [empresa,fecha])
     	cobros.each{ cobro ->
     		def desc=cobro.aplicaciones.collect{"Cobro F${it.cuentaPorCobrar.folio} ${it.cuentaPorCobrar.comentario}" }.join('/')
-    		cargoABancos(poliza,cobro,desc)
-    		abonoAClientes(poliza,cobro,desc)
-    		cargoAIvaTraladadoPendiente(poliza,cobro,desc)
-    		abonoAIvaTraladadoCobrado(poliza,cobro,desc)
+    		def asiento="COB: "+ cobro.aplicaciones.collect{it.cuentaPorCobrar.partidas.first().producto.clave}.join(' / ')
+    		cargoABancos(poliza,cobro,desc,asiento)
+    		abonoAClientes(poliza,cobro,desc,asiento)
+    		cargoAIvaTraladadoPendiente(poliza,cobro,desc,asiento)
+    		abonoAIvaTraladadoCobrado(poliza,cobro,desc,asiento)
     	}
     	poliza.concepto="Poliza de cobranza ${poliza.fecha.format('dd/MM/yyyy')}"
 	}
 
 
-	def cargoABancos(def poliza,def cobro,def descripcion){
+	def cargoABancos(def poliza,def cobro,def descripcion,def asiento){
 		log.info 'Cargo a bancos'
 		assert cobro.ingreso.cuenta.cuentaContable,"Cuenta de banco sin cuenta contable ${cobro.ingreso.cuenta}"
 		cargoA(poliza,
 			cobro.ingreso.cuenta.cuentaContable,
 			cobro.ingreso.importe.abs(),
 			descripcion,
-			'COBRANZA',
+			asiento,
 			'Ingreso:'+cobro.ingreso.id,
 			cobro
 		)
 
 	}
 
-	def abonoAClientes(def poliza,def cobro,def descripcion){
+	def abonoAClientes(def poliza,def cobro,def descripcion,def asiento){
 		
 		cobro.aplicaciones.each{ aplicacion ->
 			
@@ -54,14 +55,14 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 				venta.cliente.cuentaContable,
 				venta.total,
 				descripcion,
-				venta.tipo,
+				asiento,
 				'Cfdi:'+venta.cfdi.folio,
 				venta
 			)
 		}
 	}
 
-	def cargoAIvaTraladadoPendiente(def poliza,def cobro,def descripcion){
+	def cargoAIvaTraladadoPendiente(def poliza,def cobro,def descripcion,def asiento){
 		cobro.aplicaciones.each{ aplicacion ->
 			def venta=aplicacion.cuentaPorCobrar
 			cargoA(
@@ -69,14 +70,14 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 				IvaTrasladadoPendiente(poliza.empresa),
 				venta.impuesto,
 				descripcion,
-				venta.tipo,
+				asiento,
 				'Cfdi:'+venta.cfdi.folio,
 				venta
 			)
 		}
 	}
 
-	def abonoAIvaTraladadoCobrado(def poliza,def cobro,def descripcion){
+	def abonoAIvaTraladadoCobrado(def poliza,def cobro,def descripcion,def asiento){
 		cobro.aplicaciones.each{ aplicacion ->
 			def venta=aplicacion.cuentaPorCobrar
 			abonoA(
@@ -84,7 +85,7 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 				IvaTrasladadoCobrado(poliza.empresa),
 				venta.impuesto,
 				descripcion,
-				venta.tipo,
+				asiento,
 				'Cfdi:'+venta.cfdi.folio,
 				venta
 			)
