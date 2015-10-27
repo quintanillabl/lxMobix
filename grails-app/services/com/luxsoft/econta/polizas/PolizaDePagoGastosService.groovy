@@ -86,10 +86,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			
 			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
 				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
+				abonoIvaAcreditable(poliza,aplicacion,desc,referencia)
 			} else {
-
+				cargoAGastos( poliza,aplicacion,desc,referencia)
 			}
-			cargoAGastos( poliza,aplicacion,desc,referencia)
 			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
 			if(cxp.retensionIsr || cxp.retensionIva){
@@ -99,9 +99,6 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		}
 		abonoABancos(poliza,pago,descripcion,referencia)
-			
-		
-		
 		
 	}
 
@@ -161,6 +158,23 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			gasto
 		)
 	}
+
+	def abonoIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){
+
+		def gasto = aplicacion.cuentaPorPagar
+		
+		abonoA(
+			poliza,
+			IvaPendienteDeAcreditar(poliza.empresa),
+			gasto.impuesto,
+			descripcion,
+			'PAGO',
+			referencia,
+			gasto
+		)
+	}
+
+	
 
 	def abonoABancos(def poliza,def pago,descripcion,def referencia){
 		def cuenta=pago.cuenta.cuentaContable
