@@ -24,7 +24,7 @@ class PolizaService {
         poliza.partidas.each{
             if(it.hasErrors()) println 'Errores: '+it.errors
         }
-
+        depurar(poliza)
         poliza.actualizar()
         log.info 'Salvando poliza: '+poliza+ ' Partidas: '+poliza.partidas.size()
     	poliza=poliza.save failOnError:true
@@ -34,6 +34,7 @@ class PolizaService {
     def update(Poliza poliza){
         log.info 'Actualizando poliza: '+poliza
         poliza.modificadoPor=currentUser()
+        depurar(poliza)
         poliza.save flush:true,failOnError:true
         //saldoPorCuentaContableService.actualizarSaldos(poliza)
         log.debug('Poliza actualizada: '+poliza.id)
@@ -114,6 +115,18 @@ class PolizaService {
 
     def currentUser(){
         return springSecurityService.getCurrentUser().username
+    }
+
+    def depurar(def poliza){
+        def delete=poliza.partidas.find {
+            (it.debe && it.haber)
+        }
+        delete.each{
+            poliza.removeFromPartidas(it)
+        }
+        
+
+
     }
 
     
