@@ -177,4 +177,6 @@ class PolizaUtils {
 	public static IsrBancario(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'750-0002')
 	}
+
+	
 }

@@ -84,6 +84,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			def gasto = aplicacion.cuentaPorPagar
 			def desc = "F. ${gasto.folio} (${gasto.fecha.text()})  ${pago.requisicion.comentario}"
 			
+			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
+				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
+			} else {
+
+			}
 			cargoAGastos( poliza,aplicacion,desc,referencia)
 			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
@@ -123,6 +128,23 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			)
 
 		}
+	}
+
+	def cargoAcredoresDiversos(def poliza,def aplicacion,descripcion,def referencia){
+		
+		def pago=aplicacion.pago
+
+		def gasto = aplicacion.cuentaPorPagar
+		log.info 'PROVISION:  Cargo a acredores diversosgasto :'+gasto.total
+
+		cargoA(poliza,
+			AcredoresDiversos(poliza.empresa),
+			gasto.total,
+			descripcion,
+			'PAGO',
+			referencia,
+			gasto
+		)
 	}
 
 	def cargoAIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){
