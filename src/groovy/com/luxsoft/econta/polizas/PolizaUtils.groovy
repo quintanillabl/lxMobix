@@ -145,11 +145,11 @@ class PolizaUtils {
 
 	
 	public static RetenconHonorariosAsimilados(def empresa){
-		return CuentaContable.findByEmpresaAndClave(empresa,'216-0001')
+		return CuentaContable.findByEmpresaAndClave(empresa,'216-0004')
 	}
 
 	public static RetencionIsrHonorarios(def empresa){
-		return CuentaContable.findByEmpresaAndClave(empresa,'216-0002')
+		return CuentaContable.findByEmpresaAndClave(empresa,'216-0001')
 	}
 
 	// Cargo
