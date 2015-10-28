@@ -36,7 +36,7 @@ class InversionService {
 				empresa:inversion.empresa,
 				cuenta:inversion.cuentaDestino,
 				fecha:inversion.vencimiento,
-				importe:importe.abs(),
+				importe:inversion.importe.abs(),
 				concepto:inversion.comentario,
 				referencia:inversion.comentario,
 				comentario:'INVERSION'
