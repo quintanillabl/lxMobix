@@ -292,13 +292,15 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 	def procesarCancelados(def cancelados){
 
 		cancelados.each{ cheque ->
+
+			log.info "GENERANDO Poliza de cheque cancelado $cheque"
 			
 			def poliza = Poliza.find(
 				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
 				[empresa,subTipo,fecha,cheque.class.name,cheque.id])
 			
 			if(!poliza){
-				log.info "GENERANDO DE CHEQUE CANCELADO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
+				
 				poliza=build(empresa,fecha,tipo,subTipo)
 				poliza.entidad=cheque.class.name
 				poliza.origen=cheque.id
