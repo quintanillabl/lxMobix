@@ -14,6 +14,8 @@ import com.luxsoft.lx.contabilidad.Poliza
 @Transactional
 class PolizaDePagoGastosService extends AbstractProcesador{
 
+
+
 	def generar(def empresa,def fecha,def procesador){
 
 		def pagos = Pago.findAll("from Pago p where p.empresa=? and date(p.fecha)=?",[empresa,fecha])
@@ -22,7 +24,12 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def tipo=procesador.tipo
 
 		pagos.each{ pago ->
-				
+
+			def cancelados = Cheque.findByEgresoAndCancelacionIsNotNull(pago)
+			if(cancelados){
+				polizas<<procesarCancelados(cancelados)
+			}
+
 				//def poliza = find(empresa,subTipo,fecha,pago.class.name,pago.id)
 			def poliza = Poliza.find(
 				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
@@ -79,12 +86,14 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		def referencia=pago.referencia
 
+
 		pago.aplicaciones.each { aplicacion ->
 
 			def gasto = aplicacion.cuentaPorPagar
 			def desc = "F. ${gasto.folio} (${gasto.fecha.text()})  ${pago.requisicion.comentario}"
 			
 			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
+				//Cancelacion de la provision
 				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
 				abonoIvaAcreditable(poliza,aplicacion,desc,referencia)
 			} else {
@@ -280,13 +289,70 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		}
 	}
 
-	def find(def empresa, String subTipo, Date fecha,String entidad,Long origen){
-    	log.info "Buscando poliza ${subTipo} $fecha $empresa $entidad $origen"
-		
-		def found = Poliza.find(
-			"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
-			[empresa,subTipo,fecha,entidad,origen])
-		return found
+	def procesarCancelados(def cancelados){
+
+		cancelados.each{ cheque ->
+			
+			def poliza = Poliza.find(
+				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
+				[empresa,subTipo,fecha,cheque.class.name,cheque.id])
+			
+			if(!poliza){
+				log.info "GENERANDO DE CHEQUE CANCELADO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
+				poliza=build(empresa,fecha,tipo,subTipo)
+				poliza.entidad=cheque.class.name
+				poliza.origen=cheque.id
+				poliza=polizaService.save(poliza)
+			}
+
+			poliza.partidas.clear()
+
+			def empresa = poliza.empresa
+			def fecha = poliza.fecha
+
+			def tp='CHEQUE CANCELADO '+cheque.folio
+
+			poliza.concepto="${tp} ${pago.aFavor}"
+			
+			def descripcion=poliza.concepto+' '+pago.requisicion.comentario
+
+			def referencia=pago.referencia
+
+			def cuenta=pago.cuenta.cuentaContable
+			assert cuenta,"La cuenta de banco ${pago.cuenta} no tiene cuenta contable asignada"
+			
+			def det=new PolizaDet(
+				cuenta:cuenta,
+				concepto:cuenta.descripcion,
+			    debe:0.0,
+			    haber:0.0,
+			    descripcion:StringUtils.substring(descripcion,0,255),
+			    asiento:'CHEQUE',
+			    referencia:referencia,
+			    origen:cheque.id.toString(),
+			    entidad:cheque.class.toString()
+			)
+			
+			
+			assert cheque.cuenta
+			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
+			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
+			def polCheque=new PolizaCheque(
+				polizaDet:det,
+				numero:cheque.folio.toString(),
+				bancoEmisorNacional:cheque.cuenta.banco.bancoSat,
+				cuentaOrigen:cheque.cuenta.numero,
+				fecha:cheque.dateCreated,
+				beneficiario:pago.aFavor,
+				rfc:rfc,
+				monto:0.0
+			)
+			det.cheque=polCheque
+			poliza.addToPartidas(det)
+		}
+			
+
+			
 	}
 
 }

@@ -30,6 +30,7 @@ navigation={
 			cuentasPorCobrar(titleText:'CxC')
 			cfdis(controller:'cfdi',action:'index')
 			retenciones(controller:'cfdiRetenciones',action:'index',titleText:'Retenciones')
+			activoFijo(controller:'activoFijo',action:'index')
 		}
 		contabilidad(){
 			cuentasContables(controller:'cuentaContable',action:'index',titleText:'Cuentas')
