@@ -1,10 +1,11 @@
 package com.luxsoft.lx.contabilidad
 
 
-import org.apache.commons.lang.builder.EqualsBuilder
-import org.apache.commons.lang.builder.HashCodeBuilder
+
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
+@EqualsAndHashCode
 @ToString(includes='cuenta,debe,haber,concepto,asiento,referencia,entidad,origen',includeNames=true,includePackage=false)
 class PolizaDet {
 	
@@ -37,27 +38,7 @@ class PolizaDet {
 		poliza fetch:'join'
 	}
 	
-	boolean equals(Object obj){
-		if(!obj.instanceOf(PolizaDet))
-			return false
-		if(this.is(obj))
-			return true
-		def eb=new EqualsBuilder()
-		eb.append(id, obj.id)
-		eb.append(id, obj.asiento)
-		eb.append(id, obj.concepto)
-		eb.append(id, obj.referencia)
-		return eb.isEquals()
-	}
 	
-	int hashCode(){
-		def hb=new HashCodeBuilder(17,35)
-		hb.append(id)
-		hb.append(asiento)
-		hb.append(concepto)
-		hb.append(referencia)
-		return hb.toHashCode()
-	}
 	
 }
 

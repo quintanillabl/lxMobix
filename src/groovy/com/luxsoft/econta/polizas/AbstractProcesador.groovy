@@ -126,4 +126,11 @@ abstract class  AbstractProcesador {
             }
         }
     }
+
+    def depurar(def poliza){
+       def eliminar = poliza.partidas.findAll {it.debe==0 && it.haber==0}
+       eliminar.each{
+            //poliza.removeFromPartidas(it)
+       }
+    }
 }

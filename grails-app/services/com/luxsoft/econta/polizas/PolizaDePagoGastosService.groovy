@@ -40,7 +40,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				poliza.partidas.clear()
 				log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
 				procesar(poliza,pago)
+				poliza.actualizar()
 		        cuadrar(poliza)
+		        depurar(poliza)
 				poliza=polizaService.update(poliza)
 
 			} else {
@@ -51,6 +53,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		        procesar(poliza,pago)
 		        poliza.actualizar()
 		        cuadrar(poliza)
+		        depurar(poliza)
 				poliza=polizaService.save(poliza)
 			}
 			polizas << poliza
@@ -316,7 +319,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			
 			def descripcion=poliza.concepto+' '+pago.requisicion.comentario
 
-			def referencia=pago.referencia
+			def referencia=cheque.folio.toString()
 
 			def cuenta=pago.cuenta.cuentaContable
 			assert cuenta,"La cuenta de banco ${pago.cuenta} no tiene cuenta contable asignada"
