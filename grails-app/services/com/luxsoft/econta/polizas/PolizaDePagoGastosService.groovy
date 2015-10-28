@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringUtils
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.contabilidad.*
 import com.luxsoft.lx.contabilidad.Poliza
+import com.luxsoft.lx.tesoreria.Cheque
 
 
 @Transactional
@@ -24,10 +25,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def tipo=procesador.tipo
 
 		pagos.each{ pago ->
-
-			def cancelados = Cheque.findByEgresoAndCancelacionIsNotNull(pago)
+			
+			def cancelados = Cheque.findAllByEgresoAndCancelacionIsNotNull(pago)
 			if(cancelados){
-				polizas<<procesarCancelados(cancelados)
+				polizas<<procesarCancelados(cancelados,empresa,fecha,tipo,subTipo)
 			}
 
 				//def poliza = find(empresa,subTipo,fecha,pago.class.name,pago.id)
@@ -289,12 +290,12 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		}
 	}
 
-	def procesarCancelados(def cancelados){
+	def procesarCancelados(def cancelados,def empresa,def fecha,def tipo,def subTipo){
 
 		cancelados.each{ cheque ->
 
 			log.info "GENERANDO Poliza de cheque cancelado $cheque"
-			
+			def pago=cheque.egreso
 			def poliza = Poliza.find(
 				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
 				[empresa,subTipo,fecha,cheque.class.name,cheque.id])
@@ -304,13 +305,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				poliza=build(empresa,fecha,tipo,subTipo)
 				poliza.entidad=cheque.class.name
 				poliza.origen=cheque.id
-				poliza=polizaService.save(poliza)
+				
 			}
 
 			poliza.partidas.clear()
-
-			def empresa = poliza.empresa
-			def fecha = poliza.fecha
 
 			def tp='CHEQUE CANCELADO '+cheque.folio
 
@@ -334,10 +332,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			    origen:cheque.id.toString(),
 			    entidad:cheque.class.toString()
 			)
-			
-			
+			 
+			/*
 			assert cheque.cuenta
-			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
+			//assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
 			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
 			def polCheque=new PolizaCheque(
 				polizaDet:det,
@@ -350,7 +348,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				monto:0.0
 			)
 			det.cheque=polCheque
+			*/
 			poliza.addToPartidas(det)
+			poliza=polizaService.save(poliza)
 		}
 			
 
