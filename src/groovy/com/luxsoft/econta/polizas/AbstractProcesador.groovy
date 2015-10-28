@@ -31,6 +31,7 @@ abstract class  AbstractProcesador {
     		log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
     		procesar(found)
             cuadrar(found)
+            depurar(found)
     		return polizaService.update(found)
 
     	} else {
@@ -39,6 +40,7 @@ abstract class  AbstractProcesador {
     		//poliza = procesar(poliza)
             procesar(poliza)
             cuadrar(poliza)
+            depurar(poliza)
     		return polizaService.save(poliza)
     	}
     }
@@ -130,7 +132,7 @@ abstract class  AbstractProcesador {
     def depurar(def poliza){
        def eliminar = poliza.partidas.findAll {it.debe==0 && it.haber==0}
        eliminar.each{
-            //poliza.removeFromPartidas(it)
+            poliza.removeFromPartidas(it)
        }
     }
 }
