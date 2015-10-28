@@ -310,9 +310,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 			poliza.partidas.clear()
 
-			def tp='CHEQUE CANCELADO '+cheque.folio
+			def tp='CH-'+cheque.folio
 
-			poliza.concepto="${tp} ${pago.aFavor}"
+			poliza.concepto="${tp} CANCELADO ${pago.aFavor}"
 			
 			def descripcion=poliza.concepto+' '+pago.requisicion.comentario
 
