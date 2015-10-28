@@ -55,6 +55,12 @@ class CuentaContable implements Comparable{
 		return CuentaContable.findByClave(clave)
 	}
 
+	static CuentaContable buscarPorClave(def empresa,def clave){
+		def found = CuentaContable.findByEmpresaAndClave(empresa,clave)
+		assert found, 'No existe la cuenta contable: '+clave
+		return found
+	}
+
 	int compareTo(other){
 		this.clave <=>other.clave
 	}
