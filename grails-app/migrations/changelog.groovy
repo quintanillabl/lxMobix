@@ -76,4 +76,6 @@ databaseChangeLog = {
 	include file: 'Traspasos_01.groovy'
 
 	include file: 'ActivoFijo_01.groovy'
+
+	include file: 'Econta_06.groovy'
 }

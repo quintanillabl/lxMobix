@@ -77,6 +77,7 @@
 							<f:field property="nacional" widget-class="form-control"/>
 							<f:field property="email" widget-class="form-control"/>
 							<f:field property="www" widget-class="form-control"/>
+							<f:field property="cuentaContable" widget-class="form-control"/>
 						</f:with>
 						<g:render template="/common/direccion" bean="${proveedorInstance}"/>
 					  </div>

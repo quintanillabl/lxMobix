@@ -6,6 +6,8 @@
 	<title>${proveedorInstance.nombre}</title>
 	<asset:stylesheet src="datatables/dataTables.css"/>
 	<asset:javascript src="datatables/dataTables.js"/> 
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
 </head>
 <body>
 
@@ -39,6 +41,10 @@
 							<f:field property="nacional" widget-class="form-control"/>
 							<f:field property="email" widget-class="form-control"/>
 							<f:field property="www" widget-class="form-control"/>
+							<f:field property="cuentaContable"  >
+								<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
+								<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >
+							</f:field>
 						</f:with>
 						<g:render template="/common/direccion" bean="${proveedorInstance}"/>
 					  </div>
@@ -60,7 +66,19 @@
 				
 			</div>
 		</div> <!-- end .row 2 -->
+	<script type="text/javascript">
+			$(function (){
 
+				$("#cuentaField").autocomplete({
+					source:'<g:createLink controller="cuentaContable" action="getCuentasDeDetalleJSON"/>',
+					minLength:3,
+					select:function(e,ui){
+						$("#cuentaId").val(ui.item.id);
+					}
+				});
+
+			});
+		</script>
 	</div>
 
 	

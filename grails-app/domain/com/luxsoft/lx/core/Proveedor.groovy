@@ -2,7 +2,7 @@ package com.luxsoft.lx.core
 
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
-
+import com.luxsoft.lx.contabilidad.CuentaContable
 
 @ToString(includes='nombre,rfc',includeNames=true,includePackage=false)
 @EqualsAndHashCode(includes='nombre,rfc')
@@ -17,6 +17,7 @@ class Proveedor {
 	
     String email
 	String www	
+	CuentaContable cuentaContable
 
 	//Map productos
     	
@@ -34,6 +35,7 @@ class Proveedor {
 		email(nullable:true,email:true)
 		www(nullable:true,url:true)
 		direccion(nullable:true)
+		cuentaContable(nullable:true)
     }
     	
     String toString(){
