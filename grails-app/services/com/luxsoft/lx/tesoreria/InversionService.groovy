@@ -64,8 +64,56 @@ class InversionService {
 		}
 		
 		return inversion.save(failOnError:true)
+	}
+
+    def  update(Inversion inversion) {
+
+    	inversion.movimientos.clear()
 		
-    }
+		if(inversion.importe.abs()){
+			MovimientoDeCuenta egreso=new MovimientoDeCuenta(
+				empresa:inversion.empresa,
+				cuenta:inversion.cuentaOrigen,
+				fecha:inversion.fecha,
+				importe:inversion.importe.abs()*-1.0,
+				concepto:inversion.comentario,
+				referencia:inversion.comentario,
+				comentario:'INVERSION'
+			)
+			movimientoDeCuentaService.preparar(egreso)
+			inversion.addToMovimientos(egreso)
+
+			MovimientoDeCuenta ingreso=new MovimientoDeCuenta(
+				empresa:inversion.empresa,
+				cuenta:inversion.cuentaDestino,
+				fecha:inversion.vencimiento,
+				importe:inversion.importe.abs(),
+				concepto:inversion.comentario,
+				referencia:inversion.comentario,
+				comentario:'INVERSION'
+			)
+			movimientoDeCuentaService.preparar(ingreso)
+			inversion.addToMovimientos(ingreso)
+
+		}
+		
+		if(inversion.rendimientoReal.abs()){
+			
+			MovimientoDeCuenta rendimiento=new MovimientoDeCuenta(
+				empresa:inversion.empresa,
+				cuenta:inversion.cuentaDestino,
+				fecha:inversion.vencimiento,
+				importe:inversion.rendimientoReal.abs()+inversion.importeIsr.abs(),
+				concepto:inversion.comentario,
+				referencia:'INTERESE BRUTOS',
+				comentario:'INVERSION'
+			)
+			movimientoDeCuentaService.preparar(rendimiento)
+			inversion.addToMovimientos(rendimiento)
+		}
+		
+		return inversion.save(failOnError:true)
+	}
     	
 	def eliminarInversion(Inversion inversion){
 		inversion.delete(flush:true)

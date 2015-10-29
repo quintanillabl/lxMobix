@@ -21,6 +21,7 @@ class PolizaUtils {
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'COBRANZA',
 			label: 'Cobranza',
+			tipo:'INGRESO',
 			service:'polizaDeCobranzaService')
 
 		ProcesadorDePoliza.findOrSaveWhere(
@@ -31,7 +32,7 @@ class PolizaUtils {
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'COMISIONES_BANCARIAS',
 			label:'Comisiones',
-			tipo:'EGRESO',
+			tipo:'DIARIO',
 			service:'polizaDeComisionesBancariasService')
 		
 		ProcesadorDePoliza.findOrSaveWhere(
