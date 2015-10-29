@@ -130,7 +130,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 			cargoA(poliza,
 				gastoDet.cuentaContable,
-				gastoDet.importe,
+				gasto.subTotal,
 				descripcion,
 				'PAGO',
 				referencia,
