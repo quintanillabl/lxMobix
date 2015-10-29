@@ -178,7 +178,7 @@ class GastoService {
             def data=xml.attributes()
             log.debug 'Comprobante:  '+xml.attributes()  
             def receptor=xml.breadthFirst().find { it.name() == 'Receptor'}
-            def cuenta=CuentaContable.findByClave('600')
+            def cuenta=CuentaContable.findByClave('600-0000')
             assert cuenta,'No se ha declarado la cuenta general de gastos'
             if('Receptor'==receptor.name()){
                 def empresa=Empresa.findByRfc(receptor.attributes()['rfc'])
