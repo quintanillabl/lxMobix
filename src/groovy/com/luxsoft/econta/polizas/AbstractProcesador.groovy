@@ -130,7 +130,8 @@ abstract class  AbstractProcesador {
     }
 
     def depurar(def poliza){
-       def eliminar = poliza.partidas.findAll {it.debe==0 && it.haber==0}
+       def eliminar = poliza.partidas.findAll {it.debe<=0.009 && it.haber<=0.009}
+      
        eliminar.each{
             poliza.removeFromPartidas(it)
        }

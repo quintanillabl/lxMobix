@@ -94,16 +94,19 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		pago.aplicaciones.each { aplicacion ->
 
 			def gasto = aplicacion.cuentaPorPagar
-			def desc = "F. ${gasto.folio} (${gasto.fecha.text()})  ${pago.requisicion.comentario}"
+			def desc = "F. ${gasto.folio} (${gasto.fecha.text()}) ${pago.aFavor} ${pago.requisicion.comentario}"
 			
 			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
 				//Cancelacion de la provision
 				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
+				
+				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 				abonoIvaAcreditable(poliza,aplicacion,desc,referencia)
 			} else {
 				cargoAGastos( poliza,aplicacion,desc,referencia)
+				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			}
-			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
+			//cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
 			if(cxp.retensionIsr || cxp.retensionIva){				
 				cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
@@ -147,8 +150,11 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def gasto = aplicacion.cuentaPorPagar
 		log.info 'PROVISION:  Cargo a acredores diversosgasto :'+gasto.total
 
+		def cuenta=gasto.proveedor.cuentaContable?:AcredoresDiversos(poliza.empresa)
+		assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
+
 		cargoA(poliza,
-			AcredoresDiversos(poliza.empresa),
+			cuenta,
 			gasto.total,
 			descripcion,
 			'PAGO',
@@ -196,7 +202,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		pago.aplicaciones.each{ aplicacion ->
 			def gasto = aplicacion.cuentaPorPagar
 			if(gasto){
-				desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+				//desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+				desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor}"
 			}
 		}
 
@@ -205,7 +212,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			concepto:cuenta.descripcion,
 		    debe:0.0,
 		    haber:pago.importe.abs(),
-		    descripcion:StringUtils.substring(descripcion,0,255),
+		    descripcion:poliza.concepto,
 		    asiento:'PAGO',
 		    referencia:referencia,
 		    origen:pago.id.toString(),
