@@ -8,58 +8,27 @@ import com.luxsoft.lx.contabilidad.Poliza
 
 class PolizaDeComisionesBancariasService extends AbstractProcesador{
 
+
+    def generar(def empresa,Date fecha){
+        return generar(empresa,'DIARIO','COMISIONES_BANCARIAS',fecha)
+    }
     
-
-	def generar(def empresa,def fecha,def procesador){
-		log.info "Generando poliza de comisiones bancarias $empresa ${fecha.text()} Procesador:$procesador"
-		def comisiones=Comision.findAll("from Comision c where c.empresa=? and date(c.fecha)=?",
-			[empresa,fecha])
-		def polizas=[]
-		def subTipo=procesador.nombre
-		def tipo=procesador.tipo
-
-		comisiones.each{ comision ->
-				
-			def poliza = Poliza.find(
-				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
-				[empresa,subTipo,fecha,comision.class.name,comision.id]
-				)
-
-			if (poliza) {
-				poliza.partidas.clear()
-				log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-				procesar(poliza,comision)
-		        cuadrar(poliza)
-				poliza=polizaService.update(poliza)
-
-			} else {
-				log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
-				poliza=build(empresa,fecha,tipo,subTipo)
-				poliza.entidad=comision.class.name
-				poliza.origen=comision.id
-				poliza.concepto="Comisiones bancarias ${comision.cuenta} ${comision.fecha.asPeriodoText()}"
-		        procesar(poliza,comision)
-		        poliza.actualizar()
-		        cuadrar(poliza)
-				poliza=polizaService.save(poliza)
-			}
-			polizas << poliza
-		}
-        return polizas
+    void procesar(def poliza){
+        def empresa=poliza.empresa
+        def fecha=poliza.fecha
+        log.info "Generando poliza de comisiones bancarias $empresa ${fecha.text()} "
+        def comisiones=Comision.findAll("from Comision c where c.empresa=? and date(c.fecha)=?",
+            [empresa,fecha])
+        comisiones.each{ comision ->
+            def desc="$comision.cuenta.numero ($comision.cuenta.nombre) ${comision.fecha.format('dd/MMMM/yyyy')}"
+            cargoAComisiones(poliza,comision,desc)
+            cargoAIvaAcreditable(poliza,comision,desc)
+            abonoABancos(poliza,comision,desc)
+        }
+        poliza.concepto="Comisiones bancarias  ${fecha.format('dd/MMMM/yyyy')}"
     }
 
-    void procesar( def poliza,def comision){
-
-    	def empresa = poliza.empresa
-    	def fecha = poliza.fecha
-    	
-    	def desc="$comision.cuenta.numero ($comision.cuenta.nombre) ${comision.fecha.asPeriodoText()}"
-    	cargoAComisiones(poliza,comision,desc)
-    	cargoAIvaAcreditable(poliza,comision,desc)
-    	abonoABancos(poliza,comision,desc)
-    	
-    	
-    }
+    
 
     def cargoAComisiones(def poliza,def comision,def descripcion){
     	cargoA(poliza,

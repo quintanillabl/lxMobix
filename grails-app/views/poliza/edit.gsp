@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="layout" content="application"/>
 	<title>Poliza ${polizaInstance?.folio}</title>
 	<asset:stylesheet src="datatables/dataTables.css"/>
 	<asset:javascript src="datatables/dataTables.js"/> 
@@ -75,7 +76,6 @@
 								</div>
 								<div class="col-sm-6 " >
 									<f:field property="concepto"  widget-class="form-control"/>
-									<f:field property="comentario"  widget-class="form-control"/>
 									<f:display property="debe"  widget="money"/>
 									<f:display property="haber"  widget="money"/>
 									%{-- <f:display property="cuadre"  widget="money" widget-class="${polizaInstance.cuader?'danger':''}"/> --}%
@@ -87,6 +87,7 @@
 									  </div>
 									  
 									</div>
+									<f:field property="manual" widget-class="form-control" />
 								</div>
 							</f:with>
 				  		</div>

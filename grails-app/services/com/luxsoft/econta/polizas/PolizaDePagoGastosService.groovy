@@ -37,13 +37,16 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				[empresa,subTipo,fecha,pago.class.name,pago.id])
 
 			if (poliza) {
-				poliza.partidas.clear()
-				log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-				procesar(poliza,pago)
-				poliza.actualizar()
-		        cuadrar(poliza)
-		        depurar(poliza)
-				poliza=polizaService.update(poliza)
+				if(!poliza.manual){
+					poliza.partidas.clear()
+					log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
+					procesar(poliza,pago)
+					poliza.actualizar()
+			        cuadrar(poliza)
+			        depurar(poliza)
+					poliza=polizaService.update(poliza)
+				}
+				
 
 			} else {
 				log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');

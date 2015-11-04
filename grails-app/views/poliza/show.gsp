@@ -96,6 +96,7 @@
 				    						class="form-control" disabled
 				    						>
 				    				</f:display>
+				    				<f:display property="manual"  />
 				    				<g:if test="${polizaInstance.manual}">
 				    					<div class="form-group">
 				    						<label for="manual" class="control-label col-sm-6">Póliza manual</label>

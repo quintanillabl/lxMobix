@@ -12,7 +12,7 @@ import com.luxsoft.lx.bi.ReportCommand
 @Transactional(readOnly = true)
 class PolizaController {
 
-    static allowedMethods = [save: "POST", update: "GET", delete: "GET"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "GET"]
 
     def generadorDePoliza
 
@@ -131,11 +131,17 @@ class PolizaController {
         }
         
         if (polizaInstance.hasErrors()) {
-            respond polizaInstance.errors, view:'edit'
+            respond polizaInstance.errors, view:'show'
             return
         }
-        
-        log.debug 'Actualizando/Recalculando poliza: '+polizaInstance
+        if(polizaInstance.manual){
+            log.debug 'Actualizando poliza: '+polizaInstance  
+            polizaInstance = polizaService.update(polizaInstance)
+            flash.message="Póliza actualizada ${polizaInstance.id}"
+            redirect action:'edit',id:polizaInstance.id
+            return
+        }
+        log.debug 'Recalculando poliza: '+polizaInstance
         def procesador=ProcesadorDePoliza.findByNombre(polizaInstance.subTipo)
         if(procesador){
             generadorDePoliza.generar(
@@ -144,9 +150,7 @@ class PolizaController {
                 procesador
                 )
             flash.message="Póliza actualizada ${polizaInstance.id}"
-        } else {
-            flash.messabe = "No existe procesador para la poliza por lo que no se puede re calcular"
-        }
+        } 
         redirect action:'show',id:polizaInstance.id
         
     }

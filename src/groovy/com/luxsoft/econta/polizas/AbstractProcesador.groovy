@@ -27,12 +27,14 @@ abstract class  AbstractProcesador {
     	def found = find(empresa,subTipo,fecha)
 
     	if (found) {
-    		found.partidas.clear()
-    		log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-    		procesar(found)
-            cuadrar(found)
-            depurar(found)
-    		return polizaService.update(found)
+            if(!found.manual){
+                found.partidas.clear()
+                log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
+                procesar(found)
+                cuadrar(found)
+                depurar(found)
+                return polizaService.update(found)
+            }
 
     	} else {
     		log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
