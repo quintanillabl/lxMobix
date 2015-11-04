@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import java.text.NumberFormat
 import com.luxsoft.lx.bi.ReportCommand
+import com.luxsoft.utils.Periodo
 
 @Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
 @Transactional(readOnly = true)
@@ -189,18 +190,17 @@ class SaldoPorCuentaContableController {
         [saldo:saldo,partidas:dets]
     }
     
-    def imprimirAuxiliarContable(){
-        log.info 'Imprimiento auxiliar'+params
-        
-        def saldo=SaldoPorCuentaContable.get(params.long('id'))
+    def imprimirAuxiliarContable(SaldoPorCuentaContable saldo){
         
         if(!saldo)
             throw new RuntimeException("No existe saldo : "+id)
             
-        def dets=PolizaDet.findAll("from PolizaDet d where d.cuenta=? and date(d.fecha) between ? and ? order by d.fecha"
-            ,[saldo.cuenta,saldo.fecha.inicioDeMes(),saldo.fecha.finDeMes()])
+        def dets=PolizaDet.findAll("from PolizaDet d where d.cuenta=? and d.poliza.ejercicio = ? and d.poliza.mes= ? order by d.poliza.fecha"
+            ,[saldo.cuenta,saldo.ejercicio,saldo.mes])
         
         def saldoPadre=SaldoPorCuentaContable.get(saldo.cuenta.padre.id)
+        
+        def pp=Periodo.getPeriodoEnUnMes(saldo.mes-1,saldo.ejercicio)
         
         def acumulado=0.0
         def modelData=dets.collect { det ->
@@ -219,13 +219,13 @@ class SaldoPorCuentaContableController {
         }
         NumberFormat nf=NumberFormat.getNumberInstance()
         def repParams=[CUENTA:saldo.cuenta.clave
-            ,FECHA_INI:saldo.fecha.inicioDeMes().text()
-            ,FECHA_FIN:saldo.fecha.finDeMes().text()
+            ,FECHA_INI:pp.fechaInicial.text()
+            ,FECHA_FIN:pp.fechaFinal.text()
             ,INICIAL:nf.format(saldo.saldoInicial)
             ,CARGOS:nf.format(saldo.debe)
             ,ABONOS:nf.format(saldo.haber)
             ,SALDO:nf.format(saldo.saldoFinal)
-            ,YEAR:saldo.year.toString()
+            ,YEAR:saldo.ejercicio.toString()
             ,MES:saldo.mes.toString()
             ,CONCEPTO:saldo.cuenta.descripcion
             ]

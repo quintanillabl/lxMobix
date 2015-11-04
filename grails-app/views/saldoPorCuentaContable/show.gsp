@@ -30,6 +30,14 @@
 				    <g:link action="actualizarSaldo" class="btn btn-default" id="${saldo.id}">
 						<i class="fa fa-cog"></i> Actualizar 
 					</g:link>
+					<g:if test="${cuentaContableInstance.padre}">
+						<g:link action="auxiliar" id="${saldo.id}" class="btn btn-default">
+							Auxiliar
+						</g:link>
+						
+						
+					</g:if>
+					
 				</div>
 				
 				
@@ -139,6 +147,33 @@
 				</div>
 			</div>
 		</g:if> 
+
+		<div class="modal fade" id="auxiliarDialog" tabindex="-1">
+			<div class="modal-dialog ">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Auxiliar contable</h4>
+					</div>
+					<g:form action="auxiliar" class="form-horizontal" >
+						<g:hiddenField name="id" value="${saldo.id}"/>
+						<div class="modal-body">
+							<p><strong>Generar Auxiliar ${saldo.cuenta}</strong></p>
+						</div>
+						
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+							<g:submitButton class="btn btn-info" name="aceptar"
+									value="Generar" />
+						</div>
+					</g:form>
+		
+				</div>
+				<!-- moda-content -->
+			</div>
+			<!-- modal-di -->
+		</div>	
 
 	</div>
 

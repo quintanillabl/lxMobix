@@ -16,7 +16,10 @@
                 <div class="alert alert-info">
                   <h4>
                     <p class="text-center"> 
-                      Auxiliar contable cuenta: ${saldo.cuenta} 
+                    	<g:link action="show" id="${saldo.id}">
+                    		Auxiliar contable cuenta: ${saldo.cuenta} 
+                    	</g:link>
+                      
                     </p>
                     <p class="text-center"> 
                       (<small>${session.empresa.nombre}</small>)
@@ -74,6 +77,9 @@
 					    <label for="totalHaber"> Haber</label>
 					    <input class="form-control" id="totalHaber" >
 					</div>
+					<g:link action="imprimirAuxiliarContable" id="${saldo.id}" class="btn btn-default">
+						<i class="fa fa-print"></i> Reporte
+					</g:link>
 					%{-- <div class="form-group">
 					    <label for="totalCuadre"> Cuadre</label>
 					    <input class="form-control" id="totalCuadre" >
