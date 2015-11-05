@@ -192,6 +192,10 @@ class SaldoPorCuentaContableController {
     
     def imprimirAuxiliarContable(SaldoPorCuentaContable saldo){
         
+        def command=new ReportCommand()
+        command.reportName="AuxiliarContable"
+        command.empresa=session.empresa
+
         if(!saldo)
             throw new RuntimeException("No existe saldo : "+id)
             
@@ -229,9 +233,18 @@ class SaldoPorCuentaContableController {
             ,MES:saldo.mes.toString()
             ,CONCEPTO:saldo.cuenta.descripcion
             ]
+        repParams.COMPANY=saldo.empresa.nombre
         repParams<<params
-        println 'Ejecutando reporte params:'+params+'\n Registros: '+modelData
-        chain(controller:'jasper',action:'index',model:[data:modelData],params:repParams)
+        //println 'Ejecutando reporte params:'+params+'\n Registros: '+modelData
+
+        def stream=reportService.build(command,repParams,modelData)
+        def file="Auxiliar_${repParams.YEAR}_${repParams.MES}_"+new Date().format('ss')+'.'+command.formato.toLowerCase()
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+
+        //chain(controller:'jasper',action:'index',model:[data:modelData],params:repParams)
         
     }
 }
