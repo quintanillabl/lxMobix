@@ -19,13 +19,14 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 	def generar(def empresa,def fecha,def procesador){
 
-		def pagos = Pago.findAll("from Pago p where p.empresa=? and date(p.fecha)=?",[empresa,fecha])
+		def pagos = Pago.findAll("from Pago p where p.empresa=? and date(p.fecha)=? order by p.folio",[empresa,fecha])
 		def polizas=[]
 		def subTipo=procesador.nombre
 		def tipo=procesador.tipo
 
 		pagos.each{ pago ->
 			
+			println 'Procesando pago:'+pago
 			def cancelados = Cheque.findAllByEgresoAndCancelacionIsNotNull(pago)
 			if(cancelados){
 				polizas<<procesarCancelados(cancelados,empresa,fecha,tipo,subTipo)
@@ -36,30 +37,34 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
 				[empresa,subTipo,fecha,pago.class.name,pago.id])
 
-			if (poliza) {
-				if(!poliza.manual){
-					poliza.partidas.clear()
-					log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
-					procesar(poliza,pago)
-					poliza.actualizar()
-			        cuadrar(poliza)
-			        depurar(poliza)
-					poliza=polizaService.update(poliza)
+			if(pago){
+				if (poliza) {
+					if(!poliza.manual){
+						poliza.partidas.clear()
+						log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
+						procesar(poliza,pago)
+						poliza.actualizar()
+			        	cuadrar(poliza)
+			        	depurar(poliza)
+						poliza=polizaService.update(poliza)
+					}
+				} else {
+					log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
+					poliza=build(empresa,fecha,tipo,subTipo)
+					poliza.entidad=pago.class.name
+					poliza.origen=pago.id
+		        	procesar(poliza,pago)
+		        	poliza.actualizar()
+		        	cuadrar(poliza)
+		        	depurar(poliza)
+					poliza=polizaService.save(poliza)
 				}
-				
 
-			} else {
-				log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
-				poliza=build(empresa,fecha,tipo,subTipo)
-				poliza.entidad=pago.class.name
-				poliza.origen=pago.id
-		        procesar(poliza,pago)
-		        poliza.actualizar()
-		        cuadrar(poliza)
-		        depurar(poliza)
-				poliza=polizaService.save(poliza)
+				polizas << poliza
 			}
-			polizas << poliza
+
+			
+			
 		}
         //return generar(empresa,procesador.tipo,procesador.nombre,fecha)
         return polizas
@@ -78,10 +83,10 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def tp=''
 		switch(pago.formaDePago) {
 			case FormaDePago.CHEQUE:
-				tp='CH-'+pago.referencia
+				tp='CH-'+pago.cheque.folio
 				break
 			case FormaDePago.TRANSFERENCIA:
-				tp='TR-'+pago?.cheque?.folio
+				tp='TR-'+pago?.referencia
 				break
 			default:
 			break
@@ -225,8 +230,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		if(pago.formaDePago==FormaDePago.CHEQUE){
 			
-			def cheque=pago.cheque
-			assert cheque,'Pago sin cheque registrado'
+			def cheque=pago.cheque?pago.cheque:null
+			assert cheque,'Pago sin cheque registrado'+pago.id
 			assert cheque.cuenta
 			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
 			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
@@ -249,6 +254,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 		if(cxp.retensionIsr){
 			def concepto=gasto.concepto
+			
+
 			if(concepto=='HONORARIOS_ASIMILADOS'){
 				abonoA(
 					poliza,
@@ -270,6 +277,30 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 					referencia,
 					cxp
 				)
+			}
+			else if(concepto == 'SERVICIOS_PROFESIONALES'){
+				abonoA(
+					poliza,
+					RetencionIsrServiciosProfesionales(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PAGO',
+					referencia,
+					cxp
+				)
+					
+			}
+			else if(concepto == 'RETENCION_PAGOS'){
+				abonoA(
+					poliza,
+					RetencionIsrDividendos(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PAGO',
+					referencia,
+					cxp
+				)
+					
 			}
 			
 		}

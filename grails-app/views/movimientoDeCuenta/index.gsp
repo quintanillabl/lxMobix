@@ -65,6 +65,7 @@
 
 					<thead>
 						<tr>
+							<th>Fecha</th>
 							<th>Nombre</th>
 							<th>Cuenta</th>
 							<th>Importe</th>
@@ -77,6 +78,11 @@
 					<tbody>
 						<g:each in="${movimientoDeCuentaInstanceList}" var="row">
 							<tr id="${row.id}">
+								<td >
+									<g:link  action="show" id="${row.id}">
+										${formatDate(date:row.fecha,format:'dd/MM/yyyy')}
+									</g:link>
+								</td>
 								<td >
 									<g:link  action="show" id="${row.id}">
 										${fieldValue(bean:row,field:"cuenta.nombre")}

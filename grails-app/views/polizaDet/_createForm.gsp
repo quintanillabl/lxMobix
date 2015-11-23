@@ -34,7 +34,9 @@
 					colsLabel="col-sm-3"/>
 				<f:field property="concepto" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="asiento" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
+
 				<f:field property="referencia" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
+				<f:field property="descripcion" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				%{-- <f:field property="entidad" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/>
 				<f:field property="origen" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-3"/> --}%
 				

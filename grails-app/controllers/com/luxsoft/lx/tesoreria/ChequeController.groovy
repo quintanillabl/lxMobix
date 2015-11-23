@@ -17,7 +17,7 @@ class ChequeController {
 
     def index(Integer max) {
         params.max = 200
-        params.sort=params.sort?:'dateCreated'
+        params.sort=params.sort?:'folio'
         params.order='desc'
         def empresa=session.empresa
         def query=Cheque.where{

@@ -21,17 +21,17 @@ class PolizaDeFacturacionService extends AbstractProcesador{
     	
     	def empresa=poliza.empresa
     	def fecha=poliza.fecha
-    	def ventas=Venta.findAll("from Venta v where v.empresa=? and date(fecha)=?",[empresa,fecha])
+    	def ventas=Venta.findAll("from Venta v where v.empresa=? and date(fecha)=? and cancelada is false ",[empresa,fecha])
     	log.info "Generando poliza de facturacion para ${fecha.format('dd/MM/yyyy')} ventas registradas: ${ventas.size()} Empresa ${empresa}"
 
     	ventas.each{ venta ->
     		log.info 'Procesando: '+venta
     		def descripcion = 'PENDIENTE'
-    		def det = venta.partidas.first()
+    		def det = venta.partidas?venta.partidas.first():null
 
     		// Ajustamos la descripcion a partir de la primera partida
     		if( det ){ 
-    			descripcion="Prov F.${venta.cfdi.folio} ${det.producto.clave} ${venta.comentario} "
+    			descripcion="Prov F.${venta.cfdi?venta.cfdi.folio:''} ${det.producto.clave} ${venta.comentario} "
     			descripcion=StringUtils.substring(descripcion,0,255)
     		}
 
@@ -58,7 +58,17 @@ class PolizaDeFacturacionService extends AbstractProcesador{
     			// println "Abono a ${IVA_TRASLADADO_PENDIENTE} de: ${it.impuesto}"
     			abonoAIvaTraladadoPendiente( poliza,venta,descripcion)
     			
+    		}else if(venta.tipo=='NORMAL'){
+    			cargoAClientes( poliza, venta,descripcion)
+
+    			// println "Abono a Otros ingresos ${OtrosIngresos} de: ${it.subTotal} Desc:$descripcion"
+    			abonoAIngresosPorActivoFijo( poliza, venta, descripcion)
+    			
+    			// println "Abono a ${IVA_TRASLADADO_PENDIENTE} de: ${it.impuesto}"
+    			abonoAIvaTraladadoPendiente( poliza,venta,descripcion)
     		}
+
+
     	}
 
     	poliza.concepto="Poliza de facturacion ${poliza.fecha.format('dd/MM/yyyy')}"
@@ -114,6 +124,22 @@ class PolizaDeFacturacionService extends AbstractProcesador{
 			'CFDI: '+venta.cfdi.folio,
 			venta
 		)
+	}
+
+	def abonoAIngresosPorActivoFijo(def poliza,def venta,def descripcion){
+		def cuenta=CuentaContable.buscarPorClave(poliza.empresa,"403-0002")
+		//println 'Generando abono a la cuenta: '+cuenta
+		
+		abonoA(
+			poliza,
+			cuenta,
+			venta.subTotal,
+			descripcion,
+			venta.tipo,
+			'CFDI: '+venta.cfdi.folio,
+			venta
+			)
+		
 	}
 
 	

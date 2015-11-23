@@ -184,7 +184,7 @@
 		    						<td>${g.formatNumber(number:row.importe,type:'currency')}</td>
 		    						<td>
 		    							<g:if test="${row.ventaDet}">
-		    								<g:link  controller="venta" action="show" id="${row.ventaDet.id}">
+		    								<g:link  controller="venta" action="show" id="${row.ventaDet.venta.id}">
 		    									${fieldValue(bean:row,field:"folio")}
 		    								</g:link>
 		    							</g:if>

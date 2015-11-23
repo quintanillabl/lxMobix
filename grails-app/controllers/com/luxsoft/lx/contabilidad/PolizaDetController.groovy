@@ -104,6 +104,7 @@ class PolizaDetCommand{
     String referencia
     String origen
     String entidad
+    String descripcion
 
     static constraints={
         importFrom PolizaDet

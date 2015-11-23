@@ -153,6 +153,14 @@ class PolizaUtils {
 		return CuentaContable.findByEmpresaAndClave(empresa,'216-0001')
 	}
 
+	public static RetencionIsrServiciosProfesionales(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'216-0002')
+	}
+
+	public static RetencionIsrDividendos(def empresa){
+	return CuentaContable.findByEmpresaAndClave(empresa,'216-0005')
+	}
+
 	
 
 	// Cargo
