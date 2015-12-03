@@ -26,7 +26,7 @@ class PolizaController {
 
     def index2(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        params.sort=params.sort?:'lastUpdated'
+        params.sort=params.sort?:'tipo'
         params.order='desc'
         def empresa=session.empresa
         def ejercicio=session.periodoContable.ejercicio
@@ -52,7 +52,7 @@ class PolizaController {
             procesador = ProcesadorDePoliza.findByNombre(subTipo)
         }
 
-        def list=polizas.list(sort:'folio',order:'asc')
+        def list=polizas.list(sort:'tipo',order:'asc')
         
         respond list,model:[subTipo:subTipo,procesador:procesador]
         //render view:'index',model:[polizaInstanceList:polizas,subTipo:subTipo]

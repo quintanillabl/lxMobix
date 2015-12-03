@@ -71,7 +71,7 @@
 									<f:display property="mes"  />
 									<f:field property='tipo' widget-class="form-control"/>
 									<f:display property='folio' />
-									<f:display property="fecha"  />
+									<f:field property="fecha"  />
 
 								</div>
 								<div class="col-sm-6 " >
