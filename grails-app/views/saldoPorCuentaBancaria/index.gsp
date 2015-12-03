@@ -95,6 +95,8 @@
 			</div>
 		</div> <!-- end .row 2 -->
 		<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
+
+
 	</div>
 
 

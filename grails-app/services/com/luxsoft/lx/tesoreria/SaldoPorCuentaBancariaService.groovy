@@ -20,12 +20,20 @@ class SaldoPorCuentaBancariaService {
     def actualizarSaldo(CuentaBancaria cuenta,Integer ejercicio,Integer mes ){
     	
     	log.info("Actualiando saldo para cuenta ${cuenta} Periodo:${mes} / ${ejercicio}  ")
-    	
+        if(mes > 12 ) mes = 12
+
+    	def ej = ejercicio
+        def month = mes 
+        if(mes == 12 ){
+            month = 1
+            ej =ejercicio -1
+        }
+        
     	def saldoFinalMesAnterior=MovimientoDeCuenta
     		.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and year(fecha)=? and month(fecha) < ?",
-    			[cuenta,ejercicio,mes])[0]?:00
-    	def hql="select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and year(fecha)=? and month(fecha) < ? and ingreso=?"
-    	def ingresos=MovimientoDeCuenta
+    			[cuenta,ej,month])[0]?:00
+    	
+        def ingresos=MovimientoDeCuenta
     		.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and year(fecha)=? and month(fecha)=? and importe>0",
     			[cuenta,ejercicio,mes])[0]?:00
     	def egresos=MovimientoDeCuenta
