@@ -35,7 +35,7 @@ class InversionService {
 			MovimientoDeCuenta ingreso=new MovimientoDeCuenta(
 				empresa:inversion.empresa,
 				cuenta:inversion.cuentaDestino,
-				fecha:inversion.vencimiento,
+				fecha:inversion.fecha,
 				importe:inversion.importe.abs(),
 				concepto:inversion.comentario,
 				referencia:inversion.comentario,
