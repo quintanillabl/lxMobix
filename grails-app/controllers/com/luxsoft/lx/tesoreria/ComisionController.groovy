@@ -20,17 +20,9 @@ class ComisionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = {
-        if(!session.periodoTesoreria){
-            session.periodoTesoreria=new Date()
-        }
-    }
+    
 
-    def cambiarPeriodo(){
-        def fecha=params.date('fecha', 'dd/MM/yyyy')
-        session.periodoTesoreria=fecha
-        redirect(uri: request.getHeader('referer') )
-    }
+    
 
     def index(Integer max) {
         params.sort="fecha"
@@ -38,8 +30,8 @@ class ComisionController {
         def periodo=session.periodoTesoreria
 
         def list=Comision
-            .findAll("from Comision c where c.empresa=? and date(c.fecha) between ? and ?",
-            [session.empresa,periodo.inicioDeMes(),periodo.finDeMes()],
+            .findAll("from Comision c where c.empresa=? and year(c.fecha) = ? and month(c.fecha)=? ",
+            [session.empresa,periodo.ejercicio,periodo.mes],
             params)
         [comisionInstanceList:list]
     }

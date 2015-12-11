@@ -33,9 +33,9 @@
 		    <div class="btn-group">
 		        <lx:refreshButton/>
 		        <lx:createButton/>
-		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
+		        %{-- <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
 		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
-		        </a>
+		        </a> --}%
 
 		    </div>
 		    <div class="btn-group">

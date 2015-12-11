@@ -34,9 +34,14 @@
 
 		    <div class="btn-group">
 		        <lx:refreshButton/>
-		        <lx:createButton/>
+		        <g:link action="depositar" class="btn btn-success" >
+		            <i class="fa fa-plus"></i> Deposito
+		        </g:link> 
+		        <g:link action="retirar" class="btn btn-warning" >
+		            <i class="fa fa-minus"></i> Retiro
+		        </g:link> 
 		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
-		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
+		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoTesoreria.mes} / ${session.periodoTesoreria.ejercicio}
 		        </a>
 
 		    </div>
@@ -106,7 +111,7 @@
 				
 			</div>
 		</div> <!-- end .row 2 -->
-		<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
+		<g:render template="cambioDePeriodoDialog" bean="${session.periodoTesoreria}"/>
 	</div>
 
 

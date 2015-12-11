@@ -42,7 +42,7 @@ navigation={
 			contabilidadElectronica(controller:'contabilidadElectronica',action:'index')
 		}
 		tesoreria(){
-			tipoDeCambio(controller:'tipoDeCambio',actio:'index')
+			// tipoDeCambio(controller:'tipoDeCambio',actio:'index')
 			bancos(controller:'banco',action:'index')
 			cuentas(controller:'cuentaBancaria',action:'index')
 			movimientos(controller:'movimientoDeCuenta',action:'index')

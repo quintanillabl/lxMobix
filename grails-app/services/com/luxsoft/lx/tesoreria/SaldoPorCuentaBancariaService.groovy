@@ -20,20 +20,24 @@ class SaldoPorCuentaBancariaService {
     def actualizarSaldo(CuentaBancaria cuenta,Integer ejercicio,Integer mes ){
     	
     	log.info("Actualiando saldo para cuenta ${cuenta} Periodo:${mes} / ${ejercicio}  ")
-        if(mes > 12 ) mes = 12
+        
 
-    	def ej = ejercicio
-        def month = mes 
+
+    	def ejercicioAnterior = ejercicio
+        def mesAnterior = mes 
+
         if(mes == 1 ){
-            month = 12
-            ej =ejercicio -1
+            mesAnterior = 12
+            ejercicioAnterior = ejercicio -1
+        }else{
+            mesAnterior = mes-1
         }
         
-        def anterior = SaldoPorCuentaBancaria.where{
-            cuenta==cuenta && ejercicio == ej && mes ==month
-        }.get()
+        def anterior = SaldoPorCuentaBancaria.find{
+            cuenta==cuenta && ejercicio == ejercicioAnterior && mes ==mesAnterior
+        }
 
-        log.info 'Saldo anterior: '+anterior
+        
        
         
         def ingresos=MovimientoDeCuenta
@@ -43,9 +47,13 @@ class SaldoPorCuentaBancariaService {
     		.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and year(fecha)=? and month(fecha)=? and importe<0",
     			[cuenta,ejercicio,mes])[0]?:00
     	
-    	def saldo=SaldoPorCuentaBancaria.findOrCreateByEmpresaAndCuentaAndEjercicioAndMes(cuenta.empresa,cuenta,ejercicio,mes)
-        if(anterior)
-    	   saldo.saldoInicial=anterior.saldoFinal
+    	def saldo=SaldoPorCuentaBancaria.findOrCreateByCuentaAndEjercicioAndMes(cuenta,ejercicio,mes)
+        
+        if(anterior){
+            saldo.saldoInicial=anterior.saldoFinal
+            log.info 'Saldo anterior: '+anterior.saldoFinal
+        }
+    	   
         else
             saldo.saldoInicial = 0.0
     	saldo.ingresos=ingresos

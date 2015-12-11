@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Movimiento de cuenta</title>
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
 	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>
@@ -15,7 +17,7 @@
 			<div class="col-md-12">
 
 				<div class="page-header">
-				  <h3>Alta de movimiento  <small> (${session.empresa})</small>
+				  <h3>Registro de Deposito  <small> (${session.empresa})</small>
 				  	<g:if test="${flash.message}">
 				  		<small><span class="label label-warning ">${flash.message}</span></small>
 				  	</g:if> 
@@ -31,10 +33,10 @@
 			
 			<div class="col-md-8 col-md-offset-2">
 				
-				<g:form class="form-horizontal" action="save" >	
+				<g:form class="form-horizontal" action="saveDeposito" >	
 
-					<div class="panel panel-primary">
-						<div class="panel-heading">Datos generales</div>
+					<div class="panel panel-success">
+						<div class="panel-heading">Deposito  ( Periodo:${session.periodoTesoreria})</div>
 					  	<div class="panel-body">
 						    <g:hasErrors bean="${movimientoDeCuentaInstance}">
 						    	<div class="alert alert-danger">
@@ -47,7 +49,15 @@
 							<f:with bean="${movimientoDeCuentaInstance}">
 								<div class="col-sm-12">
 									<f:field property="cuenta" wrapper="bootstrap3" widget-class="form-control"/>
-									<f:field property="fecha" wrapper="bootstrap3"/>
+									
+									<f:field property="fecha" wrapper="bootstrap3">
+										<input 
+											id="fecha" 
+											type="text" 
+											name="fecha"  
+											class="form-control " 
+											/>
+									</f:field>
 									<f:field property="importe" widget="money" wrapper="bootstrap3"/>
 									<f:field property="concepto" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
@@ -77,7 +87,18 @@
 	<script type="text/javascript">
 		$(function(){
 			$(".money").autoNumeric({wEmpty:'zero',aSep:"",lZero: 'deny'});
+
+				$("#fecha").datepicker({
+					changeMonth: false,
+			      	changeYear: false,
+			      	showAnim: "fadeIn",
+			      	hideIfNoPrevNext: true,
+			      	minDate:"${formatDate(date:session.periodoTesoreria.toPeriodo().fechaInicial,format:'dd/MM/yyyy')}",
+			      	maxDate:"${formatDate(date:session.periodoTesoreria.toPeriodo().fechaFinal,format:'dd/MM/yyyy')}",
+			      	showOptions: { direction: "up" }
+				});
 		});
+
 	</script>
 	
 </body>

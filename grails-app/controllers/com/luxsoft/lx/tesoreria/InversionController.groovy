@@ -14,26 +14,15 @@ class InversionController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def beforeInterceptor = {
-        if(!session.periodoTesoreria){
-            session.periodoTesoreria=new Date()
-        }
-    }
-
-    def cambiarPeriodo(){
-        def fecha=params.date('fecha', 'dd/MM/yyyy')
-        session.periodoTesoreria=fecha
-        redirect(uri: request.getHeader('referer') )
-    }
-
+    
     def index(Integer max) {
         params.sort="fecha"
         params.order="desc"
         def periodo=session.periodoTesoreria
 
         def list=Inversion
-            .findAll("from Inversion i where i.empresa=? and date(i.fecha) between ? and ?",
-            [session.empresa,periodo.inicioDeMes(),periodo.finDeMes()],
+            .findAll("from Inversion i where i.empresa=? and year(i.fecha) = ? and month(i.fecha)=?",
+            [session.empresa,periodo.ejercicio,periodo.mes],
             params)
         [inversionInstanceList:list]
     }

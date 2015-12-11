@@ -14,7 +14,7 @@
                 <div class="alert alert-info">
                   <h4>
                     <p class="text-center"> <g:pageProperty name="page.header"/>  (<small>${session.empresa.nombre}</small>)</p>
-                    <p class="text-center"><small>${session.periodoTesoreria.asPeriodoText()}</small></p>
+                    <p class="text-center"><small>${session.periodoTesoreria}</small></p>
                   </h4>
                   <g:if test="${flash.message}">
                     <span class="label label-warning">${flash.message}</span>
@@ -61,37 +61,7 @@
                       <g:pageProperty name="page.reportes"/>
                     </ul>
                 </div>
-                <div class="modal fade" id="periodoDialog" tabindex="-1">
-                    <div class="modal-dialog ">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">Cambiar periodo</h4>
-                            </div>
-                            <g:form action="cambiarPeriodo" class="form-horizontal" >
-                                <div class="modal-body">
-                                  <div class="form-group">
-                                    <label for="property" class="control-label col-sm-2">Periodo</label>
-                                    <div class="col-sm-10">
-                                      <input id="fechaField"
-                                        type="text" class="form-control " name="fecha"
-                                          value="${formatDate(date:session.periodoTesoreria,format:'dd/MM/yyyy')}">
-                                    </div>
-                                  </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    <g:submitButton class="btn btn-info" name="aceptar"
-                                            value="Aceptar" />
-                                </div>
-                            </g:form>
-                
-                        </div>
-                        <!-- moda-content -->
-                    </div>
-                    <!-- modal-di -->
-                </div>
+                <g:render template="/movimientoDeCuenta/cambioDePeriodoDialog" bean="${session.periodoTesoreria}"/>
             </div>
 
             <div class="row">

@@ -2,6 +2,7 @@ package com.luxsoft.mobix.core
 
 import com.luxsoft.utils.Periodo
 import com.luxsoft.lx.contabilidad.PeriodoContable
+import com.luxsoft.lx.core.PeriodoOperativo
 
 class CoreFilters {
 
@@ -73,6 +74,9 @@ class CoreFilters {
                             ejercicio:Periodo.obtenerYear(today),
                             mes:Periodo.obtenerMes(today)+1
                         )
+                }
+                if(!session.periodoTesoreria){
+                    session.periodoTesoreria=new PeriodoOperativo()
                 }
             }
             after = { Map model ->

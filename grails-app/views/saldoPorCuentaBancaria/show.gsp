@@ -1,134 +1,131 @@
-
-<%@ page import="com.luxsoft.lx.tesoreria.SaldoPorCuentaBancaria" %>
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="layout" content="main">
-		<g:set var="entityName" value="${message(code: 'saldoPorCuentaBancaria.label', default: 'SaldoPorCuentaBancaria')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<a href="#show-saldoPorCuentaBancaria" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="show-saldoPorCuentaBancaria" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<ol class="property-list saldoPorCuentaBancaria">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Movimiento de cuenta  ${saldoPorCuentaBancariaInstance.id}</title>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+
+				<div class="page-header">
+				  <h3>Inversión bancaria ${saldoPorCuentaBancariaInstance.id} <small> (${session.empresa})</small>
+				  	<g:if test="${flash.message}">
+				  		<small><span class="label label-warning ">${flash.message}</span></small>
+				  	</g:if> 
+				  	<g:if test="${flash.error}">
+				  		<small><span class="label label-danger ">${flash.error}</span></small>
+				  	</g:if> 
+				  </h3>
+				</div>
+			</div>
+		</div><!-- end .row -->
+
+		<div class="row ">
 			
-				<g:if test="${saldoPorCuentaBancariaInstance?.ejercicio}">
-				<li class="fieldcontain">
-					<span id="ejercicio-label" class="property-label"><g:message code="saldoPorCuentaBancaria.ejercicio.label" default="Ejercicio" /></span>
-					
-						<span class="property-value" aria-labelledby="ejercicio-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="ejercicio"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.mes}">
-				<li class="fieldcontain">
-					<span id="mes-label" class="property-label"><g:message code="saldoPorCuentaBancaria.mes.label" default="Mes" /></span>
-					
-						<span class="property-value" aria-labelledby="mes-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="mes"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.cuenta}">
-				<li class="fieldcontain">
-					<span id="cuenta-label" class="property-label"><g:message code="saldoPorCuentaBancaria.cuenta.label" default="Cuenta" /></span>
-					
-						<span class="property-value" aria-labelledby="cuenta-label"><g:link controller="cuentaBancaria" action="show" id="${saldoPorCuentaBancariaInstance?.cuenta?.id}">${saldoPorCuentaBancariaInstance?.cuenta?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.cierre}">
-				<li class="fieldcontain">
-					<span id="cierre-label" class="property-label"><g:message code="saldoPorCuentaBancaria.cierre.label" default="Cierre" /></span>
-					
-						<span class="property-value" aria-labelledby="cierre-label"><g:formatDate date="${saldoPorCuentaBancariaInstance?.cierre}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.dateCreated}">
-				<li class="fieldcontain">
-					<span id="dateCreated-label" class="property-label"><g:message code="saldoPorCuentaBancaria.dateCreated.label" default="Date Created" /></span>
-					
-						<span class="property-value" aria-labelledby="dateCreated-label"><g:formatDate date="${saldoPorCuentaBancariaInstance?.dateCreated}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.egresos}">
-				<li class="fieldcontain">
-					<span id="egresos-label" class="property-label"><g:message code="saldoPorCuentaBancaria.egresos.label" default="Egresos" /></span>
-					
-						<span class="property-value" aria-labelledby="egresos-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="egresos"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.empresa}">
-				<li class="fieldcontain">
-					<span id="empresa-label" class="property-label"><g:message code="saldoPorCuentaBancaria.empresa.label" default="Empresa" /></span>
-					
-						<span class="property-value" aria-labelledby="empresa-label"><g:link controller="empresa" action="show" id="${saldoPorCuentaBancariaInstance?.empresa?.id}">${saldoPorCuentaBancariaInstance?.empresa?.encodeAsHTML()}</g:link></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.ingresos}">
-				<li class="fieldcontain">
-					<span id="ingresos-label" class="property-label"><g:message code="saldoPorCuentaBancaria.ingresos.label" default="Ingresos" /></span>
-					
-						<span class="property-value" aria-labelledby="ingresos-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="ingresos"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.lastUpdated}">
-				<li class="fieldcontain">
-					<span id="lastUpdated-label" class="property-label"><g:message code="saldoPorCuentaBancaria.lastUpdated.label" default="Last Updated" /></span>
-					
-						<span class="property-value" aria-labelledby="lastUpdated-label"><g:formatDate date="${saldoPorCuentaBancariaInstance?.lastUpdated}" /></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.saldoFinal}">
-				<li class="fieldcontain">
-					<span id="saldoFinal-label" class="property-label"><g:message code="saldoPorCuentaBancaria.saldoFinal.label" default="Saldo Final" /></span>
-					
-						<span class="property-value" aria-labelledby="saldoFinal-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="saldoFinal"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${saldoPorCuentaBancariaInstance?.saldoInicial}">
-				<li class="fieldcontain">
-					<span id="saldoInicial-label" class="property-label"><g:message code="saldoPorCuentaBancaria.saldoInicial.label" default="Saldo Inicial" /></span>
-					
-						<span class="property-value" aria-labelledby="saldoInicial-label"><g:fieldValue bean="${saldoPorCuentaBancariaInstance}" field="saldoInicial"/></span>
-					
-				</li>
-				</g:if>
-			
-			</ol>
-			<g:form url="[resource:saldoPorCuentaBancariaInstance, action:'delete']" method="DELETE">
-				<fieldset class="buttons">
-					<g:link class="edit" action="edit" resource="${saldoPorCuentaBancariaInstance}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-					<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-				</fieldset>
-			</g:form>
-		</div>
-	</body>
+			<div class="col-md-8 col-md-offset-2">
+				
+				<form  class="form-horizontal"  >	
+
+					<div class="panel panel-primary">
+						<div class="panel-heading">Propiedades</div>
+					  	<div class="panel-body">
+						    
+						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
+							%{-- <f:with bean="${saldoPorCuentaBancariaInstance}">
+								
+								<f:display property="fecha" wrapper="bootstrap3"/>
+								<f:display property="vencimiento" wrapper="bootstrap3"/>
+								<f:display property="cuentaOrigen" 
+									wrapper="bootstrap3" widget-class="form-control "/>
+
+								<f:display property="cuentaDestino" 
+									wrapper="bootstrap3" widget-class="form-control "/>
+
+								<f:display property="importe" 
+									widget="money" wrapper="bootstrap3"/>
+
+								<f:display property="rendimientoReal" 
+									widget="money" wrapper="bootstrap3"/>
+
+								<f:display property="importeIsr" label="ISR"
+									widget="money" wrapper="bootstrap3"/>
+
+				    			<f:display property="plazo" widget="numeric"
+				    				wrapper="bootstrap3"/>
+
+				    			<f:display property="comentario" 
+				    				widget-class="form-control "  wrapper="bootstrap3"/>
+								
+									
+							</f:with> --}%
+					  	</div>
+
+					  	<div class="row">
+					  		<div class="col-md-12">
+					  			<table id="grid" class="table table-striped table-bordered table-condensed">
+
+					  				<thead>
+					  					<tr>
+					  						<th>Nombre</th>
+					  						<th>Cuenta</th>
+					  						<th>Importe</th>
+					  						<th>Concepto</th>
+					  						<th>Referencia</th>
+					  						<th>Comentario</th>
+					  						<th>Creado</th>
+					  					</tr>
+					  				</thead>
+					  				<tbody>
+					  					<g:each in="${saldoPorCuentaBancariaInstance.movimientos.sort{it.importe}}" var="row">
+					  						<tr id="${row.id}">
+					  							<td >
+					  								<g:link  action="show" id="${row.id}">
+					  									${fieldValue(bean:row,field:"cuenta.nombre")}
+					  								</g:link>
+					  							</td>
+					  							<td>
+					  								<g:link  action="show" id="${row.id}">
+					  									${fieldValue(bean:row,field:"cuenta.numero")}
+					  								</g:link>
+					  							</td>
+					  							<td class="${row.importe<=0?'text-danger':'text-success'}">${formatNumber(number:row.importe,type:'currency')}</td>
+					  							<td>${fieldValue(bean:row,field:"concepto")}</td>
+					  							<td>${fieldValue(bean:row,field:"referencia")}</td>
+					  							<td>${fieldValue(bean:row,field:"comentario")}</td>
+					  							<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+					  						</tr>
+					  					</g:each>
+					  				</tbody>
+					  			</table>
+					  			
+					  			
+					  		</div>
+					  	</div> <!-- end .row 2 -->
+					 
+						<div class="panel-footer">
+						  	<div class="form-group">
+						  		<div class="buttons col-md-offset-4 col-md-4">
+						  			<lx:backButton />
+						  			<a href="" class="btn btn-danger " data-toggle="modal" data-target="#deleteDialog"><i class="fa fa-trash"></i> Eliminar</a> 
+						  			
+						  		</div>
+						  	</div>
+						</div>
+
+					</div>
+
+				</form>
+				
+			</div>
+		</div> <!-- end .row 2 -->
+
+		
+	</div>
+
+	
+	
+</body>
 </html>

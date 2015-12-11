@@ -17,6 +17,7 @@
 				<div class="alert alert-info">
 					<h4>
 						<p class="text-center"> Saldos de cuentas bancarias (<small>${session.empresa.nombre}</small>)</p>
+						<p class="text-center">(${session.periodoTesoreria})</p>
 						
 							
 					</h4>
@@ -38,7 +39,7 @@
 		        	<i class="fa fa-cog"></i> Actualizar saldos
 		        </g:link>
 		        <a href="#periodoDialog" data-toggle="modal" class="btn btn-default " >
-		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoContable.mes} / ${session.periodoContable.ejercicio}
+		        	<i class="fa fa-calendar"></i>  Periodo: ${session.periodoTesoreria.mes} / ${session.periodoTesoreria.ejercicio}
 		        </a>
 
 		    </div>
@@ -94,7 +95,7 @@
 				
 			</div>
 		</div> <!-- end .row 2 -->
-		<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
+		<g:render template="/movimientoDeCuenta/cambioDePeriodoDialog" bean="${session.periodoTesoreria}"/>
 
 
 	</div>
