@@ -6,7 +6,7 @@ import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
 import com.luxsoft.lx.core.PeriodoOperativo
-import com.luxsoft.lx.bi.ReportCommand
+
 
 
 @Secured(["hasAnyRole('ADMIN','TESORERIA')"])
@@ -17,7 +17,7 @@ class MovimientoDeCuentaController {
 
     def movimientoDeCuentaService
 
-    def reportService
+    
 
     def cambiarPeriodo(PeriodoOperativo periodo){
         def origin=request.getHeader('referer')
@@ -94,21 +94,7 @@ class MovimientoDeCuentaController {
         
     }
 
-    def estadoDeCuenta(CuentaBancaria cuenta){
-        
-        def command=new ReportCommand()
-        command.reportName="EstadoDeCuentaBanco"
-        command.empresa=session.empresa
-        def stream=reportService.build(command,
-            [ID:cuenta.id as String
-            ,COMPANY:session.empresa.nombre]
-            )
-        def file="EsatdoDeCuenta_${cuenta.numero}_"+new Date().format('ss')+'.'+command.formato.toLowerCase()
-        render(
-            file: stream.toByteArray(), 
-            contentType: 'application/pdf',
-            fileName:file)
-    }
+    
 
     protected void notFound() {
         request.withFormat {

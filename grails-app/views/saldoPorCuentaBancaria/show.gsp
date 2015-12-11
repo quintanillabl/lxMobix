@@ -11,7 +11,7 @@
 			<div class="col-md-12">
 
 				<div class="page-header">
-				  <h3>Inversión bancaria ${saldoPorCuentaBancariaInstance.id} <small> (${session.empresa})</small>
+				  <h3>Saldo por cuenta bancaria ${saldoPorCuentaBancariaInstance.id} <small> (${session.empresa})</small>
 				  	<g:if test="${flash.message}">
 				  		<small><span class="label label-warning ">${flash.message}</span></small>
 				  	</g:if> 
@@ -25,42 +25,35 @@
 
 		<div class="row ">
 			
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-12 ">
 				
 				<form  class="form-horizontal"  >	
 
 					<div class="panel panel-primary">
-						<div class="panel-heading">Propiedades</div>
+						<div class="panel-heading">Cuenta ${saldoPorCuentaBancariaInstance.cuenta} Periodo(session.periodoTesoreria)</div>
 					  	<div class="panel-body">
 						    
-						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
-							%{-- <f:with bean="${saldoPorCuentaBancariaInstance}">
-								
-								<f:display property="fecha" wrapper="bootstrap3"/>
-								<f:display property="vencimiento" wrapper="bootstrap3"/>
-								<f:display property="cuentaOrigen" 
-									wrapper="bootstrap3" widget-class="form-control "/>
-
-								<f:display property="cuentaDestino" 
-									wrapper="bootstrap3" widget-class="form-control "/>
-
-								<f:display property="importe" 
-									widget="money" wrapper="bootstrap3"/>
-
-								<f:display property="rendimientoReal" 
-									widget="money" wrapper="bootstrap3"/>
-
-								<f:display property="importeIsr" label="ISR"
-									widget="money" wrapper="bootstrap3"/>
-
-				    			<f:display property="plazo" widget="numeric"
-				    				wrapper="bootstrap3"/>
-
-				    			<f:display property="comentario" 
-				    				widget-class="form-control "  wrapper="bootstrap3"/>
-								
-									
-							</f:with> --}%
+					    	<f:with bean="${saldoPorCuentaBancariaInstance}">
+								<div class="col-md-3">
+						    		<f:display property="saldoInicial" wrapper="bootstrap3"/>
+						    		
+					    		</div>
+					    		<div class="col-md-3">
+						    		<f:display property="ingresos" wrapper="bootstrap3"/>
+						    		
+					    		</div>
+					    		<div class="col-md-3">
+						    		<f:display property="egresos" wrapper="bootstrap3"/>
+						    		
+					    		</div>
+					    		<div class="col-md-3">
+						    		
+						    		<f:display property="saldoFinal" wrapper="bootstrap3"/>
+					    		</div>
+					    	</f:with>
+						    
+						    
+							
 					  	</div>
 
 					  	<div class="row">
@@ -69,33 +62,23 @@
 
 					  				<thead>
 					  					<tr>
-					  						<th>Nombre</th>
-					  						<th>Cuenta</th>
-					  						<th>Importe</th>
+					  						<th>Fecha</th>
+					  						
 					  						<th>Concepto</th>
 					  						<th>Referencia</th>
 					  						<th>Comentario</th>
-					  						<th>Creado</th>
+					  						<th>Importe</th>
 					  					</tr>
 					  				</thead>
 					  				<tbody>
-					  					<g:each in="${saldoPorCuentaBancariaInstance.movimientos.sort{it.importe}}" var="row">
+					  					<g:each in="${movimientos.sort{it.fecha}}" var="row">
 					  						<tr id="${row.id}">
-					  							<td >
-					  								<g:link  action="show" id="${row.id}">
-					  									${fieldValue(bean:row,field:"cuenta.nombre")}
-					  								</g:link>
-					  							</td>
-					  							<td>
-					  								<g:link  action="show" id="${row.id}">
-					  									${fieldValue(bean:row,field:"cuenta.numero")}
-					  								</g:link>
-					  							</td>
-					  							<td class="${row.importe<=0?'text-danger':'text-success'}">${formatNumber(number:row.importe,type:'currency')}</td>
+					  							<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
+					  							
 					  							<td>${fieldValue(bean:row,field:"concepto")}</td>
 					  							<td>${fieldValue(bean:row,field:"referencia")}</td>
 					  							<td>${fieldValue(bean:row,field:"comentario")}</td>
-					  							<td><g:formatDate date="${row.lastUpdated}" format="dd/MM/yyyy HH:mm"/></td>
+					  							<td class="${row.importe<=0?'text-danger':'text-success'}">${formatNumber(number:row.importe,type:'currency')}</td>
 					  						</tr>
 					  					</g:each>
 					  				</tbody>
@@ -109,7 +92,20 @@
 						  	<div class="form-group">
 						  		<div class="buttons col-md-offset-4 col-md-4">
 						  			<lx:backButton />
-						  			<a href="" class="btn btn-danger " data-toggle="modal" data-target="#deleteDialog"><i class="fa fa-trash"></i> Eliminar</a> 
+						  			<g:link class="btn btn-default" action="imprimirEstadoDeCuenta"
+						  				id="${saldoPorCuentaBancariaInstance.id}">
+						  				Estado de cuenta
+						  			</g:link>
+	  			 					%{-- <g:jasperReport
+	  			 						controller="saldoDeCuenta"
+	  			 						action="imprimirEstadoDeCuenta" 
+	  			 						jasper="EstadoDeCuentaBanco" 
+	  			 						format="PDF" 
+	  			 						name="Estado de cuenta">
+	  									<g:hiddenField name="cuentaId" value="${saldoPorCuentaBancariaInstance.cuenta.id}"/>
+	  									<g:hiddenField name="periodo" value="${session.periodoTesoreria.toPeriodo().fechaFinal.text()}"/>
+	  									<g:hiddenField name="COMPANY" value="${session.empresa.nombre}"/>
+	  								</g:jasperReport> --}%
 						  			
 						  		</div>
 						  	</div>
