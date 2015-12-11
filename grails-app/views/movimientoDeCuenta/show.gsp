@@ -64,8 +64,12 @@
 					 
 						<div class="panel-footer">
 						  	<div class="form-group">
-						  		<div class="buttons col-md-offset-4 col-md-4">
+						  		<div class="buttons col-md-offset-4 col-md-6">
 						  			<lx:backButton />
+						  			<g:link class="btn btn-default"
+						  				action="estadoDeCuenta" id="${movimientoDeCuentaInstance.cuenta.id}">
+						  				Estado de cuenta
+						  			</g:link>
 						  			<a href="" class="btn btn-danger " data-toggle="modal" data-target="#deleteDialog"><i class="fa fa-trash"></i> Eliminar</a> 
 						  			
 						  		</div>
