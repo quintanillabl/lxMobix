@@ -47,7 +47,7 @@ class SaldoPorCuentaBancariaService {
     		.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and year(fecha)=? and month(fecha)=? and importe<0",
     			[cuenta,ejercicio,mes])[0]?:00
     	
-    	def saldo=SaldoPorCuentaBancaria.findOrCreateByCuentaAndEjercicioAndMes(cuenta,ejercicio,mes)
+    	def saldo=SaldoPorCuentaBancaria.findOrCreateByEmpresaAndCuentaAndEjercicioAndMes(cuenta.empresa,cuenta,ejercicio,mes)
         
         if(anterior){
             saldo.saldoInicial=anterior.saldoFinal
@@ -59,7 +59,7 @@ class SaldoPorCuentaBancariaService {
     	saldo.ingresos=ingresos
     	saldo.egresos=egresos
     	saldo.saldoFinal=saldo.saldoInicial+(ingresos+egresos)
-    	saldo.save(flush:true)
+    	saldo.save(failOnError:true,flush:true)
         
     }
 
