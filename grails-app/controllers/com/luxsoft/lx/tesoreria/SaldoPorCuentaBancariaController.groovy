@@ -126,5 +126,85 @@ class SaldoPorCuentaBancariaController {
         //     ,params:repParams)
         
     }
+
+    def imprimirEstadoDeCuenta2(SaldoPorCuentaBancaria saldo){
+        
+        def cuenta=saldo.cuenta
+        
+        if(!cuenta)
+            throw new RuntimeException("No existe la cuenta: "+id)
+        
+        
+        def periodo=session.periodoTesoreria.toPeriodo().fechaFinal
+        
+        def fechaIni=periodo.inicioDeMes()
+        def fechaFin=periodo.finDeMes()
+        
+        def saldoInicial=MovimientoDeCuenta
+            .executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(fecha) < ?"
+            ,[cuenta,fechaIni])[0]?:0.0
+        
+        def ingresos=MovimientoDeCuenta
+            .executeQuery(
+                "select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe>0 and comentario!=?"
+            ,[cuenta,fechaIni,fechaFin,'INVERSION'])[0]?:00
+        def egresos=MovimientoDeCuenta
+            .executeQuery(
+                "select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe<0  and comentario!=?"
+            ,[cuenta,fechaIni,fechaFin,'INVERSION'])[0]?:00
+        
+        def saldoFinal=saldoInicial+(ingresos+egresos)
+        
+        //def movimientos=MovimientoDeCuenta.findAllByCuentaAndFechaBetween(cuenta,fechaIni,fechaFin,[sort:('fecha')])
+        def movimientos=MovimientoDeCuenta
+            .findAll(
+                "from MovimientoDeCuenta where date(fecha) between ? and ? and cuenta=? order by fecha,id ",
+                [periodo.inicioDeMes(),periodo.finDeMes(),cuenta])
+        def modelData=movimientos.collect { mov ->
+            
+            def res=[
+            //'FOLIO':mov.id
+            'FECHA':mov.fecha.format("dd"),
+             'CONCEPTO':mov.concepto
+             ,'TIPO':'ND'
+            ,'INGRESO':mov.importe>0?mov.importe.abs():0.0
+            ,'EGRESO':mov.importe<0?mov.importe.abs():0.0
+             ,'COMENTARIO':mov.comentario
+             ,'REFERENCIA':mov.referencia
+             ,INI:saldoInicial
+             ]
+            return res
+        }
+        NumberFormat nf=NumberFormat.getNumberInstance()
+        def repParams=[CUENTA:cuenta.toString()
+            ,FECHA_INI:fechaIni.text()
+            ,FECHA_FIN:fechaFin.text()
+            ,SALDO_INI:nf.format(saldoInicial)
+            ,SALDO_FIN:nf.format(saldoFinal)
+            ,INGRESOS:nf.format(ingresos.abs())
+            ,EGRESOS:nf.format(egresos.abs())
+            ,COMPANY:session.empresa.nombre
+            ,cuentaId:cuenta.id
+            ,periodo:periodo.text()
+            ]
+
+        def command=new ReportCommand()
+        command.reportName="EstadoDeCuentaBanco"
+        command.empresa=session.empresa
+        def stream=reportService.build(command,repParams,modelData)
+        def file="EstadoDeCuenta_${cuenta.numero}_"+new Date().format('ss')+'.'+command.formato.toLowerCase()
+        
+        render(
+            file: stream.toByteArray(), 
+            contentType: 'application/pdf',
+            fileName:file)
+
+        // //repParams<<params
+        // log.info 'Ejecutando reporte params:'+repParams+'\n Registros: '+modelData
+        // chain(controller:'jasper',action:'index'
+        //     ,model:[data:modelData]
+        //     ,params:repParams)
+        
+    }
     
 }
