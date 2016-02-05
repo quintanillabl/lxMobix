@@ -23,12 +23,15 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["INMOBILIARIA SAN LIZ, S.A. DE C.V."]]></defaultValueExpression>
+	</parameter>
 	<parameter name="YEAR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="MES" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="INICIAL" isForPrompting="false" class="java.math.BigDecimal">
 		<defaultValueExpression ><![CDATA[$F{SALDO_INICIAL}]]></defaultValueExpression>
 	</parameter>
+	<parameter name="EMPRESA_ID" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 X.ID,X.CLAVE AS NoCUENTA,X.DESCRIPCION AS CUENTA,C.ID,C.CLAVE AS CLAVE_SUB,C.DESCRIPCION AS CONCEPTO,S.SALDO_INICIAL,S.DEBE,S.HABER,S.SALDO_FINAL
 ,Y.CODIGO AS COD_SAT_SUB
@@ -38,7 +41,7 @@ JOIN cuenta_contable C ON(C.ID=S.CUENTA_ID)
 JOIN cuenta_contable X ON(X.ID=C.PADRE_ID) 
 JOIN CUENTA_SAT Y ON(Y.ID=C.cuenta_sat_id)
 JOIN CUENTA_SAT Z ON(Z.ID=X.cuenta_sat_id)
-WHERE S.EJERCICIO=$P{YEAR} AND S.MES=$P{MES}
+WHERE S.EJERCICIO=$P{YEAR} AND S.MES=$P{MES} AND S.EMPRESA_ID=$P{EMPRESA_ID}
 ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 
 	<field name="ID" class="java.lang.Long"/>

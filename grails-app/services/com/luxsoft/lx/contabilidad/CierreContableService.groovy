@@ -62,12 +62,13 @@ class CierreContableService {
     
 
     def generarPolizaDeCierre(Empresa empresa,Integer ejercicio ){
-        def poliza=Poliza.findByEmpresaAndEjercicioAndTipo(empresa,ejercicio,'CIERRE_ANUAL')
+        def poliza=Poliza.findByEmpresaAndEjercicioAndSubTipo(empresa,ejercicio,'CIERRE_ANUAL')
         assert poliza==null,"Poliza de cierre anual para el ejercicion:${ejercicio} ya fue generada"
         
         poliza=new Poliza(empresa:empresa,
                 ejercicio:ejercicio,
-                tipo:'CIERRE_ANUAL', 
+                tipo:'DIARIO',
+                subTipo:'CIERRE_ANUAL' ,
                 concepto:'CIERRE ANUAL ',
                 mes:13,
                 fecha:new Date(ejercicio,11,31))

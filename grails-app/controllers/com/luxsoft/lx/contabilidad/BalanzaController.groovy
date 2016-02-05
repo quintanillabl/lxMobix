@@ -95,7 +95,7 @@ class BalanzaController {
         command.empresa=session.empresa
         params.YEAR=session.periodoContable.ejercicio as String
         params.MES=session.periodoContable.mes as String
-        params.EMPRESA=session.empresa.nombre
+        params.EMPRESA_ID=session.empresa.id
         params.INICIAL=0.0
         def stream=reportService.build(command,params)
         def file="Balanza_${params.YEAR}${params.MES}_"+new Date().format('ss')+'.'+command.formato.toLowerCase()

@@ -197,7 +197,7 @@ class CfdiController {
 		params.DESCUENTOS=params.DESCUENTOS as String
 
 		def reportDef=new JasperReportDef(
-			name:'MobixCFDI'
+			name:'MobixCFDI2'
 			,fileFormat:JasperExportFormat.PDF_FORMAT
 			,reportData:modelData,
 			,parameters:params
