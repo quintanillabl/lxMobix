@@ -205,8 +205,8 @@ class PolizaController {
 
     def cierreAnual(){
 
-        def subTipo = 'CIERRE_CONTABLE'
-        def q = Poliza.where {empresa==session.empresa && subTipo=='CIERRE_CONTABLE'}
+        def subTipo = 'CIERRE_ANUAL'
+        def q = Poliza.where {empresa==session.empresa && subTipo==subTipo}
         def list=q.list(sort:'ejercicio',order:'asc')
         [polizaInstanceList:list,subTipo:'CIERRE_ANUAL']
         

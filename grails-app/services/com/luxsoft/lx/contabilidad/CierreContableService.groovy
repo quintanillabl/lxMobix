@@ -75,7 +75,7 @@ class CierreContableService {
             subTipo:'CIERRE_ANUAL' ,
             concepto:'CIERRE ANUAL ',
             mes:13,
-            fecha:Periodo.getPeriodoEnUnMes(ejercicio,11).fechaFinal)
+            fecha:Periodo.getPeriodoAnual(ejercicio).fechaFinal)
         
 
     	def asiento="CIERRE ANUAL ${ejercicio}"
