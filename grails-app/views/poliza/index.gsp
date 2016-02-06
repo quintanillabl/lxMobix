@@ -18,7 +18,7 @@
 
 	    <div class="btn-group">
 	        
-	        <g:link action="index" class="btn btn-default ">
+	        <g:link action="index" params='[subTipo:subTipo]'class="btn btn-default ">
 	            <span class="glyphicon glyphicon-repeat"></span> Refrescar
 	        </g:link>
 	        <a data-target="#periodoDialog" data-toggle="modal" class="btn btn-default " >

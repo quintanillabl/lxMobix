@@ -20,13 +20,9 @@ class PolizaService {
                 folio=nextFolio(poliza)
 
         }
-
-        poliza.partidas.each{
-            if(it.hasErrors()) println 'Errores: '+it.errors
-        }
         
         poliza.actualizar()
-        log.info 'Salvando poliza: '+poliza+ ' Partidas: '+poliza.partidas.size()
+        log.info 'Salvando poliza: '+poliza+ ' Partidas: '+poliza.partidas.size()+ ' Folio asignado: '+poliza.folio
     	poliza=poliza.save failOnError:true
     	return poliza
     }
@@ -96,6 +92,8 @@ class PolizaService {
 
 
     private Long nextFolio(Poliza poliza){
+        if(poliza.subTipo == 'CIERRE_ANUAL')
+            return 1;
         def folio=PolizaFolio.findByEmpresaAndEjercicioAndMesAndTipoAndSubTipo(
             poliza.empresa,poliza.ejercicio,poliza.mes,poliza.tipo,poliza.subTipo)
         if(folio==null){

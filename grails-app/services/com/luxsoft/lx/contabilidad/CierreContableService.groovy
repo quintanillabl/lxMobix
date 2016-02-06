@@ -3,6 +3,7 @@ package com.luxsoft.lx.contabilidad
 import grails.transaction.Transactional
 
 import com.luxsoft.lx.core.Empresa
+import com.luxsoft.utils.*
 
 @Transactional
 class CierreContableService {
@@ -62,22 +63,25 @@ class CierreContableService {
     
 
     def generarPolizaDeCierre(Empresa empresa,Integer ejercicio ){
-        def poliza=Poliza.findByEmpresaAndEjercicioAndSubTipo(empresa,ejercicio,'CIERRE_ANUAL')
+        empresa.refresh()
+        log.info "Generando poliza de cierre anual $empresa ejercicio: $ejercicio"
+        def poliza=Poliza.findByEmpresaAndEjercicioAndTipoAndSubTipo(empresa,ejercicio,'DIARIO','CIERRE_ANUAL')
         assert poliza==null,"Poliza de cierre anual para el ejercicion:${ejercicio} ya fue generada"
         
-        poliza=new Poliza(empresa:empresa,
-                ejercicio:ejercicio,
-                tipo:'DIARIO',
-                subTipo:'CIERRE_ANUAL' ,
-                concepto:'CIERRE ANUAL ',
-                mes:13,
-                fecha:new Date(ejercicio,11,31))
+        poliza=new Poliza(
+            empresa:empresa,
+            ejercicio:ejercicio,
+            tipo:'DIARIO',
+            subTipo:'CIERRE_ANUAL' ,
+            concepto:'CIERRE ANUAL ',
+            mes:13,
+            fecha:Periodo.getPeriodoEnUnMes(ejercicio,11).fechaFinal)
         
 
     	def asiento="CIERRE ANUAL ${ejercicio}"
     	def saldos=SaldoPorCuentaContable
     		.findAll("from SaldoPorCuentaContable s where s.empresa=? and s.ejercicio=? and s.mes=13 and s.cuenta.deResultado=true and s.cuenta.padre!=null and s.cuenta.clave not like ?"
-    			,[poliza.empresa,poliza.ejercicio,'90%'])
+    			,[empresa,poliza.ejercicio,'90%'])
     	BigDecimal cargos=0
     	BigDecimal abonos=0	
     	saldos.each {saldo->
@@ -138,7 +142,8 @@ class CierreContableService {
     			origen:cuenta.id
     			)
     	}
-        poliza.actualizar()
+        //poliza.actualizar()
+        assert poliza.id==null
         poliza=polizaService.save(poliza)
         saldoPorCuentaContableService.actualizarSaldos(poliza)
         return poliza

@@ -141,8 +141,9 @@ class PolizaController {
             redirect action:'edit',id:polizaInstance.id
             return
         }
-        log.debug 'Recalculando poliza: '+polizaInstance
+        
         def procesador=ProcesadorDePoliza.findByNombre(polizaInstance.subTipo)
+        log.info 'Recalculando poliza: '+polizaInstance+ ' Con procesador: '+procesador
         if(procesador){
             generadorDePoliza.generar(
                 polizaInstance.empresa,
@@ -203,13 +204,26 @@ class PolizaController {
     }
 
     def cierreAnual(){
-        [polizaInstanceList:Poliza.findByEmpresaAndTipo(session.empresa,'CIERRE_ANUAL')]
+
+        def subTipo = 'CIERRE_CONTABLE'
+        def q = Poliza.where {empresa==session.empresa && subTipo=='CIERRE_CONTABLE'}
+        def list=q.list(sort:'ejercicio',order:'asc')
+        [polizaInstanceList:list,subTipo:'CIERRE_ANUAL']
+        
     }
 
     
     @Transactional
     def generarCierreAnual(){
-        cierreContableService.generarPolizaDeCierre(session.empresa,session.periodoContable.ejercicio)
+        def empresa = session.empresa
+        def ejercicio = session.periodoContable.ejercicio
+        def poliza=Poliza.findByEmpresaAndEjercicioAndTipoAndSubTipo(empresa,ejercicio,'DIARIO','CIERRE_ANUAL')
+        if(poliza){
+            flash.message = "Polia de cierre anual para $empresa del ejercicio $ejercicio ya ha sido generada"
+            redirect action:'index'
+            return
+        }
+        cierreContableService.generarPolizaDeCierre(empresa,ejercicio)
         redirect action:'index'
 
     }
