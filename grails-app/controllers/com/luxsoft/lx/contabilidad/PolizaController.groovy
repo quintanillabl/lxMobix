@@ -223,6 +223,12 @@ class PolizaController {
             redirect action:'index'
             return
         }
+        def cuentaDeCierre = CuentaContable.findByEmpresaAndClave(empresa,'304-'+ejercicio.toString())
+        if(!cuentaDeCierre){
+            flash.message = "Debe dar de alta la cuenta de resutlados 304-$ejercicio"
+            redirect action:'index'
+            return
+        }
         cierreContableService.generarPolizaDeCierre(empresa,ejercicio)
         redirect action:'index'
 

@@ -119,7 +119,9 @@ class CierreContableService {
     	}
     	def resultado=cargos-abonos
     	
-    	CuentaContable cuenta=CuentaContable.get(44)
+    	CuentaContable cuenta=CuentaContable.buscarPorClave(empresa,'304-'+ejercicio.toString())
+        assert cuenta, 'Debe dar de alta la cuenta de resutlados 304-'+ejercicio
+
     	if(resultado && cuenta){
     		poliza.addToPartidas(
     			cuenta:cuenta,
