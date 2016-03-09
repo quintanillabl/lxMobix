@@ -62,6 +62,11 @@
 		        		    <i class="fa fa-print"></i> Balance general
 		        		</g:link> 
 		        	</li>
+		        	<li>
+		        		<g:link action="estadoDeResultados" >
+		        		    <i class="fa fa-print"></i> Estado de resultados
+		        		</g:link> 
+		        	</li>
 		        </ul>
 		    </div>
 		    
