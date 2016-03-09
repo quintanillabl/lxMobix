@@ -74,7 +74,8 @@ class SaldoPorCuentaBancariaController {
         
         def ingresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe>0  "
             ,[cuenta,fechaIni,fechaFin])[0]?:00
-        def egresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe<0  "
+        //def egresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe<0  "
+        def egresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe<0  "    
             ,[cuenta,fechaIni,fechaFin])[0]?:00
         def saldoFinal=saldoInicial+(ingresos+egresos)
         
@@ -85,7 +86,8 @@ class SaldoPorCuentaBancariaController {
             def res=[
             //'FOLIO':mov.id
             'FECHA':mov.fecha.format("dd"),
-             'CONCEPTO':mov.concepto
+             'CONCEPTO':mov.concepto=='PAGO PROVEEDOR'?mov.aFavor:(mov.concepto=='COBRO'?mov.comentario:mov.concepto)
+
              ,'TIPO':'ND'
             ,'INGRESO':mov.importe>0?mov.importe.abs():0.0
             ,'EGRESO':mov.importe<0?mov.importe.abs():0.0
@@ -165,7 +167,8 @@ class SaldoPorCuentaBancariaController {
             def res=[
             //'FOLIO':mov.id
             'FECHA':mov.fecha.format("dd"),
-             'CONCEPTO':mov.concepto
+             //'CONCEPTO':mov.concepto=='PAGO_PROVEEDOR'?mov.aFavor:(mov.concepto=='COBRO'?mov.comentario:mov.concepto)
+             'CONCEPTO':mov.concepto=='PAGO_PROVEEDOR'?"si es un pago":" No es un pago" //(mov.concepto=='COBRO'?mov.comentario:mov.concepto)
              ,'TIPO':'ND'
             ,'INGRESO':mov.importe>0?mov.importe.abs():0.0
             ,'EGRESO':mov.importe<0?mov.importe.abs():0.0

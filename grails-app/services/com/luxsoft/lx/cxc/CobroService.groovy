@@ -42,7 +42,7 @@ class CobroService {
             importe:cobro.importe,
             concepto:'COBRO',
             referencia:cobro.referencia,
-            comentario:cobro.comentario
+            comentario:cobro.comentario+' - '+cobro.cliente.nombre
         )
     }
 
