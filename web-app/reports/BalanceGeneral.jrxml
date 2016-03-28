@@ -23,25 +23,31 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["INMUEBLES SAN,   S.A. DE   C.V."]]></defaultValueExpression>
+	</parameter>
 	<parameter name="CUENTA" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="FECHA_INI" isForPrompting="false" class="java.util.Date"/>
 	<parameter name="FECHA_FIN" isForPrompting="false" class="java.util.Date"/>
 	<parameter name="YEAR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="MES" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT c.id,S.EJERCICIO as YEAR,S.MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.DE_RESULTADO,C.DESCRIPCION,CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END AS GRUPO,(S.SALDO_FINAL) AS SALDO
+	<parameter name="EMPRESA_ID" isForPrompting="true" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT c.id,S.EJERCICIO as YEAR,S.MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.DE_RESULTADO,C.DESCRIPCION,C.CLAVE
+,CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END AS GRUPO,(S.SALDO_FINAL) AS SALDO
 FROM cuenta_contable C
 JOIN saldo_por_cuenta_contable S ON(S.CUENTA_ID=C.ID)
-WHERE S.EJERCICIO=$P{YEAR} AND S.mes=$P{MES} AND C.TIPO<>'ORDEN' AND C.PADRE_ID IS NULL AND C.ID NOT IN(15,16) AND C.de_resultado IS FALSE
-UNION
-SELECT c.id,S.EJERCICIO as YEAR,S.MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.DE_RESULTADO,C.DESCRIPCION,CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END AS GRUPO,(S.SALDO_FINAL) AS SALDO
+WHERE S.EJERCICIO=$P{YEAR} AND S.mes=$P{MES} AND S.EMPRESA_ID=$P{EMPRESA_ID} AND C.TIPO<>'ORDEN' AND C.PADRE_ID IS NULL AND C.ID NOT IN(21,463) AND C.de_resultado IS FALSE
+	UNION
+SELECT c.id,S.EJERCICIO as YEAR,S.MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.DE_RESULTADO,'MOBILIARIO Y EQUIPO DE OFICINA' AS DESCRIPCION,C.CLAVE
+,CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END AS GRUPO,SUM(S.SALDO_FINAL) AS SALDO
 FROM cuenta_contable C
 JOIN saldo_por_cuenta_contable S ON(S.CUENTA_ID=C.ID)
-WHERE S.EJERCICIO=$P{YEAR} AND S.mes=$P{MES} AND C.TIPO<>'ORDEN' AND C.PADRE_ID IN(15,16)
-UNION
-SELECT C.id,P.EJERCICIO AS YEAR,P.MES AS MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.de_resultado,'RESULTADO DEL EJERCICIO' AS DESCRIPCION,(CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END) AS GRUPO ,IFNULL(SUM(D.DEBE-D.HABER),0) AS SALDO
+WHERE S.EJERCICIO=$P{YEAR} AND S.mes=$P{MES} AND S.EMPRESA_ID=$P{EMPRESA_ID} AND C.TIPO<>'ORDEN' AND C.PADRE_ID IN(21,463)
+	UNION
+SELECT C.id,YEAR(P.FECHA) AS YEAR,MONTH(P.FECHA) AS MES,'ENERO' AS MES_NOMBRE,C.TIPO,C.SUB_TIPO,C.de_resultado,'RESULTADO DEL EJERCICIO' AS DESCRIPCION,C.CLAVE
+,(CASE WHEN C.TIPO='ACTIVO' THEN '1' ELSE '2'  END) AS GRUPO ,IFNULL(SUM(D.DEBE-D.HABER),0) AS SALDO
 FROM poliza_det d JOIN poliza P ON(P.id=D.poliza_id) JOIN cuenta_contable C ON(C.ID=D.cuenta_id) 
-where   P.EJERCICIO=$P{YEAR} AND P.MES<=$P{MES}
+where   YEAR(P.FECHA)=$P{YEAR} AND P.EMPRESA_ID=$P{EMPRESA_ID} AND MONTH(P.FECHA)<=$P{MES} AND P.SUB_TIPO NOT LIKE '%CIERRE%ANUAL%'
  AND C.TIPO<>'ORDEN' 
  AND C.de_resultado is true]]></queryString>
 
@@ -53,12 +59,14 @@ where   P.EJERCICIO=$P{YEAR} AND P.MES<=$P{MES}
 	<field name="SUB_TIPO" class="java.lang.String"/>
 	<field name="DE_RESULTADO" class="java.lang.String"/>
 	<field name="DESCRIPCION" class="java.lang.String"/>
+	<field name="CLAVE" class="java.lang.String"/>
 	<field name="GRUPO" class="java.lang.String"/>
 	<field name="SALDO" class="java.math.BigDecimal"/>
 
 	<sortField name="GRUPO" />
 	<sortField name="TIPO" order="Descending" />
 	<sortField name="SUB_TIPO" />
+	<sortField name="CLAVE" />
 
 	<variable name="SUB_TIPO_ACT" class="java.math.BigDecimal" resetType="Group" resetGroup="SUB_TIPO" calculation="Sum">
 		<variableExpression><![CDATA[$F{SALDO}]]></variableExpression>
