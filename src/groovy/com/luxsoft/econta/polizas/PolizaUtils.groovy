@@ -178,7 +178,7 @@ class PolizaUtils {
 	}
 
 	public static ComisionesBancarias(def empresa){
-		return CuentaContable.findByEmpresaAndClave(empresa,'701-0002')	
+		return CuentaContable.findByEmpresaAndClave(empresa,'600-0011')	
 	}
 
 	public static InteresesBancarios(def empresa){
