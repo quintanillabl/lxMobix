@@ -358,7 +358,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 			poliza.concepto="${tp} CANCELADO ${pago.aFavor}"
 			
-			def descripcion=poliza.concepto+' '+pago.requisicion.comentario
+			def descripcion=poliza.concepto+' '+pago.comentario
 
 			def referencia=cheque.folio.toString()
 

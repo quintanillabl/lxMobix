@@ -80,7 +80,12 @@ class PagoController {
             notFound()
             return
         }
-        pagoService.delete(pagoInstance)
+        def res = pagoService.delete(pagoInstance)
+        if(res.comentario.contains('CANCELADO')){
+            flash.message = "Pago cancelado NO ELIMINADO POR HABER SIDO USADO EN UN CHEQUE"
+            redirect action:"show", id:res.id
+            return
+        }
         flash.message = message(code: 'default.deleted.message', args: [message(code: 'Pago.label', default: 'Pago'), pagoInstance.id])
         redirect action:"index", method:"GET"
     }

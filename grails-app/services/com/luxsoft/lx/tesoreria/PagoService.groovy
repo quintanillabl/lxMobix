@@ -1,5 +1,6 @@
 package com.luxsoft.lx.tesoreria
 
+import com.luxsoft.lx.core.FormaDePago
 import grails.transaction.Transactional
 
 @Transactional
@@ -34,11 +35,20 @@ class PagoService extends MovimientoDeCuentaService{
         if(pago.aplicaciones){
             throw new RuntimeException("Pago ya con aplicaciones no se puede eliminar");
         }
-        if(pago.cheque){
-            def cheque=pago.cheque
-            cheque.delete flush:true
+        if(pago.formaDePago == FormaDePago.CHEQUE){
+            def cheque = Cheque.where{egreso == pago}.find()
+            if(cheque){
+                pago.requisicion == null
+                pago.importe = 0.0
+                pago.comentario = 'CHEQUE CANCELADO '+cheque.folio
+                pago.save flush:true
+                return pago
+            } else {
+                 pago.delete flush:true
+            }
+        }else{
+            pago.delete flush:true
         }
-        pago.delete flush:true
     }
 
     def cancelarAplicaiones(Pago pago){
