@@ -22,14 +22,14 @@ abstract class  AbstractProcesador {
     }
 
     def generar(Empresa empresa,String tipo,String subTipo,Date fecha){
-        log.info "Generando poliza $empresa $tipo $subTipo $fecha"
+        log.debug "Generando poliza $empresa $tipo $subTipo $fecha"
 
     	def found = find(empresa,subTipo,fecha)
 
     	if (found) {
             if(!found.manual){
                 found.partidas.clear()
-                log.info "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
+                log.debug "Actualizando poliza ${subTipo }"+fecha.format('dd/MM/yyyy');
                 procesar(found)
                 cuadrar(found)
                 depurar(found)
@@ -37,7 +37,7 @@ abstract class  AbstractProcesador {
             }
 
     	} else {
-    		log.info "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
+    		log.debug "GENERANDO poliza ${subTipo } "+fecha.format('dd/MM/yyyy');
     		def poliza=build(empresa,fecha,tipo,subTipo)
     		//poliza = procesar(poliza)
             procesar(poliza)

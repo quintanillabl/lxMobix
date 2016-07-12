@@ -19,14 +19,15 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 	def generar(def empresa,def fecha,def procesador){
 
-		def pagos = Pago.findAll("from Pago p where p.empresa=? and date(p.fecha)=? order by p.folio",[empresa,fecha])
+		def pagos = Pago.findAll("from Pago p where p.empresa=? and date(p.fecha)=?  order by p.folio",[empresa,fecha])
 		def polizas=[]
 		def subTipo=procesador.nombre
 		def tipo=procesador.tipo
 
 		pagos.each{ pago ->
 			
-			println 'Procesando pago:'+pago
+			//println 'Procesando pago:'+pago
+			log.info 'Procesando pago: '+pago
 			def cancelados = Cheque.findAllByEgresoAndCancelacionIsNotNull(pago)
 			if(cancelados){
 				polizas<<procesarCancelados(cancelados,empresa,fecha,tipo,subTipo)
@@ -37,7 +38,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				"from Poliza p where p.empresa=? and p.subTipo=? and date(p.fecha)=? and p.entidad=? and p.origen=?",
 				[empresa,subTipo,fecha,pago.class.name,pago.id])
 
-			if(pago){
+			if(pago && pago.importe.abs()>0.0){
 				if (poliza) {
 					if(!poliza.manual){
 						poliza.partidas.clear()
@@ -83,8 +84,15 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def tp=''
 		switch(pago.formaDePago) {
 			case FormaDePago.CHEQUE:
-				tp='CH-'+pago.cheque.folio
-				break
+				if(pago.cheque != null){
+					tp='CH-'+pago.cheque.folio
+					break
+				}else{
+					def cheque = Cheque.where{egreso == pago}.find()
+					tp='CH-'+cheque.folio
+					break
+				}
+				
 			case FormaDePago.TRANSFERENCIA:
 				tp='TR-'+pago?.referencia
 				break
@@ -122,7 +130,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			}
 
 		}
-		abonoABancos(poliza,pago,descripcion,referencia)
+		if(pago.importe.abs()>0)
+			abonoABancos(poliza,pago,descripcion,referencia)
 		
 	}
 
@@ -358,7 +367,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 			poliza.concepto="${tp} CANCELADO ${pago.aFavor}"
 			
-			def descripcion=poliza.concepto+' '+pago.comentario
+			def descripcion=poliza.concepto
 
 			def referencia=cheque.folio.toString()
 
