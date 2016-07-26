@@ -63,7 +63,7 @@ class CfdiService {
 		comprobante.setVersion("3.2")
 		comprobante.setFecha(CfdiUtils.toXmlDate(fecha).getCalendarValue())
 		comprobante.setFormaDePago("PAGO EN UNA SOLA EXHIBICION")
-		comprobante.setMetodoDePago(venta.formaDePago)
+		comprobante.setMetodoDePago('03')
 		comprobante.setMoneda(venta.moneda.getCurrencyCode())
 		comprobante.setTipoCambio("1.0")
 		if(venta.cuentaDePago)
