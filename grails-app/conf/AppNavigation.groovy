@@ -41,6 +41,11 @@ navigation={
 			cierreAnual(controller:'poliza',action:'cierreAnual')
 			contabilidadElectronica(controller:'contabilidadElectronica',action:'index')
 		}
+		contabilidadSat(){
+			catalogos(controller:'satCatalogoLog', action:'index')
+			balanzas(controller:'satBalanzaLog', action:'index')
+			polizas(controller:'satPolizasLog', action:'index')
+		}
 		tesoreria(){
 			// tipoDeCambio(controller:'tipoDeCambio',actio:'index')
 			bancos(controller:'banco',action:'index')

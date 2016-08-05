@@ -27,6 +27,9 @@
 					<g:render template="/_menu/conta"/>
 				</ul>
 				<ul class="nav navbar-nav ">
+					<g:render template="/_menu/contaSat"/>
+				</ul>
+				<ul class="nav navbar-nav ">
 					<g:render template="/_menu/tesoreria"/>
 				</ul>
 			</g:if>

@@ -142,6 +142,7 @@ log4j.main = {
       development{
         
         info  'grails.app.controllers.com.luxsoft'
+        info  'grails.app.controllers.lx.econta'
         info  'grails.app.services.com.luxsoft'
         info  'grails.app.jobs'
         info  'grails.app.services.com.luxsoft.econta'
