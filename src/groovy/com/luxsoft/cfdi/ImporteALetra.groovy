@@ -460,7 +460,7 @@ class ImporteALetra {
 		}
 		else if (numero >= 20 && numero < 30)
 		{
-			if (numero <= 21)
+			if (numero < 21)
 				num_letra = "VEINTE ";
 			else
 				num_letra = "VEINTI".concat(unidad(numero - 20));

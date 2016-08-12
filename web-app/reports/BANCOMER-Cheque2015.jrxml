@@ -27,7 +27,7 @@
 	<parameter name="IMPLETRA" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["DOS CIENTOS OCHENTA Y DOS MIL NOVECIENTOS CUARENTA Y DOS 40/100 PESOS"]]></defaultValueExpression>
 	</parameter>
-	<queryString><![CDATA[SELECT ch.ID,M.FECHA,m.a_favor AS AFAVOR,-m.importe as IMPORTE
+	<queryString><![CDATA[SELECT ch.ID,M.FECHA,UPPER(m.a_favor) AS AFAVOR,-m.importe as IMPORTE
 FROM cheque ch 
 join movimiento_de_cuenta m on(m.id=ch.egreso_id) 
 join requisicion r on(r.id=m.requisicion_id) 
