@@ -93,7 +93,7 @@ class SatBalanzaLogService {
     }
 
     def String definirTipo(Empresa empresa,int e, int m){
-    	def found = SatBalanzaLog.where { rfc == empresa.rfc && ejercicio == 2016 && mes == 7 && acuse != null}.find()
+    	def found = SatBalanzaLog.where { rfc == empresa.rfc && ejercicio == e && mes == m && acuse != null}.find()
     	return found ? 'COMPLEMENTARIA' : 'NORMAL' 
     }
 

@@ -69,7 +69,12 @@ class SatCatalogoLogService {
 
     	Catalogo catalogo 
     	try {
-    		catalogo =  CatalogoUtils.read(data)
+            def schema = CatalogoUtils.getSchema()
+            def unmarshaller = CatalogoUtils
+                .getContext()
+                .createUnmarshaller()
+            unmarshaller.setSchema(schema)
+    		catalogo = (Catalogo)unmarshaller.unmarshal(new ByteArrayInputStream(data))
     	}
     	catch(javax.xml.bind.JAXBException jxe) {
     		def mm = ExceptionUtils.getRootCauseMessage(jxe)
