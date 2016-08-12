@@ -13,7 +13,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="socio" class="col-sm-4 control-label">Cuents de mayor</label>
+			<label for="socio" class="col-sm-4 control-label">Cuentas de mayor</label>
 			<div class="col-sm-8">
 				<p class="form-control-static">
 					<g:formatNumber number="${catalogo.getCtas().findAll{it.nivel == 1}.size()}" format="###"/> 

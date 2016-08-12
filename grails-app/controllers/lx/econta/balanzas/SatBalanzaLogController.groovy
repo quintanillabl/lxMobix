@@ -114,8 +114,31 @@ class SatBalanzaLogController {
 			redirect action: 'index'
 			return
     	}
-    	cat.delete flush:true
+    	balanza.delete flush:true
     	flash.message = "Balanza  ${balanza.id} eliminada"
     	redirect action:'index'
+    }
+
+    def uploadFile(){
+
+        def xml=request.getFile('file')
+        if (xml.empty) {
+            flash.message = 'Archivo incorrecto (archivo vacío)'
+            redirect action:'index'
+            return
+        }
+        try {
+        	log.info 'Importando balanza: '+params
+        	def balanzaLog = satBalanzaLogService.importar(xml.getBytes(),xml.getOriginalFilename())
+        	flash.message="Balanza importada ${balanzaLog.id}"
+        	redirect action:'show',params:[id:balanzaLog.id]
+        	return
+        }
+        catch(SatBalanzaLogException e) {
+        	log.error(e)
+        	flash.message = e.message
+        	redirect action: 'index'
+        	return
+        }
     }
 }

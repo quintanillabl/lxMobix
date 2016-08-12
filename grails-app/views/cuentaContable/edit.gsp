@@ -50,6 +50,7 @@
 							<f:field property="cuentaSat" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
 							<f:field property="detalle" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
 							<f:field property="deResultado" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
+							<f:field property="suspendida" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
 						</f:with>
 					  </div>
 					

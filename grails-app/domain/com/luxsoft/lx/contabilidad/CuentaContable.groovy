@@ -21,6 +21,8 @@ class CuentaContable implements Comparable{
 	
 	CuentaSat cuentaSat
 
+	Boolean suspendida = false
+
 	Date dateCreated
 	Date lastUpdated
     	

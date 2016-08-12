@@ -48,6 +48,11 @@
 		        			<i class="fa fa-cog"></i> Generar
 		        		</a>
 		        	</li>
+		        	<li>
+		        		<a data-target="#uploadFileDialog" data-toggle="modal" >
+		        			<i class="fa fa-upload"></i> Importar
+		        		</a>
+		        	</li>
 		            
 		        </ul>
 		    </div>
@@ -114,6 +119,7 @@
 		</div> <!-- end .row 2 -->
 		%{-- <g:render template="uploadXmlFile"/> --}%
 		<g:render template="generarDialog"/>
+		<g:render template="/common/uploadFile"/>
 
 	</div>
 

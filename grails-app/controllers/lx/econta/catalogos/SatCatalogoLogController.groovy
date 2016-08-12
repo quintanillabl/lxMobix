@@ -119,4 +119,27 @@ class SatCatalogoLogController {
     	flash.message = "Catalog de cuentas ${cat.id} eliminado"
     	redirect action:'index'
     }
+
+    def uploadFile(){
+
+        def xml=request.getFile('file')
+        if (xml.empty) {
+            flash.message = 'Archivo incorrecto (archivo vacío)'
+            redirect action:'index'
+            return
+        }
+        try {
+        	log.info 'Importando catalogo: '+params
+        	def catalogoLog = satCatalogoLogService.importar(xml.getBytes(),xml.getOriginalFilename())
+        	flash.message="Catalogo importado ${catalogoLog.id}"
+        	redirect action:'show',params:[id:catalogoLog.id]
+        	return
+        }
+        catch(SatCatalogoLogException e) {
+        	log.error(e)
+        	flash.message = e.message
+        	redirect action: 'index'
+        	return
+        }
+    }
 }

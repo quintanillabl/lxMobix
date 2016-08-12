@@ -34,6 +34,13 @@
 </div>
 
 <div class="form-group">
+	<label class="col-sm-2 control-label" >Suspendida</label>
+	<div class="col-sm-3">
+		 <input type="checkbox" class="form-control" ${it.suspendida?'checked':''}/>
+	</div>
+</div>
+
+<div class="form-group">
 	<label class="col-sm-2 control-label" >SAT</label>
 	<div class="col-sm-10">
 		 <input class="form-control" value="${it.cuentaSat}"/>
