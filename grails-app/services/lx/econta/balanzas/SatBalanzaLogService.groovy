@@ -93,14 +93,14 @@ class SatBalanzaLogService {
     }
 
     def String definirTipo(Empresa empresa,int e, int m){
-    	def found = SatBalanzaLog.where { rfc == empresa.rfc && ejercicio == e && mes == m && acuse != null}.find()
+    	def found = SatBalanzaLog.where { rfc == empresa.rfc && ejercicio == e && mes == m && acuse != null}.list()
     	return found ? 'COMPLEMENTARIA' : 'NORMAL' 
     }
 
     def findUltimaModificacionContable(Empresa empresa, int ejercicio, int mes){
     	//def found  = PolizaDet.where {poliza.empresa == empresa && poliza.ejercicio == ejercicio && poliza.mes == mes}.last()
-        def found = SatBalanzaLog.where {rfc == empresa.rfc && ejercicio==ejercicio && mes==mes && acuse!= null}.find([sort:'id', order:'desc']).find()
-    	return found ? found.enviado : null
+        def found = SatBalanzaLog.where {rfc == empresa.rfc && ejercicio==ejercicio && mes==mes && acuse!= null}.list([sort:'id', order:'desc'])
+    	return found ? found.get(0).enviado : null
     }
 
     def importar(byte[] data, fileName){
