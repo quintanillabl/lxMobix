@@ -76,7 +76,7 @@ class SatCatalogoLogController {
             redirect action:'show',id:log.id
             return
         }
-		log.info('Registro de acuse: '+command)
+		//log.info('Registro de acuse: '+command)
 		def catalogo = command.catalogo
 		catalogo.acuse = xml.getBytes()
 		catalogo.enviado = command.fecha
@@ -115,7 +115,7 @@ class SatCatalogoLogController {
 			return
 		}
 		
-		String fileName = "Acuse_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
+		String fileName = "${log.rfc}${log.ejercicio}${log.mes}CT_Acuse.pdf"
 		response.setContentType("application/octet-stream")
 		response.setHeader("Content-disposition", "attachment; filename=\"$fileName\"")
 		response.outputStream << new ByteArrayInputStream(log.acuse)
@@ -130,7 +130,7 @@ class SatCatalogoLogController {
 		}
 		String fileName = "${log.rfc}${log.ejercicio}${log.mes}CT_AcuseDeAceptacion.pdf"
 		render(
-            file: log.acuse, 
+            file: log.acuseDeAceptacion, 
             contentType: 'application/pdf',
             fileName:fileName)
 	}

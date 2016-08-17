@@ -74,7 +74,7 @@ class SatBalanzaLogController {
             redirect action:'show',id:log.id
             return
         }
-		log.info('Registro de acuse: '+command)
+		//log.info('Registro de acuse: '+command)
 		def balanza = command.balanza
 		balanza.acuse = xml.getBytes()
 		balanza.enviado = command.fecha
@@ -129,7 +129,7 @@ class SatBalanzaLogController {
 		//String fileName = "AcuseAceptacion_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
 		String fileName = "${balanzaSat.rfc}${balanzaSat.anio}${balanzaSat.mes}B${balanzaSat.tipoEnvio}_AcuseDeAceptacion.pdf"
 		render(
-            file: balanza.acuse, 
+            file: balanza.acuseDeAceptacion, 
             contentType: 'application/pdf',
             fileName:fileName)
 	}
