@@ -9,17 +9,19 @@
 			
 			<g:uploadForm name="uploadAcuse" class="form-horizontal" action="uploadAcuse" >
 				<div class="modal-body">
+					<f:with bean="${new lx.econta.balanzas.RegistroDeAcuseBalanzaCommand()}">
+						<g:hiddenField name="balanza" value="${balanzaInstance.id}"/>
+						<f:field property="fecha" widget-class="form-control"/>
+						<div class="form-group">
+						    <label for="inputFile" class="col-sm-2 control-label"> Balanza</label>
+						    <div class="col-sm-10">
+						    	<input type="file" id="inputFile" name="file"  required 
+						    		class="form-control">
+						    	<p class="help-block">Seleccion el archivo XML</p>
+						    </div>
+						</div>
+					</f:with>
 					
-					<g:hiddenField name="id" value="${balanzaInstance.id}"/>
-
-					<div class="form-group">
-					    <label for="inputFile" class="col-sm-4 control-label"> Balanza</label>
-					    <div class="col-sm-8">
-					    	<input type="file" id="inputFile" name="file" accept="application/xml" required 
-					    		class="form-control">
-					    	<p class="help-block">Seleccion el archivo XML</p>
-					    </div>
-					 </div>
 				</div>
 
 				<div class="modal-footer">

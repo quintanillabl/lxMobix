@@ -2,6 +2,8 @@ package lx.econta.balanzas
 
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
+import groovy.transform.ToString
+import org.grails.databinding.BindingFormat
 
 import org.springframework.security.access.annotation.Secured
 import com.luxsoft.lx.contabilidad.PeriodoContable
@@ -58,14 +60,13 @@ class SatBalanzaLogController {
 		
 	}
 
-	def uploadAcuse(SatBalanzaLog log){
+	def uploadAcuse(RegistroDeAcuseBalanzaCommand command){
 		
-		if(log == null){
-			flash.message = 'No se encuentra el registro de balanza '
-			redirect action: 'index'
-			return
+		if(command.hasErrors()){
+			respond polizaInstance.errors, view:'show'
+            return
 		}
-
+		
         def xml=request.getFile('file')
         
         if (xml.empty) {
@@ -73,25 +74,35 @@ class SatBalanzaLogController {
             redirect action:'show',id:log.id
             return
         }
-
-		//log.info 'Cargando Acuse de envio '
-		log.acuse = xml.getBytes()
-		log.enviado = new Date()
-		log.save failOnError:true, flush:true
+		log.info('Registro de acuse: '+command)
+		def balanza = command.balanza
+		balanza.acuse = xml.getBytes()
+		balanza.enviado = command.fecha
+		balanza.save failOnError:true, flush:true
 		flash.message="Acuse registrado "
-		redirect action:'show',params:[id:log.id]
+		redirect action:'show',params:[id:balanza.id]
     }
 
-    def mostrarAcuseXml(SatBalanzaLog log){
-		if(log == null){
-			flash.message = 'Registro de balanza nulo no se puede mostrar el acuse'
+    def uploadAcuseDeAceptacion(SatBalanzaLog balanza){
+		
+		if(balanza == null){
+			flash.message = 'No se encuentra el registro de balanza '
 			redirect action: 'index'
 			return
 		}
-		GPathResult res = new XmlSlurper().parse(new ByteArrayInputStream(log.acuse))
-		String s = XmlUtil.serialize(res)
-		render(text: s, contentType: "text/xml", encoding: "UTF-8")
-	}
+        def xml=request.getFile('file')
+        
+        if (xml.empty) {
+            flash.message = 'Archivo incorrecto (archivo vacío)'
+            redirect action:'show',id:log.id
+            return
+        }
+		balanza.acuseDeAceptacion = xml.getBytes()
+		balanza.save failOnError:true, flush:true
+		flash.message="Acuse registrado "
+		redirect action:'show',params:[id:balanza.id]
+    }
+    
 
     def descargarAcuseXml(SatBalanzaLog balanza){
 		if(log == null){
@@ -101,11 +112,26 @@ class SatBalanzaLogController {
 		}
 		Balanza balanzaSat = balanza.asBalanza()
 		
-		String fileName = "${balanzaSat.rfc}${balanzaSat.anio}${balanzaSat.mes}B${balanzaSat.tipoEnvio}_Acuse.xml"
+		String fileName = "${balanzaSat.rfc}${balanzaSat.anio}${balanzaSat.mes}B${balanzaSat.tipoEnvio}_Acuse.pdf"
 		response.setContentType("application/octet-stream")
 		response.setHeader("Content-disposition", "attachment; filename=\"$fileName\"")
 		response.outputStream << new ByteArrayInputStream(balanza.acuse)
 		
+	}
+
+	def descargarAcuseDeAceptacion(SatBalanzaLog balanza){
+		if(balanza == null){
+			flash.message = 'Registro de balanza nulo no se puede descargar el acuse de aceptacion'
+			redirect action: 'index'
+			return
+		}
+		Balanza balanzaSat = balanza.asBalanza()
+		//String fileName = "AcuseAceptacion_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
+		String fileName = "${balanzaSat.rfc}${balanzaSat.anio}${balanzaSat.mes}B${balanzaSat.tipoEnvio}_AcuseDeAceptacion.pdf"
+		render(
+            file: balanza.acuse, 
+            contentType: 'application/pdf',
+            fileName:fileName)
 	}
 
     def delete(SatBalanzaLog balanza){
@@ -141,4 +167,14 @@ class SatBalanzaLogController {
         	return
         }
     }
+}
+
+@ToString(includeNames=true,includePackage=false)
+class RegistroDeAcuseBalanzaCommand {
+
+	SatBalanzaLog balanza
+
+	@BindingFormat('dd/MM/yyyy')
+    Date fecha=new Date()
+
 }

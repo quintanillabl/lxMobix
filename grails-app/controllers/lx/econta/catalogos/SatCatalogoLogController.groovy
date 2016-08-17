@@ -104,20 +104,9 @@ class SatCatalogoLogController {
 		flash.message="Acuse registrado "
 		redirect action:'show',params:[id:log.id]
     }
-    
 
-	def descargarAcuseDeAceptacion(SatCatalogoLog log){
-		if(log == null){
-			flash.message = 'Registro de catalogo nulo no se puede mostrar el xml'
-			redirect action: 'index'
-			return
-		}
-		String fileName = "AcuseAceptacion_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
-		render(
-            file: log.acuse, 
-            contentType: 'application/pdf',
-            fileName:fileName)
-	}
+
+	
 
     def descargarAcuseXml(SatCatalogoLog log){
 		if(log == null){
@@ -131,6 +120,19 @@ class SatCatalogoLogController {
 		response.setHeader("Content-disposition", "attachment; filename=\"$fileName\"")
 		response.outputStream << new ByteArrayInputStream(log.acuse)
 		
+	}
+
+	def descargarAcuseDeAceptacion(SatCatalogoLog log){
+		if(log == null){
+			flash.message = 'Registro de catalogo nulo no se puede mostrar el xml'
+			redirect action: 'index'
+			return
+		}
+		String fileName = "${log.rfc}${log.ejercicio}${log.mes}CT_AcuseDeAceptacion.pdf"
+		render(
+            file: log.acuse, 
+            contentType: 'application/pdf',
+            fileName:fileName)
 	}
 
     def delete(SatCatalogoLog cat){

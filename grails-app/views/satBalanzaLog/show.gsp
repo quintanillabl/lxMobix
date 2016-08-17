@@ -43,7 +43,9 @@
 								<span class="glyphicon glyphicon-cloud-upload"> </span> Registrar acuse
 							</a>
 
-							
+							<a href="#uploadAcuseDeAceptacionDialog" class="btn btn-default btn-sm" data-toggle="modal">
+								<span class="glyphicon glyphicon-cloud-upload"> </span> Acuse de aceptacion
+							</a>
 
 							<g:if test="${balanzaInstance.acuse}">
 								<g:link  action="descargarAcuseXml" 
@@ -51,8 +53,14 @@
 									class="btn btn-default btn-sm" >
 									<span class="glyphicon glyphicon-cloud-download"></span> Descargar acuse
 								</g:link>
-								<g:link class="btn btn-default btn-sm" action="mostrarAcuseXml" resource="${balanzaInstance}">
+								%{-- <g:link class="btn btn-default btn-sm" action="mostrarAcuseXml" resource="${balanzaInstance}">
 									Ver Acuse
+								</g:link> --}%
+							</g:if>
+
+							<g:if test="${balanzaInstance.acuseDeAceptacion}">
+								<g:link class="btn btn-default btn-sm" action="descargarAcuseDeAceptacion" resource="${balanzaInstance}">
+									<span class="glyphicon glyphicon-cloud-download"></span> Acuse de aceptacion
 								</g:link>
 							</g:if>
 							
@@ -77,6 +85,7 @@
 		</div><!-- end .row -->
 		
 		<g:render template="uploadAcuse"/>
+		<g:render template="uploadAcuseDeAceptacion"/>
 	
 		
 	</div>
