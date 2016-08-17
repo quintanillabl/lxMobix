@@ -84,4 +84,6 @@ databaseChangeLog = {
 	include file: 'econta-balanza-01.groovy'
 
 	include file: 'cuenta-suspendida.groovy'
+
+	include file: 'econta-acuses-fix.groovy'
 }

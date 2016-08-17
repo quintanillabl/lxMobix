@@ -9,17 +9,36 @@
 			
 			<g:uploadForm name="uploadAcuse" class="form-horizontal" action="uploadAcuse" >
 				<div class="modal-body">
-					
-					<g:hiddenField name="id" value="${catalogoInstance.id}"/>
 
-					<div class="form-group">
-					    <label for="inputFile" class="col-sm-4 control-label"> Catalogo</label>
+					<f:with bean="${new lx.econta.catalogos.RegistroDeAcuseCommand()}">
+						<g:hiddenField name="catalogo" value="${catalogoInstance.id}"/>
+						<f:field property="fecha" widget-class="form-control"/>
+						<div class="form-group">
+						    <label for="inputFile" class="col-sm-2 control-label"> Catalogo</label>
+						    <div class="col-sm-10">
+						    	<input type="file" id="inputFile" name="file"  required 
+						    		class="form-control">
+						    	<p class="help-block">Seleccion el archivo XML</p>
+						    </div>
+						</div>
+					</f:with>
+					
+					
+
+					%{-- <div class="form-group">
+					    <label for="inputFile" class="col-sm-4 control-label"> Fecha</label>
 					    <div class="col-sm-8">
-					    	<input type="file" id="inputFile" name="file" accept="application/xml" required 
+					    	<input type="text" 
+					    		name="fecha"  
+					    		id="fechaFile" 
+					    		required 
 					    		class="form-control">
-					    	<p class="help-block">Seleccion el archivo XML</p>
 					    </div>
-					 </div>
+					</div> --}%
+					
+
+					
+
 				</div>
 
 				<div class="modal-footer">
@@ -34,3 +53,4 @@
 	</div>
 	<!-- modal-di -->
 </div>
+

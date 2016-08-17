@@ -2,6 +2,8 @@ package lx.econta.catalogos
 
 import groovy.util.slurpersupport.GPathResult
 import groovy.xml.XmlUtil
+import groovy.transform.ToString
+import org.grails.databinding.BindingFormat
 
 import org.springframework.security.access.annotation.Secured
 import com.luxsoft.lx.contabilidad.PeriodoContable
@@ -60,14 +62,13 @@ class SatCatalogoLogController {
 		
 	}
 
-	def uploadAcuse(SatCatalogoLog log){
+	def uploadAcuse(RegistroDeAcuseCommand command){
 		
-		if(log == null){
-			flash.message = 'No se encuentra el registro de catalogo '
-			redirect action: 'index'
-			return
+		if(command.hasErrors()){
+			respond polizaInstance.errors, view:'show'
+            return
 		}
-
+		
         def xml=request.getFile('file')
         
         if (xml.empty) {
@@ -75,24 +76,47 @@ class SatCatalogoLogController {
             redirect action:'show',id:log.id
             return
         }
+		log.info('Registro de acuse: '+command)
+		def catalogo = command.catalogo
+		catalogo.acuse = xml.getBytes()
+		catalogo.enviado = command.fecha
+		catalogo.save failOnError:true, flush:true
+		flash.message="Acuse registrado "
+		redirect action:'show',params:[id:catalogo.id]
+    }
 
-		//log.info 'Cargando Acuse de envio '
-		log.acuse = xml.getBytes()
-		log.enviado = new Date()
+    def uploadAcuseDeAceptacion(SatCatalogoLog log){
+		
+		if(log == null){
+			flash.message = 'No se encuentra el registro de catalogo '
+			redirect action: 'index'
+			return
+		}
+        def xml=request.getFile('file')
+        
+        if (xml.empty) {
+            flash.message = 'Archivo incorrecto (archivo vacío)'
+            redirect action:'show',id:log.id
+            return
+        }
+		log.acuseDeAceptacion = xml.getBytes()
 		log.save failOnError:true, flush:true
 		flash.message="Acuse registrado "
 		redirect action:'show',params:[id:log.id]
     }
+    
 
-    def mostrarAcuseXml(SatCatalogoLog log){
+	def descargarAcuseDeAceptacion(SatCatalogoLog log){
 		if(log == null){
 			flash.message = 'Registro de catalogo nulo no se puede mostrar el xml'
 			redirect action: 'index'
 			return
 		}
-		GPathResult res = new XmlSlurper().parse(new ByteArrayInputStream(log.acuse))
-		String s = XmlUtil.serialize(res)
-		render(text: s, contentType: "text/xml", encoding: "UTF-8")
+		String fileName = "AcuseAceptacion_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
+		render(
+            file: log.acuse, 
+            contentType: 'application/pdf',
+            fileName:fileName)
 	}
 
     def descargarAcuseXml(SatCatalogoLog log){
@@ -102,7 +126,7 @@ class SatCatalogoLogController {
 			return
 		}
 		
-		String fileName = "Acuse_${log.rfc}${log.ejercicio}${log.mes}CT.xml"
+		String fileName = "Acuse_${log.rfc}${log.ejercicio}${log.mes}CT.pdf"
 		response.setContentType("application/octet-stream")
 		response.setHeader("Content-disposition", "attachment; filename=\"$fileName\"")
 		response.outputStream << new ByteArrayInputStream(log.acuse)
@@ -142,4 +166,16 @@ class SatCatalogoLogController {
         	return
         }
     }
+}
+
+@ToString(includeNames=true,includePackage=false)
+class RegistroDeAcuseCommand {
+
+	SatCatalogoLog catalogo
+
+	@BindingFormat('dd/MM/yyyy')
+    Date fecha=new Date()
+
+    //byte[] file
+
 }

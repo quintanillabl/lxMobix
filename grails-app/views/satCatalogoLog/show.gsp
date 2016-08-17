@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Catalogo: ${catalogoInstance.id}</title>
+	<asset:stylesheet src="jquery-ui.css"/>
+	<asset:javascript src="jquery-ui/autocomplete.js"/>
 </head>
 <body>
 	<div class="container">
@@ -43,6 +45,10 @@
 								<span class="glyphicon glyphicon-cloud-upload"> </span> Registrar acuse
 							</a>
 
+							<a href="#uploadAcuseDeAceptacionDialog" class="btn btn-default btn-sm" data-toggle="modal">
+								<span class="glyphicon glyphicon-cloud-upload"> </span> Acuse de aceptacion
+							</a>
+
 							
 
 							<g:if test="${catalogoInstance.acuse}">
@@ -51,8 +57,11 @@
 									class="btn btn-default btn-sm" >
 									<span class="glyphicon glyphicon-cloud-download"></span> Descargar acuse
 								</g:link>
-								<g:link class="btn btn-default btn-sm" action="mostrarAcuseXml" resource="${catalogoInstance}">
-									Acuse XML
+							</g:if>
+
+							<g:if test="${catalogoInstance.acuseDeAceptacion}">
+								<g:link class="btn btn-default btn-sm" action="descargarAcuseDeAceptacion" resource="${catalogoInstance}">
+									<span class="glyphicon glyphicon-cloud-download"></span> Acuse de aceptacion
 								</g:link>
 							</g:if>
 							
@@ -79,6 +88,7 @@
 		</div><!-- end .row -->
 		
 		<g:render template="uploadAcuse"/>
+		<g:render template="uploadAcuseDeAceptacion"/>
 	
 		
 	</div>
@@ -88,6 +98,15 @@
 			var top = (screen.height/2)-(h/2);
 			return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width='+w+', height='+h+', top='+top+', left='+left);
 		}
+		$(function(){
+			$("#fechaField").datepicker({
+				changeMonth: true,
+		      	changeYear: true,
+		      	showAnim: "fadeIn",
+		      	showOptions: { direction: "up" },
+		      	format: 'dd/mm/yy'
+			});
+		});
 	</script>
 	
 </body>

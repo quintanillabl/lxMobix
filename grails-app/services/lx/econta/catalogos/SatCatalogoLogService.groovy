@@ -82,17 +82,18 @@ class SatCatalogoLogService {
     		throw new SatCatalogoLogException(
     			"El archivo $fileName no es un archivo XML valido para crear un Catalogo (${mm})")
     	}
-    	
+    	/*
     	SatCatalogoLog cat = SatCatalogoLog.where {
     		rfc == catalogo.rfc && ejercicio == catalogo.anio && mes == SatCatalogoLog.Mes.fromValue(catalogo.mes.toInteger())
     	}.find()
     	if(cat){
     		throw new SatCatalogoLogException("Ya exste el catalogo  ${cat.mes} - ${cat.ejercicio}  para $cat.nombre Folio(Id):$cat.id")
     	}
+        */
     	def empresa = Empresa.where {rfc == catalogo.rfc}.find()
     	assert empresa, 'No existe empresa con rfc: '+catalogo.rfc
 
-    	cat = new SatCatalogoLog(
+    	SatCatalogoLog cat = new SatCatalogoLog(
     			rfc:catalogo.rfc,
     			nombre:empresa.nombre,
     			ejercicio: catalogo.anio,
