@@ -15,6 +15,7 @@ class PagoService extends MovimientoDeCuentaService{
         pago.aFavor=pago.requisicion.aFavor
         pago.importe=pago.requisicion.total.abs()*-1
         pago.fecha=pago.requisicion.pago
+        pago.formaDePago = pago.requisicion.formaDePago
         return super.save(pago)
     }
 

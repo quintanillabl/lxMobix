@@ -6,6 +6,7 @@ import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.core.Proveedor
 import com.luxsoft.lx.core.Autorizacion
 import com.luxsoft.lx.tesoreria.Pago
+import com.luxsoft.lx.core.FormaDePago
 
 @EqualsAndHashCode(includes='empresa,proveedor,id')
 class Requisicion {
@@ -20,6 +21,8 @@ class Requisicion {
 
 	@BindingFormat('dd/MM/yyyy')
 	Date pago
+
+    FormaDePago formaDePago
 
 	Autorizacion autorizacion
 
@@ -41,11 +44,13 @@ class Requisicion {
     	tipo inList:['GASTO','COMPRA','HONORARIOS'],maxSize:50
     	total scale:4
     	aFavor nullable:true
+        formaDePago nullable:true
     }
 
     static mapping = {
     	partidas cascade: "all-delete-orphan"
     	pago type:'date'
+        
     }
 
     String toString(){

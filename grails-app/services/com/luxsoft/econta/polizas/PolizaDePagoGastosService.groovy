@@ -256,6 +256,28 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			)
 			det.cheque=polCheque
 		}
+		if(pago.formaDePago==FormaDePago.TRANSFERENCIA){
+			
+			if(pago.bancoDestino && pago.cuentaDestino){
+				log.info('Generando registro de Transaccion transferencia SAT para pago: '+pago.id)
+				assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
+				def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
+				def transferencia=new TransaccionTransferencia(
+					polizaDet:det,
+					bancoOrigenNacional:pago.cuenta.banco.bancoSat,
+					cuentaOrigen:pago.cuenta.numero,
+					fecha:pago.dateCreated,
+					beneficiario:pago.aFavor,
+					rfc:rfc,
+					monto:pago.importe,
+					bancoDestinoNacional: pago.bancoDestino,
+					cuentaDestino: pago.cuentaDestino
+				)
+				det.transferencia=transferencia
+			}
+			
+			
+		}
 		poliza.addToPartidas(det)
 	}
 

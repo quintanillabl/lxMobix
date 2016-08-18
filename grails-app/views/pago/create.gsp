@@ -60,11 +60,27 @@
 									</input>
 								</f:field>
 								<f:field property="cuenta"  wrapper="bootstrap3" widget-class="form-control"/>
-								<f:field property="formaDePago" wrapper="bootstrap3" widget-class="form-control"/>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="formaDePago">F.Pago</label>
+									<div class="col-sm-9">
+										<input id="formaDePago" type="text" readonly="true" class="form-control " >
+									</div>
+								</div>
 								<f:field property="fecha" wrapper="bootstrap3" widget-class="form-control"/>
 								
 								<f:field property="importe" wrapper="bootstrap3" widget="money" />
 								<f:field property="aFavor" wrapper="bootstrap3" widget-class="form-control" widget-readOnly="readOnly"/>
+								<f:field property="bancoDestino" wrapper="bootstrap3">
+									<g:hiddenField id="bancoDestinoId" name="bancoDestino.id" value="${value}" />
+									<input 
+										id="bancoDestinoField" 
+										type="text" 
+										class="form-control" 
+										value="${value}" 
+										placeholder="Seleccione un Banco destino " disabled>
+									</input>
+								</f:field>
+								<f:field property="cuentaDestino" wrapper="bootstrap3" widget-class="form-control" widget-disabled="true"/>
 								<f:field property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
 								<f:field property="comentario" wrapper="bootstrap3" widget-class="form-control"/>
 							</f:with>
@@ -117,7 +133,30 @@
 					$("#requisicion").val(ui.item.id);
 					$("#importe").autoNumeric('set',ui.item.total);
 					$("#aFavor").val(ui.item.afavor);
-					$("#fecha").val(ui.item.pago)
+					$("#fecha").val(ui.item.pago);
+					var fp = ui.item.formaDePago;
+					$("#formaDePago").val(fp);
+					if(fp === 'TRANSFERENCIA'){
+						$("#bancoDestinoField").prop( "disabled", false );
+						$("#bancoDestinoField").prop( "required", true );
+						$("#cuentaDestino").prop( "disabled", false );
+						$("#cuentaDestino").prop( "required", true );
+					} else {
+						$("#bancoDestinoField").prop( "disabled", true );
+						$("#bancoDestinoField").prop( "required", false );
+						$("#cuentaDestino").prop( "disabled", true );
+						$("#cuentaDestino").prop( "required", false );
+					}
+				}
+			});
+
+			$("#bancoDestinoField").autocomplete({
+				source:'<g:createLink  controller="bancoSat" action="bancos"/>',
+				minLength:1,
+				select:function(e,ui){
+					console.log('Valor seleccionado: '+ui.item.id);
+					$("#bancoDestinoId").val(ui.item.id);
+					
 				}
 			});
 

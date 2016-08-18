@@ -76,6 +76,7 @@
 									<div class="col-sm-8">
 
 										<f:field property="pago" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
+										<f:field property="formaDePago" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 										<f:field property="tipo" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 										<f:field property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 

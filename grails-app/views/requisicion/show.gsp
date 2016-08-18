@@ -52,6 +52,7 @@
 									<div class="col-sm-8">
 
 										<f:display property="pago" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
+										<f:display property="formaDePago" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 										<f:display property="tipo" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 										<f:display property="comentario" widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-2 col-sm-offset-1"/>
 

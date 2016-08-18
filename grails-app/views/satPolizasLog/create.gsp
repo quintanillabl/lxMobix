@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Requisición</title>
+	<title>Registro Polizas (SAT)</title>
 </head>
 <body>
 
@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 
 				<div class="page-header">
-				  <h3>Alta de requiscion  <small> (${session.empresa})</small>
+				  <h3>Alta de registro Polizas para el SAT  <small> (${session.empresa})</small>
 				  	<g:if test="${flash.message}">
 				  		<small><span class="label label-warning ">${flash.message}</span></small>
 				  	</g:if> 
@@ -35,20 +35,23 @@
 					<div class="panel panel-primary">
 						<div class="panel-heading">Datos generales</div>
 					  	<div class="panel-body">
-						    <g:hasErrors bean="${requisicionInstance}">
+						    <g:hasErrors bean="${satPolizasLogInstance}">
 						    	<div class="alert alert-danger">
 						    		<ul class="errors" >
-						    			<g:renderErrors bean="${requisicionInstance}" as="list" />
+						    			<g:renderErrors bean="${satPolizasLogInstance}" as="list" />
 						    		</ul>
 						    	</div>
 						    	
 						    </g:hasErrors>
-						    <g:hiddenField name="empresa.id" value="${session.empresa.id}"/>
-							<f:with bean="${requisicionInstance}">
-								<f:field property="proveedor"/>
+						    <g:hiddenField name="rfc" value="${session.empresa.rfc}"/>
+						    <g:hiddenField name="nombre" value="${session.empresa.nombre}"/>
+							<f:with bean="${satPolizasLogInstance}">
+								<f:field property="ejercicio" widget-class="form-control"/>
+								<f:field property="mes" widget-class="form-control"/>
 								<f:field property="tipo" widget-class="form-control"/>
-								<f:field property="formaDePago" widget-class="form-control"/>
-								<f:field property="pago"/>
+								<f:field property="numeroDeOrden"  widget-class="form-control" label="# Orden"/>
+								<f:field property="numeroDeTramite" widget-class="form-control" label="# Tramite"/>
+
 								<f:field property="comentario" widget-class="form-control"/>
 							</f:with>
 					  	</div>

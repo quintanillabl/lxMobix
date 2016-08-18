@@ -5,8 +5,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="layout" content="application"/>
 	<title>Póliza ${polizaInstance?.id}</title>
-	<asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/> 
+	%{-- <asset:stylesheet src="datatables/dataTables.css"/>
+	<asset:javascript src="datatables/dataTables.js"/>  --}%
 </head>
 <body>
 
@@ -126,6 +126,7 @@
 							<th>Asiento</th>
 							<th>Referencia</th>
 							<th>Origen</th>
+							<th>Transaccion</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -143,6 +144,26 @@
 								<td>${fieldValue(bean:row,field:"asiento")}</td>
 								<td>${fieldValue(bean:row,field:"referencia")}</td>
 								<td>${fieldValue(bean:row,field:"origen")}</td>
+								<td>
+									<g:if test ="${row.cheque}">
+										<a  data-toggle="popover" role="button" tabindex="0"
+											
+											title="Cheque"
+											data-placement="left" 
+											data-content="${row.cheque}" >
+											Trx-CHE
+										</a>	
+									</g:if>
+									<g:elseif test="${row.transferencia}">
+										<a  data-toggle="popover" role="button" tabindex="0"
+											title="Transferencia"
+											data-placement="left" 
+											data-content="${row.transferencia}" >
+											Trx-TR
+										</a>	
+									</g:elseif>
+								</td>
+								
 								
 							</tr>
 						</g:each>
@@ -163,6 +184,12 @@
 		
 
 	</div>
+
+	<script>
+		$(function(){
+			$('[data-toggle="popover"]').popover();
+		});
+	</script>
 
 	
 </body>

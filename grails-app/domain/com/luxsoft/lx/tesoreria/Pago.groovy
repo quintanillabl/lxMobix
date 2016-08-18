@@ -2,6 +2,7 @@ package com.luxsoft.lx.tesoreria
 
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.cxp.Requisicion
+import com.luxsoft.lx.sat.BancoSat
 
 
 class Pago extends MovimientoDeCuenta{
@@ -16,6 +17,10 @@ class Pago extends MovimientoDeCuenta{
 
 	Cheque cheque
 
+	BancoSat bancoDestino
+
+    String cuentaDestino
+
 	static hasMany = [aplicaciones: AplicacionDePago]
 
 	//static hasOne = [cheque: Cheque]
@@ -26,6 +31,8 @@ class Pago extends MovimientoDeCuenta{
     	//cheque nullable:true
     	aFavor nullable:true
     	rfc nullable:true,maxSize:13
+    	bancoDestino nullable:true
+    	cuentaDestino nullable:true
     }
     
     static embedded = ['autorizacion']

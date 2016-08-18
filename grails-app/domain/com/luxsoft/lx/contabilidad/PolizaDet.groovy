@@ -22,7 +22,7 @@ class PolizaDet {
 	
 	static belongsTo = [poliza:Poliza]
 
-	static hasOne = [cheque: PolizaCheque]
+	static hasOne = [cheque: PolizaCheque, transferencia: TransaccionTransferencia]
 
     static constraints = {
     	concepto(nullable:true,maxSize:300)
@@ -32,6 +32,7 @@ class PolizaDet {
 		entidad(nullable:true,maxSize:50)
 		descripcion(nullable:true,maxSize:255)
 		cheque(nullable:true)
+		transferencia(nullable:true)
     }
 	
 	static mapping ={

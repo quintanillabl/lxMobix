@@ -35,7 +35,11 @@
 			        			<i class="fa fa-plus"></i> Cancelar aplicación
 			        		</g:link>
 			        	</g:else>
-			        	
+			        	<g:if test="${pagoInstance.formaDePago.toString() == 'TRANSFERENCIA'}">
+			        		<g:link  action="edit" class="btn btn-default " id="${pagoInstance.id}" >
+			        			<i class="fa fa-pencil"></i> Editar
+			        		</g:link>
+			        	</g:if>
 			    	</sec:ifAllGranted>
 				</div>
 			</div>
@@ -74,7 +78,7 @@
 									<f:display property="aplicado" widget="money" wrapper="bootstrap3"/>
 									<f:display property="disponible" widget="money" wrapper="bootstrap3"/>
 									<f:display property="creadoPor" widget-class="form-control" wrapper="bootstrap3"/>
-									<g:if test="${pagoInstance.cuenta.tipo=='CHEQUES'}">
+									<g:if test="${pagoInstance.formaDePago.toString() == 'CHEQUES'}">
 										<legend>Cheque: </legend>
 										<f:display property="cheque.cuenta" />
 										<f:display property="cheque.folio" />
@@ -110,6 +114,12 @@
 												
 											</div>
 										</div>
+									</g:if>
+									<g:if test="${pagoInstance.formaDePago.toString() == 'TRANSFERENCIA'}">
+										<legend>Transferencia: </legend>
+										<f:display property="bancoDestino" wrapper="bootstrap3"/>
+										<f:display property="cuentaDestino" wrapper="bootstrap3"/>
+										
 									</g:if>
 								</div>
 								

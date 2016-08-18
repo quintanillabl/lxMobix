@@ -86,4 +86,14 @@ databaseChangeLog = {
 	include file: 'cuenta-suspendida.groovy'
 
 	include file: 'econta-acuses-fix.groovy'
+
+	include file: 'econta-polizas-01.groovy'
+
+	include file: 'econta-transaccion-transferencia.groovy'
+
+	
+
+	include file: 'requisicion-fix-001.groovy'
+
+	include file: 'econta-pago-transferencia-fix.groovy'
 }

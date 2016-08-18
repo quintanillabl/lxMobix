@@ -34,7 +34,8 @@ class PagoController {
     }
 
     def create() {
-        [pagoInstance:new Pago(fecha:new Date())]
+        //[pagoInstance:new Pago(fecha:new Date())]
+        [pagoInstance: new PagoCommand(fecha:new Date())]
     }
 
     @Transactional
@@ -70,7 +71,7 @@ class PagoController {
         }
         pagoInstance.save flush:true
         flash.message = message(code: 'default.updated.message', args: [message(code: 'Pago.label', default: 'Pago'), pagoInstance.id])
-        redirect action:'edit',id:pagoInstance.id
+        redirect action:'show',id:pagoInstance.id
     }
 
     @Transactional
@@ -81,7 +82,7 @@ class PagoController {
             return
         }
         def res = pagoService.delete(pagoInstance)
-        if(res.comentario.contains('CANCELADO')){
+        if(res?.comentario?.contains('CANCELADO')){
             flash.message = "Pago cancelado NO ELIMINADO POR HABER SIDO USADO EN UN CHEQUE"
             redirect action:"show", id:res.id
             return
@@ -111,13 +112,14 @@ class PagoController {
         def mf = new DecimalFormat(pattern)
 
         list=list.collect{ r->
-            def nombre="Folio: ${r.folio} (${r.proveedor}) Pago:${r.pago.format('dd/MM/yyyy')} Total:${mf.format(r.total)} "
+            def nombre="Folio: ${r.folio} (${r.proveedor}) Pago:${r.pago.format('dd/MM/yyyy')} Total:${mf.format(r.total)} ${r?.formaDePago?.toString()}"
             [id:r.id,
             label:nombre,
             value:nombre,
             total:r.total,
             afavor:r.aFavor,
-            pago:r.pago.format('dd/MM/yyyy')
+            pago:r.pago.format('dd/MM/yyyy'),
+            formaDePago:r.formaDePago.toString()
             ]
         }
         def res=list as JSON
@@ -203,6 +205,7 @@ import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.cxp.Requisicion
 import grails.validation.Validateable
+import com.luxsoft.lx.sat.BancoSat
 
 @Validateable
 class PagoCommand{
@@ -213,7 +216,9 @@ class PagoCommand{
 
     CuentaBancaria cuenta
 
-    FormaDePago formaDePago
+    String aFavor
+
+    //FormaDePago formaDePago
 
     @BindingFormat('dd/MM/yyyy')
     Date fecha=new Date()
@@ -226,8 +231,17 @@ class PagoCommand{
 
     String comentario
 
+    BancoSat bancoDestino
+
+    String cuentaDestino
+
     static constraints={
-        
+        bancoDestino nullable:true
+        cuentaDestino nullable:true, validator: { val, obj ->
+            if(obj.formaDePago == FormaDePago.TRANSFERENCIA && !obj)
+                return 'cuentaDestinoMandatoria'
+        }
+
     }
 
     def toPago(){

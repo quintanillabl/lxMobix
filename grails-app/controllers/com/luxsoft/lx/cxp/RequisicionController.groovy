@@ -24,6 +24,10 @@ class RequisicionController {
 
     def index(Integer max) {
         params.max = Math.min(max ?: 400, 1000)
+        params.sort=params.sort?:'pago'
+        params.order='desc'
+        // params.sort = 'id'
+        // params.order = 'desc'
         respond Requisicion.findAllByEmpresa(session.empresa,params), 
             model:[requisicionInstanceCount: Requisicion.countByEmpresa(session.empresa)]
     }

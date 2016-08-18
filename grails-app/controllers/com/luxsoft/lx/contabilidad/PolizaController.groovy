@@ -94,7 +94,8 @@ class PolizaController {
 
 
     def show(Poliza polizaInstance) {
-        respond polizaInstance
+        PolizaCheque cheque = polizaInstance.partidas.find {it.cheque != null}?.cheque
+        respond polizaInstance , model:[cheque: cheque]
     }
 
     def create() {

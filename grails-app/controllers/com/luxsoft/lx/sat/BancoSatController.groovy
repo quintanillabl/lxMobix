@@ -5,6 +5,7 @@ package com.luxsoft.lx.sat
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 import org.springframework.security.access.annotation.Secured
+import grails.converters.JSON
 
 @Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
 @Transactional(readOnly = true)
@@ -102,5 +103,21 @@ class BancoSatController {
             }
             '*'{ render status: NOT_FOUND }
         }
+    }
+
+    def bancos(){
+        def term = params.term + '%'
+        def list=BancoSat.where{ clave =~ term || nombreCorto =~ term || razonSocial =~ term}.list([sort:'clave'])
+
+        list=list.collect{ r->
+            def nombre="${r.nombreCorto} (${r.clave}) "
+            [id:r.id,
+            label:nombre,
+            value:nombre]
+        }
+        def res=list as JSON
+        
+        render res
+
     }
 }

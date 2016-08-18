@@ -1,25 +1,25 @@
 package com.luxsoft.lx.contabilidad
 
-
 import groovy.transform.ToString
 import groovy.transform.EqualsAndHashCode
 import com.luxsoft.lx.utils.MonedaUtils
 import com.luxsoft.lx.sat.BancoSat
 
-
 @ToString(excludes='dateCreated,lastUpdated,polizaDet',includeNames=true,includePackage=false)
-@EqualsAndHashCode(includes='cuentaOrigen,numero,fecha')
-class PolizaCheque {
-
-    PolizaDet polizaDet
-
-	String numero
-	
-	BancoSat bancoEmisorNacional
-
-	String bancoEmisorExtranjero
+@EqualsAndHashCode
+class TransaccionTransferencia {
 
 	String cuentaOrigen
+
+	BancoSat bancoOrigenNacional
+
+	String bancoOrigenExtranjero = ''
+
+	String cuentaDestino
+	
+	BancoSat bancoDestinoNacional
+
+	String bancoDestinoExtranjero
 
 	Date fecha
 
@@ -37,20 +37,21 @@ class PolizaCheque {
     
     Date lastUpdated
 
-
     static constraints = {
-    	numero minSize:1,maxSize:20
-    	bancoEmisorExtranjero nullable:true,maxSize:150
-    	cuentaOrigen maxSize:50
+    	cuentaOrigen nullable:true, maxSize:50
+    	cuentaDestino maxSize:50
+    	cuentaDestino nullable:true, maxSize:50
+    	bancoDestinoExtranjero nullable:true, maxSize:150
+        bancoOrigenExtranjero nullable:true
     	beneficiario maxSize:300
     	rfc maxSize:13
     	monto scale:6
     	tipoDeCambio scale:5
     }
 
-    //static belongsTo = [polizaDet:PolizaDet]
+    static belongsTo = [polizaDet:PolizaDet]
 
     static mapping = {
-    	fecha type:'date'
+    	//fecha type:'date'
     }
 }

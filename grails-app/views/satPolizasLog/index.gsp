@@ -3,9 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Pagos</title>
-	%{-- <asset:stylesheet src="datatables/dataTables.css"/>
-	<asset:javascript src="datatables/dataTables.js"/>  --}%
+	<title>Polizas SAT</title>
 </head>
 <body>
 
@@ -16,8 +14,8 @@
 			<div class="col-md-12">
 				<div class="alert alert-info">
 					<h4>
-						<p class="text-center"> Registro de pagos  </p>
-						<p class="text-center"><small>${session.empresa.nombre}</small></p>
+						<p class="text-center"> Registro de polizas SAT   </p>
+						<p class="text-center"><small>Contabilidad electrónica para ${session.empresa.nombre}</small></p>
 							
 					</h4>
 					<g:if test="${flash.message}">
@@ -45,9 +43,13 @@
 		                Operaciones <span class="caret"></span>
 		        </button>
 		        <ul class="dropdown-menu">
-		            <li>
-		                <g:link action="create" ><i class="fa fa-plus"></i> Nuevo</g:link>
-		            </li>
+		        	<li>
+		        		<g:link action="create">
+		        			<i class="fa fa-cog"></i> Generar
+		        		</g:link>
+		        	</li>
+		        	
+		            
 		        </ul>
 		    </div>
 		    <div class="btn-group">
@@ -71,68 +73,64 @@
 
 					<thead>
 						<tr>
-							<th>Proveedor</th>
-							<th>Req</th>
-							<th>Fecha</th>
-							<th>Cuenta</th>
-							<th>Total</th>
-							<th>F.P.</th>
-							<th>Aplicado</th>
+							<th>Ejercicio</th>
+							<th>Mes</th>
+							<th>Rfc</th>
+							<th>Nombre</th>
+							<th>Tipo</th>
+							<th># Orden</th>
+							<th># Tramite</th>
 							<th>Comentario</th>
-							
+							<th>Creado</th>
 						</tr>
 					</thead>
 					<tbody>
-						<g:each in="${pagoInstanceList}" var="row">
-							<tr id="${row.id}">
-								<td >
+						<g:each in="${polizasList}" var="row">
+							<tr id="${row.id}" class="${row.acuse?'success':''}">
+								<td>
 									<g:link  action="show" id="${row.id}">
-										${fieldValue(bean:row,field:"requisicion.proveedor")}
+										${formatNumber(number:row.ejercicio,format:"###")}
 									</g:link>
 								</td>
-								<td>${fieldValue(bean:row,field:"requisicion.id")}</td>
-								<td><g:formatDate date="${row.fecha}" format="dd/MM/yyyy"/></td>
-								<td>${fieldValue(bean:row,field:"cuenta.numero")}</td>
-								<td>${formatNumber(number:row.importe,type:'currency')}</td>
-								<td>${row.formaDePago.toString()[0..1]}</td>
-								<td>${formatNumber(number:row.aplicado,type:'currency')}</td>
+								<td>
+									<g:link  action="show" id="${row.id}">
+										${fieldValue(bean:row,field:"mes")}
+									</g:link>
+								</td>
+								<td>${fieldValue(bean:row,field:"rfc")}</td>
+								<td>${fieldValue(bean:row,field:"nombre")}</td>
+								<td>${fieldValue(bean:row,field:"tipo")}</td>
+								<td>${fieldValue(bean:row,field:"numeroDeOrden")}</td>
+								<td>${fieldValue(bean:row,field:"numeroDeTramite")}</td>
 								<td>${fieldValue(bean:row,field:"comentario")}</td>
+								<td><g:formatDate date="${row.dateCreated}" format="dd/MM/yyyy HH:mm"/></td>
 								
 							</tr>
 						</g:each>
 					</tbody>
 				</table>
 				<div class="pagination">
-					<g:paginate total="${pagoInstanceCount ?: 0}"/>
+					<g:paginate total="${catalogoListCount ?: 0}"/>
 				</div>
 			</div>
 		</div> <!-- end .row 2 -->
-		%{-- <g:render template="uploadXmlFile"/> --}%
-	${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}
+		
+		
+
+
 	</div>
 
 
 	<script type="text/javascript">
 		$(document).ready(function(){
- 			$('#grid').dataTable({
-                responsive: true,
-                "language": {
-					"url": "${assetPath(src: 'plugins/dataTables/dataTables.spanish.txt')}"
-	    		},
-	    		"dom": 'T<"clear">ltip',
-	    		"tableTools": {
-	    		    "sSwfPath": "${assetPath(src: 'plugins/dataTables/swf/copy_csv_xls_pdf.swf')}"
-	    		},
-	    		"order": []
-            });
 			
-			// $('#grid').dataTable( {
-			// 	responsive: true,
-	  //       	"paging":   false,
-	  //       	"ordering": false,
-	  //       	"info":     false
-	  //       	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
-	  //   	} );
+			$('#grid').dataTable( {
+				"responsive": true,
+	        	"paging":   false,
+	        	"ordering": false,
+	        	"info":     false
+	        	,"dom": '<"toolbar col-md-4">rt<"bottom"lp>'
+	    	} );
 	    	
 	    	$("#filtro").on('keyup',function(e){
 	    		var term=$(this).val();
