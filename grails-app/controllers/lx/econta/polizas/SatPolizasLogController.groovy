@@ -28,13 +28,15 @@ class SatPolizasLogController {
             notFound()
             return
         }
+        /*
         if (satPolizasLogInstance.hasErrors()) {
             respond satPolizasLogInstance, view:'create'
             return
         }
-        satPolizasLogInstance = satPolizasLogService.save satPolizasLogInstance
-        flash.message="Registro de polizas generada: ${satPolizasLogService.id}"
-        redirect action:'show',id:satPolizasLogService.id
+        */
+        satPolizasLogInstance = satPolizasLogService.save(session.empresa,satPolizasLogInstance)
+        flash.message="Registro de polizas generada: ${satPolizasLogInstance.id}"
+        redirect action:'show',id:satPolizasLogInstance.id
 
         
     }
@@ -136,6 +138,17 @@ class SatPolizasLogController {
             file: polizas.acuseDeAceptacion, 
             contentType: 'application/pdf',
             fileName:fileName)
+    }
+
+    def delete(SatPolizasLog polizas){
+        if(polizas == null){
+            flash.message = 'Registro de poliazas nulo no se puede eliminar'
+            redirect action: 'index'
+            return
+        }
+        polizas.delete flush:true
+        flash.message = "Registro de polizas  ${polizas.id} eliminado"
+        redirect action:'index'
     }
 
 }
