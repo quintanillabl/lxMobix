@@ -146,8 +146,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			def gastoDet = gasto.partidas.find{ it.cuentaContable }
 			assert gastoDet,'No hay cuenta contable asignada para registrar el gasto '+gasto
 			log.info 'Cargo a gasto :'+gastoDet
-			
-
+			/*
 			cargoA(poliza,
 				gastoDet.cuentaContable,
 				gasto.subTotal,
@@ -156,6 +155,32 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				referencia,
 				gasto
 			)
+			*/
+			
+			def polizaDet = new PolizaDet(
+				cuenta:gastoDet.cuentaContable,
+				concepto:gastoDet.cuentaContable.descripcion,
+				debe:gasto.subTotal,
+			    haber:0.0,
+			    descripcion:StringUtils.substring(descripcion,0,255),
+			    asiento:'PAGO',
+			    referencia:referencia,
+			    origen:gasto.id.toString(),
+			    entidad:gasto.class.toString()
+			)
+			if(gasto.uuid){
+				//Compra nacional
+				def compra = new TransaccionCompraNal(
+					polizaDet:polizaDet,
+					uuidcfdi:gasto.uuid,
+					rfc: gasto.proveedor.rfc,
+					montoTotal: gasto.total
+				)
+				polizaDet.compraNal = compra
+			}
+			poliza.addToPartidas(polizaDet)
+			
+			
 
 		}
 	}
@@ -169,7 +194,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		def cuenta=gasto.proveedor.cuentaContable?:AcredoresDiversos(poliza.empresa)
 		assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
-
+		/*
 		cargoA(poliza,
 			cuenta,
 			gasto.total,
@@ -178,6 +203,32 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			referencia,
 			gasto
 		)
+		*/
+		
+		
+		def polizaDet = new PolizaDet(
+			cuenta:cuenta,
+			concepto:cuenta.descripcion,
+			debe:gasto.total,
+		    haber:0.0,
+		    descripcion:StringUtils.substring(descripcion,0,255),
+		    asiento:'PAGO',
+		    referencia:referencia,
+		    origen:gasto.id.toString(),
+		    entidad:gasto.class.toString()
+		)
+		if(gasto.uuid){
+			def compra = new TransaccionCompraNal(
+				polizaDet:polizaDet,
+				uuidcfdi:gasto.uuid,
+				rfc: gasto.proveedor.rfc,
+				montoTotal: gasto.total
+			)
+			polizaDet.compraNal = compra
+		}
+		
+		poliza.addToPartidas(polizaDet)
+		
 	}
 
 	def cargoAIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){

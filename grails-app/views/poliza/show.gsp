@@ -162,6 +162,14 @@
 											Trx-TR
 										</a>	
 									</g:elseif>
+									<g:elseif test="${row.compraNal}">
+										<a  data-toggle="popover" role="button" tabindex="0"
+											title="Transferencia"
+											data-placement="left" 
+											data-content="${row.compraNal}" >
+											Trx-ComNal
+										</a>	
+									</g:elseif>
 								</td>
 								
 								
