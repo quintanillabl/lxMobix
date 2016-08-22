@@ -5,6 +5,8 @@ import static com.luxsoft.econta.polizas.PolizaUtils.*
 
 import com.luxsoft.lx.tesoreria.Inversion
 import com.luxsoft.lx.contabilidad.Poliza
+import com.luxsoft.lx.contabilidad.TransaccionTransferencia
+import com.luxsoft.lx.contabilidad.PolizaDet
 
 
 
@@ -51,6 +53,7 @@ class PolizaDeInversionesService extends AbstractProcesador {
 
     def abonoABancos(def poliza,def inversion,def descripcion){
     	if(inversion.importe.abs()){
+            /*
     		abonoA(
     			poliza,
     			inversion.cuentaOrigen.cuentaContable,
@@ -60,6 +63,38 @@ class PolizaDeInversionesService extends AbstractProcesador {
     			' ',
     			inversion
     		)
+            */
+            def det=new PolizaDet(
+                cuenta:inversion.cuentaOrigen.cuentaContable,
+                concepto:inversion.cuentaOrigen.cuentaContable.descripcion,
+                debe:0.0,
+                haber:inversion.importe.abs(),
+                descripcion:descripcion,
+                asiento:'INVERSION',
+                referencia:'',
+                origen:inversion.id.toString(),
+                entidad:inversion.class.toString()
+            )
+            def bancoOrigen = inversion?.cuentaOrigen?.banco?.bancoSat
+            def bancoDestino = inversion?.cuentaDestino?.banco?.bancoSat
+            
+            if(bancoDestino && bancoDestino){
+                log.info('Generando registro de Transaccion transferencia SAT para pago: '+inversion.id)
+                def rfc=inversion.empresa.rfc
+                def transferencia=new TransaccionTransferencia(
+                    polizaDet:det,
+                    bancoOrigenNacional:bancoOrigen.clave,
+                    cuentaOrigen:inversion.cuentaOrigen.numero,
+                    fecha:inversion.fecha,
+                    beneficiario:inversion.empresa.nombre,
+                    rfc:rfc,
+                    monto:inversion.importe.abs(),
+                    bancoDestinoNacional: bancoDestino.clave,
+                    cuentaDestino: inversion.cuentaDestino.numero
+                )
+                det.transferencia=transferencia
+            }
+            poliza.addToPartidas(det)
     	}
     	
     }
