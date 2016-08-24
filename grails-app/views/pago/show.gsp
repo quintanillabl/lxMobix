@@ -78,7 +78,7 @@
 									<f:display property="aplicado" widget="money" wrapper="bootstrap3"/>
 									<f:display property="disponible" widget="money" wrapper="bootstrap3"/>
 									<f:display property="creadoPor" widget-class="form-control" wrapper="bootstrap3"/>
-									<g:if test="${pagoInstance.formaDePago.toString() == 'CHEQUES'}">
+									<g:if test="${pagoInstance.formaDePago.toString() == 'CHEQUE'}">
 										<legend>Cheque: </legend>
 										<f:display property="cheque.cuenta" />
 										<f:display property="cheque.folio" />
