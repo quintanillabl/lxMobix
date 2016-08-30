@@ -164,7 +164,7 @@
 									</g:elseif>
 									<g:elseif test="${row.compraNal}">
 										<a  data-toggle="popover" role="button" tabindex="0"
-											title="Transferencia"
+											title="Complemento compra Nacional"
 											data-placement="left" 
 											data-content="${row.compraNal}" >
 											Trx-ComNal

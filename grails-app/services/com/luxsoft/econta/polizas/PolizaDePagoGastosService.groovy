@@ -115,14 +115,12 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
 				//Cancelacion de la provision
 				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
-				
 				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 				abonoIvaAcreditable(poliza,aplicacion,desc,referencia)
 			} else {
 				cargoAGastos( poliza,aplicacion,desc,referencia)
 				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			}
-			//cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			def cxp = aplicacion.cuentaPorPagar
 			if(cxp.retensionIsr || cxp.retensionIva){				
 				cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
@@ -137,25 +135,12 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 	def cargoAGastos(def poliza,def aplicacion,descripcion,def referencia){
 		
-		//def gastoDet = GastoDet.findByCuentaPorPagar(aplicacion.cuentaPorPagar)
 		def pago=aplicacion.pago
-
 		def gasto = aplicacion.cuentaPorPagar
 		if( gasto ) {
-			//def desc = "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 			def gastoDet = gasto.partidas.find{ it.cuentaContable }
 			assert gastoDet,'No hay cuenta contable asignada para registrar el gasto '+gasto
 			log.info 'Cargo a gasto :'+gastoDet
-			/*
-			cargoA(poliza,
-				gastoDet.cuentaContable,
-				gasto.subTotal,
-				descripcion,
-				'PAGO',
-				referencia,
-				gasto
-			)
-			*/
 			
 			def polizaDet = new PolizaDet(
 				cuenta:gastoDet.cuentaContable,
@@ -168,20 +153,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			    origen:gasto.id.toString(),
 			    entidad:gasto.class.toString()
 			)
-			if(gasto.uuid){
-				//Compra nacional
-				def compra = new TransaccionCompraNal(
-					polizaDet:polizaDet,
-					uuidcfdi:gasto.uuid,
-					rfc: gasto.proveedor.rfc,
-					montoTotal: gasto.total
-				)
-				polizaDet.compraNal = compra
-			}
+			complementoDePago(pago,det)
 			poliza.addToPartidas(polizaDet)
-			
-			
-
 		}
 	}
 
@@ -194,17 +167,6 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		def cuenta=gasto.proveedor.cuentaContable?:AcredoresDiversos(poliza.empresa)
 		assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
-		/*
-		cargoA(poliza,
-			cuenta,
-			gasto.total,
-			descripcion,
-			'PAGO',
-			referencia,
-			gasto
-		)
-		*/
-		
 		
 		def polizaDet = new PolizaDet(
 			cuenta:cuenta,
@@ -217,16 +179,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
-		if(gasto.uuid){
-			def compra = new TransaccionCompraNal(
-				polizaDet:polizaDet,
-				uuidcfdi:gasto.uuid,
-				rfc: gasto.proveedor.rfc,
-				montoTotal: gasto.total
-			)
-			polizaDet.compraNal = compra
-		}
-		
+		complementoDePago(pago,det)
 		poliza.addToPartidas(polizaDet)
 		
 	}
@@ -235,30 +188,42 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 
 		def gasto = aplicacion.cuentaPorPagar
 		def impuesto = gasto.impuesto - gasto.retensionIva
-		cargoA(
-			poliza,
-			IvaAcreditable(poliza.empresa),
-			impuesto,
-			descripcion,
-			'PAGO',
-			referencia,
-			gasto
+		def pago=aplicacion.pago
+
+
+		def cuenta=IvaAcreditable(poliza.empresa)
+		def polizaDet = new PolizaDet(
+			cuenta:cuenta,
+			concepto:cueta.descripcion,
+			debe:impuesto,
+		    haber:0.0,
+		    descripcion:StringUtils.substring(descripcion,0,255),
+		    asiento:'PAGO',
+		    referencia:referencia,
+		    origen:gasto.id.toString(),
+		    entidad:gasto.class.toString()
 		)
+		complementoDePago(pago,det)
+		poliza.addToPartidas(polizaDet)
 	}
 
 	def abonoIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){
 
 		def gasto = aplicacion.cuentaPorPagar
-		
-		abonoA(
-			poliza,
-			IvaPendienteDeAcreditar(poliza.empresa),
-			gasto.impuesto,
-			descripcion,
-			'PAGO',
-			referencia,
-			gasto
+		def impuesto = gasto.impuesto - gasto.retensionIva
+		def cuenta=IvaPendienteDeAcreditar(poliza.empresa)
+		def polizaDet = new PolizaDet(
+			cuenta:cuenta,
+			concepto:cueta.descripcion,
+			debe: 0.0,
+		    haber: impuesto,
+		    descripcion:StringUtils.substring(descripcion,0,255),
+		    asiento:'PAGO',
+		    referencia:referencia,
+		    origen:gasto.id.toString(),
+		    entidad:gasto.class.toString()
 		)
+		poliza.addToPartidas(polizaDet)
 	}
 
 	
@@ -270,7 +235,6 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		pago.aplicaciones.each{ aplicacion ->
 			def gasto = aplicacion.cuentaPorPagar
 			if(gasto){
-				//desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 				desc += "F. ${gasto.folio} ${gasto.fecha.text()} ${pago.aFavor}"
 			}
 		}
@@ -286,60 +250,18 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		    origen:pago.id.toString(),
 		    entidad:pago.class.toString()
 		)
-		
-
-		if(pago.formaDePago==FormaDePago.CHEQUE){
-			
-			def cheque=pago.cheque?pago.cheque:null
-			assert cheque,'Pago sin cheque registrado'+pago.id
-			assert cheque.cuenta
-			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
-			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
-			def polCheque=new PolizaCheque(
-				polizaDet:det,
-				numero:cheque.folio.toString(),
-				bancoEmisorNacional:cheque.cuenta.banco.bancoSat,
-				cuentaOrigen:cheque.cuenta.numero,
-				fecha:cheque.dateCreated,
-				beneficiario:pago.aFavor,
-				rfc:rfc,
-				monto:pago.importe
-			)
-			det.cheque=polCheque
-		}
-		if(pago.formaDePago==FormaDePago.TRANSFERENCIA){
-			
-			if(pago.bancoDestino && pago.cuentaDestino){
-				log.info('Generando registro de Transaccion transferencia SAT para pago: '+pago.id)
-				assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
-				def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
-				def transferencia=new TransaccionTransferencia(
-					polizaDet:det,
-					bancoOrigenNacional:pago.cuenta.banco.bancoSat,
-					cuentaOrigen:pago.cuenta.numero,
-					fecha:pago.dateCreated,
-					beneficiario:pago.aFavor,
-					rfc:rfc,
-					monto:pago.importe,
-					bancoDestinoNacional: pago.bancoDestino,
-					cuentaDestino: pago.cuentaDestino
-				)
-				det.transferencia=transferencia
-			}
-			
-			
-		}
+		complementoDePago(pago,det)
 		poliza.addToPartidas(det)
 	}
 
 	def abonoARetencionIsr(def poliza,def gasto,def cxp,def pago,def referencia){
 		def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+		def det = null
 		if(cxp.retensionIsr){
 			def concepto=gasto.concepto
 			
-
 			if(concepto=='HONORARIOS_ASIMILADOS'){
-				abonoA(
+				det = abonoA(
 					poliza,
 					RetencionIsrHonorariosAsimilados(poliza.empresa),
 					cxp.retensionIsr.abs(),
@@ -350,7 +272,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				)
 			}
 			else if(concepto == 'HONORARIOS_CON_RETENCION'){
-				abonoA(
+				det = abonoA(
 					poliza,
 					RetencionIsrHonorarios(poliza.empresa),
 					cxp.retensionIsr.abs(),
@@ -361,7 +283,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				)
 			}
 			else if(concepto == 'SERVICIOS_PROFESIONALES'){
-				abonoA(
+				det = abonoA(
 					poliza,
 					RetencionIsrServiciosProfesionales(poliza.empresa),
 					cxp.retensionIsr.abs(),
@@ -373,7 +295,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 					
 			}
 			else if(concepto == 'RETENCION_PAGOS'){
-				abonoA(
+				det = abonoA(
 					poliza,
 					RetencionIsrDividendos(poliza.empresa),
 					cxp.retensionIsr.abs(),
@@ -382,19 +304,20 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 					referencia,
 					cxp
 				)
-					
 			}
-			
+		}
+		if(det!= null){
+			complementoDePago(pago,det)
 		}
 	}
 
 	def cargoAbonoARetencionIva(def poliza,def gasto,def cxp,def pago,def referencia){
 		
-		
+		def det = null
 		if(cxp.retensionIva){
 			def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
 			
-			cargoA(
+			det = cargoA(
 				poliza,
 				IvaRetenidoPendient(poliza.empresa),
 				cxp.retensionIva.abs(),
@@ -404,7 +327,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				cxp
 			)
 
-			abonoA(
+			det = abonoA(
 				poliza,
 				ImpuestoRetenidoDeIva(poliza.empresa),
 				cxp.retensionIva.abs(),
@@ -413,6 +336,9 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				referencia,
 				cxp
 			)
+		}
+		if(det!= null){
+			complementoDePago(pago,det)
 		}
 	}
 
@@ -478,9 +404,84 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			poliza.addToPartidas(det)
 			poliza=polizaService.save(poliza)
 		}
-			
+	}
 
+	def complementoDePago(def pago, def det){
+		
+		if(pago.formaDePago==FormaDePago.CHEQUE){
 			
+			def cheque=pago.cheque?pago.cheque:null
+			assert cheque,'Pago sin cheque registrado'+pago.id
+			assert cheque.cuenta
+			assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
+			def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
+			def polCheque=new PolizaCheque(
+				polizaDet:det,
+				numero:cheque.folio.toString(),
+				bancoEmisorNacional:cheque.cuenta.banco.bancoSat,
+				cuentaOrigen:cheque.cuenta.numero,
+				fecha:cheque.dateCreated,
+				beneficiario:pago.aFavor,
+				rfc:rfc,
+				monto:pago.importe
+			)
+			det.cheque=polCheque
+		}
+
+		if(pago.formaDePago==FormaDePago.TRANSFERENCIA){
+			
+			if(pago.bancoDestino && pago.cuentaDestino){
+				log.info('Generando registro de Transaccion transferencia SAT para pago: '+pago.id)
+				assert pago.aFavor, 'No esta registrado aFavor de quien está el pago '+pago.id
+				def rfc=pago.rfc?:pago.requisicion.proveedor.rfc
+				def transferencia=new TransaccionTransferencia(
+					polizaDet:det,
+					bancoOrigenNacional:pago.cuenta.banco.bancoSat,
+					cuentaOrigen:pago.cuenta.numero,
+					fecha:pago.dateCreated,
+					beneficiario:pago.aFavor,
+					rfc:rfc,
+					monto:pago.importe,
+					bancoDestinoNacional: pago.bancoDestino,
+					cuentaDestino: pago.cuentaDestino
+				)
+				det.transferencia=transferencia
+			}
+			
+			
+		}
+	}
+
+	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:importe.abs(),
+            haber:0.0,
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		poliza.addToPartidas(det)
+		return det;
+	}
+
+	def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:0.0,
+            haber:importe.abs(),
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		poliza.addToPartidas(det)
+		return det
 	}
 
 }
