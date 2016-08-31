@@ -3,6 +3,11 @@ package com.luxsoft.econta.polizas
 import grails.transaction.Transactional
 import com.luxsoft.lx.cxc.Cobro
 import static com.luxsoft.econta.polizas.PolizaUtils.*
+import com.luxsoft.lx.contabilidad.*
+import org.apache.commons.lang.StringUtils
+import com.luxsoft.lx.ventas.Venta
+
+
 /**
 * 
 * TODO: Ajustar para manejar el saldo cuando se trate de saldo parcial
@@ -94,5 +99,69 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 			)
 		}
 		
+	}
+
+	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:importe.abs(),
+            haber:0.0,
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		addComplementoCompra(det,entidad)
+		poliza.addToPartidas(det)
+		return det;
+	}
+
+	def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:0.0,
+            haber:importe.abs(),
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		addComplementoCompra(det,entidad)
+		poliza.addToPartidas(det)
+		return det
+	}
+
+	def addComplementoCompra(def polizaDet, def entidad){
+		if(entidad.instanceOf(Venta)){
+			def cfdi = entidad.cfdi
+			def compra = new TransaccionCompraNal(
+				polizaDet:polizaDet,
+				uuidcfdi:cfdi.uuid,
+				rfc: cfdi.receptorRfc,
+				montoTotal: cfdi.total
+			)
+			polizaDet.compraNal = compra
+		}
+
+		if(entidad.instanceOf(Cobro)){
+			def a = entidad.aplicaciones.first()
+			if(a && a.cuentaPorCobrar){
+				def cfdi = a.cuentaPorCobrar.cfdi
+				if(cfdi) {
+					def compra = new TransaccionCompraNal(
+						polizaDet:polizaDet,
+						uuidcfdi:cfdi.uuid,
+						rfc: cfdi.receptorRfc,
+						montoTotal: cfdi.total
+					)
+					polizaDet.compraNal = compra
+				}
+			}
+		}
+
 	}
 }

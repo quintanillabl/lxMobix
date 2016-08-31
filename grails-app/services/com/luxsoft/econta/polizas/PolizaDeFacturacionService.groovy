@@ -5,6 +5,7 @@ package com.luxsoft.econta.polizas
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.contabilidad.Poliza
 import com.luxsoft.lx.contabilidad.CuentaContable
+import com.luxsoft.lx.contabilidad.*
 import static com.luxsoft.econta.polizas.PolizaUtils.*
 import org.apache.commons.lang.StringUtils
 
@@ -143,7 +144,53 @@ class PolizaDeFacturacionService extends AbstractProcesador{
 	}
 
 	
+	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:importe.abs(),
+            haber:0.0,
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		addComplementoCompra(det,entidad)
+		poliza.addToPartidas(det)
+		return det;
+	}
 
+	def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:0.0,
+            haber:importe.abs(),
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		addComplementoCompra(det,entidad)
+		poliza.addToPartidas(det)
+		return det
+	}
+
+	def addComplementoCompra(def polizaDet, def entidad){
+		if(entidad.cfdi){
+			def cfdi = entidad.cfdi
+			def compra = new TransaccionCompraNal(
+				polizaDet:polizaDet,
+				uuidcfdi:cfdi.uuid,
+				rfc: cfdi.receptorRfc,
+				montoTotal: cfdi.total
+			)
+			polizaDet.compraNal = compra
+		}
+
+	}
 	
 
 }

@@ -95,7 +95,9 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 
 	def abonoAAcredoresDiversos(def poliza,def gasto,def descripcion){
 		log.info 'Abono a acredores diversos'
-		def cuenta = AcredoresDiversos(poliza.empresa)
+		//def cuenta = AcredoresDiversos(poliza.empresa)
+		def cuenta = gasto.proveedor?.cuentaContable
+		assert cuenta, "El proveedor ${gasto.proveedor} no tiene registrada la cuenta contable (acredora)"
 		def polizaDet = new PolizaDet(
 			cuenta:cuenta,
 			concepto:cuenta.descripcion,

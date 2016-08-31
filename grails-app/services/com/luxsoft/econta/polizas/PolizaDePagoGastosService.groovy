@@ -173,7 +173,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def gasto = aplicacion.cuentaPorPagar
 		log.info 'PROVISION:  Cargo a acredores diversosgasto :'+gasto.total
 
-		def cuenta=gasto.proveedor.cuentaContable?:AcredoresDiversos(poliza.empresa)
+		def cuenta=gasto.proveedor.cuentaContable
 		assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
 		
 		def polizaDet = new PolizaDet(

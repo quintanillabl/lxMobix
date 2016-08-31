@@ -3,15 +3,16 @@
 	<head>
 		<title>Luxor Backend Error</title>
 		<asset:stylesheet src="errors.css"/>
+		<meta name="layout" content="application"/>
 	</head>
 	<body>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8">
 					<g:if env="development">
-						<g:renderException exception="${exception}" />
+						%{-- <g:renderException exception="${exception}" /> --}%
 					</g:if>
-					<g:else>
+					
 					<div class="well">
 						<h4>Error interno en Luxor Engine</h4>
 					</div>
@@ -29,25 +30,33 @@
 									<td class="danger">${org.apache.commons.lang.exception.ExceptionUtils.getRootCauseMessage(exception)}</td>
 								</tr>
 								<tr>
-									<td>Causa</td>
+									<td>Tipo</td>
 									<td class="danger">${org.apache.commons.lang.exception.ExceptionUtils.getRootCause(exception).class}</td>
 								</tr>
 								<tr>
-									<td>Time</td>
+									<td>Hora</td>
 									<td><g:formatDate date="${new Date()}" format="dd/MM/yyyy mm:ss"/></td>
 								</tr>
 								<tr>
-									<td>Controller</td>
+									<td>Controlador</td>
 									<td>${controllerName}</td>
 								</tr>
 								<tr>
-									<td>Action</td>
+									<td>Acción</td>
 									<td>${actionName}</td>
 								</tr>
 							</tbody>
 						</table>
-					</g:else>
 					
+					
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-8">
+					<g:if env="development">
+						<g:renderException exception="${exception}" />
+					</g:if>
 				</div>
 			</div>
 		</div>
