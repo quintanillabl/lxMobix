@@ -112,6 +112,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			def gasto = aplicacion.cuentaPorPagar
 			def desc = "F. ${gasto.folio} (${gasto.fecha.text()}) ${pago.aFavor} ${pago.requisicion.comentario}"
 			
+			/*
 			if(!fecha.isSameMonth(aplicacion.cuentaPorPagar.fecha) ){
 				//Cancelacion de la provision
 				cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
@@ -121,6 +122,13 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				cargoAGastos( poliza,aplicacion,desc,referencia)
 				cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
 			}
+			*/
+		
+			//Cancelacion de la provision
+			cargoAcredoresDiversos(poliza, aplicacion,desc, referencia)
+			cargoAIvaAcreditable( poliza,aplicacion,desc,referencia)
+			abonoIvaAcreditable(poliza,aplicacion,desc,referencia)
+			
 			def cxp = aplicacion.cuentaPorPagar
 			if(cxp.retensionIsr || cxp.retensionIva){				
 				cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
@@ -153,7 +161,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 			    origen:gasto.id.toString(),
 			    entidad:gasto.class.toString()
 			)
-			complementoDePago(pago,det)
+			complementoDePago(pago,polizaDet)
 			poliza.addToPartidas(polizaDet)
 		}
 	}
@@ -179,7 +187,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
-		complementoDePago(pago,det)
+		complementoDePago(pago,polizaDet)
 		poliza.addToPartidas(polizaDet)
 		
 	}
@@ -194,7 +202,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def cuenta=IvaAcreditable(poliza.empresa)
 		def polizaDet = new PolizaDet(
 			cuenta:cuenta,
-			concepto:cueta.descripcion,
+			concepto:cuenta.descripcion,
 			debe:impuesto,
 		    haber:0.0,
 		    descripcion:StringUtils.substring(descripcion,0,255),
@@ -203,18 +211,19 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
-		complementoDePago(pago,det)
+		complementoDePago(pago,polizaDet)
 		poliza.addToPartidas(polizaDet)
 	}
 
 	def abonoIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){
 
 		def gasto = aplicacion.cuentaPorPagar
+		def pago=aplicacion.pago
 		def impuesto = gasto.impuesto - gasto.retensionIva
 		def cuenta=IvaPendienteDeAcreditar(poliza.empresa)
 		def polizaDet = new PolizaDet(
 			cuenta:cuenta,
-			concepto:cueta.descripcion,
+			concepto:cuenta.descripcion,
 			debe: 0.0,
 		    haber: impuesto,
 		    descripcion:StringUtils.substring(descripcion,0,255),
@@ -223,6 +232,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
+		complementoDePago(pago,polizaDet)
 		poliza.addToPartidas(polizaDet)
 	}
 
