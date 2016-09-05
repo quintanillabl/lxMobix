@@ -7,6 +7,7 @@ import com.luxsoft.lx.tesoreria.Inversion
 import com.luxsoft.lx.contabilidad.Poliza
 import com.luxsoft.lx.contabilidad.TransaccionTransferencia
 import com.luxsoft.lx.contabilidad.PolizaDet
+import org.apache.commons.lang.StringUtils  
 
 
 
@@ -142,6 +143,64 @@ class PolizaDeInversionesService extends AbstractProcesador {
     		)
     	}
     	
+    }
+
+    def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+        def det=new PolizaDet(
+            cuenta:cuenta,
+            concepto:cuenta.descripcion,
+            debe:importe.abs(),
+            haber:0.0,
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+        )
+        addComplementoCompra(det,entidad)
+        poliza.addToPartidas(det)
+        return det;
+    }
+
+    def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+        def det=new PolizaDet(
+            cuenta:cuenta,
+            concepto:cuenta.descripcion,
+            debe:0.0,
+            haber:importe.abs(),
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+        )
+        addComplementoCompra(det,entidad)
+        poliza.addToPartidas(det)
+        return det
+    }
+
+    def addComplementoCompra(def polizaDet, def entidad){
+        if(entidad.instanceOf(Inversion)){
+            def inversion = entidad
+            def bancoOrigen = inversion?.cuentaOrigen?.banco?.bancoSat
+            def bancoDestino = inversion?.cuentaDestino?.banco?.bancoSat
+            if(bancoDestino && bancoDestino){
+                log.info('Generando registro de Transaccion transferencia SAT para pago: '+inversion.id)
+                def rfc=inversion.empresa.rfc
+                def transferencia=new TransaccionTransferencia(
+                    polizaDet:polizaDet,
+                    bancoOrigenNacional:bancoOrigen.clave,
+                    cuentaOrigen:inversion.cuentaOrigen.numero,
+                    fecha:inversion.fecha,
+                    beneficiario:inversion.empresa.nombre,
+                    rfc:rfc,
+                    monto:inversion.importe.abs(),
+                    bancoDestinoNacional: bancoDestino.clave,
+                    cuentaDestino: inversion.cuentaDestino.numero
+                )
+                polizaDet.transferencia=transferencia
+            }
+        }
     }
 
    
