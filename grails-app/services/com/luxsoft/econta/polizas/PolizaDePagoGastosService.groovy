@@ -430,7 +430,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				numero:cheque.folio.toString(),
 				bancoEmisorNacional:cheque.cuenta.banco.bancoSat,
 				cuentaOrigen:cheque.cuenta.numero,
-				fecha:cheque.dateCreated,
+				fecha:pago.fecha,
 				beneficiario:pago.aFavor,
 				rfc:rfc,
 				monto:pago.importe
@@ -448,7 +448,7 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 					polizaDet:det,
 					bancoOrigenNacional:pago.cuenta.banco.bancoSat,
 					cuentaOrigen:pago.cuenta.numero,
-					fecha:pago.dateCreated,
+					fecha:pago.fecha,
 					beneficiario:pago.aFavor,
 					rfc:rfc,
 					monto:pago.importe,

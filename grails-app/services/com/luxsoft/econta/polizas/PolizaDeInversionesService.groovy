@@ -182,20 +182,22 @@ class PolizaDeInversionesService extends AbstractProcesador {
     def addComplementoCompra(def polizaDet, def entidad){
         if(entidad.instanceOf(Inversion)){
             def inversion = entidad
-            def bancoOrigen = inversion?.cuentaOrigen?.banco?.bancoSat
-            def bancoDestino = inversion?.cuentaDestino?.banco?.bancoSat
-            if(bancoDestino && bancoDestino){
-                log.info('Generando registro de Transaccion transferencia SAT para pago: '+inversion.id)
+            def bancoOrigen = inversion.cuentaOrigen.banco.bancoSat
+            def bancoDestino = inversion.cuentaDestino.banco.bancoSat
+
+            if(bancoOrigen && bancoDestino){
+                log.info('Generando registro de Transaccion transferencia SAT para inversion: '+inversion.id)
+                log.info("Transferencia entre bano $bancoOrigen y $bancoDestino")
                 def rfc=inversion.empresa.rfc
                 def transferencia=new TransaccionTransferencia(
                     polizaDet:polizaDet,
-                    bancoOrigenNacional:bancoOrigen.clave,
+                    bancoOrigenNacional:bancoOrigen,
                     cuentaOrigen:inversion.cuentaOrigen.numero,
                     fecha:inversion.fecha,
                     beneficiario:inversion.empresa.nombre,
                     rfc:rfc,
                     monto:inversion.importe.abs(),
-                    bancoDestinoNacional: bancoDestino.clave,
+                    bancoDestinoNacional: bancoDestino,
                     cuentaDestino: inversion.cuentaDestino.numero
                 )
                 polizaDet.transferencia=transferencia
