@@ -54,7 +54,6 @@ class PolizaDeInversionesService extends AbstractProcesador {
 
     def abonoABancos(def poliza,def inversion,def descripcion){
     	if(inversion.importe.abs()){
-            /*
     		abonoA(
     			poliza,
     			inversion.cuentaOrigen.cuentaContable,
@@ -64,7 +63,8 @@ class PolizaDeInversionesService extends AbstractProcesador {
     			' ',
     			inversion
     		)
-            */
+            
+           /*
             def det=new PolizaDet(
                 cuenta:inversion.cuentaOrigen.cuentaContable,
                 concepto:inversion.cuentaOrigen.cuentaContable.descripcion,
@@ -96,6 +96,7 @@ class PolizaDeInversionesService extends AbstractProcesador {
                 det.transferencia=transferencia
             }
             poliza.addToPartidas(det)
+            */
     	}
     	
     }

@@ -59,6 +59,7 @@ class CuentaPorPagar {
 	String uuid
 	String serie
 	String folio
+	Boolean gastoPorComprobar = true
 
 	byte[] acuse
 	String acuseEstado
@@ -97,6 +98,7 @@ class CuentaPorPagar {
 		acuse nullable:true,maxSize:(1024*256)
 		acuseEstado nullable:true,maxSize:100
 		acuseCodigoEstatus nullable:true,maxSize:100
+		gastoPorComprobar nullable:true
 		
     }
 	

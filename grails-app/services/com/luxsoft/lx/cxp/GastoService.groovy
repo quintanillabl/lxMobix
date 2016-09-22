@@ -122,6 +122,7 @@ class GastoService {
         def uuid=timbre.attributes()['UUID']
         def subTotal=data['subTotal'] as BigDecimal
         
+        gasto.fecha = fecha
         gasto.importe=data['subTotal'] as BigDecimal
         gasto.descuento=data['descuento'] as BigDecimal?:0.0
         gasto.subTotal=subTotal
@@ -237,7 +238,8 @@ class GastoService {
                             uuid:uuid,
                             serie:serie,
                             folio:folio,
-                            cfdiXml:xmlFile.getBytes()
+                            cfdiXml:xmlFile.getBytes(),
+                            gastoPorComprobar: false
                         )
                         def traslados=xml.breadthFirst().find { it.name() == 'Traslados'}
                         if(traslados){
