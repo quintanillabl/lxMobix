@@ -93,6 +93,7 @@
 				    					<f:display property='uuid' label="UUID" />
 				    					%{-- <f:display property='cuentaContable' label="Cta contable"/> --}%
 				    					<f:field property="comentario" widget-class="form-control"  />
+				    					<f:field property="gastoPorComprobar" widget-class="form-control "  />
 				    					<f:field property="concepto" widget-class="form-control"  />
 				    				</div>
 				    			</div>

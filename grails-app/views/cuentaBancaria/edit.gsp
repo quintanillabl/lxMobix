@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<div class="container">
+	<div class="container-fluid">
 		
 		<div class="row row-header">
 
@@ -25,7 +25,7 @@
 
 		<div class="row ">
 			
-			<div class="col-md-8 col-md-offset-2">
+			<div class="col-md-12 ">
 				
 				<g:form class="form-horizontal" action="update" id="${cuentaBancariaInstance.id}" method="PUT">	
 
@@ -58,7 +58,8 @@
 								<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${value.id}"/>
 								<input type="text" value="${value}" id="cuentaField" class="form-control">
 							</f:field>
-							<f:field property="impresionTemplate" widget-class="form-control" widget-type="text"/>
+							<f:field property="cuentaRetencion" widget-class="form-control" widget-type="text"/>
+							<f:field property="impresionTemplate" widget-class="form-control" widget-type="text" label="Plantilla de impresión"/>
 						</f:with>
 						
 					  </div>

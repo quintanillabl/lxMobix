@@ -226,6 +226,8 @@ class GastoCommand{
     String comentario
     String concepto
 
+    Boolean gastoPorComprobar = true
+
     static constraints={
         importFrom Gasto
     }

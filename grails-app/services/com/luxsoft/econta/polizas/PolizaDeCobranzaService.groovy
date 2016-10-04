@@ -136,6 +136,7 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 	}
 
 	def addComplementoCompra(def polizaDet, def entidad){
+		/*
 		if(entidad.instanceOf(Venta)){
 			def cfdi = entidad.cfdi
 			def compra = new TransaccionCompraNal(
@@ -162,6 +163,7 @@ class PolizaDeCobranzaService extends AbstractProcesador{
 				}
 			}
 		}
+		*/
 
 	}
 }

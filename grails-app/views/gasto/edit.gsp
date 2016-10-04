@@ -96,6 +96,7 @@
 									<f:field property="uuid" label="UUID"
 										widget-class="form-control" cols="col-sm-8" colsLabel="col-sm-4"/>
 									<f:display property="acuseEstado" cols="col-sm-8" colsLabel="col-sm-4"/>
+									<f:field property="gastoPorComprobar" widget-class="form-control "  cols="col-sm-8" colsLabel="col-sm-4"/>
 
 								</div>
 								<div class="col-sm-4">

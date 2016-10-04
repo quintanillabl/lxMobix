@@ -66,6 +66,8 @@
 											from="${com.luxsoft.lx.cxp.Gasto.CONCEPTOS}" 
 											/>
 									</f:field>
+									<f:field property="gastoPorComprobar" 
+										widget-class="form-control "  cols="col-sm-4" colsLabel="col-sm-3"/>
 									<f:field property="comentario" cols="col-sm-8" colsLabel="col-sm-3" widget-class="form-control"/>
 									
 								</div>

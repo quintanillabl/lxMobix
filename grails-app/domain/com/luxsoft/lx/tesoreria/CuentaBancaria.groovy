@@ -28,6 +28,8 @@ class CuentaBancaria {
 	CuentaContable cuentaContable
 
 	String impresionTemplate
+	
+	String cuentaRetencion
 
 	Date dateCreated
 	Date lastUpdated
@@ -39,6 +41,7 @@ class CuentaBancaria {
 		nombre(blank:false,size:1..100)
 		tipo(blank:false,size:1..50,inList:['CHEQUES','INVERSION'])
 		impresionTemplate nullable:true,maxSize:50
+		cuentaRetencion nullable:true
     }
 	
 	static mapping ={

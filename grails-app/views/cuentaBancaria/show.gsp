@@ -9,12 +9,12 @@
 </head>
 <body>
 
-	<div class="container">
+	<div class="container-fluid">
 		
 		
 
 		<div class="row row-header">
-			<div class="col-md-6 col-md-offset-3 toolbar-panel">
+			<div class="col-md-8 col-md-offset-2 toolbar-panel">
 				<div class="btn-group">
 				    <g:link action="index" class="btn btn-default ">
 				        <i class="fa fa-step-backward"></i> Cuentas
@@ -50,7 +50,7 @@
 		</div> 
 
 		<div class="row ">
-		    <div class="col-md-6 col-md-offset-3">
+		    <div class="col-md-12 ">
 		    	<fieldset disabled>
 				<form class="form-horizontal"  >	
 					<div class="panel panel-primary">
@@ -85,7 +85,9 @@
 									<g:hiddenField id="cuentaId" name="cuentaContable.id" />
 									<input type="text" value="${value}" id="cuentaField" class="form-control">
 								</f:field>
-								<f:field property="impresionTemplate" widget-class="form-control" widget-type="text"/>
+								<f:field property="cuentaRetencion" widget-class="form-control" widget-type="text"/>
+								<f:field property="impresionTemplate" widget-class="form-control" widget-type="text" label="Plantilla de impresión"/>
+
 							
 							</f:with>
 					  </div>

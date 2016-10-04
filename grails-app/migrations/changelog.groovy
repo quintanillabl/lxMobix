@@ -98,4 +98,7 @@ databaseChangeLog = {
 	include file: 'econta-pago-transferencia-fix.groovy'
 
 	include file: 'econta-transaccion-comprana.groovy'
+	
+
+	include file: 'econta-cuenta-bancaria-fix.groovy'
 }
