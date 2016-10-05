@@ -23,12 +23,13 @@
 				<th>Tasa(IVA)</th>
 				<th>Impuesto</th>
 				<th>Rererencia</th>
+				<th>CFDI</th>
 				<th>Comentario</th>
 			</tr>
 		</thead>
 		<tbody>
 			<g:each in="${comisionInstanceList}" var="row">
-				<tr>
+				<tr class="${row.gasto ? 'success' : 'warning'}">
 					<lx:idTableRow id="${row.id}"/>
 					<td>
 						<g:link action="show" id="${row.id}">
@@ -41,6 +42,7 @@
 					<td><g:formatNumber number="${row.impuestoTasa}" format="##.##"/></td>
 					<td><lx:moneyFormat number="${row.impuesto}"/></td>
 					<td>${fieldValue(bean: row, field: "referenciaBancaria")} </td>
+					<td>${fieldValue(bean: row, field: "gasto.folio")} </td>
 					<td>${fieldValue(bean: row, field: "comentario")} </td>
 					
 				</tr>

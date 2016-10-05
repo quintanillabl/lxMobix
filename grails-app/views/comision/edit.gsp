@@ -12,7 +12,7 @@
 
 	<div class="container">
 		<div class="row row-header">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-10 col-md-offset-1">
 				
 				<g:form name="updateForm" class="form-horizontal" action="update" method="PUT" >	
 
@@ -37,6 +37,10 @@
 								<f:field property="impuestoTasa" widget="porcentaje" wrapper="bootstrap3" label="Tasa de impuesto(%)"/>
 								<f:field property="impuesto" widget="money"  wrapper="bootstrap3"/>
 				    			<f:field property="referenciaBancaria" widget-class="form-control " wrapper="bootstrap3"/>
+				    			<f:field property="gasto" wrapper="bootstrap3">
+				    				<g:hiddenField id="gastoId" name="gasto.id" />
+				    				<input type="text" value="${value}" id="gastoField" class="form-control">
+				    			</f:field>
 				    			<f:field property="comentario" widget-class="form-control "  wrapper="bootstrap3"/>
 							</f:with>
 						</div>
@@ -126,6 +130,15 @@
 			$("#impuesto").autoNumeric('set',impuesto);
 			//$("#hiddenImpuesto").val(impuesto);
 			
+		});
+
+		$("#gastoField").autocomplete({
+			source:'<g:createLink controller="comision" action="getCxPDisponibles"/>',
+			minLength:1,
+			select:function(e,ui){
+				console.log('Valor seleccionado: '+ui.item.id);
+				$("#gastoId").val(ui.item.id);
+			}
 		});
 	});
 </script>

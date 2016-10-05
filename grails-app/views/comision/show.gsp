@@ -12,7 +12,7 @@
 
 	<div class="container">
 		<div class="row row-header">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-10 col-md-offset-1">
 				
 				<g:form  class="form-horizontal" >	
 
@@ -37,6 +37,7 @@
 								<f:display property="impuestoTasa" widget="porcentaje" wrapper="bootstrap3" label="Tasa de impuesto(%)"/>
 								<f:display property="impuesto" widget="money"  wrapper="bootstrap3"/>
 				    			<f:display property="referenciaBancaria" widget-class="form-control " wrapper="bootstrap3"/>
+				    			<f:display property="gasto" widget-class="form-control " wrapper="bootstrap3"/>
 				    			<f:display property="comentario" widget-class="form-control "  wrapper="bootstrap3"/>
 							</f:with>
 						</div>

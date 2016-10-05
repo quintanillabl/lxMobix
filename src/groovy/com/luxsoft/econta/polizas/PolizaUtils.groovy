@@ -31,9 +31,14 @@ class PolizaUtils {
 
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'COMISIONES_BANCARIAS',
-			label:'Comisiones',
+			label:'Comisiones (Retiro)',
 			tipo:'DIARIO',
 			service:'polizaDeComisionesBancariasService')
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'COMISIONES_BANCARIAS_GASTO',
+			label:'Comisiones (Gasto)',
+			tipo:'DIARIO',
+			service:'polizaDeComisionesBancariasGastoService')
 		
 		ProcesadorDePoliza.findOrSaveWhere(
 			nombre:'INVERSIONES',
@@ -179,6 +184,10 @@ class PolizaUtils {
 
 	public static ComisionesBancarias(def empresa){
 		return CuentaContable.findByEmpresaAndClave(empresa,'600-0011')	
+	}
+
+	public static Deudores(def empresa){
+		return CuentaContable.findByEmpresaAndClave(empresa,'107-0001')	
 	}
 
 	public static InteresesBancarios(def empresa){

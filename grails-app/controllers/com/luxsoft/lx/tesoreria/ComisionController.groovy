@@ -10,6 +10,8 @@ import grails.plugin.springsecurity.annotation.Secured
 import com.luxsoft.lx.core.TipoDeCambio
 import com.luxsoft.lx.utils.MonedaUtils
 import org.grails.databinding.BindingFormat
+import grails.converters.JSON
+import com.luxsoft.lx.cxp.Gasto
 
 
 @Secured(["hasAnyRole('ADMIN','TESORERIA','GASTOS')"])
@@ -127,6 +129,26 @@ class ComisionController {
             '*'{ render status: NOT_FOUND }
         }
     }
+
+    def getCxPDisponibles() {
+
+        def term=params.term+'%'
+        log.info 'Buscando gastos: '+term
+        def args=[session.empresa,term.toLowerCase()]
+        def params=[max:30,sort:"fecha",order:"desc"]
+        def hql="from Gasto g where g.empresa=? and g.concepto='COMISIONES_BANCARIAS' and ( lower(g.proveedor.nombre) like ?) and g not in(select c.gasto from Comision c) "
+        def list=Gasto.findAll(hql,args,params)
+        
+        list=list.collect{ c->
+            def nombre="$c.proveedor.nombre ${c.fecha.text()} ($c.folio) $c.importe"
+            [id:c.id,
+            label:nombre,
+            value:nombre]
+        }
+        def res=list as JSON
+        render res
+    }
+
 }
 
 import com.luxsoft.lx.tesoreria.CuentaBancaria;

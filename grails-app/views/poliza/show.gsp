@@ -10,7 +10,7 @@
 </head>
 <body>
 
-	<div class="container form-panel">
+	<div class="container-fluid form-panel">
 
 		<div class="row toolbar-panel">
 			<div class="col-md-12 ">

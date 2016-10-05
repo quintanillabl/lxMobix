@@ -91,14 +91,16 @@ databaseChangeLog = {
 
 	include file: 'econta-transaccion-transferencia.groovy'
 
-	
-
 	include file: 'requisicion-fix-001.groovy'
 
 	include file: 'econta-pago-transferencia-fix.groovy'
 
 	include file: 'econta-transaccion-comprana.groovy'
-	
 
 	include file: 'econta-cuenta-bancaria-fix.groovy'
+
+	include file: 'econta-comision-bancaria-fix1.groovy'
+	
+
+	include file: 'econta-procesadores-orden.groovy'
 }

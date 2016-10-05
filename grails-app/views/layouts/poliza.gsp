@@ -42,7 +42,7 @@
                   <i class="fa fa-bars"></i> Todas
                 </g:link>
 
-                <g:each in="${procesadores}" var="row">
+                <g:each in="${procesadores.sort{it.orden}}" var="row">
                   
                   <g:link class="list-group-item ${subTipo==row.nombre?'active':''}" 
                     action="index" params="[subTipo:row.nombre]">

@@ -21,7 +21,7 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
             [empresa,fecha])
         comisiones.each{ comision ->
             def desc="$comision.cuenta.numero ($comision.cuenta.nombre) ${comision.fecha.format('dd/MMMM/yyyy')}"
-            cargoAComisiones(poliza,comision,desc)
+            cartoADeudores(poliza,comision,desc)
             cargoAIvaAcreditable(poliza,comision,desc)
             abonoABancos(poliza,comision,desc)
         }
@@ -30,9 +30,9 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
 
     
 
-    def cargoAComisiones(def poliza,def comision,def descripcion){
+    def cartoADeudores(def poliza,def comision,def descripcion){
     	cargoA(poliza,
-    		ComisionesBancarias(poliza.empresa),
+    		Deudores(poliza.empresa),
     		comision.comision.abs(),
     		descripcion,
     		'COMISION',
@@ -56,12 +56,21 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
     	abonoA(
     		poliza,
     		comision.cuenta.cuentaContable,
-    		comision.comision.abs()+comision.impuesto.abs(),
+    		comision.comision.abs(),
     		descripcion,
     		'COMISION',
     		comision.referenciaBancaria,
     		comision
     	)
+        abonoA(
+            poliza,
+            comision.cuenta.cuentaContable,
+            comision.impuesto.abs(),
+            descripcion,
+            'COMISION',
+            comision.referenciaBancaria,
+            comision
+        )
     }
 
    

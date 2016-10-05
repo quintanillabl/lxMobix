@@ -171,25 +171,30 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 		def pago=aplicacion.pago
 
 		def gasto = aplicacion.cuentaPorPagar
-		log.info 'PROVISION:  Cargo a acredores diversosgasto :'+gasto.total
+		if(gasto.concepto == 'COMISIONES_BANCARIAS' ){
+			return
+		}else if (gasto.gastoPorComprobar) {
+			
+		}else{
+			log.info 'PROVISION:  Cargo a acredores diversosgasto :'+gasto.total
 
-		def cuenta=gasto.proveedor.cuentaContable
-		assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
-		
-		def polizaDet = new PolizaDet(
-			cuenta:cuenta,
-			concepto:cuenta.descripcion,
-			debe:gasto.total,
-		    haber:0.0,
-		    descripcion:StringUtils.substring(descripcion,0,255),
-		    asiento:'PAGO',
-		    referencia:referencia,
-		    origen:gasto.id.toString(),
-		    entidad:gasto.class.toString()
-		)
-		complementoDePago(pago,polizaDet)
-		poliza.addToPartidas(polizaDet)
-		
+			def cuenta=gasto.proveedor.cuentaContable
+			assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
+			
+			def polizaDet = new PolizaDet(
+				cuenta:cuenta,
+				concepto:cuenta.descripcion,
+				debe:gasto.total,
+			    haber:0.0,
+			    descripcion:StringUtils.substring(descripcion,0,255),
+			    asiento:'PAGO',
+			    referencia:referencia,
+			    origen:gasto.id.toString(),
+			    entidad:gasto.class.toString()
+			)
+			complementoDePago(pago,polizaDet)
+			poliza.addToPartidas(polizaDet)
+		}
 	}
 
 	def cargoAIvaAcreditable(def poliza,def aplicacion,def descripcion,def referencia){

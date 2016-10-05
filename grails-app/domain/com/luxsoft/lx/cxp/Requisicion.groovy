@@ -41,7 +41,7 @@ class Requisicion {
     	folio unique: 'empresa'
     	comentario nullable:true
     	autorizacion nullable:true
-    	tipo inList:['GASTO','COMPRA','HONORARIOS'],maxSize:50
+    	tipo inList:['GASTO','COMPRA','HONORARIOS','GASTO_POR_COMPROBAR'],maxSize:50
     	total scale:4
     	aFavor nullable:true
         formaDePago nullable:true
