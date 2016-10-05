@@ -11,14 +11,14 @@
 </head>
 <body>
 
-	<div class="container">
+	<div class="container-fluid">
 		
 		
 
 
 		<div class="row row-header ">
 			
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-10 col-md-offset-1">
 				
 				<g:form class="form-horizontal" action="update" id="${proveedorInstance.id}" method="PUT">	
 
@@ -41,6 +41,7 @@
 							<f:field property="nacional" widget-class="form-control"/>
 							<f:field property="email" widget-class="form-control"/>
 							<f:field property="www" widget-class="form-control"/>
+							<f:field property="subCuentaOperativa" widget-class="form-control"/>
 							<f:field property="cuentaContable"  >
 								<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${gastoDetInstance?.cuentaContable?.id}"/>
 								<input type="text" id="cuentaField" class="form-control" value="${gastoDetInstance?.cuentaContable}" >

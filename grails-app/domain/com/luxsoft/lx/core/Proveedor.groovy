@@ -18,6 +18,7 @@ class Proveedor {
     String email
 	String www	
 	CuentaContable cuentaContable
+	String subCuentaOperativa
 
 	//Map productos
     	
@@ -36,6 +37,7 @@ class Proveedor {
 		www(nullable:true,url:true)
 		direccion(nullable:true)
 		cuentaContable(nullable:true)
+		subCuentaOperativa nullable:true,maxSize:4, minSie:4
     }
     	
     String toString(){

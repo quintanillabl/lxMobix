@@ -62,7 +62,7 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
-			$('.cuenta').mask('00000');
+			$('.cuenta').mask('AAAA');
 		});
 	</script>
 	

@@ -9,7 +9,7 @@
 </head>
 <body>
 
-	<div class="container">
+	<div class="container-fluid">
 		
 		
 
@@ -53,7 +53,7 @@
 		</div> 
 
 		<div class="row ">
-		    <div class="col-md-6 col-md-offset-3">
+		    <div class="col-md-10 col-md-offset-1">
 		    	<fieldset disabled>
 				<g:form class="form-horizontal" action="save" >	
 
@@ -77,6 +77,7 @@
 							<f:field property="nacional" widget-class="form-control"/>
 							<f:field property="email" widget-class="form-control"/>
 							<f:field property="www" widget-class="form-control"/>
+							<f:field property="subCuentaOperativa" widget-class="form-control"/>
 							<f:field property="cuentaContable" widget-class="form-control"/>
 						</f:with>
 						<g:render template="/common/direccion" bean="${proveedorInstance}"/>

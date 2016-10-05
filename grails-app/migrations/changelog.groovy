@@ -103,4 +103,6 @@ databaseChangeLog = {
 	
 
 	include file: 'econta-procesadores-orden.groovy'
+
+	include file: 'econta-proveedor-subcuenta-operativa.groovy'
 }

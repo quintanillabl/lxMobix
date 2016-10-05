@@ -43,8 +43,9 @@ class PolizaDeComisionesBancariasGastoService extends AbstractProcesador{
     }
     
     def abonoDeudores(def poliza,def gasto,def descripcion,def asiento){
-        //def cuenta=gasto.proveedor.cuentaContable
-        def cuenta = CuentaContable.buscarPorClave(poliza.empresa,'107-0001')
+        
+        assert gasto.proveedor.subCuentaOperativa, "No existe la subCuenta operativa para el proveedor: $gasto.proveedor"
+        def cuenta = CuentaContable.buscarPorClave(poliza.empresa,'107-' + gasto.proveedor.subCuentaOperativa)
         assert cuenta, 'No existe cuenta acredora ya sea para el proveedor o la generica provedores diversos'
         def referencia = 'F:'+gasto.folio
         //cargoA(poliza,cuenta,det.importe,descripcion,asiento,referencia,gasto)

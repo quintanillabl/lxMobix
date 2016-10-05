@@ -44,6 +44,10 @@ class PolizaUtils {
 			nombre:'INVERSIONES',
 			label:'Inversiones',
 			service:'polizaDeInversionesService')
+		ProcesadorDePoliza.findOrSaveWhere(
+			nombre:'COMPROBACION_GASTOS',
+			label:'Comprobación de gastos',
+			service:'polizaDeComprobacionDeGastosService')
 
 		/*
 		ProcesadorDePoliza.findOrSaveWhere(
