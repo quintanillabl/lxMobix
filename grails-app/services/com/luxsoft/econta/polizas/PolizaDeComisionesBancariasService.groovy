@@ -5,6 +5,7 @@ import static com.luxsoft.econta.polizas.PolizaUtils.*
 
 import com.luxsoft.lx.tesoreria.Comision
 import com.luxsoft.lx.contabilidad.Poliza
+import com.luxsoft.lx.contabilidad.CuentaContable
 
 class PolizaDeComisionesBancariasService extends AbstractProcesador{
 
@@ -31,8 +32,11 @@ class PolizaDeComisionesBancariasService extends AbstractProcesador{
     
 
     def cartoADeudores(def poliza,def comision,def descripcion){
+        assert comision.cuenta.subCuentaOperativa, "No existe la subCuenta operativa para la cuenta: $comision.cuenta.numero"
+        def cuenta = CuentaContable.buscarPorClave(poliza.empresa,'107-' + comision.cuenta.subCuentaOperativa)
+        assert cuenta, 'No existe sub cuenta operativa para la cuenta ' + comision.cuenta
     	cargoA(poliza,
-    		Deudores(poliza.empresa),
+    		cuenta,
     		comision.comision.abs(),
     		descripcion,
     		'COMISION',

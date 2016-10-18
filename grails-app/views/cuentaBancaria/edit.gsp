@@ -58,6 +58,7 @@
 								<g:hiddenField id="cuentaId" name="cuentaContable.id" value="${value.id}"/>
 								<input type="text" value="${value}" id="cuentaField" class="form-control">
 							</f:field>
+							<f:field property="subCuentaOperativa" widget-class="form-control"/>
 							<f:field property="cuentaRetencion" widget-class="form-control" widget-type="text"/>
 							<f:field property="impresionTemplate" widget-class="form-control" widget-type="text" label="Plantilla de impresión"/>
 						</f:with>

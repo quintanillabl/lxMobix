@@ -26,14 +26,17 @@ class PolizaController {
 
     def index2(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        params.sort=params.sort?:'tipo'
+        params.sort='tipo'
         params.order='desc'
         def empresa=session.empresa
         def ejercicio=session.periodoContable.ejercicio
         def mes=session.periodoContable.mes
-        def polizas=Poliza.findAllByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes,params)
-        def polizasCount=Poliza.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
-        respond polizas,model:[polizaInstanceCount: polizasCount]
+        //def polizas=Poliza.findAllByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes,params)
+        def polizas = Poliza.findAll(
+            "from Poliza p where p.empresa= ? and p.ejercicio = ? and p.mes = ? order by p.tipo, p.subTipo, p.folio asc"
+            ,[empresa,ejercicio,mes])
+        //def polizasCount=Poliza.countByEmpresaAndEjercicioAndMes(empresa,ejercicio,mes)
+        respond polizas,model:[polizaInstanceCount: polizas.size()]
     }
 
     def index(){
@@ -53,6 +56,8 @@ class PolizaController {
         }
 
         def list=polizas.list(sort:'tipo',order:'asc')
+        //list = list.sort {it.subTipo}
+        list = list.sort { a,b -> a.tipo <=> b.tipo ?: a.subTipo <=> b.subTipo ?: a.folio <=> b.folio }
         
         respond list,model:[subTipo:subTipo,procesador:procesador]
         //render view:'index',model:[polizaInstanceList:polizas,subTipo:subTipo]
@@ -233,6 +238,22 @@ class PolizaController {
         cierreContableService.generarPolizaDeCierre(empresa,ejercicio)
         redirect action:'index'
 
+    }
+
+    @Transactional
+    def recalcularFolios(String subTipo){
+        def empresa = session.empresa
+        def periodo=session.periodoContable
+        flash.message = "Folios de $subTipo recalculados para el periodo $periodo"
+        //def poliza=Poliza.findByEmpresaAndEjercicioAndTipoAndSubTipo(empresa,ejercicio,'DIARIO','CIERRE_ANUAL')
+        def polizas = Poliza.findAll {empresa== empresa && subTipo==subTipo && ejercicio == periodo.ejercicio && mes == periodo.mes}
+        polizas = polizas.sort {it.fecha}
+        def folio = 1
+        polizas.each { p ->
+            p.folio = folio++
+            p.save flush:true
+        }
+        redirect action:'index',params:[subTipo:subTipo]
     }
 }
 

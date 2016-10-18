@@ -117,8 +117,8 @@ class PolizaDePagoGastosService extends AbstractProcesador{
 				
 				def cxp = aplicacion.cuentaPorPagar
 				if(cxp.retensionIsr || cxp.retensionIva){				
-					cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
-					abonoARetencionIsr(poliza,gasto,cxp,pago,referencia)
+					//cargoAbonoARetencionIva(poliza,gasto,cxp,pago,referencia)
+					//abonoARetencionIsr(poliza,gasto,cxp,pago,referencia)
 				}
 			}
 

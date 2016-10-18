@@ -29,6 +29,8 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
     		cargoAGastos(poliza,gasto,desc)
     		cargoAIvaPendienteDeAcreditar(poliza,gasto,desc)
     		abonoAAcredoresDiversos(poliza,gasto,desc)
+    		abonoARetencionIsr(poliza,gasto,desc)
+    		cargoAbonoARetencionIva(poliza,gasto,desc)
     	}
     	
     	poliza.concepto="PROVISION ${poliza.fecha.format('dd/MM/yyyy')}"
@@ -68,13 +70,17 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 	def cargoAIvaPendienteDeAcreditar(def poliza,def gasto,def descripcion){
 		log.info 'Cargo a iva pendiente de acreditar'
 		def cuenta = IvaPendienteDeAcreditar(poliza.empresa)
+		def impuesto = gasto.impuesto 
+		if(gasto.retensionIva>0){
+			impuesto = impuesto - gasto.retensionIva
+		}
 		def polizaDet = new PolizaDet(
 			cuenta:cuenta,
 			concepto:cuenta.descripcion,
-			debe:gasto.impuesto,
+			debe:impuesto,
 		    haber:0.0,
 		    descripcion:StringUtils.substring(descripcion,0,255),
-		    asiento:'PROVISION',
+		    asiento:'PROVISION TXT',
 		    referencia:'F:'+gasto.folio,
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
@@ -123,6 +129,128 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 		*/
 	
 	}
+
+	def abonoARetencionIsr(def poliza,def cxp, def desc){
+		//def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${cxp.proveedor.nombre} "
+		def referencia = 'F:'+cxp.folio
+		def det = null
+		if(cxp.retensionIsr){
+			def concepto=cxp.concepto
+			
+			if(concepto=='HONORARIOS_ASIMILADOS'){
+				det = abonoA(
+					poliza,
+					RetencionIsrHonorariosAsimilados(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PROVISION',
+					referencia,
+					cxp
+				)
+			}
+			else if(concepto == 'HONORARIOS_CON_RETENCION'){
+				det = abonoA(
+					poliza,
+					RetencionIsrHonorarios(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PROVISION',
+					referencia,
+					cxp
+				)
+			}
+			else if(concepto == 'SERVICIOS_PROFESIONALES'){
+				det = abonoA(
+					poliza,
+					RetencionIsrServiciosProfesionales(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PROVISION',
+					referencia,
+					cxp
+				)
+					
+			}
+			else if(concepto == 'RETENCION_PAGOS'){
+				det = abonoA(
+					poliza,
+					RetencionIsrDividendos(poliza.empresa),
+					cxp.retensionIsr.abs(),
+					desc,
+					'PROVISION',
+					referencia,
+					cxp
+				)
+			}
+		}
+		if(det!= null){
+			addComplementoCompra(det,cxp)
+		}
+	}
+
+	def cargoAbonoARetencionIva(def poliza,def cxp,def desc){
+		def referencia = 'F:'+cxp.folio
+		def det = null
+		if(cxp.retensionIva){
+			//def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
+			
+			det = cargoA(
+				poliza,
+				IvaRetenidoPendient(poliza.empresa),
+				cxp.retensionIva.abs(),
+				desc,
+				'PROVISION',
+				referencia,
+				cxp
+			)
+
+			det = abonoA(
+				poliza,
+				ImpuestoRetenidoDeIva(poliza.empresa),
+				cxp.retensionIva.abs(),
+				desc,
+				'PROVISION',
+				referencia,
+				cxp
+			)
+		}
+		if(det!= null){
+			addComplementoCompra(det,cxp)
+		}
+	}
+
+	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:importe.abs(),
+            haber:0.0,
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		poliza.addToPartidas(det)
+		return det;
+	}
+
+	def abonoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){
+		def det=new PolizaDet(
+			cuenta:cuenta,
+        	concepto:cuenta.descripcion,
+            debe:0.0,
+            haber:importe.abs(),
+            descripcion:StringUtils.substring(descripcion,0,255),
+            asiento:asiento,
+            referencia:referencia,
+            origen:entidad.id.toString(),
+            entidad:entidad.class.toString()
+		)
+		poliza.addToPartidas(det)
+		return det
+	}
+
 
 	def addComplementoCompra(def polizaDet, def gasto){
 		log.info("Agregando complenento de compra nacional para gasto: $gasto  UUID:$gasto.uuid")

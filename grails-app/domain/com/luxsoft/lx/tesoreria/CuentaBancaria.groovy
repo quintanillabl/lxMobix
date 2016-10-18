@@ -26,6 +26,7 @@ class CuentaBancaria {
 	int diasInversionIsr=365
 	int plazo=0
 	CuentaContable cuentaContable
+	String subCuentaOperativa
 
 	String impresionTemplate
 	
@@ -42,6 +43,7 @@ class CuentaBancaria {
 		tipo(blank:false,size:1..50,inList:['CHEQUES','INVERSION'])
 		impresionTemplate nullable:true,maxSize:50
 		cuentaRetencion nullable:true
+		subCuentaOperativa(nullable:true,maxSize:4)
     }
 	
 	static mapping ={

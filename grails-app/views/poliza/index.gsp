@@ -29,6 +29,15 @@
 	        		<i class="fa fa-cog"></i> Generar
 	        	</a>
 	        </g:if>
+
+	        <a href="#refoliarDialog" data-toggle="modal" class="btn btn-default ">
+	            <i class="fa fa-tasks"></i> Recalcular folios</a>
+	        </a>
+
+	       %{--  <g:link action="index" params='[subTipo:subTipo]'class="btn btn-default ">
+	            <span class="glyphicon glyphicon-repeat"></span> Refrescar
+	        </g:link> --}%
+
 	        
 	        
 	        <g:if test="${session.periodoContable.mes==13}">
@@ -105,6 +114,36 @@
 	
 	<g:render template="/common/cambioDePeriodo" bean="${session.periodoContable}"/>
 	<g:render template="generarDialog"/>
+
+	 <div class="modal fade" id="refoliarDialog" tabindex="-1">
+	    <div class="modal-dialog ">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal"
+	                    aria-hidden="true">&times;</button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Recalular folios póliza de ${procesador?.nombre} (${procesador?.tipo})
+	                </h4>
+	                <p>(${procesador?.nombre})</p>
+	            </div>
+	            <g:form action="recalcularFolios" class="form-horizontal" >
+	                <g:hiddenField name="subTipo" value="${procesador.nombre}"/>
+	                <div class="modal-body">
+	                    <h3>Periodo: ${session.periodoContable}</h3>
+	                </div>
+	                
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	                    <g:submitButton class="btn btn-info" name="aceptar"
+	                            value="Aceptar" />
+	                </div>
+	            </g:form>
+
+	        </div>
+	        <!-- moda-content -->
+	    </div>
+	    <!-- modal-di -->
+	</div> 
 	
 	<script type="text/javascript">
 		$(document).ready(function(){
