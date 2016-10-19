@@ -127,7 +127,7 @@
 	                <p>(${procesador?.nombre})</p>
 	            </div>
 	            <g:form action="recalcularFolios" class="form-horizontal" >
-	                <g:hiddenField name="subTipo" value="${procesador.nombre}"/>
+	                <g:hiddenField name="subTipo" value="${procesador?.nombre}"/>
 	                <div class="modal-body">
 	                    <h3>Periodo: ${session.periodoContable}</h3>
 	                </div>

@@ -242,6 +242,11 @@ class PolizaController {
 
     @Transactional
     def recalcularFolios(String subTipo){
+        if(!subTipo){
+            flash.message = "Debe seleccionar un sub tipo de poliza para regenerar los folios"
+            redirect action:'index',params:[subTipo:subTipo]
+            return    
+        }
         def empresa = session.empresa
         def periodo=session.periodoContable
         flash.message = "Folios de $subTipo recalculados para el periodo $periodo"
