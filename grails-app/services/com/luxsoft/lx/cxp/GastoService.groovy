@@ -145,27 +145,27 @@ class GastoService {
             }
         }
         def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
+        
         if(retenciones){
             retenciones.breadthFirst().each{
-            def map=it.attributes()
-            if(map.impuesto=='IVA'){
-               def imp=map.importe as BigDecimal
-               def tasa=imp*100/subTotal
-               gasto.retensionIva=imp
-               gasto.retensionIvaTasa=tasa
-               
-            }
-            if(map.impuesto=='ISR'){
-               def imp=map.importe as BigDecimal
-               def tasa=imp*100/subTotal
-               gasto.retensionIsr=imp
-               gasto.retensionIsrTasa=tasa
-            }
-        }    
+                def map=it.attributes()
+                if(map.impuesto=='IVA'){
+                    def imp=map.importe as BigDecimal
+                    def tasa=imp*100/subTotal
+                    gasto.retensionIva=imp
+                    gasto.retensionIvaTasa=tasa
+                }
+                if(map.impuesto=='ISR'){
+                    def imp=map.importe as BigDecimal
+                    def tasa=imp*100/subTotal
+                    gasto.retensionIsr=imp
+                    gasto.retensionIsrTasa=tasa
+                }
+            }    
         }
         
 
-        gasto.save flush:true
+        gasto.save failOnError:true, flush:true
 
         return gasto
 

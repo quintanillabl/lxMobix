@@ -88,17 +88,13 @@ class CuentaPorPagar {
     	uuid nullable:true,maxSize:40,unique:true
     	serie nullable:true,maxSize:20
     	folio nullable:true,maxSize:20
-    	vencimiento (validator:{vencimiento,gasto->
-    		if(vencimiento.compareTo(gasto.fecha)<0)
-    			return "invalido"
-    		else return true
-    	})
     	cfdiXmlFileName nullable:true,maxSize:200
 		cfdiXml nullable:true,maxSize:(1024 * 512)  // 50kb para almacenar el xml
 		acuse nullable:true,maxSize:(1024*256)
 		acuseEstado nullable:true,maxSize:100
 		acuseCodigoEstatus nullable:true,maxSize:100
 		gastoPorComprobar nullable:true
+		
 		
     }
 	
