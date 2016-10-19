@@ -19,8 +19,8 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
     	def fecha=poliza.fecha
     	//def inicio=fecha.inicioDeMes()
 
-    	def gastos=Gasto.findAll("from Gasto g where g.empresa=? and date(g.fecha) = ?",
-    		[empresa,fecha])
+    	def gastos=Gasto.findAll("from Gasto g where g.empresa=? and date(g.fecha) = ? and g.gastoPorComprobar = false",
+    		[empresa,fecha]) 
 
     	//gastos=gastos.findAll { it.buscarSaldoAlCorte(fecha) }
 

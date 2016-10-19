@@ -4,6 +4,7 @@ package com.luxsoft.lx.contabilidad
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
+import grails.transaction.NotTransactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import com.luxsoft.lx.bi.ReportCommand
@@ -240,7 +241,7 @@ class PolizaController {
 
     }
 
-    @Transactional
+    @NotTransactional
     def recalcularFolios(String subTipo){
         if(!subTipo){
             flash.message = "Debe seleccionar un sub tipo de poliza para regenerar los folios"
@@ -252,11 +253,14 @@ class PolizaController {
         flash.message = "Folios de $subTipo recalculados para el periodo $periodo"
         //def poliza=Poliza.findByEmpresaAndEjercicioAndTipoAndSubTipo(empresa,ejercicio,'DIARIO','CIERRE_ANUAL')
         def polizas = Poliza.findAll {empresa== empresa && subTipo==subTipo && ejercicio == periodo.ejercicio && mes == periodo.mes}
+
         polizas = polizas.sort {it.fecha}
+        log.info('Polizs a ordenar: ' + polizas.size())
+
         def folio = 1
         polizas.each { p ->
             p.folio = folio++
-            p.save flush:true
+            p.save failOnError:true,flush:true
         }
         redirect action:'index',params:[subTipo:subTipo]
     }

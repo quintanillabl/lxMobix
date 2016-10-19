@@ -9,7 +9,7 @@ import com.luxsoft.lx.utils.Mes
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.utils.MonedaUtils
 
-@EqualsAndHashCode(includes='empresa,ejercicio,mes,tipo,folio')
+@EqualsAndHashCode(includes='empresa,ejercicio,mes,tipo,subTipo,folio')
 @ToString(includes='empresa,ejercicio,mes,tipo,subTipo,folio,debe,haber',includeNames=true,includePackage=false)
 class Poliza {
 
@@ -57,7 +57,7 @@ class Poliza {
 		mes inList:(1..13)
 		tipo(inList:['INGRESO','EGRESO','DIARIO'])
 		subTipo(maxSize:30)
-		folio unique:['empresa','ejercicio','mes','tipo','subTipo']
+		//folio unique:['empresa','ejercicio','mes','tipo','subTipo']
 		debe(nullable:false,scale:6)
 		haber(nullable:false,scale:6)
 		concepto(maxSize:300)
