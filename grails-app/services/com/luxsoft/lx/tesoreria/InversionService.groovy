@@ -49,17 +49,17 @@ class InversionService {
 		if(inversion.rendimientoReal.abs()){
 			
 			
-			// MovimientoDeCuenta rendimiento=new MovimientoDeCuenta(
-			// 	empresa:inversion.empresa,
-			// 	cuenta:inversion.cuentaDestino,
-			// 	fecha:inversion.vencimiento,
-			// 	importe:inversion.rendimientoReal.abs()+inversion.importeIsr.abs(),
-			// 	concepto:inversion.comentario,
-			// 	referencia:'INTERESE BRUTOS',
-			// 	comentario:'INVERSION'
-			// )
-			// movimientoDeCuentaService.preparar(rendimiento)
-			// inversion.addToMovimientos(rendimiento)
+			MovimientoDeCuenta rendimiento=new MovimientoDeCuenta(
+				empresa:inversion.empresa,
+				cuenta:inversion.cuentaDestino,
+				fecha:inversion.vencimiento,
+				importe:inversion.rendimientoReal.abs(),
+				concepto:inversion.comentario,
+				referencia:'INTERESE BRUTOS',
+				comentario:'INVERSION'
+			)
+			movimientoDeCuentaService.preparar(rendimiento)
+			inversion.addToMovimientos(rendimiento)
 			
 		}
 		

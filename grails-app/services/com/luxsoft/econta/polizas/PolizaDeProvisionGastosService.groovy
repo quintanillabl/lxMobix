@@ -80,7 +80,7 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 			debe:impuesto,
 		    haber:0.0,
 		    descripcion:StringUtils.substring(descripcion,0,255),
-		    asiento:'PROVISION TXT',
+		    asiento:'PROVISION ',
 		    referencia:'F:'+gasto.folio,
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
@@ -199,24 +199,24 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 				IvaRetenidoPendient(poliza.empresa),
 				cxp.retensionIva.abs(),
 				desc,
-				'PROVISION',
+				'PROVISION RET',
 				referencia,
 				cxp
 			)
+			addComplementoCompra(det,cxp)
 
 			det = abonoA(
 				poliza,
 				ImpuestoRetenidoDeIva(poliza.empresa),
 				cxp.retensionIva.abs(),
 				desc,
-				'PROVISION',
+				'PROVISION RET',
 				referencia,
 				cxp
 			)
-		}
-		if(det!= null){
 			addComplementoCompra(det,cxp)
 		}
+		
 	}
 
 	def cargoA(def poliza,def cuenta,def importe,def descripcion,def asiento,def referencia,def entidad){

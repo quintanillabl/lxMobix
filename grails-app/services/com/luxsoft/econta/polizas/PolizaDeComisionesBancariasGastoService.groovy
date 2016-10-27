@@ -21,7 +21,7 @@ class PolizaDeComisionesBancariasGastoService extends AbstractProcesador{
     void procesar(def poliza){
         def empresa=poliza.empresa
         def fecha=poliza.fecha
-        def gastos = Gasto.where {concepto == 'COMISIONES_BANCARIAS' && gastoPorComprobat && fecha == fecha }.list().each { gasto ->
+        def gastos = Gasto.where {empresa == empresa && concepto == 'COMISIONES_BANCARIAS' && gastoPorComprobat && fecha == fecha }.list().each { gasto ->
             def desc = "Comisión F:${gasto.folio} (${gasto.fecha}) ${gasto.proveedor.nombre} "
             //Cargo a gastos
             cargoAGastos(poliza,gasto,desc,'COMISION_GASTO')

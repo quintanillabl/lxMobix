@@ -682,6 +682,9 @@ class ImporteALetra {
 		final String ok=StringUtils.leftPad(svalor,2,'0');
 		num_letras = decmillon(importe.intValue());
 		num_letras+=" PESOS {0}/100 M.N.";
+		if(entero<1){
+			num_letras=" CERO PESOS {0}/100 M.N.";
+		}
 		//println "Importe con letra  " +num_letras
 		return MessageFormat.format(num_letras, ok);
 	}

@@ -105,7 +105,7 @@ class PolizaDeInversionesService extends AbstractProcesador {
     	if(inversion.rendimientoReal.abs()){
     		cargoA(
     			poliza,
-    			inversion.cuentaOrigen.cuentaContable,
+    			inversion.cuentaDestino.cuentaContable,
     			inversion.rendimientoReal.abs(),
     			descripcion,
     			'INT INVERSION ',
