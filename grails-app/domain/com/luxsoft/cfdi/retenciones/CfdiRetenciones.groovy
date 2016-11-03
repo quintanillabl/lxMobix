@@ -72,7 +72,7 @@ class CfdiRetenciones {
     	mesFinal size:1..12
     	ejercicio size:2004..2024
     	comentario nullable:true
-    	total scale:6,min:1.0
+    	total scale:6,min:0.0
     	totalGravado scale:6
     	totalExcento scale:6
     	totalRetenido scale:6

@@ -23,8 +23,8 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["INMUEBLES SAN, S.C."]]></defaultValueExpression>
+	<parameter name="EMPRESA" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["INMOBILIARIA 4S S.A. DE C.V."]]></defaultValueExpression>
 	</parameter>
 	<parameter name="PROVEEDOR" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="COMENTARIO" isForPrompting="false" class="java.lang.String"/>
@@ -44,7 +44,7 @@
 	<parameter name="AUTORIZADO" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="ID" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT R.ID,r.a_favor AS AFAVOR,R.PAGO,R.PAGO AS FECHADEPAGO,'MX' as MONEDA,1.0 as TC,R.FOLIO
-,'CHEQUE' AS FORMADEPAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
+,R.FORMA_DE_PAGO,R.COMENTARIO,DATE(R.date_created) AS FECHA
 ,C.FOLIO AS DOCUMENTO,C.FECHA AS FECHA_DOCUMENTO,R.TIPO AS CONCEPTO
 ,D.requisitado AS TOTAL,C.TOTAL AS TOTAL_DOCUMENTO,0.0 AS DESCUENTO_FINANCIERO
 ,SUBSTR(C.ACUSE_CODIGO_ESTATUS,1,1) as ACUSE,C.ACUSE_ESTADO,C.UUID
@@ -61,7 +61,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 	<field name="MONEDA" class="java.lang.String"/>
 	<field name="TC" class="java.math.BigDecimal"/>
 	<field name="FOLIO" class="java.lang.Long"/>
-	<field name="FORMADEPAGO" class="java.lang.String"/>
+	<field name="FORMA_DE_PAGO" class="java.lang.String"/>
 	<field name="COMENTARIO" class="java.lang.String"/>
 	<field name="FECHA" class="java.sql.Date"/>
 	<field name="DOCUMENTO" class="java.lang.String"/>
@@ -354,7 +354,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 					<reportElement
 						x="206"
 						y="84"
-						width="56"
+						width="88"
 						height="13"
 						forecolor="#333333"
 						key="textField-38"/>
@@ -362,7 +362,7 @@ WHERE R.ID=$P{ID}]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FORMADEPAGO}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FORMA_DE_PAGO}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
