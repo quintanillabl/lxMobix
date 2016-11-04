@@ -67,6 +67,17 @@ class SatPolizasLogService {
                     }
                     trx.getTransferencia().add(transferencia)
                 }
+                if (det.compraNal) {
+                    def comp = det.compraNal
+                    log.info('Registrando Comprobante nacional para poliza det : ' + det.id)
+                    Polizas.Poliza.Transaccion.CompNal cn = factory.createPolizasPolizaTransaccionCompNal()
+                    cn.uuidcfdi = comp.uuidcfdi
+                    cn.rfc = comp.rfc
+                    cn.montoTotal = comp.montoTotal
+                    cn.moneda = CMoneda.valueOf(comp.moneda.currencyCode)
+                    cn.tipCamb = comp.tipCamb
+                    trx.getCompNal().add(cn)
+                }
 
                 poliza.getTransaccion().add(trx)
         	}

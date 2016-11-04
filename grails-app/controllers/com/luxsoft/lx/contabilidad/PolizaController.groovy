@@ -8,6 +8,7 @@ import grails.transaction.NotTransactional
 import org.springframework.security.access.annotation.Secured
 import grails.converters.JSON
 import com.luxsoft.lx.bi.ReportCommand
+import org.apache.commons.lang.exception.ExceptionUtils
 
 @Secured(["hasAnyRole('CONTABILIDAD','ADMIN')"])
 @Transactional(readOnly = true)
@@ -208,6 +209,28 @@ class PolizaController {
             file: stream.toByteArray(), 
             contentType: 'application/pdf',
             fileName:file)
+    }
+
+    def printComplemento(Poliza polizaInstance){
+        def command=new ReportCommand()
+        if(polizaInstance.partidas.find {it.cheque || it.transferencia})
+            command.reportName = "PolizaComplementoMetodoPago"
+        else 
+            command.reportName = "PolizaComprobanteNacional"
+        command.empresa=session.empresa
+        try {
+            def stream=reportService.build(command,[ID:polizaInstance.id,EMPRESA:session.empresa.nombre])
+            def file="PolizaComplemento_${polizaInstance.tipo}_${polizaInstance.folio}_${polizaInstance.ejercicio}${polizaInstance.mes}"+new Date().format('ss')+'.'+command.formato.toLowerCase()
+            render(
+                file: stream.toByteArray(), 
+                contentType: 'application/pdf',
+                fileName:file)
+        }
+        catch(Exception e) {
+            String msg="Error ejecutando reporte $command.reportName" + ExceptionUtils.getRootCauseMessage(e)
+            throw new RuntimeException(msg)
+        }
+        
     }
 
     def cierreAnual(){
