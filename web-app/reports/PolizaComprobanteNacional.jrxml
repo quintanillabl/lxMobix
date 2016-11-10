@@ -26,20 +26,20 @@
 	<import value="net.sf.jasperreports.engine.*" />
 	<import value="net.sf.jasperreports.engine.data.*" />
 
-	<parameter name="COMPANY" isForPrompting="false" class="java.lang.String">
-		<defaultValueExpression ><![CDATA["PAPEL S.A. DE C.V."]]></defaultValueExpression>
-	</parameter>
 	<parameter name="NomReporte" isForPrompting="false" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["COMPLEMENTO DE POLIZA DE COMPROBANTE NACIONAL"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="POLIZA_ID" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="POLIZA_ID" isForPrompting="true" class="java.lang.Long"/>
+	<parameter name="EMPRESA" isForPrompting="false" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["BERSAN,  S.A. DE C.V."]]></defaultValueExpression>
+	</parameter>
 	<queryString><![CDATA[SELECT t.id,e.id as eId,e.nombre as empresa,p.id as poliza_id,p.tipo,p.sub_tipo
 ,p.folio,p.fecha,t.uuidcfdi,t.rfc,t.monto_total,t.moneda,t.tip_camb 
 FROM transaccion_compra_nal t
 join poliza_det d on(d.id=t.poliza_det_id)
 join poliza p on(p.id=d.poliza_id)
 join empresa e on(e.id=p.empresa_id)
-where p.id=$P{POLIZA_ID}  
+where p.id=$P{POLIZA_ID}
 group by p.folio,p.id,t.uuidcfdi,t.rfc,t.monto_total,t.moneda,t.tip_camb]]></queryString>
 
 	<field name="id" class="java.lang.Long"/>
@@ -80,7 +80,7 @@ group by p.folio,p.id,t.uuidcfdi,t.rfc,t.monto_total,t.moneda,t.tip_camb]]></que
 					<textElement textAlignment="Right">
 						<font pdfFontName="Helvetica-Bold" size="10" isBold="true"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{COMPANY}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMPRESA}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

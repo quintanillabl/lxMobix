@@ -219,7 +219,7 @@ class PolizaController {
             command.reportName = "PolizaComprobanteNacional"
         command.empresa=session.empresa
         try {
-            def stream=reportService.build(command,[ID:polizaInstance.id,EMPRESA:session.empresa.nombre])
+            def stream=reportService.build(command,[POLIZA_ID:polizaInstance.id,EMPRESA:session.empresa.nombre])
             def file="PolizaComplemento_${polizaInstance.tipo}_${polizaInstance.folio}_${polizaInstance.ejercicio}${polizaInstance.mes}"+new Date().format('ss')+'.'+command.formato.toLowerCase()
             render(
                 file: stream.toByteArray(), 
