@@ -35,7 +35,7 @@ class Comision {
     }
 	
 	static mapping ={
-		movimientos cascad:"all-delete-orphan"
+		movimientos cascade:"all-delete-orphan"
 	}
 	
 	
