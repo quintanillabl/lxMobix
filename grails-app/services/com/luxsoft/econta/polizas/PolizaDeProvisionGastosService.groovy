@@ -1,12 +1,10 @@
 package com.luxsoft.econta.polizas
 
-
-
-
 import com.luxsoft.lx.cxp.Gasto
 import com.luxsoft.lx.contabilidad.*
 import static com.luxsoft.econta.polizas.PolizaUtils.*
 import org.apache.commons.lang.StringUtils
+import com.luxsoft.lx.utils.MonedaUtils
 
 class PolizaDeProvisionGastosService extends AbstractProcesador{
 
@@ -17,15 +15,12 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 	void procesar(def poliza){
 		def empresa=poliza.empresa
     	def fecha=poliza.fecha
-    	//def inicio=fecha.inicioDeMes()
 
     	def gastos=Gasto.findAll("from Gasto g where g.empresa=? and date(g.fecha) = ? and g.gastoPorComprobar = false",
     		[empresa,fecha]) 
 
-    	//gastos=gastos.findAll { it.buscarSaldoAlCorte(fecha) }
-
     	gastos.each{ gasto ->
-    		def desc = "Prov F:${gasto.folio} (${gasto.fecha}) ${gasto.proveedor.nombre} "
+    		def desc = "Prov ${gasto.folio?'F:'+gasto.folio:''} (${gasto.fecha}) ${gasto.proveedor.nombre} "
     		cargoAGastos(poliza,gasto,desc)
     		cargoAIvaPendienteDeAcreditar(poliza,gasto,desc)
     		abonoAAcredoresDiversos(poliza,gasto,desc)
@@ -48,21 +43,11 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 			    haber:0.0,
 			    descripcion:StringUtils.substring(descripcion,0,255),
 			    asiento:'PROVISION',
-			    referencia:'F:'+gasto.folio,
+			    referencia:gasto.folio?"F: ${gasto.folio} ":"",
 			    origen:gasto.id.toString(),
 			    entidad:gasto.class.toString()
 			)
 			addComplementoCompra(polizaDet,gasto)
-			/*
-			cargoA(poliza,
-				det.cuentaContable,
-				det.importe,
-				descripcion,
-				'PROVISION',
-				'F:'+gasto.folio,
-				gasto
-			)
-			*/
 			poliza.addToPartidas(polizaDet)
 		}
 	}
@@ -81,22 +66,12 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 		    haber:0.0,
 		    descripcion:StringUtils.substring(descripcion,0,255),
 		    asiento:'PROVISION ',
-		    referencia:'F:'+gasto.folio,
+		    referencia:gasto.folio?"F: ${gasto.folio} ":"",
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
 		addComplementoCompra(polizaDet,gasto)
 		poliza.addToPartidas(polizaDet)
-		/*
-		cargoA(poliza,
-			IvaPendienteDeAcreditar(poliza.empresa),
-			gasto.impuesto,
-			descripcion,
-			'PROVISION',
-			'F:'+gasto.folio,
-			gasto
-		)
-		*/
 	}
 
 	def abonoAAcredoresDiversos(def poliza,def gasto,def descripcion){
@@ -111,27 +86,16 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 		    haber:gasto.total,
 		    descripcion:StringUtils.substring(descripcion,0,255),
 		    asiento:'PROVISION',
-		    referencia:'F:'+gasto.folio,
+		    referencia:gasto.folio?"F: ${gasto.folio} ":"",
 		    origen:gasto.id.toString(),
 		    entidad:gasto.class.toString()
 		)
 		addComplementoCompra(polizaDet,gasto)
 		poliza.addToPartidas(polizaDet)
-		/*
-		abonoA(poliza,
-			AcredoresDiversos(poliza.empresa),
-			gasto.total,
-			descripcion,
-			'PROVISION',
-			'F:'+gasto.folio,
-			gasto
-		)
-		*/
-	
+		
 	}
 
 	def abonoARetencionIsr(def poliza,def cxp, def desc){
-		//def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${cxp.proveedor.nombre} "
 		def referencia = 'F:'+cxp.folio
 		def det = null
 		if(cxp.retensionIsr){
@@ -192,8 +156,6 @@ class PolizaDeProvisionGastosService extends AbstractProcesador{
 		def referencia = 'F:'+cxp.folio
 		def det = null
 		if(cxp.retensionIva){
-			//def desc = "F. ${cxp.folio} ${cxp.fecha.text()} ${pago.aFavor} ${pago.requisicion.comentario}"
-			
 			det = cargoA(
 				poliza,
 				IvaRetenidoPendient(poliza.empresa),

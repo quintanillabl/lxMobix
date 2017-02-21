@@ -59,7 +59,7 @@ class ArrendamientoService {
         def arr=renta.arrendamiento
         Venta venta=new Venta(
             cliente:arr.cliente,
-            fecha:renta.fechaDeCobro,
+            fecha:new Date(),
             tipo:'ARRENDAMIENTO',
             empresa:renta.arrendamiento.empresa,
             comentario:"Correspondiente al periodo: (${renta.periodo})",
