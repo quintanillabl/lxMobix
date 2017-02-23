@@ -8,7 +8,7 @@ import com.luxsoft.lx.contabilidad.ContaListener
 import com.luxsoft.lx.ventas.*
 import com.luxsoft.cfdi.retenciones.*
 import com.luxsoft.econta.polizas.*
-
+//import com.luxsoft.nomina.*
 
 // Place your Spring DSL code here
 beans = {
@@ -82,7 +82,7 @@ beans = {
 
 	generadorDePoliza(GeneradorDePoliza){}
 
-	
+	//nominaCfdiBuilder(NominaCfdiBuilder){}
 
 	
 
