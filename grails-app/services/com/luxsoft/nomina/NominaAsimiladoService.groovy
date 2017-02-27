@@ -59,19 +59,16 @@ class NominaAsimiladoService {
 				)
     	}
     }
+    
 
-
-    def calcularImpuesto(BigDecimal percepciones, Integer ejercicio){
+	def calcularImpuesto(BigDecimal percepciones, Integer ejercicio){
 		if(percepciones<=0.0)
 			return 0.0
 		
-		def tarifa = TarifaIsr.buscar(ejercicio, 'MENSUAL', percepciones)
-		assert tarifa,"No encontro TarifaIsr para los parametros: Perc:${percepciones} Ejercicio: ${ejercicio}"
+		def tarifa = TarifaIsr.where {ejercicio == ejercicio}.list([sort:'porcentaje', order: 'desc']).get(0)
 		
-		def importeGravado = percepciones - tarifa.limiteInferior
-		importeGravado *= tarifa.porcentaje
+		def importeGravado = percepciones * tarifa.porcentaje
 		importeGravado /= 100
-		importeGravado += tarifa.cuotaFija
 		importeGravado = importeGravado.setScale(2,RoundingMode.HALF_EVEN)
 		return importeGravado
 

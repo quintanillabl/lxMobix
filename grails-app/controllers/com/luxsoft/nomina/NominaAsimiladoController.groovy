@@ -81,6 +81,11 @@ class NominaAsimiladoController {
             notFound()
             return
         }
+        if(nominaAsimiladoInstance.cfdi){
+            def cfdi = nominaAsimiladoInstance.cfdi
+            nominaAsimiladoInstance.cfdi = null
+            cfdi.delete flush:true
+        }
 
         nominaAsimiladoInstance.delete flush:true
 
@@ -116,6 +121,13 @@ class NominaAsimiladoController {
         response.setHeader("Content-disposition", "filename=${cfdi.serie}_${cfdi.folio}_${cfdi.receptor}")
         response.outputStream << cfdi.xml
         return
+    }
+
+    def print(NominaAsimilado ne) {
+        def cfdi = ne.cfdi
+        ByteArrayOutputStream  pdfStream = new NominaPrintService().imprimir(ne, params)
+        def fileName="cfdi_${cfdi.folio}_${cfdi.receptor}.pdf"
+        render(file: pdfStream.toByteArray(), contentType: 'application/pdf',fileName:fileName)
     }
 
     protected void notFound() {

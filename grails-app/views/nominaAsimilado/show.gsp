@@ -14,7 +14,7 @@
 		<div class="row toolbar-panel">
 			<div class="col-md-10 col-md-offset-1">
 				<div class="btn-group">
-				    <g:link action="index" class="btn btn-default ">
+				    <g:link action="index" class="btn btn-default" id="${nominaAsimiladoInstance.id}">
 				        <i class="fa fa-step-backward"></i> Nominas
 				    </g:link>
 
@@ -25,34 +25,40 @@
 				        <i class="fa fa-pencil"></i> Editar
 				    </g:link> 
 					
-						                    <g:if test="${!nominaAsimiladoInstance.cfdi}">
-						                    	<div class="btn-group">
-						                    		<g:link class="btn btn-default btn-outline" action="generarCfdi" id="${nominaAsimiladoInstance.id}" >
-						                    	    	<i class="fa fa-file-excel-o"></i> Generar CFDI
-						                    	    </g:link>
-						                    	</div>
-						                    </g:if>
-						                    <g:if test="${nominaAsimiladoInstance.cfdi}">
-						                    	<g:link class="btn btn-default btn-outline" 
-					  								action="mostrarXml" id="${nominaAsimiladoInstance.cfdi.id}">XML
-					  							</g:link>
-					  							<g:link class="btn btn-default btn-outline" action="descargarXml" id="${nominaAsimiladoInstance.cfdi.id}" >
-													<span class="glyphicon glyphicon-cloud-download"> Descargar XML</span>
-												</g:link>
-					  							
-						                    </g:if>
-						                    <g:if test="${nominaAsimiladoInstance.cfdi && !nominaAsimiladoInstance.cfdi.uuid}">
-						                    	<div class="btn-group">
-						                    		<g:link class="btn btn-primary btn-outline" action="timbrar" id="${nominaAsimiladoInstance.id}" >
-						                    	    	<span class="glyphicon glyphicon-screenshot"></span> Timbrar
-						                    	    </g:link>
-						                    	</div>
-						                    </g:if>
-						                    <g:if test="${nominaAsimiladoInstance.cfdi && nominaAsimiladoInstance.cfdi.uuid}">
-						                    	<div class="btn-group">
-					    		                    <lx:printButton label="Imprimir CFDI" action="print" id="${nominaAsimiladoInstance.id}"/>
-						                    	</div>
-						                    </g:if>
+                    <g:if test="${!nominaAsimiladoInstance.cfdi}">
+                    	<div class="btn-group">
+                    		<g:link class="btn btn-default btn-outline" action="generarCfdi" id="${nominaAsimiladoInstance.id}" >
+                    	    	<i class="fa fa-file-excel-o"></i> Generar CFDI
+                    	    </g:link>
+                    	</div>
+                    </g:if>
+                    <g:if test="${nominaAsimiladoInstance.cfdi}">
+                    	<g:link class="btn btn-default btn-outline" 
+								action="mostrarXml" id="${nominaAsimiladoInstance.cfdi.id}">XML
+							</g:link>
+							<g:link class="btn btn-default btn-outline" action="descargarXml" id="${nominaAsimiladoInstance.cfdi.id}" >
+							<span class="glyphicon glyphicon-cloud-download"> Descargar XML</span>
+						</g:link>
+							
+                    </g:if>
+                    <g:if test="${nominaAsimiladoInstance.cfdi && !nominaAsimiladoInstance.cfdi.uuid}">
+                    	<div class="btn-group">
+                    		<g:link class="btn btn-primary btn-outline" action="timbrar" id="${nominaAsimiladoInstance.id}" >
+                    	    	<span class="glyphicon glyphicon-screenshot"></span> Timbrar
+                    	    </g:link>
+                    	</div>
+                    </g:if>
+                    <g:if test="${nominaAsimiladoInstance.cfdi && nominaAsimiladoInstance.cfdi.uuid}">
+                    	<div class="btn-group">
+		                    <lx:printButton label="Imprimir CFDI" action="print" id="${nominaAsimiladoInstance.id}"/>
+                    	</div>
+                    </g:if>
+                    <g:if test="${!nominaAsimiladoInstance?.cfdi?.uuid}">
+                    	<div class="btn-group">
+		                    <lx:deleteButton bean="${nominaAsimiladoInstance}"></lx:deleteButton>
+                    	</div>
+                    </g:if>
+                    
 
 				</div>
 			</div>
