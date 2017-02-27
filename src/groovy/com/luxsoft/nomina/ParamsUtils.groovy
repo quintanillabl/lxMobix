@@ -65,7 +65,7 @@ class ParamsUtils {
 		parametros.put("QR_CODE",img)
 		
 		TimbreFiscal timbre = new TimbreFiscal(comprobante)
-		parametros.put("FECHA_TIMBRADO", timbre.FechaTimbrado)
+		parametros.put("FECHA_TIMBRADO", timbre.fechaTimbrado)
 		parametros.put("FOLIO_FISCAL", timbre.UUID)
 		parametros.put("SELLO_DIGITAL_SAT", timbre.selloSAT)
 		parametros.put("CERTIFICADO_SAT", timbre.noCertificadoSAT)
