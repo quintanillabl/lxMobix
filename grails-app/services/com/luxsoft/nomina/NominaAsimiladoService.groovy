@@ -106,7 +106,7 @@ class NominaAsimiladoService {
 		cfdi.modificadoPor=user
 		cfdi.creadoPor=user
 
-		def empresa = Empresa.first()
+		def empresa = ne.empresa
 
 		comprobante.setSello(cfdiSellador.sellar(empresa.privateKey,document))
 		byte[] encodedCert=Base64.encode(empresa.getCertificado().getEncoded())

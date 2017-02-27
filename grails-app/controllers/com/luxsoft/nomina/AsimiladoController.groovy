@@ -7,15 +7,15 @@ import grails.transaction.Transactional
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
 
-@Secured(["hasAnyRole('CONTABILIDAD','ADMIN','VENTAS')"])
+@Secured(["hasAnyRole('GASTOS','ADMIN', 'CONTABILIDAD')"])
 @Transactional(readOnly = true)
 class AsimiladoController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Asimilado.findAllByEmpresa(session.empresa,params)
+        params.max = 100
+        respond Asimilado.findAllByEmpresa(session.empresa, params)
     }
 
     def show(Asimilado asimiladoInstance) {
