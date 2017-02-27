@@ -89,6 +89,7 @@
 									<f:display property="concepto" widget-class="form-control" wrapper="bootstrap3"/>
 									<f:display property="percepciones" widget="money" wrapper="bootstrap3"/>
 									<f:display property="deducciones" widget="money" wrapper="bootstrap3"/>
+									<f:display property="cfdi.uuid" widget="money" wrapper="bootstrap3" label="CFDI"/>
 								</div>
 								
 								

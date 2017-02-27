@@ -75,7 +75,7 @@
 						<td>Concepto</td>
 						<td>Percepciones</td>
 						<td>Deducciones</td>
-						
+						<td>CFDI</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -92,6 +92,7 @@
 							<td>${fieldValue(bean: row, field: "concepto")}</td>
 							<td><lx:moneyFormat number="${row.percepciones }"/></td>
 							<td><lx:moneyFormat number="${row.deducciones }"/></td>
+							<td>${row?.cfdi?.uuid}</td>
 							
 						</tr>
 					</g:each>

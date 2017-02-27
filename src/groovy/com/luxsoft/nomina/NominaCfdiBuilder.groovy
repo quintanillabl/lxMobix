@@ -28,7 +28,7 @@ class NominaCfdiBuilder {
 		ComprobanteDocument document=ComprobanteDocument.Factory.newInstance()
 		Comprobante comprobante=document.addNewComprobante()
 
-		def empresa = Empresa.first()
+		def empresa = nominaEmpleado.empresa
 		def empleado = nominaEmpleado.asimilado
 		
 

@@ -9,7 +9,7 @@ import grails.plugin.springsecurity.annotation.Secured
 
 import com.luxsoft.cfdi.Cfdi
 
-@Secured(["hasAnyRole('GASTOS','ADMIN', 'CONTABILIDAD')"])
+@Secured(["hasAnyRole('CONTABILIDAD','ADMIN','VENTAS')"])
 @Transactional(readOnly = true)
 class NominaAsimiladoController {
 
@@ -19,10 +19,8 @@ class NominaAsimiladoController {
     def nominaAsimiladoService
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 400, 1000)
-        params.sort = params.sort?: 'lastUpdated'
-        params.order = 'desc'
-        respond NominaAsimilado.findByEmpresa(session.empresa, params), model:[nominaAsimiladoInstanceCount: NominaAsimilado.count()]
+        params.max = Math.min(max ?: 40, 100)
+        respond NominaAsimilado.findAllByEmpresa(session.empresa,params),  model:[nominaAsimiladoInstanceCount: NominaAsimilado.count()]
     }
 
     def show(NominaAsimilado nominaAsimiladoInstance) {
