@@ -18,12 +18,13 @@
 				        <i class="fa fa-step-backward"></i> Nominas
 				    </g:link>
 
-				    <g:link action="print" class="btn btn-default " id="${nominaAsimiladoInstance.id}">
-				        <i class="fa fa-print"></i> Imprimir
-				    </g:link> 
-				    <g:link action="edit" class="btn btn-default " id="${nominaAsimiladoInstance.id}">
+				   
+				    <g:if test="${!nominaAsimiladoInstance.cfdi}">
+				    	<g:link action="edit" class="btn btn-default " id="${nominaAsimiladoInstance.id}">
 				        <i class="fa fa-pencil"></i> Editar
-				    </g:link> 
+				    	</g:link>
+				    </g:if>
+				     
 					
                     <g:if test="${!nominaAsimiladoInstance.cfdi}">
                     	<div class="btn-group">
@@ -69,8 +70,12 @@
 		    	
 				<g:form name="updateForm" class="form-horizontal"   id="${nominaAsimiladoInstance.id}">	
 
-					<div class="panel panel-primary">
-						<div class="panel-heading">Folio: ${nominaAsimiladoInstance.id} </div>
+					<div class="panel ${nominaAsimiladoInstance?.cfdi?.cancelacion ? 'panel-danger' : 'panel-primary'}">
+						<div class="panel-heading">Folio: ${nominaAsimiladoInstance.id} 
+								<g:if test="${nominaAsimiladoInstance?.cfdi?.cancelacion}">	
+										CANCELADO
+								</g:if>
+						</div>
 				  		<div class="panel-body">
 				    		<g:hasErrors bean="${nominaAsimiladoInstance}">
 				    			<div class="alert alert-danger">
@@ -79,6 +84,7 @@
 				    				</ul>
 				    			</div>
 				    		</g:hasErrors>
+
 
 							<f:with bean="${nominaAsimiladoInstance}">
 								<div class="row">
