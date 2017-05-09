@@ -17,6 +17,7 @@ navigation={
 			proveedores(controller:'proveedor',action:'index')
 			cuentasSat(controller:'cuentaSat',action:'index')
 			bancosSat(controller:'bancoSat',action:'index')
+			asimilados(controller: 'asimilado', action: 'index')
 
 		}
 		operaciones(){
@@ -31,6 +32,7 @@ navigation={
 			cfdis(controller:'cfdi',action:'index')
 			retenciones(controller:'cfdiRetenciones',action:'index',titleText:'Retenciones')
 			activoFijo(controller:'activoFijo',action:'index')
+			asimilados(controller: 'nominaAsimilado', action: 'index', titleText:'Nomina asimilados')
 		}
 		contabilidad(){
 			cuentasContables(controller:'cuentaContable',action:'index',titleText:'Cuentas')

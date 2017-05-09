@@ -22,6 +22,8 @@ import mx.gob.sat.cfd.x3.ComprobanteDocument
 class CfdiCadenaBuilder implements ResourceLoaderAware{
 	
 	File xsltFile
+
+	StreamSource source
 	
 	/**
 	 * Genera la cadean original de un comprobante fiscal digital
@@ -40,6 +42,18 @@ class CfdiCadenaBuilder implements ResourceLoaderAware{
 		transformer.transform(so, out);
 		return writer.toString();
 		
+	}
+
+	String generarCadenaNomina(ComprobanteDocument document){
+		TransformerFactory factory=TransformerFactory.newInstance()
+		if(!source)
+			source = new StreamSource("http://www.sat.gob.mx/sitio_internet/cfd/3/cadenaoriginal_3_2/cadenaoriginal_3_2.xslt")
+		Transformer transformer=factory.newTransformer(source)
+		Writer writer=new StringWriter()
+		StreamResult out=new StreamResult(writer)
+		Source so=new DOMSource(document.getDomNode())
+		transformer.transform(so, out)
+		return writer.toString()
 	}
 	
 	ResourceLoader resourceLoader
