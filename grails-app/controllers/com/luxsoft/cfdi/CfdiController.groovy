@@ -1,6 +1,6 @@
 package com.luxsoft.cfdi
 
-import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante
+
 import org.springframework.security.access.annotation.Secured
 
 import grails.validation.Validateable
@@ -18,9 +18,12 @@ import net.sf.jasperreports.export.PdfExporterConfiguration
 import org.codehaus.groovy.grails.plugins.jasper.JasperExportFormat
 import org.codehaus.groovy.grails.plugins.jasper.JasperReportDef
 import org.springframework.core.io.Resource
+
 import com.luxsoft.lx.core.Cliente
 
-
+// Nueva implementacion de CFDI
+import com.luxsoft.cfdix.CFDIXUtils
+import com.luxsoft.cfdix.v32.V32PdfGenerator
 
 @Secured(["hasAnyRole('OPERADOR','VENTAS','ADMIN')"])
 class CfdiController {
@@ -70,58 +73,15 @@ class CfdiController {
 	
 	def mostrarXml(long id){
 		def cfdi=Cfdi.findById(id)
-		//render view:'cfdiXml',model:[cfdiInstance:cfdi,xml:cfdi.getComprobanteDocument().xmlText()]
-		render(text: cfdi.comprobanteDocument.xmlText(), contentType: "text/xml", encoding: "UTF-8")
+		def res = CFDIXUtils.parse(cfdi.xml)
+		render(text: res, contentType: "text/xml", encoding: "UTF-8")
 	}
-
-
 	
 	def descargarXml(long id){
 		Cfdi cfdi=Cfdi.findById(id)
-		
 		response.setContentType("application/octet-stream")
 		response.setHeader("Content-disposition", "attachment; filename=\"$cfdi.xmlName\"")
-		response.outputStream << cfdi.getComprobanteDocument().newInputStream()
-		
-	}
-	
-	def imprimir(Cfdi cfdi){
-		
-		
-		Comprobante cfd=cfdi.getComprobante()
-		def conceptos=cfd.getConceptos().getConceptoArray()
-		
-		def modelData=conceptos.collect { cc ->
-			
-			def res=[
-			'cantidad':cc.getCantidad()
-			 ,'NoIdentificacion':cc.getNoIdentificacion()
-			 ,'descripcion':cc.getDescripcion()
-			 ,'unidad':cc.getUnidad()
-			 ,'ValorUnitario':cc.getValorUnitario()
-			 ,'Importe':cc.getImporte()
-			 ]
-			 if(cc.cuentaPredial){
-				res.CUENTA_PREDIAL=cc.cuentaPredial.numero
-			}
-			return res
-		}
-		def repParams=CfdiPrintUtils.resolverParametros(cfdi)
-		File logoFile = grailsApplication.mainContext.getResource("images/kyo_logo.png").file
-
-		if(logoFile.exists()){
-			repParams['EMPRESA_LOGO']=logoFile
-		}
-
-		params<<repParams
-		params.FECHA=cfd.fecha.getTime().format("yyyy-MM-dd'T'HH:mm:ss")
-
-		
-		//println 'Generando PDF de CFDI: '+repParams
-		//println 'LOGO: '+ logoFile
-		chain(controller:'jasper',action:'index',model:[data:modelData],params:params)
-
-		
+		response.outputStream << cfdi.xml
 	}
 
 	def mandarCorreo(CfdiMail command){
@@ -162,39 +122,16 @@ class CfdiController {
 	}
 
 	def generarPdf(Cfdi cfdi){
-		Comprobante cfd=cfdi.getComprobante()
-		def conceptos=cfd.getConceptos().getConceptoArray()
 		
-		def modelData=conceptos.collect { cc ->
-			
-			def res=[
-			'cantidad':cc.getCantidad()
-			 ,'NoIdentificacion':cc.getNoIdentificacion()
-			 ,'descripcion':cc.getDescripcion()
-			 ,'unidad':cc.getUnidad()
-			 ,'ValorUnitario':cc.getValorUnitario()
-			 ,'Importe':cc.getImporte()
-			 ]
-			 if(cc.cuentaPredial){
-				res.CUENTA_PREDIAL=cc.cuentaPredial.numero
-			}
-			return res
-		}
-		def repParams=CfdiPrintUtils.resolverParametros(cfdi)
+		def data = V32PdfGenerator.getReportData(cfdi)
+		def modelData = data['CONCEPTOS']
+		def repParams = data['PARAMETROS']
 		File logoFile = grailsApplication.mainContext.getResource("images/kyo_logo.png").file
-		
-		
 		
 		if(logoFile.exists()){
 			params['EMPRESA_LOGO']=logoFile
 		}
 		params<<repParams
-		params.FECHA=cfd.fecha.getTime().format("yyyy-MM-dd'T'HH:mm:ss")
-
-		params.IMPORTE=params.IMPORTE as String
-		params.IVA=params.IVA as String
-		params.TOTAL=params.TOTAL as String
-		params.DESCUENTOS=params.DESCUENTOS as String
 
 		def reportDef=new JasperReportDef(
 			name:'MobixCFDI2'
@@ -202,23 +139,7 @@ class CfdiController {
 			,reportData:modelData,
 			,parameters:params
 			)
-
-		/*
-		Resource resource = reportDef.getReport()
-		JRBeanCollectionDataSource jrBeanCollectionDataSource = new JRBeanCollectionDataSource(reportDef.reportData)
-		JasperPrint print= JasperFillManager.fillReport(JasperCompileManager.compileReport(resource.inputStream)
-			, reportDef.parameters
-			, jrBeanCollectionDataSource)
-		ByteArrayOutputStream  pdfStream = new ByteArrayOutputStream();
-		JRPdfExporter exporter = new JRPdfExporter();
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, pdfStream); // your output goes here
-		//exporter.setParameter(JRPdfExporterParameter.PDF_JAVASCRIPT, "this.print();");
-		exporter.exportReport();
-		*/
-		//println 'Generando PDF para CFDI con parametros: '+params
 		def pdfStream=jasperService.generateReport(reportDef)
-		//render(file: pdfStream.toByteArray(), contentType: 'application/pdf',fileName:cfdi.xmlName.replace('.xml','.pdf'))
 		return pdfStream
 	}
 
@@ -246,7 +167,7 @@ class CfdiController {
         }
         catch(CfdiException e) {
 			flash.message=e.message
-			println 'Error cargando CFDI: '+e.message
+			log.error('Error cargando CFDI: '+e.message)
 			redirect action:'index'
         }
         

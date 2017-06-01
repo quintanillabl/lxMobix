@@ -45,6 +45,7 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
         mavenRepo "http://dl.bintray.com/rcancino/econta" 
+        mavenRepo "http://dl.bintray.com/rcancino/maven" 
     
     }
 
@@ -72,6 +73,9 @@ grails.project.dependency.resolution = {
         compile 'econta:catalogos:1.0.0'
         compile 'econta:balanzas:1.0.0'
         compile 'econta:polizas:1.0.0'
+
+        // Nueva implementacion de CFDI
+        compile 'lx.cfdi:v32:1.0.0'
     }
 
     plugins {
