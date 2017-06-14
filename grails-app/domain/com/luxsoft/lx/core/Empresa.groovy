@@ -16,6 +16,7 @@ class Empresa {
 	Direccion direccion
 	String rfc
 	String regimen
+	String regimenClaveSat
 	String numeroDeCertificado
 	byte[] certificadoDigital
 	byte[] certificadoDigitalPfx
@@ -27,6 +28,8 @@ class Empresa {
 	boolean timbradoDePrueba=true
 	String usuarioPac
 	String passwordPac
+
+	String versionDeCfdi
 
 
 	
@@ -51,6 +54,8 @@ class Empresa {
 		usuarioPac nullable:true
 		passwordPac nullable:true
 		branding nullable:true,unique:true
+		versionDeCfdi inList:['3.2','3.3']
+		regimenClaveSat nullable:true
 		
     }
 	

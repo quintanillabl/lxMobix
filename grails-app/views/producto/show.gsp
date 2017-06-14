@@ -49,7 +49,7 @@
 		</div> 
 
 		<div class="row ">
-		    <div class="col-md-6 col-md-offset-3">
+		    <div class="col-md-8 col-md-offset-2">
 		    	<fieldset disabled>
 				<g:form class="form-horizontal" action="save" >	
 
@@ -73,8 +73,14 @@
 							<f:field property="unidad" widget-class="form-control"/>
 							<f:field property="inventariable" widget-class="form-control"/>
 							<f:field property="precio" widget-class="form-control moneda-field" widget-type="text"/>
-							<f:field property="descuento" widget-class="form-control data-descuento" widget-type="text"/>
-							<f:field property="impuesto" widget-class="form-control data-descuento" widget-type="text"/>
+							<f:field property="descuento" widget-class="form-control data-descuento" 
+							widget-type="text"/>
+							<f:field property="impuesto" widget-class="form-control data-descuento" 
+							widget-type="text"/>
+							<f:display property="claveProdServ" widget-class="form-control" widget-type="text"/>
+							<f:display property="claveUnidadSat" widget-class="form-control" widget-type="text"/>
+							<f:display property="unidadSat" widget-class="form-control" widget-type="text"/>
+
 						</f:with>
 					  </div>
 					

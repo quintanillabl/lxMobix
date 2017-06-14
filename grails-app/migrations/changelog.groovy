@@ -109,4 +109,10 @@ databaseChangeLog = {
 	include file: 'econta-subcuenta-operativa-banco.groovy'
 
 	include file: 'asimilados.groovy'
+
+	include file: 'cfdix-empresa-patch.groovy'
+
+	include file: 'cfdix-cfdi-patch.groovy'
+
+	include file: 'cfdix-patch-03.groovy'
 }
