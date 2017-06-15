@@ -40,7 +40,8 @@
 				<f:field property="clave" widget-class="form-control uppercase-field"/>
 				%{-- <f:field property="llavePrivada" widget-class="form-control uppercase-field"/> --}%
 				<g:render template="/common/direccion" bean="${empresaInstance}"/> 
-				<legend>Timbrado</legend>
+				<legend>Timbrado de CFDI's</legend>
+				<f:field property="versionDeCfdi" widget-class="form-control" cols="col-sm-4" label="Versión CFDI"/>
 				<f:field property="usuarioPac" widget-class="form-control" cols="col-sm-4"/>
 				<f:field property="passwordPac" widget-class="form-control" cols="col-sm-4"/>
 				<f:field property="passwordPfx" widget-class="form-control" cols="col-sm-4"/>

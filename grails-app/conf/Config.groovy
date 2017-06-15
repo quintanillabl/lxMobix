@@ -144,6 +144,7 @@ log4j.main = {
         info  'grails.app.controllers.com.luxsoft'
         info  'grails.app.controllers.lx.econta'
         info  'grails.app.services.com.luxsoft'
+        info  'grails.app.services.com.luxsoft.cfdix.v33'
         info  'grails.app.services.lx.econta'
         info  'grails.app.jobs'
         info  'grails.app.services.com.luxsoft.econta'
@@ -151,6 +152,7 @@ log4j.main = {
         info 'com.luxsoft.cfdi.retenciones'
         info 'com.luxsoft.econta.polizas'
         info 'com.luxsoft.econta.polizas'
+        info 'com.luxsoft.cfdix.v33'
       }
         
       produccion{

@@ -17,6 +17,7 @@ class CobroController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def cobroService
+    def cfdiPagosService
 
     def index(Integer max) {
         params.max = 200
@@ -140,6 +141,12 @@ class CobroController {
         
         render res
 
+    }
+
+    def generarCfdi( AplicacionDeCobro aplicacion){
+        flash.message = "CFDI de cobro generado"
+        aplicacion = cfdiPagosService.generarCfdi(aplicacion)
+        redirect action:'edit',params:[id:aplicacion.pago.id]
     }
 
     protected void notFound() {

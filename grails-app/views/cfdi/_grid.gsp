@@ -10,6 +10,7 @@
 			<th>Receptor</th>
 			<th>UUID</th>			
 			<th>Total</th>
+			<th>Ver</th>
 			<th>Comentario</th>
 		</tr>
 	</thead>
@@ -35,6 +36,7 @@
 					</abbr>
 				</td>
 				<td><g:formatNumber number="${row.total}" type="currency"/></td>
+				<td>${fieldValue(bean:row,field:"versionCfdi")}</td>
 				<td>
 					<g:if test="${row.cancelacion}">CANCELADO</g:if>
 					<g:else>${row.comentario}</g:else>

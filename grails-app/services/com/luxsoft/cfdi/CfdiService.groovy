@@ -41,11 +41,25 @@ class CfdiService {
 	def cfdiSellador
 	def cfdiTimbrador
 
+	def cfdiV33Service
+
+	def timbrar(Cfdi cfdi){
+		if(cfdi.versionCfdi == '3.3'){
+			def empresa = Empresa.where { rfc == cfdi.emisorRfc}.find()
+			return cfdiTimbrador.timbrar(cfdi, empresa)
+		} 
+		return cfdi;
+	}
+
     def generar(Venta venta) {
     	
     	//throw new UnsupportedOperationException('No se ha implementado el servicio')
-    	def empresa=venta.empresa
+    	def empresa = venta.empresa
     	assert empresa,"La empresa debe estar definida"
+
+    	if(empresa.versionDeCfdi == '3.3'){
+    		return cfdiV33Service.generar(venta)
+    	}
 
 		
 		def serie=grailsApplication.config.luxor.series.ventas

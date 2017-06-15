@@ -27,6 +27,10 @@ class Producto {
 
     BigDecimal impuesto=0.0
 
+    String claveProdServ
+    String claveUnidadSat
+    String unidadSat
+
 	Date dateCreated
 	Date lastUpdated
 
@@ -35,6 +39,9 @@ class Producto {
         clave size:5..40,unique:['empresa']
     	descripcion blank:false
 		unidad inList:['SERVICIO','PIEZA','NO DEFINIDO']
+        claveProdServ nullable:true
+        claveUnidadSat nullable:true
+        unidadSat nullable: true
     }
 
     String toString(){

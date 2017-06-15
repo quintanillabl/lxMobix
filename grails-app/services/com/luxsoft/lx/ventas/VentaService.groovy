@@ -50,7 +50,7 @@ class VentaService {
     def mandarFacturar(Venta venta){
         if(venta.cfdi)
             throw new VentaException(message:'Venta ya facturada',venta:venta)
-        def cfdi=cfdiService.generar(venta)
+        def cfdi = cfdiService.generar(venta)
         return venta
 
     }

@@ -12,7 +12,7 @@
 
 		<div class="row row-header ">
 			
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-8 col-md-offset-2">
 				
 				<g:form class="form-horizontal" action="update" id="${productoInstance.id}" method="PUT">	
 
@@ -38,6 +38,9 @@
 							<f:field property="precio" widget-class="form-control moneda-field" widget-type="text"/>
 							<f:field property="descuento" widget-class="form-control data-descuento" widget-type="text"/>
 							<f:field property="impuesto" widget-class="form-control data-descuento" widget-type="text"/>
+							<f:field property="claveProdServ" widget-class="form-control" widget-type="text"/>
+							<f:field property="claveUnidadSat" widget-class="form-control" widget-type="text"/>
+							<f:field property="unidadSat" widget-class="form-control" widget-type="text"/>
 						</f:with>
 						
 					  </div>

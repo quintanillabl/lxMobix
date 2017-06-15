@@ -38,7 +38,7 @@ class CfdiTimbrador {
 				res=cfdiClient.getCfdiTest(user, password, zipFile)
 			}else{
 				log.debug 'Timbrando real de: '+cfdi
-				res=cfdiClient.getCfdi(user, password, zipFile)
+				//res=cfdiClient.getCfdi(user, password, zipFile)
 			}
 			Map<String, byte[]> map =zipUtils.descomprimeArchivo(res)
 			Map.Entry<String, byte[]> entry=map.entrySet().iterator().next()
@@ -53,8 +53,13 @@ class CfdiTimbrador {
 			return cfdi
 		} catch (Exception e) {
 			//e.printStackTrace()
-			log.error e
-			String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getMessage(e)
+			//log.error e
+			//String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getRootCouseMessage(e)
+			
+			String msg =  """
+				Error al tibrar el comprobante ${cfdi.id}  + ${ExceptionUtils.getRootCauseMessage(e)} 
+			 	por el momento el serivicio de timbrado  EDICOM  service para V3.3 esta en revisión
+			 """
 			throw new CfdiException(message:msg,cfdi:cfdi)
 		}
 	}

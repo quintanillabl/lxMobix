@@ -2,9 +2,6 @@ package com.luxsoft.cfdi
 
 import groovy.transform.ToString
 import java.io.ByteArrayInputStream
-import mx.gob.sat.cfd.x3.ComprobanteDocument
-import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante
-import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante.TipoDeComprobante
 
 
 @ToString(includeNames=true,includes="id,serie,folio,tipo,fecha,uuid")
@@ -39,9 +36,11 @@ class Cfdi {
 
 	String creadoPor
 	String modificadoPor
+
+	String versionCfdi = '3.2'
 	
-	ComprobanteDocument comprobanteDocument
-	TimbreFiscal timbreFiscal
+	
+	
 	String comentario
 
 	static hasOne = [cancelacion: CancelacionDeCfdi]
@@ -51,7 +50,7 @@ class Cfdi {
 		folio blank:false,maxSize:20
 		uuid nullable:true,maxSize:300
 		timbrado(nullable:true)
-		tipo inList:['INGRESO','EGRESO','TRASLADO']
+		tipo inList:['INGRESO','EGRESO','TRASLADO','PAGO','NOMINA']
 		fecha nullable:false
 		emisor blank:false,maxSize:600
 		emisorRfc blank:false,maxSize:13
@@ -69,13 +68,14 @@ class Cfdi {
 		acuseCodigoEstatus nullable:true
 		grupo nullable:true,maxSize:20
 		comentario nullable:true,maxSize:100
+		versionCfdi inList: ['3.2','3.3']
     }
 	
-	static transients = ['comprobanteDocument','timbreFiscal']
+	//static transients = ['comprobanteDocument','timbreFiscal']
 	
 	public Cfdi() {}
 	
-	public Cfdi(Comprobante c) {
+	public Cfdi(def c) {
 		serie=c.serie
 		folio=c.folio
 		fecha=c.fecha.getTime()
@@ -84,60 +84,13 @@ class Cfdi {
 		receptor=c.receptor.nombre
 		receptorRfc=c.receptor.rfc
 		total=c.total
+		versionCfdi = c.version
 	}
 	
-	Comprobante getComprobante(){
-		getComprobanteDocument().getComprobante()
-	}
-	
-	public ComprobanteDocument getComprobanteDocument(){
-		if(this.comprobanteDocument==null){
-			loadComprobante()
-		}
-		return this.comprobanteDocument
-	}
-
-	public TimbreFiscal getTimbreFiscal(){
-		if(!timbreFiscal)
-			timbreFiscal=new TimbreFiscal(getComprobante())
-		return timbreFiscal
-	}
-	
-	void loadComprobante(){
-		ByteArrayInputStream is=new ByteArrayInputStream(getXml())
-		this.comprobanteDocument=ComprobanteDocument.Factory.parse(is)
-	}
-
-	void cargarXml(byte[] data){
-		ByteArrayInputStream is=new ByteArrayInputStream(data)
-		this.comprobanteDocument=ComprobanteDocument.Factory.parse(is)
-		def c=getComprobante()
-		this.xml=data
-		this.uuid=getTimbreFiscal().UUID
-		this.serie=c.serie
-		this.folio=c.folio
-		this.fecha=c.fecha.getTime()
-		this.emisor=c.emisor.nombre
-		this.emisorRfc=c.emisor.rfc
-		this.receptor=c.receptor.nombre
-		this.receptorRfc=c.receptor.rfc
-		this.total=c.getTotal()
-		//this.tipo=c.getTipoDeComprobante()==TipoDeComprobante.EGRESO?:'EGRESO'
-		switch(c.getTipoDeComprobante()){
-			case TipoDeComprobante.EGRESO:
-				this.tipo='EGRESO'
-				break
-			case TipoDeComprobante.INGRESO:
-				this.tipo='INGRESO'
-				break
-			case TipoDeComprobante.TRASLADO:
-				this.tipo='TRASLADO'
-				break	
-		}
-
-	}
 	
 	String toString(){
 		return "($emisor) Id:$id  Tipo:$tipo Serie:$serie Folio:$folio  UUID:$uuid xmlName:$xmlName"
 	}
+
+	
 }

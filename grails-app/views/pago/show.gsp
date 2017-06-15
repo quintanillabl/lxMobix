@@ -136,6 +136,7 @@
 				  					<th>CxP</th>
 				  					<th>Folio</th>
 				  					<th>Cfdi</th>
+				  					<th>Cfdi (Pago)</th>
 				  					<th>Proveedor</th>
 				  					<th>Fecha (CxP)</th>
 				  					<th>Total (CxP)</th>
@@ -151,6 +152,11 @@
 				  						
 				  						<td>${row.cuentaPorPagar.id}</td>
 				  						<td>${row.cuentaPorPagar.folio}</td>
+				  						<td>
+				  							<abbr title="${row.cuentaPorPagar.uuid}">
+				  							${org.apache.commons.lang.StringUtils.substringAfterLast(row.cuentaPorPagar.uuid,'-')}
+				  							</abbr>
+				  						</td>
 				  						<td>
 				  							<abbr title="${row.cuentaPorPagar.uuid}">
 				  							${org.apache.commons.lang.StringUtils.substringAfterLast(row.cuentaPorPagar.uuid,'-')}
