@@ -91,12 +91,12 @@
 				  					<th>Documento</th>
 				  					<th>Fecha Docto</th>
 				  					<th>Importe Docto</th>
-
 				  					<th>Fecha</th>
 				  					<th>Aplicado</th>
 				  					<th>Saldo Docto</th>
 				  					<th>Comentario</th>
-				  					<th></th>
+				  					<th>CFDI pago</th>
+				  					<th>D</th>
 				  				</tr>
 				  			</thead>
 				  			<tbody>
@@ -105,12 +105,23 @@
 				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.folio")}</td>
 				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.fecha")}</td>
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.total,type:'currency')}</td>
-
 				  						<td>${formatDate(date:row.fecha,format:'dd/MM/yyyy')}</td>
-				  						<td>${g.formatNumber(number:row.importe,type:'currency')}</td>
+				  						
 				  						<td>${g.formatNumber(number:row.importe,type:'currency')}</td>
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.saldo,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
+				  						<td>
+				  							<g:if test="${row.cuentaPorCobrar.cfdi.versionCfdi == '3.3'}">
+				  								<g:link  action="generarCfdi" id="${row.id}" 
+				  									onclick="return confirm('Generar CFDI de recepción del pago al documento: ${row.cuentaPorCobrar.folio}');">
+				  								Generar
+				  							</g:link>
+				  							</g:if>
+				  							<g:else>
+				  								${fieldValue(bean:row,field:"cfdiCobro.id")}
+				  							</g:else>
+				  							
+				  						</td>
 				  						<td>
 				  							<g:link  action="deleteAplicacion" id="${row.id}" 
 				  								onclick="return confirm('Eliminar aplicacion para el docto: ${row.cuentaPorCobrar.folio}');">

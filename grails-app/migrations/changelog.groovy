@@ -115,4 +115,8 @@ databaseChangeLog = {
 	include file: 'cfdix-cfdi-patch.groovy'
 
 	include file: 'cfdix-patch-03.groovy'
+
+	
+
+	include file: 'cfdix-patch-04.groovy'
 }

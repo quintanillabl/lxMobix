@@ -24,6 +24,7 @@ import com.luxsoft.lx.core.Cliente
 // Nueva implementacion de CFDI
 import com.luxsoft.cfdix.CFDIXUtils
 import com.luxsoft.cfdix.v32.V32PdfGenerator
+import com.luxsoft.cfdix.v33.V33PdfGenerator
 
 @Secured(["hasAnyRole('OPERADOR','VENTAS','ADMIN')"])
 class CfdiController {
@@ -117,12 +118,20 @@ class CfdiController {
 	}
 
 	def imprimirCfdi(Cfdi cfdi){
-		def pdfStream=generarPdf(cfdi)
-		render(file: pdfStream.toByteArray(), contentType: 'application/pdf',fileName:cfdi.xmlName.replace('.xml','.pdf'))
+		if(cfdi.versionCfdi == '3.2'){
+			def pdfStream=generarPdfV32(cfdi)
+			render(file: pdfStream.toByteArray(), contentType: 'application/pdf',fileName:cfdi.xmlName.replace('.xml','.pdf'))
+		}
+		if( cfdi.versionCfdi == '3.3') {
+			def pdfStream=generarPdfV33(cfdi)
+			render(file: pdfStream.toByteArray(), contentType: 'application/pdf',fileName:cfdi.xmlName.replace('.xml','.pdf'))	
+		}
+		flash.message = "No esta disponible el reporte de CFDI para esta versión" 
+		redirect action:'show',params:[id:cfdi.id]
+		
 	}
 
-	def generarPdf(Cfdi cfdi){
-		
+	private generarPdfV32(Cfdi cfdi){
 		def data = V32PdfGenerator.getReportData(cfdi)
 		def modelData = data['CONCEPTOS']
 		def repParams = data['PARAMETROS']
@@ -135,6 +144,24 @@ class CfdiController {
 
 		def reportDef=new JasperReportDef(
 			name:'MobixCFDI2'
+			,fileFormat:JasperExportFormat.PDF_FORMAT
+			,reportData:modelData,
+			,parameters:params
+			)
+		def pdfStream=jasperService.generateReport(reportDef)
+		return pdfStream
+	}
+
+	private generarPdfV33(Cfdi cfdi){
+		def data = V33PdfGenerator.getReportData(cfdi)
+		log.info('Parametros: ')
+		log.info(data)
+		def modelData = data['CONCEPTOS']
+		def repParams = data['PARAMETROS']
+		params<<repParams
+
+		def reportDef=new JasperReportDef(
+			name:'MobixCFDI3'
 			,fileFormat:JasperExportFormat.PDF_FORMAT
 			,reportData:modelData,
 			,parameters:params
@@ -172,6 +199,12 @@ class CfdiController {
         }
         
 
+    }
+
+    def timbrar(Cfdi cfdi){
+    	//log.info "Timbrando cfdi ${cfdi.id}"
+    	cfdiService.timbrar(cfdi)
+    	redirect action:'show',params:[id:cfdi.id]
     }
 
 	

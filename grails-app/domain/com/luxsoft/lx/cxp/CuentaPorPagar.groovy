@@ -54,6 +54,7 @@ class CuentaPorPagar {
 	BigDecimal saldoAlCorte=0
 
 	//Datos de CFDI...
+	String versionCfdi
 	byte[] cfdiXml
 	String cfdiXmlFileName
 	String uuid
@@ -94,7 +95,7 @@ class CuentaPorPagar {
 		acuseEstado nullable:true,maxSize:100
 		acuseCodigoEstatus nullable:true,maxSize:100
 		gastoPorComprobar nullable:true
-		
+		versionCfdi nullable:true,maxSize:10
 		
     }
 	

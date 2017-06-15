@@ -86,7 +86,7 @@
 								    		</p>
 								    	</g:if>
 								    	<g:else>
-								    		<p class="form-control-static">PENDIENTE</p>
+								    		<p class="form-control-static">Pendiente por timbrar en versión de CFDI: ${ventaInstance.empresa.versionDeCfdi}</p>
 								    	</g:else>
 								      
 								    </div>

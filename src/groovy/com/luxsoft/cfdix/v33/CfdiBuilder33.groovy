@@ -18,11 +18,6 @@ import lx.cfdi.v33.CTipoDeComprobante
 import lx.cfdi.v33.CMoneda
 import lx.cfdi.v33.CTipoFactor
 
-
-// Temporal
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Marshaller
-
 /**
  * TODO: Parametrizar el regimenFiscal de
  */
@@ -101,8 +96,8 @@ class CfdiBuilder33 {
                 claveProdServ = det.producto.claveProdServ ?: "80131500" // Tomarlo del producto
                 noIdentificacion = det.producto.clave
                 cantidad = det.cantidad
-                claveUnidad = claveUnidadSat ?: 'EA'
-                unidad = unidadSat ?: 'Pieza'
+                claveUnidad = det.producto.claveUnidadSat ?: 'EA'
+                unidad = det.producto.unidadSat ?: 'Pieza'
                 descripcion = desc
                 valorUnitario = det.precio
                 importe = det.importeNeto
@@ -167,28 +162,7 @@ class CfdiBuilder33 {
         return this.comprobante
     }
 
-    //  Concepto c=conceptos.addNewConcepto()
-        //  c.setCantidad(det.cantidad)
-        //  c.setUnidad(det.producto.unidad)
-        //  c.setNoIdentificacion(det.producto.clave)
-        //  String desc = (det.comentario?:'')+' '+ venta.comentario?:''
-        //  c.setDescripcion(desc)
-            
-        //  if(rfc=="XEXX010101000" || rfc=="XAXX010101000"){
-        //      c.setValorUnitario(det.precio)
-        //      c.setImporte(det.importeNeto+det.impuesto)
-        //  } else{
-        //      c.setValorUnitario(det.precio)
-        //      c.setImporte(det.importeNeto)
-        //  }
-
-        //  def renta=Renta.findByVentaDet(det)
-        //  if(renta){
-        //       CuentaPredial cp=c.addNewCuentaPredial()
-        //       cp.setNumero(renta.arrendamiento.inmueble.cuentaPredial)
-        //  }
-            
-        // }
+    
 	
 
 }

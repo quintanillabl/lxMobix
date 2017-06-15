@@ -50,7 +50,7 @@ class Cfdi {
 		folio blank:false,maxSize:20
 		uuid nullable:true,maxSize:300
 		timbrado(nullable:true)
-		tipo inList:['INGRESO','EGRESO','TRASLADO']
+		tipo inList:['INGRESO','EGRESO','TRASLADO','PAGO','NOMINA']
 		fecha nullable:false
 		emisor blank:false,maxSize:600
 		emisorRfc blank:false,maxSize:13

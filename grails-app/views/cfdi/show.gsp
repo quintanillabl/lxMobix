@@ -62,7 +62,15 @@
 										onclick="return confirm('Cancelar CFDI?');" id="${cfdiInstance.id }">
 									<span class="glyphicon glyphicon-remove-circle"></span> Cancelar
 								</g:link>
+								<g:if test="${cfdiInstance.uuid == null && cfdiInstance.versionCfdi =='3.3'}">
+									<g:link  action="timbrar" id="${cfdiInstance.id}"
+										class="btn btn-default btn-sm" >
+										<span class="fa fa-wifi"></span> Timbrar
+									</g:link>
+								</g:if>
 							</g:else>
+
+							
 							
 							
 							%{-- <g:jasperReport
@@ -75,8 +83,13 @@
 							</g:jasperReport> --}%
 							
   						</div>
+  						<g:if test="${flash.message}">
+				  				<span class="label label-warning">${flash.message}</span>
+				  		</g:if> 
 						
 					</div>
+
+
 				</div>
 
 			</div>
