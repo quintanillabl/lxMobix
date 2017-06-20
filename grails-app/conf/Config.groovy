@@ -274,16 +274,24 @@ cxf{
     consultaService{
       wsdl="https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?singleWsdl"
       namespace="com.luxsoft.cfdi"
-      //bindingFile = "grails-app/conf/bindings.xml"
-      //client = false //defaults to false
-      //allowChunking = true //false
       clientInterface = com.luxsoft.cfdi.IConsultaCFDIService
       serviceEndpointAddress = "https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc"
       receiveTimeout = 120000 //2min
       connectionTimeout = 120000 //2min
     }
-    
+    /*
+    ediwinWs {
+      wsdl = "https://cfdiws.sedeb2b.com/EdiwinWS/services/CFDi?wsdl"
+      namespace = 'com.luxsoft.cfdix.ediwin'
+      outputDir = "src/java"
+      clientInterface = com.luxsoft.cfdix.ediwin.IEdiwinService
+      serviceEndpointAddress = "https://cfdiws.sedeb2b.com/EdiwinWS/services"
+      receiveTimeout = 120000 //2min
+      connectionTimeout = 120000 //2min
+    }
+    */
   }
+
 }
 
 

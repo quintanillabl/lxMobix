@@ -42,6 +42,7 @@
 				<g:render template="/common/direccion" bean="${empresaInstance}"/> 
 				<legend>Timbrado de CFDI's</legend>
 				<f:field property="versionDeCfdi" widget-class="form-control" cols="col-sm-4" label="Versión CFDI"/>
+				<f:field property="regimenClaveSat" widget-class="form-control" cols="col-sm-4" />
 				<f:field property="usuarioPac" widget-class="form-control" cols="col-sm-4"/>
 				<f:field property="passwordPac" widget-class="form-control" cols="col-sm-4"/>
 				<f:field property="passwordPfx" widget-class="form-control" cols="col-sm-4"/>
