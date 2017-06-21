@@ -55,7 +55,7 @@ class V33PdfGenerator {
 		params["RECEPTOR_NOMBRE"] = comprobante.getReceptor().getNombre() 
 		params["RECEPTOR_RFC"] = comprobante.getReceptor().getRfc()
 		params["IMPORTE"] = comprobante.getSubTotal() as String
-		params["IVA"] = (comprobante.getImpuestos().getTotalImpuestosTrasladados()?: 0.0) as String
+		params["IVA"] = (comprobante?.getImpuestos()?.getTotalImpuestosTrasladados()?: 0.0) as String
 		params["TOTAL"] = comprobante.getTotal() as String
 		params["RECEPTOR_DIRECCION"] = 'ND'
 

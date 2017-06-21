@@ -110,7 +110,7 @@ class CfdiBuilder33 {
                 traslado1.impuesto = '002'
                 traslado1.tipoFactor = CTipoFactor.TASA
                 traslado1.tasaOCuota = '0.160000'
-                traslado1.importe = MonedaUtils.round(det.importeNeto * 0.016000)
+                traslado1.importe = MonedaUtils.round(det.impuesto)
                 concepto.impuestos.traslados.traslado.add(traslado1)
                 conceptos.concepto.add(concepto)
 

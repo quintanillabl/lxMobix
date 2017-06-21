@@ -10,6 +10,7 @@ import com.edicom.ediwinws.cfdi.utils.ZipUtils
 
 import org.apache.commons.logging.LogFactory
 import com.luxsoft.lx.core.Empresa
+import com.luxsoft.cfdix.CfdiTimbre
 
 class CfdiTimbrador {
 	
@@ -45,11 +46,16 @@ class CfdiTimbrador {
 			
 			cfdi.xmlName=entry.getKey()
 			cfdi.xml=entry.getValue()
+			CfdiTimbre timbre = new CfdiTimbre(cfdi)
+			cfdi.uuid = timbre.uuid
+			cfdi.timbrado = timbre.convertFechaTimbraro()
+			/*
 			cfdi.loadComprobante()
 			cfdi.timbreFiscal=new TimbreFiscal(cfdi.getComprobante())
 			cfdi.uuid=cfdi.timbreFiscal.UUID
 			cfdi.timbrado=df.parse(cfdi.timbreFiscal.fechaTimbrado)
-			//cfdi.save(failOnError:true)
+			*/
+			cfdi.save(failOnError:true)
 			return cfdi
 		} catch (Exception e) {
 			//e.printStackTrace()

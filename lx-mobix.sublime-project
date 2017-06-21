@@ -63,7 +63,7 @@
 		},
 		{
 			"name": "Java Source",
-			"path": "src/java"
+			"path": "src"
 		},
 		{
 			"name": "Integeration Tests",

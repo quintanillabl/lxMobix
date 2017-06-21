@@ -9,6 +9,7 @@ import com.luxsoft.lx.tesoreria.MovimientoDeCuenta
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.core.Cliente
+import com.luxsoft.cfdi.Cfdi
 
 
 @EqualsAndHashCode(includes='id,cliente')
@@ -41,6 +42,8 @@ class Cobro {
 	CuentaBancaria cuentaDestino
 
 	MovimientoDeCuenta ingreso
+
+	Cfdi cfdi
 	
 	Date dateCreated
 	Date lastUpdated
@@ -57,6 +60,7 @@ class Cobro {
     	creadoPor maxSize:50
     	modificadoPor maxSize:50
     	importe min:1.0
+    	cfdi nullable: true
     }
 
     static mapping = {

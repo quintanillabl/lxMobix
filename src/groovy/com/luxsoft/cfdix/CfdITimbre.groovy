@@ -45,4 +45,8 @@ class CfdiTimbre {
 		return MessageFormat.format(pattern, version,uuid,fechaTimbrado,selloCFD,noCertificadoSAT)
 	}
 
+	Date convertFechaTimbraro(){
+		return Date.parse("yyyy-MM-dd'T'HH:mm:ss",fechaTimbrado)
+	}
+
 }

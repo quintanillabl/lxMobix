@@ -45,4 +45,9 @@ class CFDIXUtils {
 		return XmlUtil.serialize(xmlResult)
 	}
 
+	static CfdiTimbre getTimbre(Cfdi cfdi){
+		def timbre = new CfdiTimbre(cfdi)
+		return timbre
+	}
+
 }

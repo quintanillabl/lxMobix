@@ -9,10 +9,13 @@
 	<asset:javascript src="forms/autoNumeric.js"/>
 </head>
 <body>
+	
+	<g:set var="cfdiDePago" 
+		value="${cobroInstance.aplicaciones.find{ it.cuentaPorCobrar.cfdi.versionCfdi == '3.3'} != null}" />
 
 	<div class="container form-panel">
-
-
+		
+		
 		<div class="row toolbar-panel">
 			<div class="col-md-12 ">
 				<div class="btn-group">
@@ -37,6 +40,12 @@
 			    	    		<i class="fa fa-plus"></i> Agregar aplicacion
 			    	    	</g:link>
 			    		</sec:ifAllGranted>
+				    </g:if>
+				    <g:if test="${cfdiDePago  && (cobroInstance.cfdi ==null)}">
+				    	<g:link action="generarCfdiDePago" class="btn btn-default " id="${cobroInstance.id}"
+				    		onclick="return confirm('Generar CFDI de pago para cobro ${cobroInstance.id}?');">
+				        	<i class="fa fa-wifi"></i> Generar CFDI pago
+				    	</g:link> 
 				    </g:if>
 				    <button id="saveBtn" class="btn btn-success">
 				    	<i class="fa fa-floppy-o"></i> Actualizar
@@ -74,6 +83,25 @@
 									<f:display property="referencia" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:display property="banco" wrapper="bootstrap3" widget-class="form-control"/>
 									<f:field property="comentario" widget-class="form-control" wrapper="bootstrap3"/>
+									<g:if test="${cfdiDePago}">
+										<div class="form-group">
+										    <label class="col-sm-3 control-label">Cfdi</label>
+										    <div class="col-sm-9">
+										    	<g:if test="${cobroInstance.cfdi}">
+										    		<p class="form-control-static">
+										    			<g:link controller="cfdi" action="show" id="${cobroInstance.cfdi.id}">
+										    				${cobroInstance.cfdi.folio} UUID: ${cobroInstance.cfdi.uuid}
+										    			</g:link>
+										    		</p>
+										    	</g:if>
+										    	<g:else>
+										    		<p class="form-control-static">PENDIENTE</p>
+										    	</g:else>
+										      
+										    </div>
+									    </div>
+									</g:if>
+								
 								</div>
 
 								<div class="col-sm-6" id="totalesPanel">
@@ -95,14 +123,15 @@
 				  					<th>Aplicado</th>
 				  					<th>Saldo Docto</th>
 				  					<th>Comentario</th>
-				  					<th>CFDI pago</th>
 				  					<th>D</th>
 				  				</tr>
 				  			</thead>
 				  			<tbody>
 				  				<g:each in="${cobroInstance.aplicaciones}" var="row">
 				  					<tr id="${row.id}">
-				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.folio")}</td>
+				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.folio")}
+				  							(Cfdi ${fieldValue(bean:row,field:"cuentaPorCobrar.cfdi.versionCfdi")})
+				  						</td>
 				  						<td>${fieldValue(bean:row,field:"cuentaPorCobrar.fecha")}</td>
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.total,type:'currency')}</td>
 				  						<td>${formatDate(date:row.fecha,format:'dd/MM/yyyy')}</td>
@@ -110,18 +139,6 @@
 				  						<td>${g.formatNumber(number:row.importe,type:'currency')}</td>
 				  						<td>${formatNumber(number:row.cuentaPorCobrar.saldo,type:'currency')}</td>
 				  						<td>${fieldValue(bean:row,field:"comentario")}</td>
-				  						<td>
-				  							<g:if test="${row.cuentaPorCobrar.cfdi.versionCfdi == '3.3'}">
-				  								<g:link  action="generarCfdi" id="${row.id}" 
-				  									onclick="return confirm('Generar CFDI de recepción del pago al documento: ${row.cuentaPorCobrar.folio}');">
-				  								Generar
-				  							</g:link>
-				  							</g:if>
-				  							<g:else>
-				  								${fieldValue(bean:row,field:"cfdiCobro.id")}
-				  							</g:else>
-				  							
-				  						</td>
 				  						<td>
 				  							<g:link  action="deleteAplicacion" id="${row.id}" 
 				  								onclick="return confirm('Eliminar aplicacion para el docto: ${row.cuentaPorCobrar.folio}');">

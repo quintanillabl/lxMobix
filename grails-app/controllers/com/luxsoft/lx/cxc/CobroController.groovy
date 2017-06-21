@@ -8,6 +8,7 @@ import org.springframework.security.access.annotation.Secured
 import com.luxsoft.lx.ventas.Venta
 import grails.converters.JSON
 import java.text.DecimalFormat
+import org.apache.commons.lang.exception.ExceptionUtils
 
 
 @Secured(["hasAnyRole('ADMIN','TESORERIA','GASTOS')"])
@@ -142,11 +143,24 @@ class CobroController {
         render res
 
     }
-
-    def generarCfdi( AplicacionDeCobro aplicacion){
-        flash.message = "CFDI de cobro generado"
-        aplicacion = cfdiPagosService.generarCfdi(aplicacion)
-        redirect action:'edit',params:[id:aplicacion.pago.id]
+    
+    @Transactional
+    @Secured(["hasRole('TESORERIA')"])
+    def generarCfdiDePago(Cobro cobro){
+        if (cobro == null) {
+            notFound()
+            return
+        }
+        try {
+            cobro = cfdiPagosService.generarCfdi(cobro)
+            flash.message = "CFDI de comprobante de pago para el cobro ${cobro.id} generado "
+            redirect action:'show',controller:'cfdi',id:cobro.cfdi.id
+        }
+        catch(Exception e) {
+            flash.message="Error al tratar de generar CFDI de comprobante de pago"
+            flash.error=ExceptionUtils.getRootCauseMessage(e)
+            redirect action:'edit',id:cobro.id
+        }
     }
 
     protected void notFound() {
