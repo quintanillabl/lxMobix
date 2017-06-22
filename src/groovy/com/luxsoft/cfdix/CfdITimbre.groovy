@@ -27,12 +27,12 @@ class CfdiTimbre {
 		def xml = new XmlSlurper().parse(is)
 		def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
 		
-	    this.version = timbre.attributes()['version']
+	    this.version = timbre.attributes()['Version']
 		this.uuid = timbre.attributes()['UUID']
 		this.fechaTimbrado = timbre.attributes()['FechaTimbrado']
-		this.selloCFD = timbre.attributes()['selloCFD']
-		this.selloSAT = timbre.attributes()['selloSAT']
-		this.noCertificadoSAT = timbre.attributes()['noCertificadoSAT']
+		this.selloCFD = timbre.attributes()['SelloCFD']
+		this.selloSAT = timbre.attributes()['SelloSAT']
+		this.noCertificadoSAT = timbre.attributes()['NoCertificadoSAT']
 	    
 	}
 	

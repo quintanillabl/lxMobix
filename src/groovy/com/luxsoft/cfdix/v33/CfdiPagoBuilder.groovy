@@ -34,7 +34,7 @@ class CfdiPagoBuilder {
     private Cobro cobro
     private CfdiSellador33 sellador = new CfdiSellador33()
 
-    def build(Cobro cobro, String serie = 'PAGOS'){
+    def build(Cobro cobro, String serie = 'PAGO'){
         buildComprobante(cobro, serie)
         .buildEmisor()
         .buildReceptor()

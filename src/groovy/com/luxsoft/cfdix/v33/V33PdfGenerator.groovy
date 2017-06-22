@@ -11,11 +11,13 @@ import com.luxsoft.cfdix.CfdiTimbre
 
 import net.glxn.qrgen.QRCode
 import net.glxn.qrgen.image.ImageType
-
+import com.luxsoft.cfdix.v33.CfdiCadenaBuilder33
 
 class V33PdfGenerator {
 
 	final static SimpleDateFormat CFDI_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+
+	final static CfdiCadenaBuilder33 cadenaBuilder = new CfdiCadenaBuilder33()
 
 	static getReportData(Cfdi cfdi){
 
@@ -87,6 +89,7 @@ class V33PdfGenerator {
 			params.put("FOLIO_FISCAL", timbre.uuid);
 			params.put("SELLO_DIGITAL_SAT", timbre.selloSAT);
 			params.put("CERTIFICADO_SAT", timbre.noCertificadoSAT);
+
 			params.put("CADENA_ORIGINAL_SAT", timbre.cadenaOriginal());
 		}
 		params.FECHA = comprobante.fecha

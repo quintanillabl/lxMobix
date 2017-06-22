@@ -80,9 +80,9 @@ class CfdiBuilder33 {
     }
 
     def buildFormaDePago(){
-        comprobante.formaPago = '03'
+        comprobante.formaPago = '99'
         comprobante.condicionesDePago = 'Credito 30 días'
-        comprobante.metodoPago = CMetodoPago.PUE
+        comprobante.metodoPago = CMetodoPago.PPD
         return this
     }
 
