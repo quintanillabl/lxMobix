@@ -80,9 +80,9 @@ class CfdiBuilder33 {
     }
 
     def buildFormaDePago(){
-        comprobante.formaPago = '03'
+        comprobante.formaPago = '99'
         comprobante.condicionesDePago = 'Credito 30 días'
-        comprobante.metodoPago = CMetodoPago.PUE
+        comprobante.metodoPago = CMetodoPago.PPD
         return this
     }
 
@@ -110,7 +110,7 @@ class CfdiBuilder33 {
                 traslado1.impuesto = '002'
                 traslado1.tipoFactor = CTipoFactor.TASA
                 traslado1.tasaOCuota = '0.160000'
-                traslado1.importe = MonedaUtils.round(det.importeNeto * 0.016000)
+                traslado1.importe = MonedaUtils.round(det.impuesto)
                 concepto.impuestos.traslados.traslado.add(traslado1)
                 conceptos.concepto.add(concepto)
 

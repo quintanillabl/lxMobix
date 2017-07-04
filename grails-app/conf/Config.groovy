@@ -271,6 +271,7 @@ environments {
 }
 cxf{
   client{
+    
     consultaService{
       wsdl="https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc?singleWsdl"
       namespace="com.luxsoft.cfdi"
@@ -279,17 +280,19 @@ cxf{
       receiveTimeout = 120000 //2min
       connectionTimeout = 120000 //2min
     }
-    /*
+    
     ediwinWs {
-      wsdl = "https://cfdiws.sedeb2b.com/EdiwinWS/services/CFDi?wsdl"
+      wsdl = "src/wsdl/ediwin.wsdl"
+      //wsdl = "https://cfdiws.sedeb2b.com/EdiwinWS/services/CFDi?wsdl"
+      wsdlArgs = ['-autoNameResolution','-frontend','jaxws21']
       namespace = 'com.luxsoft.cfdix.ediwin'
       outputDir = "src/java"
-      clientInterface = com.luxsoft.cfdix.ediwin.IEdiwinService
-      serviceEndpointAddress = "https://cfdiws.sedeb2b.com/EdiwinWS/services"
+      clientInterface = com.luxsoft.cfdix.ediwin.CFDi
+      serviceEndpointAddress = "https://cfdiws.sedeb2b.com/EdiwinWS/services/CFDi"
       receiveTimeout = 120000 //2min
       connectionTimeout = 120000 //2min
     }
-    */
+    
   }
 
 }
