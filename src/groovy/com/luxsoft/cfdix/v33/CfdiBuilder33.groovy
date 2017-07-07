@@ -74,7 +74,7 @@ class CfdiBuilder33 {
         Comprobante.Receptor receptor = factory.createComprobanteReceptor()
         receptor.rfc = venta.cliente.rfc
         receptor.nombre = venta.cliente.nombre
-        receptor.usoCFDI = CUsoCFDI.G_01 // Adquisicion de mercancías
+        receptor.usoCFDI = CUsoCFDI.G_03 // Adquisicion de mercancías
         comprobante.receptor = receptor
         return this
     }

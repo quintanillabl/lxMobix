@@ -25,6 +25,8 @@ class V33PdfGenerator {
 		
 		def conceptos = comprobante.conceptos.concepto
 		def modelData=conceptos.collect { cc ->
+
+			def traslado = cc.impuestos.traslados.traslado[0]
 			
 			def res=[
 				'cantidad' : cc.getCantidad(),
@@ -32,7 +34,16 @@ class V33PdfGenerator {
 				'descripcion' : cc.descripcion,
 				'unidad': cc.unidad,
 				'ValorUnitario':cc.valorUnitario,
-				'Importe':cc.importe
+				'Importe':cc.importe,
+				'ClaveProdServ': cc.claveProdServ,
+				'ClaveUnidad': cc.claveUnidad,
+				'Descuento': cc.descuento?: '0.0',
+				'Impuesto': traslado.impuesto.toString(),
+				'TasaOCuota': traslado.tasaOCuota.toString(),
+				'TipoFactor': traslado.tipoFactor.value().toString(),
+				'Base': traslado.base,
+				'TrasladoImporte': traslado.importe
+
 			]
 			if(cc.cuentaPredial){
 				res.CUENTA_PREDIAL=cc.cuentaPredial.numero
@@ -50,6 +61,7 @@ class V33PdfGenerator {
 	static getParametros(Cfdi cfdi, Comprobante comprobante){
 		
 		def params=[:]
+		params["VERSION"] = comprobante.version
 		params["SERIE"] = comprobante.getSerie()
 		params["FOLIO"] = comprobante.getFolio()
 		params["NUM_CERTIFICADO"] = comprobante.getNoCertificado()
@@ -69,6 +81,8 @@ class V33PdfGenerator {
 		params['PINT_IVA']='16 '
 		params["DESCUENTOS"] = comprobante.getDescuento() as String
 		params['CONDICIONES_PAGO'] = comprobante.condicionesDePago
+		params['UsoCFDI'] = comprobante.receptor.usoCFDI.value().toString()
+		params['Moneda'] = comprobante.moneda.value().toString()
 
 		if(comprobante.getReceptor().rfc=='XAXX010101000'){
 			params["IMPORTE"] = comprobante.getTotal() as String
@@ -79,7 +93,7 @@ class V33PdfGenerator {
 		
 		params["EMISOR_DIRECCION"] = ' '
 		params["REGIMEN"] = comprobante.emisor.regimenFiscal
-		params["EXPEDIDO_DIRECCION"] = comprobante.lugarExpedicion
+		params["LUGAR_EXPEDICION"] = comprobante.lugarExpedicion
 		
 		if(cfdi.uuid!=null){
 			def img = generarQR(cfdi)
@@ -91,6 +105,7 @@ class V33PdfGenerator {
 			params.put("CERTIFICADO_SAT", timbre.noCertificadoSAT);
 
 			params.put("CADENA_ORIGINAL_SAT", timbre.cadenaOriginal());
+			params.put("RfcProvCertif", timbre.rfcProvCertif)
 		}
 		params.FECHA = comprobante.fecha
 		return params;

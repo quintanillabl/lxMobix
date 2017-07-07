@@ -75,6 +75,9 @@
 	<parameter name="NUM_CERTIFICADO" isForPrompting="true" class="java.lang.String">
 		<defaultValueExpression ><![CDATA["00010002253500003256"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="UsoCFDI" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="RfcProvCertif" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="Moneda" isForPrompting="true" class="java.lang.String"/>
 
 	<field name="descripcion" class="java.lang.String"/>
 	<field name="cantidad" class="java.math.BigDecimal"/>
@@ -446,27 +449,7 @@
 				</staticText>
 				<staticText>
 					<reportElement
-						mode="Transparent"
-						x="255"
-						y="34"
-						width="49"
-						height="10"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-233"/>
-					<box>					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
-						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[INGRESO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						x="377"
+						x="370"
 						y="19"
 						width="50"
 						height="15"
@@ -481,16 +464,36 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="427"
+						x="420"
 						y="19"
-						width="21"
+						width="28"
 						height="15"
 						key="textField-176"/>
 					<box></box>
-					<textElement textAlignment="Right">
+					<textElement textAlignment="Center">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{TOTAL}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{Moneda}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="254"
+						y="34"
+						width="123"
+						height="10"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-177"/>
+					<box>					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RfcProvCertif}]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -538,7 +541,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 						x="0"
 						y="3"
 						width="243"
-						height="100"
+						height="101"
 						key="rectangle-1"
 						positionType="FixRelativeToBottom"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -711,7 +714,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 						x="257"
 						y="3"
 						width="317"
-						height="101"
+						height="100"
 						key="rectangle-4"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
@@ -1176,7 +1179,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 					<textElement textAlignment="Left">
 						<font fontName="SansSerif" pdfFontName="Helvetica" size="9" isBold="false" isItalic="false" isUnderline="false"/>
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$P{RECEPTOR_RFC}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{UsoCFDI}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1206,7 +1209,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="201"
+						x="200"
 						y="90"
 						width="42"
 						height="13"
@@ -1236,7 +1239,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				</textField>
 				<staticText>
 					<reportElement
-						x="125"
+						x="124"
 						y="90"
 						width="76"
 						height="13"
