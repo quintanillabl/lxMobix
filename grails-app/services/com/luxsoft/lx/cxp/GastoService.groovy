@@ -166,9 +166,116 @@ class GastoService {
         
 
         gasto.save failOnError:true, flush:true
+        return  save(gasto)
 
-        return gasto
+    }
 
+    def buildGastoFromCfdiV33(def comprobante, def xmlFile, Gasto gasto){
+        
+        assert comprobante.name() == 'Comprobante'
+        assert comprobante.attributes()['Version'] == '3.3', 'No es la version de cfdi 3.3'        
+
+        def receptor = comprobante.breadthFirst().find { it.name() == 'Receptor'}
+        def emisor= comprobante.breadthFirst().find { it.name() == 'Emisor'}
+        def timbre=comprobante.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
+
+        def empresa=Empresa.findByRfc(receptor.attributes().Rfc)
+
+        def proveedor=Proveedor.findByEmpresaAndRfc(empresa,emisor.attributes().Rfc)
+        def serie=comprobante.attributes()['Serie']
+        def folio=comprobante.attributes()['Folio']
+        def fecha=Date.parse("yyyy-MM-dd'T'HH:mm:ss",comprobante.attributes()['Fecha'])
+        def uuid=timbre.attributes()['UUID']
+        def subTotal = comprobante.attributes()['SubTotal'] as BigDecimal
+        def total = comprobante.attributes()['Total'] as BigDecimal
+        def descuento = comprobante.attributes()['Descuento'] as BigDecimal
+        gasto.empresa= empresa
+        gasto.proveedor= proveedor
+        gasto.fecha= fecha
+        gasto.vencimiento= fecha+1
+        gasto.importe= subTotal
+        gasto.descuento= descuento?:0.0
+        gasto.subTotal= subTotal
+        gasto.total= total
+        gasto.comentario ='Importacion de gasto'
+        gasto.cfdiXmlFileName = xmlFile.name
+        gasto.uuid = uuid
+        gasto.serie = serie
+        gasto.folio = folio
+        gasto.cfdiXml = xmlFile.getBytes()
+        gasto.gastoPorComprobar = false
+
+        // Impuestos trasladados
+        def traslados=comprobante.breadthFirst().find { it.name() == 'Traslados'}
+        if(traslados){
+            traslados.children().each{ t->
+               if(t.attributes()['Impuesto']=='002'){ // IVA
+                   
+                   def tasa=t.attributes()['TasaOCuota'] as BigDecimal
+                   gasto.impuestoTasa=tasa
+                   gasto.impuesto=t.attributes()['Importe'] as BigDecimal
+               }
+            }
+        }
+
+        // Impuestos retendidos
+        def retenciones=comprobante.breadthFirst().find { it.name() == 'Retenciones'}
+        if(retenciones){
+            retenciones.breadthFirst().each{
+                def map=it.attributes()
+                if(map.impuesto=='002'){
+                    def imp = map.Importe as BigDecimal
+                    def tasa = map['TasaOCuota'] as BigDecimal
+                    gasto.retensionIva = imp
+                    gasto.retensionIvaTasa = tasa
+                }
+                if(map.impuesto=='ISR'){
+                    def imp=map.importe as BigDecimal
+                    def tasa = map['TasaOCuota'] as BigDecimal
+                    gasto.retensionIsr = imp
+                    gasto.retensionIsrTasa = tasa
+                }
+            }
+        }
+
+        // Conceptos
+        if(gasto.partidas)
+            gasto.partidas.clear()
+        def cuenta=CuentaContable.findByClave('600-0000')
+        def conceptos=comprobante.breadthFirst().find { it.name() == 'Conceptos'}
+        conceptos.children().each{
+            def model=it.attributes()
+            def det=new GastoDet(
+                         cuentaContable:cuenta,
+                         descripcion:model['Descripcion'],
+                         unidad:model['Unidad'],
+                         cantidad:model['Cantidad'],
+                         valorUnitario:model['ValorUnitario'],
+                         importe:model['Importe'],
+                         comentario:"ClaveProdServ: ${model.ClaveProdServ} NoIdenticioacion: ${model.NoIdentificacion}"
+                    )
+            
+            if(it.Impuestos?.Traslados?.Traslado[0]){
+                println it.Impuestos.Traslados.Traslado[0].attributes()
+            }
+            if(it.Impuestos?.Retenciones?.Retencion[0]){
+                def retencion = it.Impuestos.Retenciones.Retencion[0].attributes()
+                if(retencion.Impuesto == '001'){
+                    det.retencionIsr = gasto.retensionIsr = retencion.Importe
+                    det.retencionIsrTasa = retencion.TasaOCuota
+                }
+                if(retencion.Impuesto == '002'){
+                    det.retencionIva = retencion.Importe
+                    det.retencionIvaTasa = retencion.TasaOCuota
+                }
+                
+            }
+            gasto.addToPartidas(det)
+            
+        }
+        if(gasto.id )
+            return update(gastp)
+        return  save(gasto)
     }
 
     def importar(File xmlFile){
@@ -177,6 +284,17 @@ class GastoService {
 
         if(xml.name()=='Comprobante'){
             def data=xml.attributes()
+            def version = data.version
+            if(version == null){
+                version = data.Version
+            }
+            
+            if(version == '3.3'){
+                //throw new RuntimeException('Version de CFDI no esta lista')
+                return buildGastoFromCfdiV33(xml, xmlFile, new Gasto())
+
+            }
+            
             log.debug 'Comprobante:  '+xml.attributes()  
             def receptor=xml.breadthFirst().find { it.name() == 'Receptor'}
             def cuenta=CuentaContable.findByClave('600-0000')
@@ -330,6 +448,13 @@ class GastoService {
             def xml=getXml(gasto)
             def data=xml.attributes()
             def total=data['total']
+            def version = data.version
+            if(version==null){
+                version = data.Version
+                total = data.Total
+                log.info('Validando CFDI version: '+version);
+            } 
+            
             //DecimalFormat format=new DecimalFormat("####.000000")
             //String stotal=format.format(gasto.total)
             String qq="?re=$emisor&rr=$receptor&tt=$total&id=${gasto.uuid.toUpperCase()}"
