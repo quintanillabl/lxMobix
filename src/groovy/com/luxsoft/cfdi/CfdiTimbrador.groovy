@@ -59,11 +59,15 @@ class CfdiTimbrador {
 			return cfdi
 		} catch (Exception e) {
 			//e.printStackTrace()
+			log.error e
 			
+			String msg="Imposible timbrar cfdi $cfdi.id Error: " + ExceptionUtils.getRootCauseMessage(e)
+			/*
 			String msg =  """
 				Error al tibrar el comprobante ${cfdi.id}  + ${ExceptionUtils.getRootCauseMessage(e)} 
 			 	por el momento el serivicio de timbrado  EDICOM  service para V3.3 esta en revisión
 			 """
+			 */
 			throw new CfdiException(message:msg,cfdi:cfdi)
 		}
 	}
