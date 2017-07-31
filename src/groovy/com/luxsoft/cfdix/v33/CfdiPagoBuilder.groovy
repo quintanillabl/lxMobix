@@ -127,7 +127,7 @@ class CfdiPagoBuilder {
         boolean varios = this.cobro.aplicaciones.size() > 1
         this.cobro.aplicaciones.each {
             Pagos.Pago.DoctoRelacionado docto = factory.createPagosPagoDoctoRelacionado()
-            docto.idDocumento = '6E9122AA-7E57-49F4-A5D0-417ED2583A9C'
+            docto.idDocumento = it.cuentaPorCobrar.cfdi.uuid
             docto.serie = it.cuentaPorCobrar.cfdi.serie
             docto.folio = it.cuentaPorCobrar.cfdi.folio
             docto.monedaDR = CMoneda.MXN

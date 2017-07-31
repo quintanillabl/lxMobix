@@ -26,7 +26,10 @@ class V33PdfGenerator {
 		def conceptos = comprobante.conceptos.concepto
 		def modelData=conceptos.collect { cc ->
 
-			def traslado = cc.impuestos.traslados.traslado[0]
+			def traslado = null
+			if(cc.impuestos){
+				traslado = cc.impuestos.traslados.traslado[0]
+			}
 			
 			def res=[
 				'cantidad' : cc.getCantidad(),
@@ -38,11 +41,11 @@ class V33PdfGenerator {
 				'ClaveProdServ': cc.claveProdServ,
 				'ClaveUnidad': cc.claveUnidad,
 				'Descuento': cc.descuento?: '0.0',
-				'Impuesto': traslado.impuesto.toString(),
-				'TasaOCuota': traslado.tasaOCuota.toString(),
-				'TipoFactor': traslado.tipoFactor.value().toString(),
-				'Base': traslado.base,
-				'TrasladoImporte': traslado.importe
+				'Impuesto': traslado?.impuesto?.toString()?: '',
+				'TasaOCuota': traslado?.tasaOCuota?.toString() ?: '',
+				'TipoFactor': traslado?.tipoFactor?.value()?.toString() ?: '',
+				'Base': traslado?.base,
+				'TrasladoImporte': traslado?.importe
 
 			]
 			if(cc.cuentaPredial){

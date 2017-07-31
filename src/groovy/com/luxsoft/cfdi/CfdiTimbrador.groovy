@@ -59,8 +59,6 @@ class CfdiTimbrador {
 			return cfdi
 		} catch (Exception e) {
 			//e.printStackTrace()
-			//log.error e
-			//String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getRootCouseMessage(e)
 			
 			String msg =  """
 				Error al tibrar el comprobante ${cfdi.id}  + ${ExceptionUtils.getRootCauseMessage(e)} 
