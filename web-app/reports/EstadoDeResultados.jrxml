@@ -30,7 +30,10 @@
 	<parameter name="YEAR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="MES" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="EMPRESA_ID" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT C.EMPRESA_ID,'VENTAS' AS GRUPO,c.id,S.ejercicio,S.MES,C.TIPO,C.SUB_TIPO,C.de_resultado,C.CLAVE,C.DESCRIPCION,SUM(S.DEBE-S.HABER) AS MOV_MES,SUM(S.SALDO_FINAL) AS SALDO_FINAL,'UTILIDAD BRUTA' AS GRUPO2,SUM(case when  C.CLAVE IN('401-0000','403-0001','403-0002') then (S.DEBE-S.HABER) else 0 end) as VTAS_MES,SUM(case when C.CLAVE IN('401-0000','403-0001','403-0002') then (S.SALDO_FINAL) else 0 end) as VTAS_ACU
+	<queryString><![CDATA[SELECT C.EMPRESA_ID,'VENTAS' AS GRUPO,c.id,S.ejercicio,S.MES,C.TIPO,(case when C.SUB_TIPO is null then 'CAPITAL' else C.SUB_TIPO end) SUB_TIPO,C.de_resultado,C.CLAVE,C.DESCRIPCION
+,(case when SUM(S.DEBE-S.HABER) is null then 0 else SUM(S.DEBE-S.HABER) end) AS MOV_MES,(case when SUM(S.SALDO_FINAL) is null then 0 else SUM(S.SALDO_FINAL) end) AS SALDO_FINAL,'UTILIDAD BRUTA' AS GRUPO2
+,(case when SUM(case when  C.CLAVE IN('401-0000','403-0001','403-0002') then (S.DEBE-S.HABER) else 0 end) is null then 0 else SUM(case when  C.CLAVE IN('401-0000','403-0001','403-0002') then (S.DEBE-S.HABER) else 0 end) end) as VTAS_MES
+,(case when SUM(case when C.CLAVE IN('401-0000','403-0001','403-0002') then (S.SALDO_FINAL) else 0 end) is null then 0 else SUM(case when C.CLAVE IN('401-0000','403-0001','403-0002') then (S.SALDO_FINAL) else 0 end) end) as VTAS_ACU
 FROM cuenta_contable C JOIN saldo_por_cuenta_contable S ON(S.CUENTA_ID=C.ID)
 WHERE S.ejercicio=$P{YEAR} AND S.mes=$P{MES} AND S.EMPRESA_ID=$P{EMPRESA_ID} AND C.CLAVE IN('401-0000','403-0001','403-0002') AND (S.saldo_final<>0 OR (S.DEBE-S.HABER)<>0)
 	UNION

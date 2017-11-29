@@ -1056,6 +1056,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "I M P A P" :
 $P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "P A P E R" :
+$P{EMISOR_RFC}.equals( "PAP830101CR3" ) ? "PAPEL SA" :
 $P{EMISOR_RFC}.equals( "ICP760402388" ) ? "C E N P A" :
 $P{EMISOR_RFC}.equals( "ISA870406UF4" ) ? "S   A   N" :
 $P{EMISOR_RFC}.equals( "BER830101IQ4" ) ? "B E R S A N" :

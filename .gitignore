@@ -21,7 +21,7 @@ stacktrace.log
 # project release file
 /*.war
 /*.sublime-workspace
-
+*.jar
 bin
 build.sh
 integration-repo

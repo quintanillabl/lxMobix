@@ -121,4 +121,6 @@ databaseChangeLog = {
 	include file: 'cfdix-patch-04.groovy'
 
 	include file: 'cfdix-path-005.groovy'
+
+	include file: 'comprobante-fiscal.groovy'
 }
