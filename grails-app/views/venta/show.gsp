@@ -75,6 +75,7 @@
 								<f:field property="fecha" widget-class="form-control " />
 								<f:field property="formaDePago" widget-class="form-control " label="F.Pago"/>
 								<f:field property="comentario" widget-class="form-control " />
+								<f:field property="usoCfdi" widget-class="form-control " />
 								<div class="form-group">
 								    <label class="col-sm-2 control-label">Cfdi</label>
 								    <div class="col-sm-10">

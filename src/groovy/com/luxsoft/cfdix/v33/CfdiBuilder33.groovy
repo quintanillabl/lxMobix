@@ -75,14 +75,57 @@ class CfdiBuilder33 {
         receptor.rfc = venta.cliente.rfc
         receptor.nombre = venta.cliente.nombre
         receptor.usoCFDI = CUsoCFDI.G_03 // Adquisicion de mercancías
+        switch(venta.usoCfdi) {
+            case 'G01':
+                receptor.usoCFDI = CUsoCFDI.G_01
+                break
+            case 'G02':
+                receptor.usoCFDI = CUsoCFDI.G_02
+                break
+            case 'G03':
+                receptor.usoCFDI = CUsoCFDI.G_03
+                break
+            case 'P01':
+                receptor.usoCFDI = CUsoCFDI.P_01
+                break
+          default:
+              receptor.usoCFDI = CUsoCFDI.P_01
+          break
+        }
         comprobante.receptor = receptor
         return this
     }
 
     def buildFormaDePago(){
-        comprobante.formaPago = '99'
-        comprobante.condicionesDePago = 'Credito 30 días'
-        comprobante.metodoPago = CMetodoPago.PPD
+        switch (venta.formaDePago) {
+            case 'EFECTIVO':
+              comprobante.formaPago = '01'
+              break
+            case 'CHEQUE':
+              comprobante.formaPago = '02'
+              break
+            case 'TRANSFERENCIA':
+              comprobante.formaPago = '03'
+              break
+            case 'TARJETA_CREDITO':
+              comprobante.formaPago = '04'
+              break
+            case 'TARJETA_DEBITO':
+              comprobante.formaPago = '28'
+              break
+            default:
+              comprobante.formaPago = '99'
+        }
+        switch(venta.metodoDePago) {
+            case 'PPD':
+                comprobante.metodoPago = CMetodoPago.PPD
+                comprobante.condicionesDePago = 'Credito'
+                break
+            case 'PUE':
+                comprobante.metodoPago = CMetodoPago.PUE
+                break
+        }
+        
         return this
     }
 
@@ -108,9 +151,15 @@ class CfdiBuilder33 {
                 traslado1 = factory.createComprobanteConceptosConceptoImpuestosTrasladosTraslado()
                 traslado1.base =  det.importeNeto
                 traslado1.impuesto = '002'
-                traslado1.tipoFactor = CTipoFactor.TASA
-                traslado1.tasaOCuota = '0.160000'
-                traslado1.importe = MonedaUtils.round(det.impuesto)
+
+                if( det.producto.impuesto == 0.0) {
+                    traslado1.tipoFactor = CTipoFactor.EXENTO
+                } else {
+                    traslado1.tipoFactor = CTipoFactor.TASA
+                    traslado1.tasaOCuota = '0.160000'
+                    traslado1.importe = MonedaUtils.round(det.impuesto)
+                }
+                
                 concepto.impuestos.traslados.traslado.add(traslado1)
                 conceptos.concepto.add(concepto)
 
@@ -132,14 +181,19 @@ class CfdiBuilder33 {
         Comprobante.Impuestos impuestos = factory.createComprobanteImpuestos()
         impuestos.setTotalImpuestosTrasladados(venta.impuesto)
 
-        Comprobante.Impuestos.Traslados traslados = factory.createComprobanteImpuestosTraslados()
-        Comprobante.Impuestos.Traslados.Traslado traslado = factory.createComprobanteImpuestosTrasladosTraslado()
-        traslado.impuesto = '002'
-        traslado.tipoFactor = CTipoFactor.TASA
-        traslado.tasaOCuota = '0.160000'
-        traslado.importe = venta.impuesto
-        traslados.traslado.add(traslado)
-        impuestos.traslados = traslados
+        
+        
+        if(venta.impuesto > 0 ) {
+            Comprobante.Impuestos.Traslados traslados = factory.createComprobanteImpuestosTraslados()
+            Comprobante.Impuestos.Traslados.Traslado traslado = factory.createComprobanteImpuestosTrasladosTraslado()
+            traslado.impuesto = '002'
+            traslado.tipoFactor = CTipoFactor.TASA
+            traslado.tasaOCuota = '0.160000'
+            traslado.importe = venta.impuesto
+            traslados.traslado.add(traslado)
+            impuestos.traslados = traslados
+        }
+        
         comprobante.setImpuestos(impuestos)
         return this
     }

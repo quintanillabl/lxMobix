@@ -64,7 +64,7 @@ class VentaDet {
         
         importeNeto=importeBruto-descuento
         
-        impuesto=MonedaUtils.calcularImpuesto(importeNeto,MonedaUtils.IVA)
+        impuesto = MonedaUtils.calcularImpuesto(importeNeto, producto.impuesto)
         return this
     }
 

@@ -147,7 +147,10 @@ class VentaCommand{
     Date fecha
 
     String comentario
+    String formaDePago 
     String tipo
+    String usoCfdi = 'G01'
+    String metodoDePago = 'PPD'
 
 
 

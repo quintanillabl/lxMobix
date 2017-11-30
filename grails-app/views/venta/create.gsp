@@ -30,7 +30,7 @@
 
 		<div class="row ">
 			
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-8 col-md-offset-2">
 				
 				<g:form class="form-horizontal" action="save" >	
 
@@ -50,6 +50,24 @@
 							<f:field property="cliente" widget-class="form-control" widget-autofocus="on"/>
 							<f:field property="fecha"/>
 							<f:field property="tipo" widget-class="form-control"/>
+							<f:field property="formaDePago" >
+								<g:select class="form-control "  
+									name="${property}" 
+									value="${value}"
+									from="${['CHEQUE','TRANSFERENCIA','EFECTIVO','NO DEFINIDO']}"/>
+							</f:field>
+							<f:field property="usoCfdi" >
+								<g:select class="form-control "  
+									name="${property}" 
+									value="${value}"
+									from="${['G01','G02','G03','P01','I01']}"/>
+							</f:field>
+							<f:field property="metodoDePago" >
+								<g:select class="form-control "  
+									name="${property}" 
+									value="${value}"
+									from="${['PPD','PUE']}"/>
+							</f:field>
 							%{-- <f:field property="fecha" >
 								<input type="text" class="form-control fechaField" value="${g.formatDate(date:ventaInstance.fecha,format:'dd/MM/yyyy')}">
 							</f:field> --}%

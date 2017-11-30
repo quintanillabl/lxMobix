@@ -31,6 +31,8 @@ class Producto {
     String claveUnidadSat
     String unidadSat
 
+    Boolean impuestoTasa = 0.16
+
 	Date dateCreated
 	Date lastUpdated
 
@@ -38,7 +40,7 @@ class Producto {
     static constraints = {
         clave size:5..40,unique:['empresa']
     	descripcion blank:false
-		unidad inList:['SERVICIO','PIEZA','NO DEFINIDO']
+		unidad inList:['SERVICIO','PIEZA','NO DEFINIDO','UNO']
         claveProdServ nullable:true
         claveUnidadSat nullable:true
         unidadSat nullable: true

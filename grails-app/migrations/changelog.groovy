@@ -115,7 +115,6 @@ databaseChangeLog = {
 	include file: 'cfdix-cfdi-patch.groovy'
 
 	include file: 'cfdix-patch-03.groovy'
-
 	
 
 	include file: 'cfdix-patch-04.groovy'
@@ -123,4 +122,9 @@ databaseChangeLog = {
 	include file: 'cfdix-path-005.groovy'
 
 	include file: 'comprobante-fiscal.groovy'
+
+	include file: 'cfdix-patch-006.groovy'
+
+	include file: 'cfdix-patch-007.groovy'
+
 }

@@ -58,6 +58,9 @@ class Venta {
 	
 	Cfdi cfdi
 	
+	String usoCfdi = 'G03'
+	String metodoDePago = 'PPD'
+	
 
 	String comentario
 
@@ -74,13 +77,15 @@ class Venta {
 	static hasMany = [partidas: VentaDet]
 
     static constraints = {
-    	tipo inList:['ARRENDAMIENTO','NORMAL','SERVICIOS']
+    	tipo inList:['ARRENDAMIENTO','NORMAL','SERVICIOS','VENTA_ACTIVO']
     	formaDePago maxSize:20,blank:false
 		comentario nullable:true
 		creadoPor nullalbe:true
 		modificadoPor nullalble:true
 		cfdi nullable: true
 		cuentaDePago nullable:true,maxSize:6
+		usoCfdi nullable: true
+		metodoDePago nullable: true, maxSize:3, minSize:3
 
     }
 
