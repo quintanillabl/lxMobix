@@ -1232,7 +1232,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="99"  isSplitAllowed="true" >
+			<band height="131"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -1318,7 +1318,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="4"
-						y="73"
+						y="98"
 						width="57"
 						height="14"
 						key="staticText-226"/>
@@ -1336,7 +1336,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="4"
-						y="87"
+						y="112"
 						width="57"
 						height="11"
 						key="textField-176"/>
@@ -1349,7 +1349,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="61"
-						y="73"
+						y="98"
 						width="53"
 						height="14"
 						key="staticText-229"/>
@@ -1367,7 +1367,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="61"
-						y="87"
+						y="112"
 						width="53"
 						height="11"
 						key="textField-179"/>
@@ -1380,7 +1380,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="114"
-						y="87"
+						y="112"
 						width="40"
 						height="11"
 						key="textField-180"/>
@@ -1393,7 +1393,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="114"
-						y="73"
+						y="98"
 						width="40"
 						height="14"
 						key="staticText-230"/>
@@ -1411,7 +1411,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="154"
-						y="87"
+						y="112"
 						width="45"
 						height="11"
 						key="textField-181"/>
@@ -1424,7 +1424,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="154"
-						y="73"
+						y="98"
 						width="47"
 						height="14"
 						key="staticText-231"/>
@@ -1442,7 +1442,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="201"
-						y="87"
+						y="112"
 						width="51"
 						height="11"
 						key="textField-182"/>
@@ -1455,7 +1455,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="201"
-						y="73"
+						y="98"
 						width="53"
 						height="14"
 						key="staticText-232"/>
@@ -1473,7 +1473,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="254"
-						y="87"
+						y="112"
 						width="56"
 						height="11"
 						key="textField-183"/>
@@ -1486,7 +1486,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="254"
-						y="73"
+						y="98"
 						width="58"
 						height="14"
 						key="staticText-233"/>
@@ -1504,7 +1504,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="310"
-						y="87"
+						y="112"
 						width="56"
 						height="11"
 						key="textField-184"/>
@@ -1517,7 +1517,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="310"
-						y="73"
+						y="98"
 						width="58"
 						height="14"
 						key="staticText-234"/>
@@ -1535,7 +1535,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="368"
-						y="73"
+						y="98"
 						width="58"
 						height="14"
 						key="staticText-235"/>
@@ -1550,10 +1550,10 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 					</textElement>
 				<text><![CDATA[ImporteIva]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="368"
-						y="87"
+						y="112"
 						width="56"
 						height="11"
 						key="textField-185"/>
@@ -1566,7 +1566,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<staticText>
 					<reportElement
 						x="426"
-						y="73"
+						y="98"
 						width="80"
 						height="14"
 						key="staticText-236"/>
@@ -1584,7 +1584,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="426"
-						y="87"
+						y="112"
 						width="78"
 						height="11"
 						key="textField-186"/>

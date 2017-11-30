@@ -88,6 +88,9 @@ class CfdiBuilder33 {
             case 'P01':
                 receptor.usoCFDI = CUsoCFDI.P_01
                 break
+            case 'I01':
+                receptor.usoCFDI = CUsoCFDI.I_01
+                break
           default:
               receptor.usoCFDI = CUsoCFDI.P_01
           break
