@@ -6,7 +6,7 @@
         }
 )
 @XmlAccessorType(XmlAccessType.FIELD)
-package lx.cfdi.v33.dividendos;
+package com.luxsoft.cfdi.retenciones.dividendos;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
