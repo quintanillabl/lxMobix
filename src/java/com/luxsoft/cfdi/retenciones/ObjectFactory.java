@@ -10,6 +10,8 @@ package com.luxsoft.cfdi.retenciones;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
+import com.luxsoft.cfdi.retenciones.dividendos.Dividendos;
+
 
 /**
  * This object contains factory methods for each 
@@ -114,6 +116,18 @@ public class ObjectFactory {
      */
     public Retenciones.Receptor.Extranjero createRetencionesReceptorExtranjero() {
         return new Retenciones.Receptor.Extranjero();
+    }
+
+    public Dividendos createDividendos() {
+        return new Dividendos();
+    }
+
+    public Dividendos.DivdOUtil createDivdOUtil() {
+        return new Dividendos.DivdOUtil();
+    }
+
+    public Dividendos.Remanente createRemanente() {
+        return new Dividendos.Remanente();
     }
 
 }
