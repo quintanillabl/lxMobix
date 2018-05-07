@@ -49,6 +49,11 @@ class CfdiRetenciones {
 	BigDecimal totalExcento
 	BigDecimal totalRetenido
 
+	// Campos nuevos para complemento de Dividendos
+	String cveTipDivOUtil
+	BigDecimal montoISRAcredRetMexico = 0.0
+	BigDecimal montoDivAcumNal = 0.0
+
 	List impuestosRetenidos=[]
 	
 
@@ -83,6 +88,9 @@ class CfdiRetenciones {
 		uuid nullable:true,maxSize:50
 		fechaDeTimbrado nullable:true,maxSize:50
 
+		montoISRAcredRetMexico nullable: true
+		montoDivAcumNal nullable: true
+		cveTipDivOUtil nullable: true
     }
 
     static hasMany = [impuestosRetenidos: ImpuestoRetenido]
@@ -103,9 +111,26 @@ class CfdiRetenciones {
 		else{
 			return null
 		}
-		
 
 	}
+
+
+	static Map TiposDeDividendos = [
+		'01': 'Proviende de CUFIN',
+		'02': 'No providne de CUFIN',
+		'03': 'Rembolso o reduccion de capital',
+		'04': 'Liquidación de la persona moral',
+		'05': 'CUFINRE',
+		'06': 'Providne de CUFIN al 31 de diciembre 2013'
+		/*
+		[id: '01', descripcion: 'Proviende de CUFIN'],
+		[id: '02', descripcion: 'No providne de CUFIN'],
+		[id: '03', descripcion: 'Rembolso o reduccion de capital'],
+		[id: '04', descripcion: 'Liquidación de la persona moral'],
+		[id: '05', descripcion: 'CUFINRE'],
+		[id: '06', descripcion: 'Providne de CUFIN al 31 de diciembre 2013']
+		*/
+	]
 
 
 

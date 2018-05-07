@@ -1,145 +1,477 @@
 
 package com.luxsoft.cfdi.retenciones.dividendos;
 
+//
+// Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.8-b130911.1802 
+// Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
+// Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
+// Generado el: 2018.05.07 a las 12:15:52 PM CDT 
+//
+
+
+import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAnyElement;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import java.math.BigDecimal;
+
 
 /**
- * Complemento para expresar el total de ganancias y utilidades generadas por rendimientos en base a
- * inversiones en instrumentos de inversión
+ * <p>Clase Java para anonymous complex type.
+ * 
+ * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+ * 
+ * <pre>
+ * &lt;complexType>
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence minOccurs="0">
+ *         &lt;element name="DividOUtil" minOccurs="0">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;attribute name="CveTipDivOUtil" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/catalogos}c_TipoDividendoOUtilidadDistribuida" />
+ *                 &lt;attribute name="MontISRAcredRetMexico" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *                 &lt;attribute name="MontISRAcredRetExtranjero" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *                 &lt;attribute name="MontRetExtDivExt" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *                 &lt;attribute name="TipoSocDistrDiv" use="required">
+ *                   &lt;simpleType>
+ *                     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                       &lt;enumeration value="Sociedad Nacional"/>
+ *                       &lt;enumeration value="Sociedad Extranjera"/>
+ *                     &lt;/restriction>
+ *                   &lt;/simpleType>
+ *                 &lt;/attribute>
+ *                 &lt;attribute name="MontISRAcredNal" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *                 &lt;attribute name="MontDivAcumNal" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *                 &lt;attribute name="MontDivAcumExt" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *         &lt;element name="Remanente" minOccurs="0">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;attribute name="ProporcionRem">
+ *                   &lt;simpleType>
+ *                     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
+ *                       &lt;fractionDigits value="6"/>
+ *                       &lt;maxInclusive value="9999999999"/>
+ *                     &lt;/restriction>
+ *                   &lt;/simpleType>
+ *                 &lt;/attribute>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
+ *       &lt;/sequence>
+ *       &lt;attribute name="Version" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" fixed="1.0" />
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-        "divdOUtil",
-        "remanente"
+    "dividOUtil",
+    "remanente"
 })
 @XmlRootElement(name = "Dividendos")
 public class Dividendos {
 
+    @XmlElement(name = "DividOUtil")
+    protected Dividendos.DividOUtil dividOUtil;
+    @XmlElement(name = "Remanente")
+    protected Dividendos.Remanente remanente;
     @XmlAttribute(name = "Version", required = true)
+    @XmlSchemaType(name = "anySimpleType")
     protected String version;
 
-    @XmlElement(name = "DivdOUtil")
-    protected Dividendos.DivdOUtil divdOUtil;
-
-    @XmlElement(name = "remanente")
-    protected Dividendos.Remanente remanente;
-
-    public String getVersion() {
-        return version;
+    /**
+     * Obtiene el valor de la propiedad dividOUtil.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Dividendos.DividOUtil }
+     *     
+     */
+    public Dividendos.DividOUtil getDividOUtil() {
+        return dividOUtil;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    /**
+     * Define el valor de la propiedad dividOUtil.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Dividendos.DividOUtil }
+     *     
+     */
+    public void setDividOUtil(Dividendos.DividOUtil value) {
+        this.dividOUtil = value;
     }
 
-    public DivdOUtil getDivdOUtil() {
-        return divdOUtil;
-    }
-
-    public void setDivdOUtil(DivdOUtil divdOUtil) {
-        this.divdOUtil = divdOUtil;
-    }
-    public Remanente getRemanente() {
+    /**
+     * Obtiene el valor de la propiedad remanente.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Dividendos.Remanente }
+     *     
+     */
+    public Dividendos.Remanente getRemanente() {
         return remanente;
     }
 
-    public void setRemanente(Remanente remanente) {
-        this.remanente = remanente;
+    /**
+     * Define el valor de la propiedad remanente.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Dividendos.Remanente }
+     *     
+     */
+    public void setRemanente(Dividendos.Remanente value) {
+        this.remanente = value;
     }
 
-
-
-    @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "")
-    public static class DivdOUtil {
-
-        /**
-         * Atributo requerido para expresar la clave del tipo de dividendo o utilidad distribuida de acuerdo al catálogo
-         **/
-        @XmlAttribute(name = "CveTipDivOUtil", required = true)
-        protected String cveTipDivOUtil;
-
-        /**
-         * Atributo requerido para expresar el importe o retención del dividendo o utilidad en territorio nacional
-         */
-        @XmlAttribute(name = "MontISRAcredRetMexico", required = true)
-        protected BigDecimal montISRAcredRetMexico;
-
-        /**
-         * Atributo requerido para expresar el importe o retención del dividendo o utilidad en territorio extranjero
-         */
-        @XmlAttribute(name = "MontISRAcredRetExtranjero", required = true)
-        protected BigDecimal montISRAcredRetExtranjero;
-
-        /**
-         * Atributo requerido para expresar si el dividendo es distribuido por sociedades nacionales o extranjeras.
-         * Valores permitidos:
-         *  - Sociedad Nacional
-         *  - Sociedad Extranjera
-         */
-        @XmlAttribute(name = "TipoSocDistrDiv", required = true)
-        protected String tipoSocDistrDiv = "Sociedad Nacional";
-
-        /**
-         * Atributo opcional para expresar el monto del ISR acreditable nacional
-         */
-        @XmlAttribute(name = "MontISRAcredNal")
-        protected  BigDecimal montISRAcredNal;
-
-        /**
-         * Atributo opcional para expresar el monto del dividendo acumulable nacional
-         */
-        @XmlAttribute(name = "MontDivAcumNal")
-        protected  BigDecimal montDivAcumNal;
-
-        /**
-         * Atributo opcional para expresar el monto del dividendo acumulable extranjero
-         */
-        @XmlAttribute(name = "MontDivAcumExt")
-        protected  BigDecimal montDivAcumExt;
-
-        public String getCveTipDivOUtil() {
-            return cveTipDivOUtil;
-        }
-
-        public void setCveTipDivOUtil(String cveTipDivOUtil) {
-            this.cveTipDivOUtil = cveTipDivOUtil;
+    /**
+     * Obtiene el valor de la propiedad version.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVersion() {
+        if (version == null) {
+            return "1.0";
+        } else {
+            return version;
         }
     }
 
     /**
-     * Nodo opcional que expresa el resultado obtenido de la diferencia entre ingresos y egresos de las personas
-     * morales que distribuyan anticipos o rendimientos o sociedades de producción, sociedades y asociaciones civiles.
+     * Define el valor de la propiedad version.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVersion(String value) {
+        this.version = value;
+    }
+
+
+    /**
+     * <p>Clase Java para anonymous complex type.
+     * 
+     * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;attribute name="CveTipDivOUtil" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/catalogos}c_TipoDividendoOUtilidadDistribuida" />
+     *       &lt;attribute name="MontISRAcredRetMexico" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *       &lt;attribute name="MontISRAcredRetExtranjero" use="required" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *       &lt;attribute name="MontRetExtDivExt" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *       &lt;attribute name="TipoSocDistrDiv" use="required">
+     *         &lt;simpleType>
+     *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *             &lt;enumeration value="Sociedad Nacional"/>
+     *             &lt;enumeration value="Sociedad Extranjera"/>
+     *           &lt;/restriction>
+     *         &lt;/simpleType>
+     *       &lt;/attribute>
+     *       &lt;attribute name="MontISRAcredNal" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *       &lt;attribute name="MontDivAcumNal" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *       &lt;attribute name="MontDivAcumExt" type="{http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos}t_Importe" />
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "")
+    public static class DividOUtil {
+
+        @XmlAttribute(name = "CveTipDivOUtil", required = true)
+        protected String cveTipDivOUtil;
+        @XmlAttribute(name = "MontISRAcredRetMexico", required = true)
+        protected BigDecimal montISRAcredRetMexico;
+        @XmlAttribute(name = "MontISRAcredRetExtranjero", required = true)
+        protected BigDecimal montISRAcredRetExtranjero;
+        @XmlAttribute(name = "MontRetExtDivExt")
+        protected BigDecimal montRetExtDivExt;
+        @XmlAttribute(name = "TipoSocDistrDiv", required = true)
+        protected String tipoSocDistrDiv;
+        @XmlAttribute(name = "MontISRAcredNal")
+        protected BigDecimal montISRAcredNal;
+        @XmlAttribute(name = "MontDivAcumNal")
+        protected BigDecimal montDivAcumNal;
+        @XmlAttribute(name = "MontDivAcumExt")
+        protected BigDecimal montDivAcumExt;
+
+        /**
+         * Obtiene el valor de la propiedad cveTipDivOUtil.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getCveTipDivOUtil() {
+            return cveTipDivOUtil;
+        }
+
+        /**
+         * Define el valor de la propiedad cveTipDivOUtil.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setCveTipDivOUtil(String value) {
+            this.cveTipDivOUtil = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montISRAcredRetMexico.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontISRAcredRetMexico() {
+            return montISRAcredRetMexico;
+        }
+
+        /**
+         * Define el valor de la propiedad montISRAcredRetMexico.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontISRAcredRetMexico(BigDecimal value) {
+            this.montISRAcredRetMexico = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montISRAcredRetExtranjero.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontISRAcredRetExtranjero() {
+            return montISRAcredRetExtranjero;
+        }
+
+        /**
+         * Define el valor de la propiedad montISRAcredRetExtranjero.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontISRAcredRetExtranjero(BigDecimal value) {
+            this.montISRAcredRetExtranjero = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montRetExtDivExt.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontRetExtDivExt() {
+            return montRetExtDivExt;
+        }
+
+        /**
+         * Define el valor de la propiedad montRetExtDivExt.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontRetExtDivExt(BigDecimal value) {
+            this.montRetExtDivExt = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad tipoSocDistrDiv.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getTipoSocDistrDiv() {
+            return tipoSocDistrDiv;
+        }
+
+        /**
+         * Define el valor de la propiedad tipoSocDistrDiv.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setTipoSocDistrDiv(String value) {
+            this.tipoSocDistrDiv = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montISRAcredNal.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontISRAcredNal() {
+            return montISRAcredNal;
+        }
+
+        /**
+         * Define el valor de la propiedad montISRAcredNal.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontISRAcredNal(BigDecimal value) {
+            this.montISRAcredNal = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montDivAcumNal.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontDivAcumNal() {
+            return montDivAcumNal;
+        }
+
+        /**
+         * Define el valor de la propiedad montDivAcumNal.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontDivAcumNal(BigDecimal value) {
+            this.montDivAcumNal = value;
+        }
+
+        /**
+         * Obtiene el valor de la propiedad montDivAcumExt.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public BigDecimal getMontDivAcumExt() {
+            return montDivAcumExt;
+        }
+
+        /**
+         * Define el valor de la propiedad montDivAcumExt.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setMontDivAcumExt(BigDecimal value) {
+            this.montDivAcumExt = value;
+        }
+
+    }
+
+
+    /**
+     * <p>Clase Java para anonymous complex type.
+     * 
+     * <p>El siguiente fragmento de esquema especifica el contenido que se espera que haya en esta clase.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;attribute name="ProporcionRem">
+     *         &lt;simpleType>
+     *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}decimal">
+     *             &lt;fractionDigits value="6"/>
+     *             &lt;maxInclusive value="9999999999"/>
+     *           &lt;/restriction>
+     *         &lt;/simpleType>
+     *       &lt;/attribute>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
     public static class Remanente {
 
-        /**
-         * Atributo opcional que expresa el porcentaje de participación de sus integrantes o accionistas
-         *
-         *  <xs:restriction base="xs:decimal">
-         *      <xs:fractionDigits value="6"/>
-         *      <xs:maxInclusive value="9999999999"/>
-         *  </xs:restriction>
-         *
-         */
         @XmlAttribute(name = "ProporcionRem")
         protected BigDecimal proporcionRem;
 
+        /**
+         * Obtiene el valor de la propiedad proporcionRem.
+         * 
+         * @return
+         *     possible object is
+         *     {@link BigDecimal }
+         *     
+         */
         public BigDecimal getProporcionRem() {
             return proporcionRem;
         }
 
-        public void setProporcionRem(BigDecimal proporcionRem) {
-            this.proporcionRem = proporcionRem;
+        /**
+         * Define el valor de la propiedad proporcionRem.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link BigDecimal }
+         *     
+         */
+        public void setProporcionRem(BigDecimal value) {
+            this.proporcionRem = value;
         }
+
     }
+
 }

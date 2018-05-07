@@ -118,15 +118,29 @@ public class ObjectFactory {
         return new Retenciones.Receptor.Extranjero();
     }
 
+    
+
+    /**
+     * Create an instance of {@link Dividendos }
+     * 
+     */
     public Dividendos createDividendos() {
         return new Dividendos();
     }
 
-    public Dividendos.DivdOUtil createDivdOUtil() {
-        return new Dividendos.DivdOUtil();
+    /**
+     * Create an instance of {@link Dividendos.DividOUtil }
+     * 
+     */
+    public Dividendos.DividOUtil createDividendosDividOUtil() {
+        return new Dividendos.DividOUtil();
     }
 
-    public Dividendos.Remanente createRemanente() {
+    /**
+     * Create an instance of {@link Dividendos.Remanente }
+     * 
+     */
+    public Dividendos.Remanente createDividendosRemanente() {
         return new Dividendos.Remanente();
     }
 

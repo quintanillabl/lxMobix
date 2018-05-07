@@ -317,6 +317,9 @@ class RetencionesCommand{
     BigDecimal totalExcento=0
     BigDecimal totalRetenido=0
     
+    String cveTipDivOUtil
+    BigDecimal montoISRAcredRetMexico = 0.0
+    BigDecimal montoDivAcumNal = 0.0
     
 
     static constraints={
@@ -326,6 +329,10 @@ class RetencionesCommand{
         mesInicial inList:[1,2,3,4,5,6,7,8,9,10,11,12]
         mesFinal inList:[1,2,3,4,5,6,7,8,9,10,11,12]
         ejercicio inList:(2004..2024) as List
+
+        montoISRAcredRetMexico nullable: true
+        montoDivAcumNal nullable: true
+        cveTipDivOUtil nullable: true
         
     }
 

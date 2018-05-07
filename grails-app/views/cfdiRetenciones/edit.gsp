@@ -1,3 +1,4 @@
+<%@ page import="com.luxsoft.cfdi.retenciones.TipoDeDividendo" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,6 +102,18 @@
 									</f:field>
 									<f:field property="retencionDescripcion" wrapper="bootstrap3" widget-class="form-control"/>
 									
+									<f:field property="cveTipDivOUtil" wrapper="bootstrap3">
+										<g:select class="form-control"  
+											name="${property}" 
+											optionKey="key"
+											optionValue="value"
+											value="${value}"
+											from="${com.luxsoft.cfdi.retenciones.CfdiRetenciones.TiposDeDividendos.entrySet()}" 
+											noSelection="[null:'Seleccione un tipo']"
+											/>
+									</f:field>
+									<f:field property="montoISRAcredRetMexico" widget="money" cols="col-sm-6" colsLabel="col-sm-6" label="Monto ISR Acreditable"/>
+									<f:field property="montoDivAcumNal" widget="money" cols="col-sm-6" colsLabel="col-sm-6" label ="Monto del Dividendo ó Utilidad acumulable"/>
 
 
 								</div>

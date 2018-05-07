@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBContext
 import javax.xml.bind.Marshaller
 import javax.xml.validation.Schema
 import javax.xml.validation.SchemaFactory
+import javax.xml.transform.Source
 import javax.xml.transform.stream.StreamSource
 import com.luxsoft.cfdi.retenciones.ObjectFactory
 import com.luxsoft.cfdi.retenciones.Retenciones
@@ -82,39 +83,53 @@ class RetencionesBuilder implements ResourceLoaderAware{
 		retenciones.setTotales(totales)
 
 		/** COMPLEMENTO **/
-		Retenciones.Complemento complemento = factory.createRetencionesComplemento()
+		if (bean.cveTipDivOUtil) {
+			Retenciones.Complemento complemento = factory.createRetencionesComplemento()
 
-		Dividendos dividendos = factory.createDividendos()
-		dividendos.setVersion("1.0");
+			Dividendos dividendos = factory.createDividendos()
+			dividendos.setVersion("1.0");
+			
+			Dividendos.DividOUtil dividOUtil = factory.createDividendosDividOUtil()
+			dividendos.dividOUtil = dividOUtil
 
-		complemento.getAny().add(dividendos)
-		retenciones.setComplemento(complemento)
+			dividOUtil.cveTipDivOUtil = '01'
+			dividOUtil.montISRAcredRetMexico = bean.montoISRAcredRetMexico
+			dividOUtil.tipoSocDistrDiv = 'Sociedad Nacional'
+
+			// dividOUtil.setMontISRAcredRetMexico(bean.montoISRAcredRetMexico)
+			dividOUtil.montISRAcredRetExtranjero = 0.0
+			dividOUtil.montISRAcredNal = bean.montoISRAcredRetMexico
+			dividOUtil.montDivAcumNal = bean.montoDivAcumNal
+
+			complemento.getAny().add(dividendos)
+			retenciones.setComplemento(complemento)
+		}
 
 		return retenciones
 	}
 
 	private getSchema() {
-		
+		/*
 		def is=resourceLoader.getResource("/WEB-INF/sat/retencionpagov1.xsd").getInputStream()
 		SchemaFactory sf=SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		Schema schema=sf.newSchema(new StreamSource(is))
 		return schema
+		*/
 		
-		/*
-		Source schema1 = new StreamSource("http://www.sat.gob.mx/sitio_internet/cfd/3/cfdv33.xsd")
-        Source schema2 = new StreamSource("http://www.sat.gob.mx/sitio_internet/cfd/nomina/nomina12.xsd")
+		Source schema1 = new StreamSource("http://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd")
+        Source schema2 = new StreamSource("http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd")
 		Source[] schemas = [schema1, schema2]
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI)
-		schema = sf.newSchema(schemas)
+		Schema schema =  sf.newSchema(schemas)
 		return schema
-		*/
+		
 	}
 
 	public buildXml(CfdiRetenciones bean){
 		def retenciones=toRetenciones(bean)
 		JAXBContext jc=JAXBContext.newInstance(Retenciones.class);
 		Marshaller marshaller=jc.createMarshaller();
-		// marshaller.setSchema(getSchema());
+		marshaller.setSchema(getSchema());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
 			"http://www.sat.gob.mx/esquemas/retencionpago/1 http://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd");

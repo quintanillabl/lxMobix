@@ -49,7 +49,10 @@ class CfdiRetencionesService {
             total:command.total,
             totalGravado:command.totalGravado,
             totalExcento:command.totalExcento,
-            totalRetenido:command.totalRetenido
+            totalRetenido:command.totalRetenido,
+            montoISRAcredRetMexico: command.montoISRAcredRetMexico,
+            montoDivAcumNal: command.montoDivAcumNal,
+            cveTipDivOUtil: command.cveTipDivOUtil
         )
         retenciones.save failOnError:true,flush:true
     }

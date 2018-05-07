@@ -127,4 +127,6 @@ databaseChangeLog = {
 
 	include file: 'cfdix-patch-007.groovy'
 
+
+	include file: 'RetencionesCfdi_002.groovy'
 }
