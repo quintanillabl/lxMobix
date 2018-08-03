@@ -958,7 +958,7 @@
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="4"
+						x="6"
 						y="3"
 						width="242"
 						height="62"
@@ -967,7 +967,7 @@
 						key="textField-166"/>
 					<box></box>
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="42" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="36" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "I M P A P" :
 $P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "P A P E R" :
@@ -977,6 +977,7 @@ $P{EMISOR_RFC}.equals( "BER830101IQ4" ) ? "B E R S A N" :
 $P{EMISOR_RFC}.equals( "SIN000114UV0" ) ? "S O L S A N" :
 $P{EMISOR_RFC}.equals( "ISL7406175K7" ) ? "S A N L I Z" :
 $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
+$P{EMISOR_RFC}.equals( "BRG120430HW3" ) ? "BR-GASOC" :
  "S/EMPRESA"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -1221,7 +1222,7 @@ $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 				<rectangle>
 					<reportElement
 						mode="Transparent"
-						x="4"
+						x="6"
 						y="3"
 						width="243"
 						height="113"

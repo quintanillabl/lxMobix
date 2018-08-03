@@ -59,6 +59,11 @@ class RetencionesPrintUtils {
 		parametros["GRAVADO"]=df.format(retenciones.totalGravado)
 		parametros["EXENTO"]=df.format(retenciones.totalExcento)
 		parametros["RETENIDO"]=df.format(retenciones.totalRetenido)
+
+		parametros.put("CLAVE_TIPO_DIV", retenciones.cveTipDivOUtil.toString());
+		parametros.put("MONTO_ISRA", retenciones.montoISRAcredRetMexico.toString());
+		parametros.put("MONTO_DIV_ACUM", retenciones.montoDivAcumNal.toString());
+
 		//parametros["GRUPO"]=
 		//parametros["DESTINATARIO"]
 		
@@ -83,6 +88,8 @@ class RetencionesPrintUtils {
 			parametros.put("FOLIO_FISCAL", timbre['UUID']);
 			parametros.put("SELLO_DIGITAL_SAT", timbre.selloCFD);
 			parametros.put("CERTIFICADO_SAT", timbre.noCertificadoSAT);
+
+	
 			
 		}
 		

@@ -92,7 +92,7 @@ class RetencionesBuilder implements ResourceLoaderAware{
 			Dividendos.DividOUtil dividOUtil = factory.createDividendosDividOUtil()
 			dividendos.dividOUtil = dividOUtil
 
-			dividOUtil.cveTipDivOUtil = '01'
+			dividOUtil.cveTipDivOUtil = bean.cveTipDivOUtil
 			dividOUtil.montISRAcredRetMexico = bean.montoISRAcredRetMexico
 			dividOUtil.tipoSocDistrDiv = 'Sociedad Nacional'
 

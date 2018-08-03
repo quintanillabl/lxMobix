@@ -123,6 +123,7 @@ class CfdiBuilder33 {
             case 'PPD':
                 comprobante.metodoPago = CMetodoPago.PPD
                 comprobante.condicionesDePago = 'Credito'
+                comprobante.formaPago = '99'
                 break
             case 'PUE':
                 comprobante.metodoPago = CMetodoPago.PUE

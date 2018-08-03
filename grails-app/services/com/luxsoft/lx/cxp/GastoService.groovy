@@ -248,7 +248,7 @@ class GastoService {
             def det=new GastoDet(
                          cuentaContable:cuenta,
                          descripcion:model['Descripcion'],
-                         unidad:model['Unidad'],
+                         unidad:model['ClaveUnidad'],
                          cantidad:model['Cantidad'],
                          valorUnitario:model['ValorUnitario'],
                          importe:model['Importe'],
@@ -261,12 +261,12 @@ class GastoService {
             if(it.Impuestos?.Retenciones?.Retencion[0]){
                 def retencion = it.Impuestos.Retenciones.Retencion[0].attributes()
                 if(retencion.Impuesto == '001'){
-                    det.retencionIsr = gasto.retensionIsr = retencion.Importe
-                    det.retencionIsrTasa = retencion.TasaOCuota
+                    det.retencionIsr = gasto.retensionIsr = new BigDecimal(retencion.Importe)
+                    det.retencionIsrTasa = new BigDecimal(retencion.TasaOCuota)
                 }
                 if(retencion.Impuesto == '002'){
-                    det.retencionIva = retencion.Importe
-                    det.retencionIvaTasa = retencion.TasaOCuota
+                    det.retencionIva = new BigDecimal(retencion.Importe)
+                    det.retencionIvaTasa = new BigDecimal(retencion.TasaOCuota)
                 }
                 
             }
@@ -274,7 +274,7 @@ class GastoService {
             
         }
         if(gasto.id )
-            return update(gastp)
+            return update(gasto)
         return  save(gasto)
     }
 

@@ -88,7 +88,7 @@ class CuentaPorPagar {
 		comentario(nullable:true)
     	uuid nullable:true,maxSize:40,unique:true
     	serie nullable:true,maxSize:20
-    	folio nullable:true,maxSize:20
+    	folio nullable:true,maxSize:40
     	cfdiXmlFileName nullable:true,maxSize:200
 		cfdiXml nullable:true,maxSize:(1024 * 512)  // 50kb para almacenar el xml
 		acuse nullable:true,maxSize:(1024*256)
