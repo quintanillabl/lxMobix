@@ -156,23 +156,28 @@ class CfdiController {
 	private generarPdfV33(Cfdi cfdi){
 		log.info("Impresion de CFDI: ${cfdi}")
 		def data 
+		def reportName
 		if(cfdi.tipo == 'PAGO') {
 			data = ReciboDePagoPdfGenerator.getReportData(cfdi)
+			log.info("CfdiPrint Data: ${data}")
+			reportName = 'ReciboDePagoCFDI33.jrxml'
 		} else {
+			reportName = 'MobixCFDI3'
 			data = V33PdfGenerator.getReportData(cfdi)
 		}
 		def modelData = data['CONCEPTOS']
 		def repParams = data['PARAMETROS']
 		params<<repParams
-
+		
 		def reportDef=new JasperReportDef(
-			name:'MobixCFDI3'
+			name: reportName
 			,fileFormat:JasperExportFormat.PDF_FORMAT
 			,reportData:modelData,
 			,parameters:params
 			)
 		def pdfStream=jasperService.generateReport(reportDef)
 		return pdfStream
+		
 	}
 
 	//@Transactional

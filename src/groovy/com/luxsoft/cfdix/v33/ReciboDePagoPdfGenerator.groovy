@@ -22,44 +22,39 @@ class ReciboDePagoPdfGenerator {
 	static getReportData(Cfdi cfdi){
 
 		Comprobante comprobante = V33CfdiUtils.toComprobante(cfdi)
-		println 'Generando PDF data para Recibo de Pago'
+		def pagos = comprobante.complemento.any[0]
+		def relacionados = pagos.pago.doctoRelacionado
+
+		def modelData = relacionados.get(0).collect {  cc ->
+
+            def res=[
+                    'IdDocumento': cc.idDocumento,
+                    'Serie' : cc.serie,
+                    'Folio': cc.folio,
+                    'MonedaDR': cc.monedaDR.toString(),
+                    'MetodoDePagoDR': cc.metodoDePagoDR.toString(),
+                    'NumParcialidad': cc.numParcialidad.toString(),
+                    'ImpPagado': cc.impPagado,
+                    'ImpSaldoAnt': cc.impSaldoAnt,
+                    'ImpSaldoInsoluto': cc.impSaldoInsoluto,
+            ]
+            return res
+        }
+
+        def data = [:]
+        def params = getParametros(cfdi, comprobante)
+
+        params['FECHA_PAGO'] = pagos.pago.get(0).fechaPago
+        params['FORMA_DE_PAGO'] = pagos.pago.get(0).formaDePagoP
+        params['MONEDAP'] = pagos.pago.get(0).monedaP.toString()
+        params['MONTO'] = pagos.pago.get(0).monto
+        params['NUM_OPERACION'] = pagos.pago.get(0).numOperacion
+        params['SUBTOTAL'] = comprobante.subTotal.toString()
+        params["IMP_CON_LETRA"] = ImporteALetra.aLetra(pagos.pago.get(0).monto)
+        data['CONCEPTOS'] = modelData
+        data['PARAMETROS'] = params
+        return data
 		
-		def conceptos = comprobante.conceptos.concepto
-		def modelData=conceptos.collect { cc ->
-
-			def traslado = null
-			if(cc.impuestos){
-				traslado = cc.impuestos.traslados.traslado[0]
-			}
-			
-			def res=[
-				'cantidad' : cc.getCantidad(),
-		        'NoIdentificacion' : cc.noIdentificacion,
-				'descripcion' : cc.descripcion,
-				'unidad': cc.unidad,
-				'ValorUnitario':cc.valorUnitario,
-				'Importe':cc.importe,
-				'ClaveProdServ': cc.claveProdServ,
-				'ClaveUnidad': cc.claveUnidad,
-				'Descuento': cc.descuento?: '0.0',
-				'Impuesto': traslado?.impuesto?.toString()?: '',
-				'TasaOCuota': traslado?.tasaOCuota?.toString() ?: '',
-				'TipoFactor': traslado?.tipoFactor?.value()?.toString() ?: '',
-				'Base': traslado?.base,
-				'TrasladoImporte': traslado?.importe
-
-			]
-			if(cc.cuentaPredial){
-				res.CUENTA_PREDIAL=cc.cuentaPredial.numero
-			}
-			return res
-		}
-		def params = getParametros(cfdi, comprobante)
-
-		def data = [:]
-		data['CONCEPTOS'] = modelData
-		data['PARAMETROS'] = params
-		return data
 	}
 
 	static getParametros(Cfdi cfdi, Comprobante comprobante){
