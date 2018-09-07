@@ -25,6 +25,7 @@ import com.luxsoft.lx.core.Cliente
 import com.luxsoft.cfdix.CFDIXUtils
 import com.luxsoft.cfdix.v32.V32PdfGenerator
 import com.luxsoft.cfdix.v33.V33PdfGenerator
+import com.luxsoft.cfdix.v33.ReciboDePagoPdfGenerator
 
 @Secured(["hasAnyRole('OPERADOR','VENTAS','ADMIN')"])
 class CfdiController {
@@ -153,9 +154,13 @@ class CfdiController {
 	}
 
 	private generarPdfV33(Cfdi cfdi){
-		def data = V33PdfGenerator.getReportData(cfdi)
-		log.info('Parametros: ')
-		log.info(data)
+		log.info("Impresion de CFDI: ${cfdi}")
+		def data 
+		if(cfdi.tipo == 'PAGO') {
+			data = ReciboDePagoPdfGenerator.getReportData(cfdi)
+		} else {
+			data = V33PdfGenerator.getReportData(cfdi)
+		}
 		def modelData = data['CONCEPTOS']
 		def repParams = data['PARAMETROS']
 		params<<repParams

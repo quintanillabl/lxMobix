@@ -1,5 +1,7 @@
 package com.luxsoft.cfdi
 
+import grails.util.Environment
+
 import java.text.SimpleDateFormat
 
 import org.apache.commons.lang.StringUtils;
@@ -20,17 +22,14 @@ class CfdiTimbrador {
 	
 	private static final log=LogFactory.getLog(this)
 
-	Cfdi timbrar(Cfdi cfdi, Empresa empresa) {
-		println 'Timbrando.....'
-	}
 	
-	Cfdi timbrar2(Cfdi cfdi,Empresa empresa){
+	
+	Cfdi timbrar(Cfdi cfdi,Empresa empresa){
 		assert empresa.usuarioPac,"Debe registrar un usuario para el servicio del PAC "
 		assert empresa.passwordPac,"Debe registrar un password para el servicio del PAC "
 		try {
 			String user=empresa.usuarioPac
 			String password=empresa.passwordPac
-			log.info 'Timbrando: '+cfdi
 			String nombre=cfdi.xmlName
 			byte[] xml=cfdi.xml
 			assert xml,'El cfdi esta mal generado no contiene datos xml'
@@ -38,11 +37,11 @@ class CfdiTimbrador {
 			byte[] zipFile=zipUtils.comprimeArchivo(nombre, xml)
 			//byte[] res=cfdiClient.getCfdiTest(user, password, zipFile)
 			byte[] res
-			if(empresa.timbradoDePrueba){
+			if(isTimbradoDePrueba()){
 				log.info 'Timbrando de prueba: '+cfdi
 				res=cfdiClient.getCfdiTest(user, password, zipFile)
 			}else{
-				log.debug 'Timbrando real de: '+cfdi
+				log.debug 'Timbrando REAL de: '+cfdi
 				res=cfdiClient.getCfdi(user, password, zipFile)
 			}
 			Map<String, byte[]> map =zipUtils.descomprimeArchivo(res)
@@ -75,5 +74,9 @@ class CfdiTimbrador {
 			throw new CfdiException(message:msg,cfdi:cfdi)
 		}
 	}
+
+	Boolean isTimbradoDePrueba() {
+        return Environment.current != Environment.PRODUCTION
+    }
 
 }
