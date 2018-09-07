@@ -978,6 +978,7 @@ $P{EMISOR_RFC}.equals( "SIN000114UV0" ) ? "S O L S A N" :
 $P{EMISOR_RFC}.equals( "ISL7406175K7" ) ? "S A N L I Z" :
 $P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
 $P{EMISOR_RFC}.equals( "BRG120430HW3" ) ? "BR-GASOC" :
+$P{EMISOR_RFC}.equals( "OAG100209GN8" ) ? "OA-GASOC" :
  "S/EMPRESA"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -1222,7 +1223,7 @@ $P{EMISOR_RFC}.equals( "BRG120430HW3" ) ? "BR-GASOC" :
 				<rectangle>
 					<reportElement
 						mode="Transparent"
-						x="6"
+						x="4"
 						y="3"
 						width="243"
 						height="113"
