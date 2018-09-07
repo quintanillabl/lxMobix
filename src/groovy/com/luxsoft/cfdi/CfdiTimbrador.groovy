@@ -19,8 +19,12 @@ class CfdiTimbrador {
 	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 	
 	private static final log=LogFactory.getLog(this)
+
+	Cfdi timbrar(Cfdi cfdi, Empresa empresa) {
+		println 'Timbrando.....'
+	}
 	
-	Cfdi timbrar(Cfdi cfdi,Empresa empresa){
+	Cfdi timbrar2(Cfdi cfdi,Empresa empresa){
 		assert empresa.usuarioPac,"Debe registrar un usuario para el servicio del PAC "
 		assert empresa.passwordPac,"Debe registrar un password para el servicio del PAC "
 		try {
