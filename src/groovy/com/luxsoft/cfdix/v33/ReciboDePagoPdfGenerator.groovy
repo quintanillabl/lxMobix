@@ -106,6 +106,7 @@ class ReciboDePagoPdfGenerator {
 			params.put("CADENA_ORIGINAL_SAT", timbre.cadenaOriginal());
 			params.put("RfcProvCertif", timbre.rfcProvCertif)
 		}
+		params.put("TIPO_DE_COMPROBANTE", "P (Pago)")
 		params.FECHA = comprobante.fecha
 		return params;
 	}

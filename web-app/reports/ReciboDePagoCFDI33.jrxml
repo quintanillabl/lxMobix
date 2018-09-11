@@ -896,17 +896,6 @@
 					</textElement>
 				<text><![CDATA[VER.CFDI : ]]></text>
 				</staticText>
-				<image  evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						x="15"
-						y="4"
-						width="221"
-						height="60"
-						key="image-2"/>
-					<box></box>
-					<graphicElement stretchType="NoStretch"/>
-					<imageExpression class="java.awt.Image"><![CDATA[$P{LOGO}]]></imageExpression>
-				</image>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="8"
@@ -1452,12 +1441,37 @@
 					<reportElement
 						mode="Transparent"
 						x="4"
-						y="3"
+						y="2"
 						width="244"
 						height="130"
 						key="rectangle-12"/>
 					<graphicElement stretchType="NoStretch"/>
 				</rectangle>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="6"
+						y="3"
+						width="240"
+						height="62"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-226"/>
+					<box></box>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="36" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "I M P A P" :
+$P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "P A P E R" :
+$P{EMISOR_RFC}.equals( "ICP760402388" ) ? "C E N-P A" :
+$P{EMISOR_RFC}.equals( "ISA870406UF4" ) ? "S   A   N" :
+$P{EMISOR_RFC}.equals( "BER830101IQ4" ) ? "B E R S A N" :
+$P{EMISOR_RFC}.equals( "SIN000114UV0" ) ? "S O L S A N" :
+$P{EMISOR_RFC}.equals( "ISL7406175K7" ) ? "S A N L I Z" :
+$P{EMISOR_RFC}.equals( "ICS050919728" ) ? "   4   S   " :
+$P{EMISOR_RFC}.equals( "BRG120430HW3" ) ? "BR-GASOC" :
+$P{EMISOR_RFC}.equals( "OAG100209GN8" ) ? "OA-GASOC" :
+ "S/EMPRESA"]]></textFieldExpression>
+				</textField>
 			</band>
 		</columnHeader>
 		<detail>
