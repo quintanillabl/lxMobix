@@ -59,7 +59,7 @@ class Venta {
 	Cfdi cfdi
 	
 	String usoCfdi = 'G03'
-	String metodoDePago = 'PPD'
+	String metodoDePago = 'PUE'
 	
 
 	String comentario

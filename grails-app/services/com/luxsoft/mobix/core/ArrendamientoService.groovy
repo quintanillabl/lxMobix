@@ -64,7 +64,8 @@ class ArrendamientoService {
             empresa:renta.arrendamiento.empresa,
             comentario:"Correspondiente al periodo: (${renta.periodo})",
             formaDePago:renta.arrendamiento.formaDePago?:'TRANSFERENCIA',
-            cuentaDePago:renta.arrendamiento.cuentaDePago
+            cuentaDePago:renta.arrendamiento.cuentaDePago,
+            metodoDePago: 'PUE'
 
         )
         def arrendamiento=renta.arrendamiento
