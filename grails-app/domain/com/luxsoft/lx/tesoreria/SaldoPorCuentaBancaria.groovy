@@ -26,7 +26,7 @@ class SaldoPorCuentaBancaria {
 	Date lastUpdated
 
     static constraints = {
-    	ejercicio inList:(2014..2018)
+    	ejercicio inList:(2014..2025)
     	mes inList:(1..12)
     	cuenta unique:['empresa','ejercicio','mes']
 		cierre(nullable:true)

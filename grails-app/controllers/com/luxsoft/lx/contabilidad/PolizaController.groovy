@@ -310,7 +310,7 @@ class GeneradorDePolizaCommand{
     Date fecha=new Date()
     
     static constraints = {
-        ejercicio inList:(2014..2018)
+        ejercicio inList:(2014..2030)
         mes inList:(1..13)
         tipo(maxSize:30)
     }

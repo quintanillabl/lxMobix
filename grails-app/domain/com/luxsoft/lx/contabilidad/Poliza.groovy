@@ -53,7 +53,7 @@ class Poliza {
 	static hasMany = [partidas:PolizaDet]
 
     static constraints = {
-		ejercicio inList:(2014..2018)
+		ejercicio inList:(2014..2030)
 		mes inList:(1..13)
 		tipo(inList:['INGRESO','EGRESO','DIARIO'])
 		subTipo(maxSize:30)

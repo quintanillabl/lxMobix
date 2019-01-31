@@ -15,7 +15,7 @@ class Balanza {
 	static hasMany = [partidas: BalanzaDet]
 
     static constraints = {
-    	ejercicio inList:(2015..2018)
+    	ejercicio inList:(2015..2030)
 		mes inList:(1..13)
 		empresa unique:['ejercicio','mes']
     }

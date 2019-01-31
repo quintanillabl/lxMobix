@@ -28,7 +28,7 @@ class SaldoPorCuentaContable implements Comparable{
 	}
 
     static constraints = {
-    	ejercicio inList:(2014..2018)
+    	ejercicio inList:(2014..2030)
 		mes inList:(1..13)
 		cuenta unique:['empresa','ejercicio','mes','cuenta']
 		debe sacale:6
