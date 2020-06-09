@@ -3,10 +3,13 @@ package com.luxsoft.cfdix.v33
 import groovy.util.logging.Slf4j
 import lx.cfdi.v33.CadenaBuilder33
 
+import javax.xml.transform.Source
 import javax.xml.transform.Transformer
 import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
+import grails.util.Environment
 
 import lx.cfdi.v33.Comprobante
 import lx.cfdi.v33.CfdiUtils
