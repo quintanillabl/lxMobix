@@ -42,7 +42,7 @@ class BootStrap {
 
     	java.security.Security.addProvider(new BouncyCastleProvider())
 
-    	
+    
 		def userRole=Rol.findOrSaveWhere(authority:'USUARIO')
 		def mostradorRole=Rol.findOrSaveWhere(authority:'OPERADOR')
 		def administracionRole=Rol.findOrSaveWhere(authority:'ADMINISTRACION')

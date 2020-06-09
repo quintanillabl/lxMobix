@@ -80,7 +80,7 @@ class CuentaPorPagar {
 		descuento(scale:4)
 		subTotal(scale:4)
 
-		impuesto(scale:4)
+		impuesto(nullable:true,scale:4)
 		total(scale:4)
 		retensionIsr(scale:4)
 		retensionIva(sacle:4)

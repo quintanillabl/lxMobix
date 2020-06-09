@@ -44,7 +44,8 @@ class CfdiCadenaBuilder33 {
             TransformerFactory factory=TransformerFactory.newInstance()
             StreamSource source
             if(Environment.current == Environment.DEVELOPMENT) {
-                source = new StreamSource(new File('/Users/rubencancino/dumps/xslt/cadenaoriginal_3_3.xslt'))
+                // source = new StreamSource(new File('/Users/rubencancino/dumps/xslt/cadenaoriginal_3_3.xslt'))
+                source = new StreamSource(new File('/Users/ruben/dumps/xslt/cadenaoriginal_3_3.xslt'))
             } else {
                 source = new StreamSource(new File('/home/xslt/cadenaoriginal_3_3.xslt'))
             }

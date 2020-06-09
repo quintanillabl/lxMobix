@@ -100,6 +100,7 @@ class GastoController {
 
     @Transactional
     def importarCfdi(){
+
         def xml=request.getFile('xmlFile')
         if(xml==null){
             flash.message="Archivo XML no localizado"
@@ -122,6 +123,10 @@ class GastoController {
 
     @Transactional
     def asignarCfdi(Gasto gastoInstance){
+
+         println "*****************************************"
+
+
         def xml=request.getFile('xmlFile')
         if(xml==null){
             flash.message="CFDI no existe"
@@ -132,7 +137,8 @@ class GastoController {
         xml.transferTo(xmlFile)
         try{
             //log.info 'Asignando CFDI al gasto: ' + gastoInstance.id + ' Vto: ' + gastoInstance.vencimiento
-            gastoInstance=gastoService.asignarCfdi(gastoInstance,xmlFile)
+            //gastoInstance=gastoService.asignarCfdi(gastoInstance,xmlFile)
+            gastoInstance=gastoService.importar(xmlFile)
             flash.message="CFDI:${xml.getOriginalFilename()} asignado al gasto: ${gastoInstance.id}"
             redirect action:'edit',id:gastoInstance.id
             return

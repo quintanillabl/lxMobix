@@ -102,73 +102,150 @@ class GastoService {
     }
 
     def asignarCfdi(Gasto gasto,File xmlFile){
+
+        println "Importando gasto"
         def xml = new XmlSlurper().parse(xmlFile)
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        if(xml.name()!='Comprobante'){
-            throw new GastoException(message:'Archivo XML no es un CFDI',gasto:gasto)
-        }
-        def data=xml.attributes()
-        def receptor=xml.breadthFirst().find { it.name() == 'Receptor'}
-        assert receptor.name()=='Receptor','Error en el archivo XML'
-        def empresa=Empresa.findByRfc(receptor.attributes()['rfc'])
-        if(empresa!=gasto.empresa){
-            throw new GastoException(message:"El receptor (${receptor.attributes()['rfc']}) no corresponed a la empresa del gasto (${gasto.empresa.rfc})",gasto:gasto)
-        }
 
-        def serie=xml.attributes()['serie']
-        def folio=xml.attributes()['folio']
-        def fecha=df.parse(xml.attributes()['fecha'])
-        def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
-        def uuid=timbre.attributes()['UUID']
-        def subTotal=data['subTotal'] as BigDecimal
-        
-        gasto.fecha = fecha
-        gasto.importe=data['subTotal'] as BigDecimal
-        gasto.descuento=data['descuento'] as BigDecimal?:0.0
-        gasto.subTotal=subTotal
-        gasto.total=data['total'] as BigDecimal
-        gasto.cfdiXmlFileName=xmlFile.name
-        gasto.uuid=uuid
-        gasto.serie=serie
-        gasto.folio=folio
-        gasto.cfdiXml=xmlFile.getBytes()
-
-        def traslados=xml.breadthFirst().find { it.name() == 'Traslados'}
-        
-        if(traslados){
-            traslados.children().each{ t->
-                if(t.attributes()['impuesto']=='IVA'){
-                    def tasa=t.attributes()['tasa'] as BigDecimal
-                    gasto.impuestoTasa=tasa
-                    gasto.impuesto=t.attributes()['importe'] as BigDecimal
-                }
+        if(xml.name()=='Comprobante'){
+            def data=xml.attributes()
+            def version = data.version
+            if(version == null){
+                version = data.Version
             }
         }
+
+          log.debug 'Comprobante:  '+xml.attributes()  
+            def receptor=xml.breadthFirst().find { it.name() == 'Receptor'}
+            def cuenta=CuentaContable.findByClave('600-0000')
+
+            assert cuenta,'No se ha declarado la cuenta general de gastos'
+            if('Receptor'==receptor.name()){
+                def empresa=Empresa.findByRfc(receptor.attributes()['Rfc'])
+                }
+            // assert empresa,'No existe empresa para: '+receptor.name()+ ' RFC: '+receptor.attributes()['rfc']+ 'Archivo: '+xmlFile.name
+            log.debug 'Importando Gasto/Compra para '+empresa
+            
+            def emisorNode= xml.breadthFirst().find { it.name() == 'Emisor'}
+            if(empresa==null){
+                empresa=Empresa.findByRfc(emisorNode.attributes()['Rfc'])
+                assert empresa,'No existe empresa que pueda registrar este CFDI'
+            }
+
+            if('Emisor'==emisorNode.name()){
+
+                def nombre=emisorNode.attributes()['Nombre']
+                def rfc=emisorNode.attributes()['Rfc']
+                
+                def proveedor=Proveedor.findByEmpresaAndRfc(empresa,rfc)
+
+                if(!proveedor){
+                    log.debug "Alta de proveedor: $nombre ($rfc)"
+                    def domicilioFiscal=emisorNode.breadthFirst().find { it.name() == 'DomicilioFiscal'}
+                    def dom=domicilioFiscal.attributes()
+                    def direccion=new Direccion(
+                        calle:dom.calle,
+                        numeroExterior:dom.noExterior,
+                        numeroInterior:dom.noInterior,
+                        colonia:dom.colonia,
+                        municipio:dom.municipio,
+                        estado:dom.estado,
+                        pais:dom.pais,
+                        codigoPostal:dom.codigoPostal)
+                    proveedor=new Proveedor(nombre:nombre,rfc:rfc,direccion:direccion,empresa:empresa)
+                    proveedor.save failOnError:true,flush:true   
+                }
+            }
+            
+
+
+                    def serie=xml.attributes()['Serie']
+                    def folio=xml.attributes()['Folio']
+                    def fecha=df.parse(xml.attributes()['Fecha'])
+                    def timbre=xml.breadthFirst().find { it.name() == 'TimbreFiscalDigital'}
+                    def uuid=timbre.attributes()['UUID'] 
+                    def subTotal=data['SubTotal'] as BigDecimal
+                    
+                    gasto.fecha = fecha
+                    gasto.importe=data['SubTotal'] as BigDecimal
+                    gasto.descuento=data['Descuento'] as BigDecimal?:0.0
+                    gasto.subTotal=subTotal
+                    gasto.total=data['Total'] as BigDecimal
+                    gasto.cfdiXmlFileName=xmlFile.name
+                    gasto.uuid=uuid
+                    gasto.serie=serie
+                    gasto.folio=folio
+                    gasto.cfdiXml=xmlFile.getBytes()
+
+            def traslados=xml.breadthFirst().find { it.name() == 'Traslados'}
+
+            if(traslados){
+                traslados.children().each{ t->
+                    if(t.attributes()['Impuesto']=='IVA'){
+                        def tasa=t.attributes()['Tasa'] as BigDecimal
+                        gasto.impuestoTasa=tasa
+                        gasto.impuesto=t.attributes()['Importe'] as BigDecimal
+                    }
+                }
+            }
+
         def retenciones=xml.breadthFirst().find { it.name() == 'Retenciones'}
-        
-        if(retenciones){
-            retenciones.breadthFirst().each{
-                def map=it.attributes()
-                if(map.impuesto=='IVA'){
-                    def imp=map.importe as BigDecimal
-                    def tasa=imp*100/subTotal
-                    gasto.retensionIva=imp
-                    gasto.retensionIvaTasa=tasa
+                    
+                    if(retenciones){
+                        retenciones.breadthFirst().each{
+                            def map=it.attributes()
+                            if(map.impuesto=='IVA'){
+                                def imp=map.importe as BigDecimal
+                                def tasa=imp*100/subTotal
+                                gasto.retensionIva=imp
+                                gasto.retensionIvaTasa=tasa
+                            }
+                            if(map.impuesto=='ISR'){
+                                def imp=map.importe as BigDecimal
+                                def tasa=imp*100/subTotal
+                                gasto.retensionIsr=imp
+                                gasto.retensionIsrTasa=tasa
+                            }
+                        }    
+                    }
+       
+        def conceptos=comprobante.breadthFirst().find { it.name() == 'Conceptos'}
+
+        conceptos.children().each{
+            def model=it.attributes()
+            def det=new GastoDet(
+                         cuentaContable:cuenta,
+                         descripcion:model['Descripcion'],
+                         unidad:model['ClaveUnidad'],
+                         cantidad:model['Cantidad'],
+                         valorUnitario:model['ValorUnitario'],
+                         importe:model['Importe'],
+                         comentario:"ClaveProdServ: ${model.ClaveProdServ} NoIdenticioacion: ${model.NoIdentificacion}"
+                    )
+            
+            if(it.Impuestos?.Traslados?.Traslado[0]){
+                println it.Impuestos.Traslados.Traslado[0].attributes()
+            }
+            if(it.Impuestos?.Retenciones?.Retencion[0]){
+                def retencion = it.Impuestos.Retenciones.Retencion[0].attributes()
+                if(retencion.Impuesto == '001'){
+                    det.retencionIsr = gasto.retensionIsr = new BigDecimal(retencion.Importe)
+                    det.retencionIsrTasa = new BigDecimal(retencion.TasaOCuota)
                 }
-                if(map.impuesto=='ISR'){
-                    def imp=map.importe as BigDecimal
-                    def tasa=imp*100/subTotal
-                    gasto.retensionIsr=imp
-                    gasto.retensionIsrTasa=tasa
+                if(retencion.Impuesto == '002'){
+                    det.retencionIva = new BigDecimal(retencion.Importe)
+                    det.retencionIvaTasa = new BigDecimal(retencion.TasaOCuota)
                 }
-            }    
+                
+            }
+            gasto.addToPartidas(det)
+            
         }
-        
 
-        gasto.save failOnError:true, flush:true
+        if(gasto.id )
+            return update(gasto)
         return  save(gasto)
-
-    }
+}
 
     def buildGastoFromCfdiV33(def comprobante, def xmlFile, Gasto gasto){
         
@@ -213,9 +290,17 @@ class GastoService {
                    
                    def tasa=t.attributes()['TasaOCuota'] as BigDecimal
                    gasto.impuestoTasa=tasa
+
+                   if(!gasto.impuestoTasa){
+                    gasto.impuestoTasa=0
+                   }
+
                    gasto.impuesto=t.attributes()['Importe'] as BigDecimal
                }
             }
+        }else{
+            gasto.impuesto =0
+            gasto.impuestoTasa=0
         }
 
         // Impuestos retendidos
@@ -236,6 +321,9 @@ class GastoService {
                     gasto.retensionIsrTasa = tasa
                 }
             }
+        }else{
+            gasto.retensionIva = 0.0
+           gasto.retensionIvaTasa = 0.0
         }
 
         // Conceptos
@@ -279,6 +367,8 @@ class GastoService {
     }
 
     def importar(File xmlFile){
+
+        println "Importando gasto"
         def xml = new XmlSlurper().parse(xmlFile)
         SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 

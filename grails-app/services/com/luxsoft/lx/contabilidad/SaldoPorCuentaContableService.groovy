@@ -84,7 +84,7 @@ class SaldoPorCuentaContableService {
 			def saldoInicial=0
 			if(periodo.mes==1){
 				def cierreAnual=SaldoPorCuentaContable.findByCuentaAndEjercicioAndMes(cuenta,periodo.ejercicio-1,13)
-
+				println "*******************************"+cuenta
 				log.debug 'SaldoInicial obtenido: '+cierreAnual
 				saldoInicial=cierreAnual.saldoFinal
 			}else{
