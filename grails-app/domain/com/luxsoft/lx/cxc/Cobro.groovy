@@ -49,6 +49,8 @@ class Cobro {
 	Date lastUpdated
 	String creadoPor
 	String modificadoPor
+
+	String relacionado
 	
 	static hasMany = [aplicaciones: AplicacionDeCobro]
 
@@ -61,6 +63,7 @@ class Cobro {
     	modificadoPor maxSize:50
     	importe min:1.0
     	cfdi nullable: true
+    	relacionado nullable:true
     }
 
     static mapping = {

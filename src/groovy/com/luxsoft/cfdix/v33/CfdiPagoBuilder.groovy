@@ -5,6 +5,7 @@ import org.bouncycastle.util.encoders.Base64
 
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.cxc.Cobro
+import com.luxsoft.lx.cxc.AplicacionDeCobro
 import com.luxsoft.lx.core.FormaDePago
 import com.luxsoft.lx.utils.MonedaUtils
 
@@ -13,6 +14,7 @@ import lx.cfdi.utils.DateUtils
 import lx.cfdi.v33.ObjectFactory
 import lx.cfdi.v33.Comprobante
 import lx.cfdi.v33.Pagos
+
 
 // Catalogos
 import lx.cfdi.v33.CUsoCFDI
@@ -25,6 +27,7 @@ import lx.cfdi.v33.CTipoFactor
  * 
  */
 class CfdiPagoBuilder {
+
 
 	private static final log = LogFactory.getLog(this)
 
@@ -41,7 +44,11 @@ class CfdiPagoBuilder {
         .buildConceptos()
         .buildCertificado()
         .buildPagos()
-        .sellar()
+
+        if(cobro.relacionado){
+            this.buildRelacionados()
+        }
+        this.sellar()
         return comprobante
     }
     
@@ -116,6 +123,8 @@ class CfdiPagoBuilder {
     }
 
     def buildPagos(){
+
+        
         Pagos pagos = factory.createPagos()
         pagos.version = '1.0'
         
@@ -133,8 +142,15 @@ class CfdiPagoBuilder {
             docto.folio = it.cuentaPorCobrar.cfdi.folio
             docto.monedaDR = CMoneda.MXN
             docto.metodoDePagoDR = CMetodoPago.PPD
-            docto.numParcialidad = 1
-            docto.impSaldoAnt = it.cuentaPorCobrar.total
+            def parciales = AplicacionDeCobro.executeQuery("select count(*) as parc from AplicacionDeCobro as a where a.cuentaPorCobrar = ? and fecha <= ? ",[it.cuentaPorCobrar, it.fecha])[0]
+
+            def aplicaciones = AplicacionDeCobro.executeQuery("select sum(importe) as sum from AplicacionDeCobro as a where a.cuentaPorCobrar = ? and fecha < ? ",[it.cuentaPorCobrar, it.fecha])[0]
+
+            docto.numParcialidad = parciales
+            docto.impSaldoAnt = it.cuentaPorCobrar.total-aplicaciones
+
+
+
             //docto.impSaldoInsoluto = MonedaUtils.round(docto.impSaldoAnt - pago.monto)
             // if(varios){
             //     docto.impPagado = it.importe
@@ -153,6 +169,21 @@ class CfdiPagoBuilder {
 
         return this;
     }
+
+    def buildRelacionados() {
+        Comprobante.CfdiRelacionados relacionados = factory.createComprobanteCfdiRelacionados()
+        relacionados.tipoRelacion = '04'
+        Comprobante.CfdiRelacionados.CfdiRelacionado relacionado = factory.createComprobanteCfdiRelacionadosCfdiRelacionado()
+            relacionado.UUID = cobro.relacionado
+            println relacionado.UUID
+            relacionados.cfdiRelacionado.add(relacionado)
+            comprobante.cfdiRelacionados = relacionados
+        
+        
+    }
+
+
+
 
     def sellar(){
         sellador.sellar(comprobante, this.empresa)

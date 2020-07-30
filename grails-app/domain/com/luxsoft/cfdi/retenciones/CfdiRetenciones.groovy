@@ -116,8 +116,8 @@ class CfdiRetenciones {
 
 
 	static Map TiposDeDividendos = [
-		'01': 'Proviende de CUFIN',
-		'02': 'No providne de CUFIN',
+		'01': 'Proviene de CUFIN',
+		'02': 'No proviene de CUFIN',
 		'03': 'Rembolso o reduccion de capital',
 		'04': 'Liquidación de la persona moral',
 		'05': 'CUFINRE',

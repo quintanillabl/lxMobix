@@ -62,6 +62,10 @@
 										onclick="return confirm('Cancelar CFDI?');" id="${cfdiInstance.id }">
 									<span class="glyphicon glyphicon-remove-circle"></span> Cancelar
 								</g:link>
+								<g:link  action="sustitucion" class="btn btn-default btn-sm"  
+										onclick="return confirm('Sustituir CFDI?');" id="${cfdiInstance.id }">
+									<span class="glyphicon glyphicon-remove-circle"></span> Sustitución
+								</g:link>
 								<g:if test="${cfdiInstance.uuid == null && cfdiInstance.versionCfdi =='3.3'}">
 									<g:link  action="timbrar" id="${cfdiInstance.id}"
 										class="btn btn-default btn-sm" >

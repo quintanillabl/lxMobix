@@ -32,6 +32,7 @@ import com.luxsoft.lx.core.Folio
 import com.luxsoft.lx.core.Empresa
 import com.luxsoft.lx.utils.*
 import com.luxsoft.mobix.core.Renta
+import com.luxsoft.lx.cxc.Cobro
 
 @Transactional
 class CfdiService {
@@ -240,6 +241,8 @@ class CfdiService {
 			throw new CfdiException(message:"No localizo empresa $cfdi.emisorRfc del CFDI",cfdi:cfdi)
 		}
 		//byte[] pfxData=grailsApplication.mainContext.getResource("/WEB-INF/sat/gasoc.pfx").file.readBytes()
+		//
+		/*
 		byte[] pfxData=empresa.certificadoDigitalPfx
 		String[] uuids=[cfdi.uuid]
 		def client=new CfdiClient()
@@ -259,32 +262,53 @@ class CfdiService {
 		//println 'Aka:'+aka
 
 		cancel.aka=Base64.decode(aka.getBytes())
-		cancel.save failOnError:true
+		*/
+		//cancel.save failOnError:true
 
-		def venta=Venta.findByCfdi(cfdi)
-		if(venta){
-			//venta.comentario="VENTA CANCELADA"
-			//venta.cancelada=true
-			//venta.partidas.clear()
-			//venta.actualizarImportes()
-			//cancel.comentario="Venta Origen: "+venta.id
-			venta?.cfdi=null
-			venta?.save()
-			venta.modificadoPor=currentUser()
-			/*
-			if(venta.saldo==venta.total){
-				venta.comentario="VENTA CANCELADA"
-				venta.cancelada=true
-				venta.partidas.clear()
-				venta.actualizarImportes()
-				venta.delete()
-			}else{
-				cancel.comentario="Venta Origen: "+venta.id
+		if(cfdi.serie == 'FACTURA'){
+			def venta=Venta.findByCfdi(cfdi)
+			if(venta){
 				venta?.cfdi=null
 				venta?.save()
+				venta.modificadoPor=currentUser()
 			}
-			*/
 		}
+
+		if(cfdi.serie == 'PAGO'){
+
+			println "Cancelando el cfdi cobro"+ cfdi.id
+			def cobro=Cobro.findByCfdi(cfdi)
+			if(cobro){
+				cobro?.cfdi=null
+				cobro?.save()
+			}
+		}
+		
+		return cancel
+
+	}
+	    @Transactional
+	def CancelacionDeCfdi sustituir(Cfdi cfdi,String comentario){
+
+		CancelacionDeCfdi cancel=new CancelacionDeCfdi()
+		cancel.cfdi=cfdi
+
+		def empresa=Empresa.findByRfc(cfdi.emisorRfc)
+		if(!empresa){
+			throw new CfdiException(message:"No localizo empresa $cfdi.emisorRfc del CFDI",cfdi:cfdi)
+		}
+
+		if(cfdi.serie == 'PAGO'){
+
+			println "Susituyendo el cfdi cobro"+ cfdi.id
+			def cobro=Cobro.findByCfdi(cfdi)
+			if(cobro){
+				cobro?.relacionado = cfdi.uuid
+				cobro?.cfdi=null
+				cobro?.save()
+			}
+		}
+		
 		return cancel
 
 	}
