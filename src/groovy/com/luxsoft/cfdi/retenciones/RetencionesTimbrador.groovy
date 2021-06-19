@@ -14,7 +14,9 @@ import com.luxsoft.lx.core.Empresa
 class RetencionesTimbrador {
 	
 	ZipUtils zipUtils=new ZipUtils()
+
 	CfdiClient cfdiClient=new CfdiClient()
+	
 	SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
 
 	def timbradoDePrueba
@@ -45,24 +47,9 @@ class RetencionesTimbrador {
 			log.debug 'Timbrando real de: '+cfdi
 			//res=cfdiClient.getCfdi(user, password, zipFile)
 		}
-		//Map<String, byte[]> map =zipUtils.descomprimeArchivo(res)
-		//Map.Entry<String, byte[]> entry=map.entrySet().iterator().next()
-		
-		//cfdi.xmlName=entry.getKey()
-		//cfdi.xml=entry.getValue()
-		
-		
-		
 		cfdi.save(failOnError:true)
 		return cfdi
-		// try {
-
-		// } catch (Exception e) {
-		// 	e.printStackTrace()
-		// 	log.error e
-		// 	String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getMessage(e)
-		// 	throw new RuntimeException(msg,e)
-		// }
+		
 	}
 
 	

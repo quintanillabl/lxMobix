@@ -13,6 +13,8 @@ import org.springframework.context.ResourceLoaderAware
 import org.springframework.core.io.ResourceLoader
 import org.apache.commons.logging.LogFactory
 
+import grails.util.Environment
+
 
 /**
  * Generador de cadena original
@@ -31,10 +33,17 @@ class RetencionesCadenaBuilder implements ResourceLoaderAware{
 	 */
 	String generarCadena(Retenciones retenciones){
 		
-		def is=resourceLoader.getResource("WEB-INF/sat/retenciones.xslt").inputStream
-		TransformerFactory factory=TransformerFactory.newInstance()
-		StreamSource xslt=new StreamSource(is)
-		Transformer transformer=factory.newTransformer(xslt)
+		// def is=resourceLoader.getResource("WEB-INF/sat/retenciones/retenciones.xslt").inputStream
+		TransformerFactory factory = TransformerFactory.newInstance()
+		StreamSource xslt
+        if(Environment.current == Environment.DEVELOPMENT) {
+            String userHome = System.getProperty('user.home')
+            xslt = new StreamSource(new File("${userHome}/dumps/retenciones/retenciones.xslt"))
+       } else {
+            xslt = new StreamSource(new File('/home/xslt/retenciones/retenciones.xslt'))
+        }
+		// StreamSource xslt=new StreamSource(is)
+		Transformer transformer = factory.newTransformer(xslt)
 
 		JAXBContext jc = JAXBContext.newInstance(Retenciones.class);
 		JAXBSource source = new JAXBSource(jc, retenciones);

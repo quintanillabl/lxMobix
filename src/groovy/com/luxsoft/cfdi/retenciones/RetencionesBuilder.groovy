@@ -129,22 +129,25 @@ class RetencionesBuilder implements ResourceLoaderAware{
 		def retenciones=toRetenciones(bean)
 		JAXBContext jc=JAXBContext.newInstance(Retenciones.class);
 		Marshaller marshaller=jc.createMarshaller();
-		marshaller.setSchema(getSchema());
+		// marshaller.setSchema(getSchema());
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,true);
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
 			"http://www.sat.gob.mx/esquemas/retencionpago/1 http://www.sat.gob.mx/esquemas/retencionpago/1/retencionpagov1.xsd http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos http://www.sat.gob.mx/esquemas/retencionpago/1/dividendos/dividendos.xsd");
-
+		
 		def empresa = Empresa.findByRfc(bean.emisorRfc)
 		assert empresa
-
 		retenciones.setNumCert(empresa.numeroDeCertificado)
+		
 		byte[] encodedCert=Base64.encode(empresa.getCertificado().getEncoded())
 		retenciones.setCert(new String(encodedCert))
-		
+
 		//Sello digital
 		String cadenaOriginal=cadenaBuilder.generarCadena(retenciones)
 		def sello=retencionSellador.sellar(empresa.privateKey,cadenaOriginal)
 		retenciones.setSello(sello)
+
+		// println 'SELLO: '
+		// println retenciones.getSello()
 		
 		//Output
     	ByteArrayOutputStream out=new ByteArrayOutputStream()
@@ -154,7 +157,7 @@ class RetencionesBuilder implements ResourceLoaderAware{
     	bean.xmlName="CFDI_RETENCION_${bean.emisorRfc}_${bean.id.toString()}.xml"
     	
     	bean.save failOnError:true
-
+		
     	return bean
 
 
